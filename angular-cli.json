@@ -1,0 +1,60 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "version": "1.0.0-beta.31",
+    "name": "jsdal-server-web"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "tsconfig": "tsconfig.json",
+      "prefix": "app",
+      "styles": [
+        "styles.css",
+        "./assets/css/bootstrap.min.css",
+        "./assets/css/bootstrap-dialog.min.css",
+        "./assets/css/font-awesome.min.css",
+        "../bower_components/toastr/toastr.css"
+      ],
+      "scripts": [
+        "./assets/js/jquery-2.2.0.min.js",
+        "./assets/js/bootstrap.min.js",
+        "./assets/js/bootstrap-dialog.min.js",
+        "../bower_components/moment/moment.js",
+        "../bower_components/humanize-duration/humanize-duration.js",
+        "../bower_components/select2/dist/js/select2.full.js",
+        "../bower_components/Sortable/Sortable.min.js",
+        "../bower_components/toastr/toastr.js"
+      ],
+      "environments": {
+        "source": "environments/environment.ts",
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "defaults": {
+    "styleExt": "css",
+    "prefixInterfaces": false,
+    "inline": {
+      "style": false,
+      "template": false
+    },
+    "spec": {
+      "class": false,
+      "component": true,
+      "directive": true,
+      "module": false,
+      "pipe": true,
+      "service": true
+    }
+  }
+}

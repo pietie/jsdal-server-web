@@ -1,0 +1,21 @@
+<md-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary">
+    <span>jsDAL Server</span>
+
+    <div style="margin-left: 20px;">
+        <a [routerLink]="['/home']">Main</a>
+        <a [routerLink]="['/projects']">Projects</a>
+        <a [routerLink]="['/performance']">Performance</a>
+        <a [routerLink]="['/threads']">Threads</a>
+        <a [routerLink]="['/sessionlog']">Session log</a>
+        <a [routerLink]="['/settings']">Settings</a>
+    </div>
+
+    <div style="float:right;margin-top: 15px; margin-right: 20px;">
+        Logged in as <span>UNKNOWN</span>, <a>logout</a>
+    </div>
+</md-toolbar>
+
+
+<div id="appContent" class="container-fluid">
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,30 @@
+﻿<table class="table table-striped" *ngIf="dbList">
+    <thead>
+        <tr>
+            <th style="width:200px"></th>
+            <th style="width:300px">Name</th>
+            <th style="width:200px">Source</th>
+            <th>Key</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of dbList">
+            <td class="anchorColumn">
+                <a [routerLink]="['./' + row.Name]">select</a>
+            </td>
+            <td>{{row.Name}}</td>
+            <td>
+                {{row.DataSource}}; {{row.InitialCatalog}}
+            </td>
+            <td>
+                {{row.Guid}}
+            </td>
+        </tr>
+        <tr *ngIf="!dbList || dbList.length == 0">
+            <td colspan="4">No database sources exist yet.</td>
+
+        </tr>
+    </tbody>
+</table>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,48 @@
+﻿<ol class="breadcrumb">
+    <li class="active"><a [routerLink]="['/projects']">Projects</a></li>
+    
+    <!--<li><a href="#">Library</a></li>
+    <li class="active">Data</li>-->
+</ol>
+
+<div [@componentState]="componentState">
+    <div class="page-header"><h4>jsDAL Projects</h4></div>
+
+
+    <button (click)="onCreateNewProjectClicked()" style="width:140px;" class="btn btn-info btn-sm form-control">Create new project</button>
+
+
+
+    <table class="table table-striped" *ngIf="projectList">
+        <thead>
+            <tr>
+                <th style="width:200px"></th>
+                <th style="width:250px">Project</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of projectList" [class.success]="selectedProject == row">
+                <td class="anchorColumn">
+                    <a (click)="projectService.currentProject = row; componentState = 'childRouteActive';" [routerLink]="['./' + row.Name]">manage</a>
+                    <a (click)="onEditProject(row)">edit</a>
+                    <a (click)="onDeleteProject(row)">delete</a>
+                </td>
+                <td>{{row.Name}}</td>
+                <td>
+                    ...some status or other info (e..g Create date/age)..created by?
+                </td>
+                <td>
+                    00
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+    <hr />
+    <router-outlet></router-outlet>
+
+

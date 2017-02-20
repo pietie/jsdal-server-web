@@ -1,0 +1,35 @@
+﻿<table class="table table-striped" *ngIf="threadList">
+    <thead>
+        <tr>
+            <th style="width:160px"></th>
+            <th style="width:120px">Name</th>
+            <th style="width:250px">Source</th>
+            <th>Last status</th>
+            <th style="width:220px">Thread status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let row of threadList" class="thread" [ngClass]="{running:row.IsRunning, stopped: !row.IsRunning}" title="{{ row.IsRunning? 'Thread is running':'Thread is stopped' }}">
+            <td class="anchorColumn">
+                <a [routerLink]="['./log', {key: row.Key }]">view log</a>
+            </td>
+            <td>{{row.Name}}</td>
+            <td>
+                {{row.MetadataDataSource}}; {{row.MetadataInitialCatalog}}
+            </td>
+            <td>
+                {{row.Status}}
+            </td>
+            <td class="anchorNest">
+                {{row.IsRunning? "Running":"Stopped"}}
+                <a (click)="startThread(row)" href="javascript:void(0)">start</a>
+                <a (click)="stopThread(row)" href="javascript:void(0)">stop</a>
+            </td>
+
+
+
+        </tr>
+    </tbody>
+</table>
+
+<router-outlet></router-outlet>

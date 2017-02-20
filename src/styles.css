@@ -1,0 +1,108 @@
+@import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
+
+
+i.pr8 {
+    padding-right: 8px;
+}
+
+TABLE TR TD.anchorColumn a, .anchorNest a {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-right: 1px solid silver;
+    cursor: pointer;
+}
+
+    TABLE TR TD.anchorColumn a:last-child, .anchorNest a:last-child {
+        border: 0;
+        padding-right: 0;
+    }
+
+
+.select2-container .select2-selection--single {
+    height: auto;
+    min-height: 38px;
+}
+
+.select2-selection__rendered, .select2-selection.select2-selection--single {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#eeeeee+0,cccccc+100;Gren+3D */
+    background: #eeeeee; /* Old browsers */
+    background: -moz-linear-gradient(top, #eeeeee 0%, #cccccc 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #eeeeee 0%,#cccccc 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #eeeeee 0%,#cccccc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+}
+
+a.disabled, button.disabled, input.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: gray;
+}
+/*.select2-container {
+              width: 100% !important;
+              padding: 0;
+          }*/
+
+.databaseSourceCboItem {
+    padding: 5px;
+}
+
+    .databaseSourceCboItem .h {
+        font: bold 16px Arial;
+        color: navy;
+    }
+
+    .databaseSourceCboItem .line2 {
+        color: #000;
+        line-height: 15px;
+    }
+
+.ormLabel {
+    font: 16px Arial;
+}
+
+    .ormLabel i {
+        margin-right: 6px;
+    }
+
+    .ormLabel.good {
+        color: #00b23a;
+    }
+
+    .ormLabel.bad {
+        color: #b20000;
+    }
+
+
+tr.thread.running {
+    color: #00b23a;
+}
+
+tr.thread.stopped {
+    color: #b20000;
+}
+
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    transition: all 0.35s ease-in-out;
+}
+
+    .box.blue {
+        background-color: blue;
+    }
+
+    .box.ng-enter {
+        opacity: 0;
+        height: 0;
+    }
+
+    .box.ng-enter-active {
+        opacity: 1;
+        height: 100px;
+    }
+
+    .box.ng-leave-active {
+        opacity: 0;
+        height: 0;
+    }

@@ -1,0 +1,26 @@
+{
+  "name": "jsdal-web",
+  "description": "",
+  "main": "",
+  "authors": [
+    "pietie <pieter@L2.co.za>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "toastr": "~2.1.2",
+    "fetch": "~0.11.0",
+    "select2": "~4.0.1",
+    "humanize-duration": "^3.6.0",
+    "moment": "^2.11.2",
+    "Sortable": "^1.4.2"
+  }
+}

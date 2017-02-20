@@ -1,0 +1,21 @@
+﻿<div #dlg class="modal fade" data-backdrop="static" >
+    
+
+    <div class="modal-dialog" [class.modal-sm]="options != null && options.size == 100" [class.modal-lg]="options != null && options.size == 300" style="width:95%;margin:auto">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    
+                    <div #container>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,42 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "toastr/toastr.d.ts": {
+      "commit": "717a5fdb079f8dd7c19f1b22f7f656dd990f0ccf"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "0bdc1385e378e2839fe1d6f0d5429f70b0ea8623"
+    },
+    "moment/moment.d.ts": {
+      "commit": "470954c4f427e0805a2d633636a7c6aa7170def8"
+    },
+    "bootstrap/bootstrap.d.ts": {
+      "commit": "0bdc1385e378e2839fe1d6f0d5429f70b0ea8623"
+    },
+    "select2/select2.d.ts": {
+      "commit": "e69fe60f2d6377ea4fae539493997b098f52cad1"
+    },
+    "node/node.d.ts": {
+      "commit": "154a9c0274fa8add9d0a7dd352ff5138d35ff53e"
+    },
+    "whatwg-fetch/whatwg-fetch.d.ts": {
+      "commit": "154a9c0274fa8add9d0a7dd352ff5138d35ff53e"
+    },
+    "whatwg-streams/whatwg-streams.d.ts": {
+      "commit": "154a9c0274fa8add9d0a7dd352ff5138d35ff53e"
+    },
+    "typescript/typescript.d.ts": {
+      "commit": "154a9c0274fa8add9d0a7dd352ff5138d35ff53e"
+    },
+    "core-js/core-js.d.ts": {
+      "commit": "154a9c0274fa8add9d0a7dd352ff5138d35ff53e"
+    },
+    "zone.js/zone.js.d.ts": {
+      "commit": "154a9c0274fa8add9d0a7dd352ff5138d35ff53e"
+    }
+  }
+}

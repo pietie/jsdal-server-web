@@ -1,0 +1,32 @@
+﻿import { ModuleWithProviders } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { HomeComponent } from './home/home.component'
+import { LoginComponent } from './account/login.component'
+import { LoggedInComponent }   from './account/logged-in.component';
+import { SessionLog } from './sessionlog/sessionlog.component'
+import { Settings } from './settings/settings.component'
+
+import { CanDeactivateGuard }  from './services/can-deactivate-guard.service'
+import { LoggedInGuard }   from './logged-in.guard';
+  
+export const appRoutes: Routes = [
+    {
+        path: '',
+        redirectTo: '/login',
+        pathMatch: 'full',
+    },
+    { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard] },
+    { path: 'logged-in', component: LoggedInComponent },
+    { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
+    { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule', canActivate: [LoggedInGuard] },
+    { path: 'sessionlog', component: SessionLog, canActivate: [LoggedInGuard] },
+    { path: 'settings', component: Settings, canActivate: [LoggedInGuard] },
+   
+
+];
+
+ 
+export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes, { useHash: false });
+
+ 

@@ -1,0 +1,47 @@
+﻿<div [@componentState]="componentState" (@componentState.done)="animDone($event)">
+
+    <span *ngIf="checkingCredentials">Checking credentials, please wait...</span>
+
+    <div *ngIf="!checkingCredentials">
+
+
+
+
+        <md-toolbar color="primary">jsDAL Server - Login</md-toolbar><br />
+
+        <md-card class="login">
+            <md-card-content>
+                <div>
+                    <md-input-container>
+                        <input mdInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username" (keyup.enter)="login()" autofocus/>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-input-container>
+                        <input mdInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password" (keyup.enter)="login()" type="password"
+                        />
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-checkbox [(ngModel)]="useWindowsAuth">Use Windows authentication</md-checkbox>
+
+                </div>
+            </md-card-content>
+            <md-card-actions align="end">
+                <button (click)="login()" color="primary" md-raised-button>LOGIN</button>
+            </md-card-actions>
+            <md-card-footer>
+                <md-progress-bar *ngIf="busyWithLogin" mode="indeterminate"></md-progress-bar>
+            </md-card-footer>
+
+        </md-card>
+        <br/><br/>
+
+
+
+        <div *ngIf="loginFailed" class="toast">
+            Invalid username or password!
+        </div>
+
+    </div>
+</div>
