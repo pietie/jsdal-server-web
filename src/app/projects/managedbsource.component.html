@@ -19,135 +19,158 @@
 <div class="container-fluid" *ngIf="isReady">
 
 
+    <md-tab-group *ngIf="isOrmInstalled" dynamicHeight="true">
+        <md-tab label="Cached routines">
 
-    <div *ngIf="isOrmInstalled" class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                Cached routines
-            </h3>
-        </div>
-        <div class="panel-body">
+            <md-card>
+                <md-card-title>
+                    Cached routines
+                </md-card-title>
+                <md-card-content>
 
-            <div *ngIf="summaryData">
+                    <div *ngIf="summaryData">
 
-                <strong>Last updated:</strong> {{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }} <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
-                <br />
+                        <strong>Last updated:</strong> {{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy,
+                        HH:mm:ss' }} <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
+                        <br />
 
-                <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} <i class="fa fa-long-arrow-right"></i>
+                        <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} <i class="fa fa-long-arrow-right"></i>
 
 
-                <template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
-                    <div *ngFor="let row of summaryData.Orm.Groups, let last = last" style="display:inline-block">
-                        <span>{{row.Type}}</span><span> ({{row.Count}})</span> {{last? "":", "}}
+                        <template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
+                            <div *ngFor="let row of summaryData.Orm.Groups, let last = last" style="display:inline-block">
+                                <span>{{row.Type}}</span><span> ({{row.Count}})</span> {{last? "":", "}}
+                            </div>
+                        </template>
+
                     </div>
-                </template>
-                <br />
-                <br />
-                <div class="anchorNest">
-                    <a (click)="viewCachedMetadata()" href="javascript:void(0)">View metadata</a>
-                    <a (click)="clearDbSourceCache()" href="javascript:void(0)">Clear cache</a>
-                </div>
+                    <p *ngIf="!summaryData">
+                        No routines cached yet.
+                    </p>
+
+                </md-card-content>
+                <md-card-actions>
+                        <button md-button (click)="viewCachedMetadata()" href="javascript:void(0)">VIEW METADATA</button>
+                        <button md-button (click)="clearDbSourceCache()" href="javascript:void(0)">CLEAR CACHE</button>
+                </md-card-actions>
+            </md-card>
+
+        </md-tab>
+        <md-tab label="Whitelisted IPs">
+
+            <md-card>
+                <md-card-title>
+                    <i class="fa fa-tags pr8"></i>Whitelisted source IPs
+                </md-card-title>
+                <md-card-content>
+                    <p>
+                        Specify a whitelist of IPs (not host names) that are allowed to access this DB source. Place each entry on a new line. Wildcard
+                        and ranges are supported, e.g. <strong>172.16.*.10-50</strong>
+                    </p>
+                    <p>
+                        <label><input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
+                        <br/>
+                        <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
+                    </p>
+
+                </md-card-content>
+                <md-card-actions>
+                    <button (click)="onUpdateWhitelist(whitelistTA)" md-raised-button color="primary">Save whitelist</button>
+                </md-card-actions>
+            </md-card>
 
 
-            </div>
-            <p *ngIf="!summaryData">
-                No routines cached yet.
-            </p>
+        </md-tab>
+        <md-tab label="Run-time connections">
+            <md-card>
+                <md-card-title>
+                    <i class="fa fa-star pr8"></i>Run-time connections
+                </md-card-title>
+                <md-card-content>
+
+                    <p>
+                        Configure one or more connections to use when executing a routine.
+                    </p>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="width:150px"></th>
+                                <th style="width:220px">Name</th>
+                                <th>Source</th>
+                                <th>Key</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template [ngIf]="execConnectionsList">
+                                <tr *ngFor="let row of execConnectionsList">
+                                    <td class="anchorColumn">
+                                        <a (click)="onEditExecConnectionClicked(row)">edit</a>
+                                        <a (click)="onDeleteExecConnectionClicked(row)">delete</a>
+                                    </td>
+                                    <td>{{row.Name}}</td>
+                                    <td>
+                                        {{ row.DataSource }}; {{ row.InitialCatalog }}
+
+                                    </td>
+                                    <td>
+                                        {{ row.Guid }}
+                                    </td>
+                                </tr>
+                            </template>
+                            <tr *ngIf="!execConnectionsList || execConnectionsList.length == 0">
+                                <td colspan="100">No connections configured yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </md-card-content>
+                <md-card-actions>
+                    <button md-raised-button color="primary" (click)="onAddExecConnectionClicked()">Add connection</button>
+                </md-card-actions>
+            </md-card>
+        </md-tab>
+        <md-tab label="Plugins">
+            <md-card>
+                <md-card-title><i class="fa fa-plug pr8"></i>Plugins</md-card-title>
+                <md-card-content>
+
+                    <md-list>
+                        <md-list-item *ngFor="let row of pluginList">
+                            <div md-line style="display: flex;align-items: center;">
+                                <md-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)"><span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span></md-slide-toggle>
+                                <span md-line style="margin-left:20px;" class="anchorNest"><a (click)="onPluginInclusionChanged()">up</a><a (click)="onPluginInclusionChanged()">down</a></span>
+                            </div>
+                            <p md-line>
+                                {{row.Description}}<br/>
+                            </p>
+                            <hr md-line/>
+                        </md-list-item>
+
+                    </md-list>
+
+                </md-card-content>
+                <md-card-actions>
+                    <button md-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">Save changes</button>
+                </md-card-actions>
+
+            </md-card>
 
 
-        </div>
-    </div>
 
+        </md-tab>
+    </md-tab-group>
 
-
+    <br/><br/><br/><br/>
 
     <div *ngIf="!isOrmInstalled" class="alert alert-warning" role="alert">
         ORM sprocs are not installed yet. Click <strong>initialize</strong> to start the installation procedure.
     </div>
     <button *ngIf="!isOrmInstalled" [class.disabled]="isInstallingOrm" class="btn btn-success" style="width:100px;" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
 
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                <i class="fa fa-tags pr8"></i>Whitelisted source IPs
-            </h3>
-        </div>
-        <div class="panel-body">
-            <p>
-                Specify a whitelist of IPs (not host names) that are allowed to access this DB source. Place each entry on a new line.
-                Wildcard and ranges are supported, e.g. <strong>172.16.*.10-50</strong>
-            </p>
-            <p>
-                <label><input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
-                <br/>
-                <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
-            </p>
-            
-
-            <button (click)="onUpdateWhitelist(whitelistTA)" class="btn btn-primary">Save whitelist</button>
-            
-            <!--<p>
-                <input type="text" placeholder="IP address" />&nbsp;<a href="javascript:void(0)">Test IP access</a>
-            </p>
-                -->
-        </div>
-    </div>
 
 
     <div *ngIf="isOrmInstalled">
 
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-star pr8"></i>Run-time connections
-
-                </h3>
-            </div>
-            <div class="panel-body">
-                <p>
-                    Configure one or more connections to use for execution.
-                </p>
-                <br />
-
-                <button class="btn btn-info" (click)="onAddExecConnectionClicked()">Add connection</button>
-
-
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th style="width:150px"></th>
-                            <th style="width:220px">Name</th>
-                            <th>Source</th>
-                            <th>Key</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template [ngIf]="execConnectionsList">
-                            <tr *ngFor="let row of execConnectionsList">
-                                <td class="anchorColumn">
-                                    <a (click)="onEditExecConnectionClicked(row)">edit</a>
-                                    <a (click)="onDeleteExecConnectionClicked(row)">delete</a>
-                                </td>
-                                <td>{{row.Name}}</td>
-                                <td>
-                                    {{ row.DataSource }}; {{ row.InitialCatalog }}
-
-                                </td>
-                                <td>
-                                    {{ row.Guid }}
-                                </td>
-                            </tr>
-                        </template>
-                        <tr *ngIf="!execConnectionsList || execConnectionsList.length == 0">
-                            <td colspan="100">No connections configured yet.</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-
-
-            </div>
-        </div>
 
         <div class="panel panel-info">
             <div class="panel-heading">
@@ -163,16 +186,13 @@
             </div>
         </div>
 
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-code pr8"></i>Output files
-                </h3>
-            </div>
-            <div class="panel-body">
+        <md-card>
+            <md-card-title>
+                <i class="fa fa-code pr8"></i>Output files
+            </md-card-title>
+            <md-card-content>
 
-                <button class="btn btn-primary" (click)="onAddNewOutputFileClicked()">Add new output file</button>
-                <br />
+
 
                 <table class="table table-striped" *ngIf="outputFileList">
                     <thead>
@@ -194,8 +214,8 @@
                             <td><a (click)="onJsFileManageRulesClicked(row)" href="javascript:void(0)">manage rules</a></td>
                             <td>
 
-                                <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br />
-                                http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
+                                <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br
+                                /> http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
                             </td>
                             <td>
                                 {{row.Guid}}
@@ -204,34 +224,13 @@
                     </tbody>
                 </table>
 
+            </md-card-content>
+            <md-card-actions>
+                <button md-raised-button color="primary" (click)="onAddNewOutputFileClicked()">Add new output file</button>
+            </md-card-actions>
+        </md-card>
 
-            </div>
-        </div>
 
-
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-plug pr8"></i>Plugins
-                </h3>
-            </div>
-            <div class="panel-body" *ngIf="pluginList">
-
-                <button class="btn btn-primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">Save changes</button>
-
-                <div class="list-group" *ngFor="let row of pluginList" style="margin-bottom:4px;">
-                    <div class="list-group-item" [class.list-group-item-success]="row.Included">
-                        <label><h4 class="list-group-item-heading"><input type="checkbox" [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)" /> {{row.Name}}</h4></label>
-                        <span style="margin-left:20px;" class="anchorNest"><a (click)="onPluginInclusionChanged()">up</a><a (click)="onPluginInclusionChanged()">down</a></span>
-                        <p class="list-group-item-text">
-                            {{row.Description}}
-
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
 
