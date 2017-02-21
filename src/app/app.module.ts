@@ -19,8 +19,6 @@ import { LoginComponent } from './account/login.component'
 import { SessionLog } from './sessionlog/sessionlog.component'
 import { Settings } from './settings/settings.component'
 
-import { ProjectService } from './projects/projects.service'
-
 import { PerformanceModule } from './performance/performance.module'
 
 import { SharedModule } from './shared/shared.module'
@@ -42,7 +40,7 @@ import { LoggedInComponent } from './account/logged-in.component';
         , LoggedInComponent
     ],
     bootstrap: [AppComponent],
-    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, ProjectService],
+    providers: [CanDeactivateGuard, LoggedInGuard, AccountService],
     entryComponents: []
 
 })

@@ -1,21 +1,45 @@
-<md-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary">
-    <span>jsDAL Server</span>
+<md-sidenav-container>
+    <md-sidenav #side mode="push" opened="false">
 
-    <div style="margin-left: 20px;">
-        <a [routerLink]="['/home']">Main</a>
-        <a [routerLink]="['/projects']">Projects</a>
-        <a [routerLink]="['/performance']">Performance</a>
-        <a [routerLink]="['/threads']">Threads</a>
-        <a [routerLink]="['/sessionlog']">Session log</a>
-        <a [routerLink]="['/settings']">Settings</a>
+        <md-nav-list>
+            <a md-list-item [routerLink]="['/home']">Main</a>
+            <a md-list-item [routerLink]="['/projects']">Projects</a>
+            <a md-list-item [routerLink]="['/performance']">Performance</a>
+            <a md-list-item [routerLink]="['/threads']">Threads</a>
+            <a md-list-item [routerLink]="['/sessionlog']">Session log</a>
+            <a md-list-item [routerLink]="['/settings']">Settings</a>
+        </md-nav-list>
+
+
+
+    </md-sidenav>
+
+    <div class="main-content">
+
+        <md-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary">
+            <md-icon (click)="side.open();">menu</md-icon>
+            <span>jsDAL Server</span>
+
+            <div style="margin-left: 20px;">
+                <a [routerLink]="['/home']">Main</a>
+                <a [routerLink]="['/projects']">Projects</a>
+                <a [routerLink]="['/performance']">Performance</a>
+                <a [routerLink]="['/threads']">Threads</a>
+                <a [routerLink]="['/sessionlog']">Session log</a>
+                <a [routerLink]="['/settings']">Settings</a>
+            </div>
+
+            <div style="float:right;margin-top: 15px; margin-right: 20px;">
+                Logged in as <span>UNKNOWN</span>, <a>logout</a>
+            </div>
+        </md-toolbar>
+
+
+        <div id="appContent" class="container-fluid">
+            <router-outlet></router-outlet>
+        </div>
+
+
     </div>
 
-    <div style="float:right;margin-top: 15px; margin-right: 20px;">
-        Logged in as <span>UNKNOWN</span>, <a>logout</a>
-    </div>
-</md-toolbar>
-
-
-<div id="appContent" class="container-fluid">
-    <router-outlet></router-outlet>
-</div>
+</md-sidenav-container>
