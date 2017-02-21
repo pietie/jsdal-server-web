@@ -1,7 +1,6 @@
 ﻿import { Component, EventEmitter, Output, ViewChild, ChangeDetectorRef } from '@angular/core'
 
 import * as L2 from './../L2'
-import {ProjectService} from './../projects.service'
 
 import {DefaultRuleMode} from './../projects/dbsource.component'
 

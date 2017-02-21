@@ -2,7 +2,6 @@
 import { Location } from '@angular/common'
 import { ActivatedRoute, Router } from '@angular/router'
 
-import { ProjectService } from '../projects.service'
 import * as L2 from '../L2'
 
 // @Component({
@@ -13,7 +12,6 @@ import * as L2 from '../L2'
 // export class ProjectsContainer { }
 
 @Component({
-    providers: [ProjectService],
     templateUrl: './project-list.component.html',
     animations: [
         trigger('componentState', [

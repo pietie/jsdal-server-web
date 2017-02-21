@@ -2,18 +2,47 @@
 import { ActivatedRoute } from '@angular/router'
 
 import * as L2 from '../L2'
-//?import { ProjectService } from '../projects.service'
+
+import { ProjectService, IDBSource } from './projects.service'
+
 import { ProjectComponent } from './project.component'
 import { RuleManagement } from '../rules/rules.component'
 import { DbConnectionDialog } from './dbconnection.dialog'
 import { MetadataBrowserDialog } from '../metadatabrowser/metadatabrowser.dialog'
 
-
-
 export enum DefaultRuleMode {
     Unknown = -1,
     IncludeAll = 0,
     ExcludeAll = 1
+}
+
+import { Injectable } from '@angular/core';
+import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+
+
+@Injectable()
+export class DbSourceRouteResolver implements Resolve<IDBSource> {
+    constructor(private projectService: ProjectService, private router: Router) { }
+
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
+
+        let project = route.parent.params["name"];
+        let dbSource = route.params['name'];
+
+        return this.projectService.getDbSource(project, dbSource).then(dbs => {
+            if (dbs) {
+                return dbs;
+            }
+            else {
+                this.router.navigate(['/home']); // TODO: Route back to project list with error?
+                return null;
+            }
+        }).catch(e => {
+            console.log("bailing because of error", e);
+            this.router.navigate(['/home']);     // TODO: Route back to project list with error?
+            return null;
+        });
+    }
 }
 
 
@@ -24,18 +53,9 @@ export enum DefaultRuleMode {
 export class DbSourceComponent {
     private isReady: Boolean = false;
     private projectName: string;
-    //private dataSourceKey: string;
-    //private isOrmInstalled: boolean = null;
-    //private DefaultRuleMode: DefaultRuleMode = DefaultRuleMode.Unknown;
 
-    private dbSource: {
-        DataSource?: string;
-        DefaultRuleMode?: any;
-        InitialCatalog?: string;
-        IsOrmInstalled?: boolean;
-        JsNamespace?: string;
-        Name?: string;
-    } = {};
+    public test: number = 123;
+    private dbSource: IDBSource = {};
 
 
     private isInstallingOrm: boolean = false;
@@ -61,10 +81,11 @@ export class DbSourceComponent {
         , private appRef: ApplicationRef
         , private viewContainerRef: ViewContainerRef) {
         try {
-            this.paramaterSub = this.route.params.subscribe(params => {
 
+            // listen and wait for the data coming in from the Resolver
+            this.route.data.subscribe((d: any) => {
                 this.projectName = project.name;
-                this.dbSource = this.project.getDbSource(params["name"]);
+                this.dbSource = d.dbSource;
 
                 if (this.dbSource.IsOrmInstalled == null) {
                     this.onRecheckOrmClicked();
@@ -79,6 +100,7 @@ export class DbSourceComponent {
                 this.refreshOutputFileList();
                 this.refreshPluginList();
                 this.refreshWhitelist();
+
             });
 
         }

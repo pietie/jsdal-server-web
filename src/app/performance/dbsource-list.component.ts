@@ -23,6 +23,7 @@ export class DbSourceListComponent {
     }
 
     refreshDbList() {
+        console.log("12345!!");
         L2.fetchJson(`/api/database?project=${this.projectName}`).then((resp: any) => {
             this.dbList = resp.Data;
         });

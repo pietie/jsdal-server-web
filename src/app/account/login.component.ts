@@ -96,6 +96,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
 
             }).catch(e => {
                 this.checkingCredentials = false;
+                console.error(e);
                 L2.HandleException(e);
             });
             console.info("loginFromStore 010");
@@ -124,6 +125,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
         }
         catch (e) {
             L2.HandleException(e);
+            console.error(e);
         }
     }
 
@@ -155,7 +157,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
                 let targetUrl: string = "/home";
 
                 if (this.accountService.redirectUrl) targetUrl = this.accountService.redirectUrl;
-
+console.log("navigating to", targetUrl);
                 this.router.navigateByUrl(targetUrl);
 
                 /**this.router.navigateByUrl(targetUrl).then(r => {
@@ -194,6 +196,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
         }
         catch (e) {
             this.busyWithLogin = false;
+            console.error(e);
             L2.HandleException(e);
         }
     }

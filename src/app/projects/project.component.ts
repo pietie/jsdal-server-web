@@ -3,6 +3,8 @@
     trigger, state, style, transition, animate
 } from '@angular/core'
 
+import { ProjectService, IDBSource } from './projects.service'
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { Route, CanDeactivate } from '@angular/router'
 import { Observable } from 'rxjs/Observable';
@@ -276,7 +278,6 @@ export class AddNewDatabaseSourceDialog {
 
     ],
 })
-
 export class ProjectComponent {
     private projectName: string;
     private dbList: any;
@@ -286,14 +287,16 @@ export class ProjectComponent {
     private componentState = "enterComponent";
 
 
-    constructor(private route: ActivatedRoute
+    constructor(
+        private projectService: ProjectService
+        , private route: ActivatedRoute
         , private router: Router
         , private componentFactoryResolver: ComponentFactoryResolver
         , private injector: Injector
         , private appRef: ApplicationRef
         , private viewContainerRef: ViewContainerRef
     ) {
-
+console.log("ProjectComponent cons ");
         this.route.params.subscribe(params => {
             this.projectName = params["name"];
             this.componentState = "enterComponent";
@@ -329,22 +332,13 @@ export class ProjectComponent {
 
 
     refreshDbList() {
-        L2.fetchJson(`/api/database?project=${this.projectName}`).then((resp: any) => {
-            this.dbList = resp.Data;
+        this.projectService.getDbSourceList(this.projectName).then(r=>
+        {
+          this.dbList = r; // TODO: bind grid directly to service  
         });
     }
 
-    public getDbSource(name: string): {
-        DataSource?: string;
-        DefaultRuleMode?: any;
-        InitialCatalog?: string;
-        IsOrmInstalled?: boolean;
-        JsNamespace?: string;
-        Name?: string;
-    } {
-        if (!this.dbList) return null;
-        return this.dbList.find(db => db.Name.toLowerCase() == name.toLowerCase());
-    }
+
 
     private formatDbCboItem(item) {
         if (!item.Data) return;
