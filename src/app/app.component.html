@@ -16,20 +16,20 @@
 
     <div class="main-content">
 
-        <md-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary">
-            <md-icon (click)="side.open();">menu</md-icon>
+        <md-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary" style="margin-bottom: 20px;">
+            <md-icon (click)="side.open();" style="margin-right:10px;">menu</md-icon>
             <span>jsDAL Server</span>
 
-            <div style="margin-left: 20px;">
+            <!--<div style="margin-left: 20px;">
                 <a [routerLink]="['/home']">Main</a>
                 <a [routerLink]="['/projects']">Projects</a>
                 <a [routerLink]="['/performance']">Performance</a>
                 <a [routerLink]="['/threads']">Threads</a>
                 <a [routerLink]="['/sessionlog']">Session log</a>
                 <a [routerLink]="['/settings']">Settings</a>
-            </div>
+            </div>-->
 
-            <div style="float:right;margin-top: 15px; margin-right: 20px;">
+            <div style="flex: 1 1 auto;">
                 Logged in as <span>UNKNOWN</span>, <a>logout</a>
             </div>
         </md-toolbar>

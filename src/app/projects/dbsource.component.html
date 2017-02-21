@@ -1,240 +1,237 @@
-﻿<div class="page-header">
-    <h4 style="display:inline-block">
-        <i class="fa fa-database pr8"></i>Datasource: {{ this.dbSource.Name }}
-    </h4>
-    <div style="display:inline-block;margin-left:30px;">
-        <span class="ormLabel" [class.good]="this.dbSource.IsOrmInstalled" [class.bad]="!this.dbSource.IsOrmInstalled">
+﻿<md-card>
+    <md-card-title>
+        <i class="fa fa-database pr8"></i>{{ this.dbSource.Name }} detail
+        <div style="display:inline-block;margin-left:30px;font-size: 0.6em;">
+            <span class="ormLabel" [class.good]="this.dbSource.IsOrmInstalled" [class.bad]="!this.dbSource.IsOrmInstalled">
             <i class="fa " [class.fa-check-circle-o]="this.dbSource.IsOrmInstalled" [class.fa-times-circle-o]="!this.dbSource.IsOrmInstalled"></i>
             ORM <span *ngIf="!this.dbSource.IsOrmInstalled">not</span> installed
-        </span>
-        <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
-        <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
-    </div>
-</div>
+            </span>
+            <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
+            <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
+        </div>
+    </md-card-title>
+    <md-card-content>
+
+        <div class="container-fluid" *ngIf="isReady">
+
+            <md-tab-group *ngIf="this.dbSource.IsOrmInstalled" dynamicHeight="true">
+                <md-tab label="Cached routines">
+
+                    <md-card>
+                        <md-card-title>
+                            Cached routines
+                        </md-card-title>
+                        <md-card-content>
+
+                            <div *ngIf="summaryData">
+
+                                <strong>Last updated:</strong> {{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd
+                                MMM yyyy, HH:mm:ss' }} <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
+                                <br />
+
+                                <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} <i class="fa fa-long-arrow-right"></i>
+
+
+                                <template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
+                                    <div *ngFor="let row of summaryData.Orm.Groups, let last = last" style="display:inline-block">
+                                        <span>{{row.Type}}</span><span> ({{row.Count}})</span> {{last? "":", "}}
+                                    </div>
+                                </template>
+
+                            </div>
+                            <p *ngIf="!summaryData">
+                                No routines cached yet.
+                            </p>
+
+                        </md-card-content>
+                        <md-card-actions>
+                            <button md-button (click)="viewCachedMetadata()" href="javascript:void(0)">VIEW METADATA</button>
+                            <button md-button (click)="clearDbSourceCache()" href="javascript:void(0)">CLEAR CACHE</button>
+                        </md-card-actions>
+                    </md-card>
+
+                </md-tab>
+                <md-tab label="Whitelisted IPs">
+
+                    <md-card>
+                        <md-card-title>
+                            <i class="fa fa-tags pr8"></i>Whitelisted source IPs
+                        </md-card-title>
+                        <md-card-content>
+                            <p>
+                                Specify a whitelist of IPs (not host names) that are allowed to access this DB source. Place each entry on a new line. Wildcard
+                                and ranges are supported, e.g. <strong>172.16.*.10-50</strong>
+                            </p>
+                            <p>
+                                <label><input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
+                                <br/>
+                                <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
+                            </p>
+
+                        </md-card-content>
+                        <md-card-actions>
+                            <button (click)="onUpdateWhitelist(whitelistTA)" md-raised-button color="primary">SAVE WHITELIST</button>
+                        </md-card-actions>
+                    </md-card>
+
+
+                </md-tab>
+                <md-tab label="Run-time connections">
+                    <md-card>
+                        <md-card-title>
+                            <i class="fa fa-star pr8"></i>Run-time connections
+                        </md-card-title>
+                        <md-card-content>
+
+                            <p>
+                                Configure one or more connections to use when executing a routine.
+                            </p>
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="width:150px"></th>
+                                        <th style="width:220px">Name</th>
+                                        <th>Source</th>
+                                        <th>Key</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template [ngIf]="execConnectionsList">
+                                        <tr *ngFor="let row of execConnectionsList">
+                                            <td class="anchorColumn">
+                                                <a (click)="onEditExecConnectionClicked(row)">edit</a>
+                                                <a (click)="onDeleteExecConnectionClicked(row)">delete</a>
+                                            </td>
+                                            <td>{{row.Name}}</td>
+                                            <td>
+                                                {{ row.DataSource }}; {{ row.InitialCatalog }}
+
+                                            </td>
+                                            <td>
+                                                {{ row.Guid }}
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    <tr *ngIf="!execConnectionsList || execConnectionsList.length == 0">
+                                        <td colspan="100">No connections configured yet.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </md-card-content>
+                        <md-card-actions>
+                            <button md-raised-button color="primary" (click)="onAddExecConnectionClicked()">ADD CONNECTION</button>
+                        </md-card-actions>
+                    </md-card>
+                </md-tab>
+                <md-tab label="Inclusion/exclusion rules">
+                    <md-card>
+                        <md-card-title> <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (DB level)</md-card-title>
+                        <md-card-content>
+                            <p>
+                                Rules defined on this level are applied to all output files.
+                            </p>
+
+                            <button md-raised-button color="primary" (click)="onManageRulesClicked()">MANAGE RULES</button>
+
+                        </md-card-content>
+                    </md-card>
+                </md-tab>
+                <md-tab label="Plugins">
+                    <md-card>
+                        <md-card-title><i class="fa fa-plug pr8"></i>Plugins</md-card-title>
+                        <md-card-content>
+
+                            <md-list>
+                                <md-list-item *ngFor="let row of pluginList">
+                                    <div md-line style="display: flex;align-items: center;">
+                                        <md-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)"><span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span></md-slide-toggle>
+                                        <span md-line style="margin-left:20px;" class="anchorNest"><a (click)="onPluginInclusionChanged()">up</a><a (click)="onPluginInclusionChanged()">down</a></span>
+                                    </div>
+                                    <p md-line>
+                                        {{row.Description}}<br/>
+                                    </p>
+                                    <hr md-line/>
+                                </md-list-item>
+
+                            </md-list>
+
+                        </md-card-content>
+                        <md-card-actions>
+                            <button md-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">SAVE CHANGES</button>
+                        </md-card-actions>
+
+                    </md-card>
+                </md-tab>
+                <md-tab label="Output files">
+
+
+                    <md-card>
+                        <md-card-title>
+                            <i class="fa fa-code pr8"></i>Output files
+                        </md-card-title>
+                        <md-card-content>
+
+
+
+                            <table class="table table-striped" *ngIf="outputFileList">
+                                <thead>
+                                    <tr>
+                                        <th style="width:150px"></th>
+                                        <th style="width:220px">Name</th>
+                                        <th></th>
+                                        <th>Output URLs</th>
+                                        <th>Key</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of outputFileList">
+                                        <td class="anchorColumn">
+                                            <a (click)="onEditOutputFile(row)">edit</a>
+                                            <a (click)="onDeleteOutputFile(row)">delete</a>
+                                        </td>
+                                        <td>{{row.Filename}}</td>
+                                        <td><a (click)="onJsFileManageRulesClicked(row)" href="javascript:void(0)">manage rules</a></td>
+                                        <td>
+
+                                            <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br
+                                            /> http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
+                                        </td>
+                                        <td>
+                                            {{row.Guid}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </md-card-content>
+                        <md-card-actions>
+                            <button md-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
+                        </md-card-actions>
+                    </md-card>
+
+                </md-tab>
+            </md-tab-group>
+
+            <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
+                ORM sprocs are not installed yet. Click <strong>initialize</strong> to start the installation procedure.
+            </div>
+
+            <button md-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
+
+
+
+
+        </div>
+
+
+    </md-card-content>
+
+    <md-card-footer>
+        <md-progress-bar *ngIf="!isReady" mode="indeterminate"></md-progress-bar>
+    </md-card-footer>
+</md-card>
 
 <div *ngIf="!isReady">
     Loading datasource details, please wait...
-</div>
-
-<div class="container-fluid" *ngIf="isReady">
-
-
-    <md-tab-group *ngIf="this.dbSource.IsOrmInstalled" dynamicHeight="true">
-        <md-tab label="Cached routines">
-
-            <md-card>
-                <md-card-title>
-                    Cached routines
-                </md-card-title>
-                <md-card-content>
-
-                    <div *ngIf="summaryData">
-
-                        <strong>Last updated:</strong> {{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy,
-                        HH:mm:ss' }} <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
-                        <br />
-
-                        <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} <i class="fa fa-long-arrow-right"></i>
-
-
-                        <template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
-                            <div *ngFor="let row of summaryData.Orm.Groups, let last = last" style="display:inline-block">
-                                <span>{{row.Type}}</span><span> ({{row.Count}})</span> {{last? "":", "}}
-                            </div>
-                        </template>
-
-                    </div>
-                    <p *ngIf="!summaryData">
-                        No routines cached yet.
-                    </p>
-
-                </md-card-content>
-                <md-card-actions>
-                        <button md-button (click)="viewCachedMetadata()" href="javascript:void(0)">VIEW METADATA</button>
-                        <button md-button (click)="clearDbSourceCache()" href="javascript:void(0)">CLEAR CACHE</button>
-                </md-card-actions>
-            </md-card>
-
-        </md-tab>
-        <md-tab label="Whitelisted IPs">
-
-            <md-card>
-                <md-card-title>
-                    <i class="fa fa-tags pr8"></i>Whitelisted source IPs
-                </md-card-title>
-                <md-card-content>
-                    <p>
-                        Specify a whitelist of IPs (not host names) that are allowed to access this DB source. Place each entry on a new line. Wildcard
-                        and ranges are supported, e.g. <strong>172.16.*.10-50</strong>
-                    </p>
-                    <p>
-                        <label><input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
-                        <br/>
-                        <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
-                    </p>
-
-                </md-card-content>
-                <md-card-actions>
-                    <button (click)="onUpdateWhitelist(whitelistTA)" md-raised-button color="primary">SAVE WHITELIST</button>
-                </md-card-actions>
-            </md-card>
-
-
-        </md-tab>
-        <md-tab label="Run-time connections">
-            <md-card>
-                <md-card-title>
-                    <i class="fa fa-star pr8"></i>Run-time connections
-                </md-card-title>
-                <md-card-content>
-
-                    <p>
-                        Configure one or more connections to use when executing a routine.
-                    </p>
-
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th style="width:150px"></th>
-                                <th style="width:220px">Name</th>
-                                <th>Source</th>
-                                <th>Key</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template [ngIf]="execConnectionsList">
-                                <tr *ngFor="let row of execConnectionsList">
-                                    <td class="anchorColumn">
-                                        <a (click)="onEditExecConnectionClicked(row)">edit</a>
-                                        <a (click)="onDeleteExecConnectionClicked(row)">delete</a>
-                                    </td>
-                                    <td>{{row.Name}}</td>
-                                    <td>
-                                        {{ row.DataSource }}; {{ row.InitialCatalog }}
-
-                                    </td>
-                                    <td>
-                                        {{ row.Guid }}
-                                    </td>
-                                </tr>
-                            </template>
-                            <tr *ngIf="!execConnectionsList || execConnectionsList.length == 0">
-                                <td colspan="100">No connections configured yet.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </md-card-content>
-                <md-card-actions>
-                    <button md-raised-button color="primary" (click)="onAddExecConnectionClicked()">ADD CONNECTION</button>
-                </md-card-actions>
-            </md-card>
-        </md-tab>
-        <md-tab label="Plugins">
-            <md-card>
-                <md-card-title><i class="fa fa-plug pr8"></i>Plugins</md-card-title>
-                <md-card-content>
-
-                    <md-list>
-                        <md-list-item *ngFor="let row of pluginList">
-                            <div md-line style="display: flex;align-items: center;">
-                                <md-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)"><span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span></md-slide-toggle>
-                                <span md-line style="margin-left:20px;" class="anchorNest"><a (click)="onPluginInclusionChanged()">up</a><a (click)="onPluginInclusionChanged()">down</a></span>
-                            </div>
-                            <p md-line>
-                                {{row.Description}}<br/>
-                            </p>
-                            <hr md-line/>
-                        </md-list-item>
-
-                    </md-list>
-
-                </md-card-content>
-                <md-card-actions>
-                    <button md-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">SAVE CHANGES</button>
-                </md-card-actions>
-
-            </md-card>
-
-
-
-        </md-tab>
-    </md-tab-group>
-
-    <br/><br/><br/><br/>
-
-    <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
-        ORM sprocs are not installed yet. Click <strong>initialize</strong> to start the installation procedure.
-    </div>
-    <button *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" class="btn btn-success" style="width:100px;" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
-
-
-
-    <div *ngIf="this.dbSource.IsOrmInstalled">
-
-
-        <div class="panel panel-info">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (DB level)
-                </h3>
-            </div>
-            <div class="panel-body">
-
-
-                <button md-raised-button (click)="onManageRulesClicked()">MANAGE RULES</button>
-
-            </div>
-        </div>
-
-        <md-card>
-            <md-card-title>
-                <i class="fa fa-code pr8"></i>Output files
-            </md-card-title>
-            <md-card-content>
-
-
-
-                <table class="table table-striped" *ngIf="outputFileList">
-                    <thead>
-                        <tr>
-                            <th style="width:150px"></th>
-                            <th style="width:220px">Name</th>
-                            <th></th>
-                            <th>Output URLs</th>
-                            <th>Key</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let row of outputFileList">
-                            <td class="anchorColumn">
-                                <a (click)="onEditOutputFile(row)">edit</a>
-                                <a (click)="onDeleteOutputFile(row)">delete</a>
-                            </td>
-                            <td>{{row.Filename}}</td>
-                            <td><a (click)="onJsFileManageRulesClicked(row)" href="javascript:void(0)">manage rules</a></td>
-                            <td>
-
-                                <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br
-                                /> http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
-                            </td>
-                            <td>
-                                {{row.Guid}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </md-card-content>
-            <md-card-actions>
-                <button md-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
-            </md-card-actions>
-        </md-card>
-
-
-
-
-
-    </div>
-
-
 </div>
