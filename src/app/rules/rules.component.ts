@@ -3,7 +3,7 @@
 import * as L2 from './../L2'
 import {ProjectService} from './../projects.service'
 
-import {DefaultRuleMode} from './../projects/managedbsource.component'
+import {DefaultRuleMode} from './../projects/dbsource.component'
 
 enum RoutineIncludeExcludeInstructionSource {
     Unknown = 0,

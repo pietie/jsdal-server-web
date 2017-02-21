@@ -9,7 +9,7 @@
     <div class="page-header"><h4>jsDAL Projects</h4></div>
 
 
-    <button (click)="onCreateNewProjectClicked()" style="width:140px;" md-raised-button color="primary">Create new project</button>
+    <button (click)="onCreateNewProjectClicked()" md-raised-button color="primary">CREATE NEW PROJECT</button>
 
 
 
@@ -25,7 +25,7 @@
         <tbody>
             <tr *ngFor="let row of projectList" [class.success]="selectedProject == row">
                 <td class="anchorColumn">
-                    <a (click)="projectService.currentProject = row; componentState = 'childRouteActive';" [routerLink]="['./' + row.Name]">manage</a>
+                    <a (click)="componentState = 'childRouteActive';" [routerLink]="['./' + row.Name]">manage</a>
                     <a (click)="onEditProject(row)">edit</a>
                     <a (click)="onDeleteProject(row)">delete</a>
                 </td>

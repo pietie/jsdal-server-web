@@ -1,44 +1,44 @@
 ﻿import { Component, trigger, state, style, transition, animate } from '@angular/core'
 import { Location } from '@angular/common'
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 
-import {ProjectService} from '../projects.service'
+import { ProjectService } from '../projects.service'
 import * as L2 from '../L2'
 
-@Component({
-    template: `
-    <router-outlet></router-outlet>
-  `
-})
-export class ProjectsContainer { }
+// @Component({
+//     template: `
+//     <router-outlet></router-outlet>
+//   `
+// })
+// export class ProjectsContainer { }
 
 @Component({
     providers: [ProjectService],
-    templateUrl: './projects.component.html',
+    templateUrl: './project-list.component.html',
     animations: [
         trigger('componentState', [
             state('void', style({ opacity: 1, transform: 'translateX(-100%)' })),
-            state('enterComponent', style({ opacity: 1, transform: 'translateX(0) scale(1)', display:"block" })),
-            state('childRouteActive', style({ opacity: 1.0, transform: 'scale(1)',display2:"none" })),
+            state('enterComponent', style({ opacity: 1, transform: 'translateX(0) scale(1)', display: "block" })),
+            state('childRouteActive', style({ opacity: 1.0, transform: 'scale(1)', display2: "none" })),
             state('exitComponent', style({ opacity: 0.5, transform: 'translateX(-100%)' })),
             transition('* => enterComponent', animate('300ms ease-in')),
             transition('enterComponent => childRouteActive', animate('500ms ease-in')),
             transition('enterComponent => exitComponent', animate('150ms ease-in'))
-                        
+
         ]),
 
 
 
     ],
 })
-export class ProjectsComponent {
+export class ProjectListComponent {
     private componentState = "enterComponent";
 
 
     private projectList: any;
     private selectedProject: any;
-   
-    constructor(private route: ActivatedRoute, private location: Location, private projectService: ProjectService) {
+
+    constructor(private route: ActivatedRoute, private router: Router, private location: Location) {
         this.refresh();
 
         this.route.params.subscribe(params => {
@@ -70,9 +70,9 @@ export class ProjectsComponent {
                 }
             }
                 , {
-                    label: 'Cancel',
-                    action: function (dialogItself) { dialogItself.close(); }
-                }]
+                label: 'Cancel',
+                action: function (dialogItself) { dialogItself.close(); }
+            }]
 
         });
     }
@@ -93,16 +93,16 @@ export class ProjectsComponent {
                 cssClass: 'btn-primary',
                 action: (dialogItself) => {
                     this.createNewProject($content.find("#newProjectName").val()).then((txt) => {
-                        if (txt == null || txt =="null") {
+                        if (txt == null || txt == "null") {
                             dialogItself.close();
                         }
                     });
                 }
             }
                 , {
-                    label: 'Cancel',
-                    action: function (dialogItself) { dialogItself.close(); }
-                }]
+                label: 'Cancel',
+                action: function (dialogItself) { dialogItself.close(); }
+            }]
 
         });
     }
@@ -120,9 +120,9 @@ export class ProjectsComponent {
                 }
             }
                 , {
-                    label: 'Cancel',
-                    action: function (dialogItself) { dialogItself.close(); }
-                }]
+                label: 'Cancel',
+                action: function (dialogItself) { dialogItself.close(); }
+            }]
 
         });
     }
@@ -155,12 +155,12 @@ export class ProjectsComponent {
 
     refresh() {
 
-        L2.fetchJson("/api/project").then((json:any) => {
+        L2.fetchJson("/api/project").then((json: any) => {
             this.projectList = json.Data;
         });
 
     }
-     
+
 
 
 }

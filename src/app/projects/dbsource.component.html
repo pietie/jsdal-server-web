@@ -1,14 +1,14 @@
 ﻿<div class="page-header">
     <h4 style="display:inline-block">
-        <i class="fa fa-database pr8"></i>Datasource: {{ dataSourceKey }}
+        <i class="fa fa-database pr8"></i>Datasource: {{ this.dbSource.Name }}
     </h4>
     <div style="display:inline-block;margin-left:30px;">
-        <span class="ormLabel" [class.good]="isOrmInstalled" [class.bad]="!isOrmInstalled">
-            <i class="fa " [class.fa-check-circle-o]="isOrmInstalled" [class.fa-times-circle-o]="!isOrmInstalled"></i>
-            ORM <span *ngIf="!isOrmInstalled">not</span> installed
+        <span class="ormLabel" [class.good]="this.dbSource.IsOrmInstalled" [class.bad]="!this.dbSource.IsOrmInstalled">
+            <i class="fa " [class.fa-check-circle-o]="this.dbSource.IsOrmInstalled" [class.fa-times-circle-o]="!this.dbSource.IsOrmInstalled"></i>
+            ORM <span *ngIf="!this.dbSource.IsOrmInstalled">not</span> installed
         </span>
-        <a href="javascript:void(0)" *ngIf="isOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
-        <a href="javascript:void(0)" *ngIf="isOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
+        <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
+        <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
 <div class="container-fluid" *ngIf="isReady">
 
 
-    <md-tab-group *ngIf="isOrmInstalled" dynamicHeight="true">
+    <md-tab-group *ngIf="this.dbSource.IsOrmInstalled" dynamicHeight="true">
         <md-tab label="Cached routines">
 
             <md-card>
@@ -75,7 +75,7 @@
 
                 </md-card-content>
                 <md-card-actions>
-                    <button (click)="onUpdateWhitelist(whitelistTA)" md-raised-button color="primary">Save whitelist</button>
+                    <button (click)="onUpdateWhitelist(whitelistTA)" md-raised-button color="primary">SAVE WHITELIST</button>
                 </md-card-actions>
             </md-card>
 
@@ -125,7 +125,7 @@
                     </table>
                 </md-card-content>
                 <md-card-actions>
-                    <button md-raised-button color="primary" (click)="onAddExecConnectionClicked()">Add connection</button>
+                    <button md-raised-button color="primary" (click)="onAddExecConnectionClicked()">ADD CONNECTION</button>
                 </md-card-actions>
             </md-card>
         </md-tab>
@@ -150,7 +150,7 @@
 
                 </md-card-content>
                 <md-card-actions>
-                    <button md-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">Save changes</button>
+                    <button md-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">SAVE CHANGES</button>
                 </md-card-actions>
 
             </md-card>
@@ -162,14 +162,14 @@
 
     <br/><br/><br/><br/>
 
-    <div *ngIf="!isOrmInstalled" class="alert alert-warning" role="alert">
+    <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
         ORM sprocs are not installed yet. Click <strong>initialize</strong> to start the installation procedure.
     </div>
-    <button *ngIf="!isOrmInstalled" [class.disabled]="isInstallingOrm" class="btn btn-success" style="width:100px;" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
+    <button *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" class="btn btn-success" style="width:100px;" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
 
 
 
-    <div *ngIf="isOrmInstalled">
+    <div *ngIf="this.dbSource.IsOrmInstalled">
 
 
         <div class="panel panel-info">
@@ -181,7 +181,7 @@
             <div class="panel-body">
 
 
-                <button class="btn btn-primary" (click)="onManageRulesClicked()">Manage rules</button>
+                <button md-raised-button (click)="onManageRulesClicked()">MANAGE RULES</button>
 
             </div>
         </div>
@@ -226,7 +226,7 @@
 
             </md-card-content>
             <md-card-actions>
-                <button md-raised-button color="primary" (click)="onAddNewOutputFileClicked()">Add new output file</button>
+                <button md-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
             </md-card-actions>
         </md-card>
 

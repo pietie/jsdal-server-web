@@ -154,7 +154,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
 
                 let targetUrl: string = "/home";
 
-                if (params['ref']) targetUrl = params['ref'];
+                if (this.accountService.redirectUrl) targetUrl = this.accountService.redirectUrl;
 
                 this.router.navigateByUrl(targetUrl);
 

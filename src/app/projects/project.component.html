@@ -4,7 +4,7 @@
         <h2><i class="fa fa-cogs pr8"></i>Project: {{projectName}}</h2>
     </div>
 
-    <button (click)="onAddNewDatabase()" style="width:220px;" md-raised-button color="primary">Add database source</button>
+    <button (click)="onAddNewDatabase()" style="width:220px;" md-raised-button color="primary">ADD DATABASE SOURCE</button>
     <br />
     <table class="table table-striped" *ngIf="dbList">
         <thead>
@@ -19,8 +19,7 @@
         <tbody>
             <tr *ngFor="let row of dbList">
                 <td class="anchorColumn">
-                    <a (click)="projectService.currentDatabaseSource = row" [routerLink]="['./' + row.Name]">manage</a>
-                    <!--<a (click)="projectService.currentDatabaseSource = row" [routerLink]="['./manage', { name: row.Name }]">manage</a>-->
+                    <a [routerLink]="['./' + row.Name]">manage</a>
                     <a (click)="onEditDatabaseSource(row)">edit</a>
                     <a (click)="onDeleteDatabase(row)">delete</a>
                 </td>

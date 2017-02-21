@@ -1,16 +1,17 @@
-﻿import { Component, Injector, ViewChild, ApplicationRef, EventEmitter, Output, Host, ComponentFactoryResolver, ViewContainerRef, Input,
-    trigger,state, style,transition, animate } from '@angular/core'
+﻿import {
+    Component, Injector, ViewChild, ApplicationRef, EventEmitter, Output, Host, ComponentFactoryResolver, ViewContainerRef, Input,
+    trigger, state, style, transition, animate
+} from '@angular/core'
+
 import { ActivatedRoute, Router } from '@angular/router';
-import { Route, CanDeactivate  } from '@angular/router'
-import { Observable }    from 'rxjs/Observable';
+import { Route, CanDeactivate } from '@angular/router'
+import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/toPromise';
 
 
-
-
-import { ProjectService } from '../projects.service'
 import * as L2 from '../L2'
 
 @Component({
@@ -99,14 +100,14 @@ import * as L2 from '../L2'
         </div>
 </div>
       `,
-        styles: [`
+    styles: [`
 
 a.a { cursor: pointer }
 
 
 `
 
-        ]
+    ]
 })
 export class AddNewDatabaseSourceDialog {
     @Output() ready: EventEmitter<any> = new EventEmitter();
@@ -122,8 +123,8 @@ export class AddNewDatabaseSourceDialog {
     public datasource: string;
     public username: string;
     public password: string;
-    public database: string = null; 
-    public jsNamespace: string = null; 
+    public database: string = null;
+    public jsNamespace: string = null;
     public defaulRuleMode: string = "-1";
 
     private authenticationType: any = 100/*Windows*/;
@@ -133,7 +134,7 @@ export class AddNewDatabaseSourceDialog {
 
     constructor() {
     }
-    
+
     public show() {
 
         if (this.dbSource) {
@@ -151,7 +152,8 @@ export class AddNewDatabaseSourceDialog {
             $(this.dbCbo.nativeElement).select2({ data: data, tags: true });
         }
 
-        $(this.dlg.nativeElement).find("select").first().select2(<any>{ tags: true,
+        $(this.dlg.nativeElement).find("select").first().select2(<any>{
+            tags: true,
             createTag: function (params) {
                 return {
                     id: params.term,
@@ -162,7 +164,7 @@ export class AddNewDatabaseSourceDialog {
         });
 
         $(this.dlg.nativeElement).modal();//.validator("validate");
-     
+
     }
 
     public close() {
@@ -186,11 +188,11 @@ export class AddNewDatabaseSourceDialog {
             pass = this.password;
         }
 
-        L2.fetchJson(`/api/util/listdbs?datasource=${this.datasource}&u=${L2.NullToEmpty(user)}&p=${L2.NullToEmpty(pass)}`).then((list:any) => {
+        L2.fetchJson(`/api/util/listdbs?datasource=${this.datasource}&u=${L2.NullToEmpty(user)}&p=${L2.NullToEmpty(pass)}`).then((list: any) => {
             this.isLoadingDbList = false;
-           
+
             var data = list.Data.map((s) => { return { id: s, text: s } });
-            
+
             $(this.dbCbo.nativeElement).select2({ data: data, tags: true }).select2("open");
         }).catch(() => {
             this.isLoadingDbList = false;
@@ -203,8 +205,8 @@ export class AddNewDatabaseSourceDialog {
         var $dlg = $(this.dlg.nativeElement);
 
         //$dlg.validator("validate");
-        
-       // if ($dlg.find(".has-error").length > 0 || this.defaulRuleMode == "-1") return false;
+
+        // if ($dlg.find(".has-error").length > 0 || this.defaulRuleMode == "-1") return false;
 
         this.database = this.dbCbo.nativeElement.value;
 
@@ -224,7 +226,7 @@ export class AddNewDatabaseSourceDialog {
                 L2.Success("New database source added successfully");
                 this.onNewDbAdded.emit(r);
                 this.close();
-        });
+            });
     }
 
     private onTestConnectionClicked() {
@@ -249,12 +251,12 @@ export class AddNewDatabaseSourceDialog {
         return this.isTestingDbDetails;
     }
 
-} 
+}
 
 
 @Component({
     selector: 'ManageProject',
-    templateUrl: './manageproject.component.html',
+    templateUrl: './project.component.html',
     animations: [
         trigger('componentState', [
             state('void', style({ opacity: 0, transform: 'translateX(-100%)' })),
@@ -275,20 +277,21 @@ export class AddNewDatabaseSourceDialog {
     ],
 })
 
-export class ManageProjectView {
+export class ProjectComponent {
     private projectName: string;
     private dbList: any;
 
+    public get name(): string { return this.projectName; }
+
     private componentState = "enterComponent";
 
-   
+
     constructor(private route: ActivatedRoute
         , private router: Router
         , private componentFactoryResolver: ComponentFactoryResolver
         , private injector: Injector
         , private appRef: ApplicationRef
         , private viewContainerRef: ViewContainerRef
-        , private projectService: ProjectService
     ) {
 
         this.route.params.subscribe(params => {
@@ -297,8 +300,8 @@ export class ManageProjectView {
             this.refreshDbList();
         });
 
-         
-        
+
+
     }
 
     ngOnInit() {
@@ -308,10 +311,10 @@ export class ManageProjectView {
 
     canDeactivate(): Observable<boolean> | boolean {
         //window.RR = Rx.Observable.of(true);
-        
+
         this.componentState = "exitComponent";
         return Observable.of(true).delay(200); // TODO: Hook into animation complete event
-        
+
         //// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
         //if (!this.crisis || this.crisis.name === this.editName) {
         //    return true;
@@ -322,11 +325,25 @@ export class ManageProjectView {
         //let o = Observable.fromPromise(p);
         //return o;
     }
-    
+
+
+
     refreshDbList() {
-        L2.fetchJson(`/api/database?project=${this.projectName}`).then((resp:any) => {
+        L2.fetchJson(`/api/database?project=${this.projectName}`).then((resp: any) => {
             this.dbList = resp.Data;
         });
+    }
+
+    public getDbSource(name: string): {
+        DataSource?: string;
+        DefaultRuleMode?: any;
+        InitialCatalog?: string;
+        IsOrmInstalled?: boolean;
+        JsNamespace?: string;
+        Name?: string;
+    } {
+        if (!this.dbList) return null;
+        return this.dbList.find(db => db.Name.toLowerCase() == name.toLowerCase());
     }
 
     private formatDbCboItem(item) {
@@ -377,14 +394,14 @@ export class ManageProjectView {
                 }
             }
                 , {
-                    label: 'Cancel',
-                    action: function (dialogItself) { dialogItself.close(); }
-                }]
+                label: 'Cancel',
+                action: function (dialogItself) { dialogItself.close(); }
+            }]
 
         });
     }
 
-    private deleteDatabaseSource(name:string) {
+    private deleteDatabaseSource(name: string) {
         return L2.deleteJson(`/api/database/${name}?projectName=${this.projectName}`, { body: JSON.stringify(name) }).then(() => {
             L2.Success(`Database source <strong>${name}</strong> successfully deleted.`);
             this.router.navigate(["/projects/manage", { name: this.projectName }]);

@@ -14,7 +14,8 @@ export class AccountService {
     private jwt: JWT = null;
 
     private loggedInSubject: Subject<boolean>;
-
+    
+    public redirectUrl: string;
 
     constructor() {
         this.loggedInSubject = new Subject<boolean>();

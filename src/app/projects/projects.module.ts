@@ -2,10 +2,10 @@
 import { NgModule }         from '@angular/core';
 import { SharedModule }       from '../shared/shared.module';
 
-import { ProjectsContainer, ProjectsComponent } from './projects.component'
+import { ProjectListComponent } from './project-list.component'
 import { projectsRouting } from './projects.routes'
-import { ManageProjectView, AddNewDatabaseSourceDialog  } from './manageproject.component'
-import { ManageDbSource } from './managedbsource.component'
+import { ProjectComponent, AddNewDatabaseSourceDialog  } from './project.component'
+import { DbSourceComponent } from './dbsource.component'
 import { DbConnectionDialog  } from './dbconnection.dialog'
 
 import { L2Dialog } from '../controls/dialog.component'
@@ -21,9 +21,9 @@ import { TablesDialog } from '../metadatabrowser/tables.dialog'
 
 @NgModule({
     declarations: [
-        ProjectsContainer, ProjectsComponent,
-        ManageProjectView,
-        ManageDbSource,
+        ProjectListComponent,
+        ProjectComponent,
+        DbSourceComponent,
         DbConnectionDialog, AddNewDatabaseSourceDialog, RuleManagement, MetadataBrowserDialog, L2Dialog
         , ParametersDialog, ResultsErrorDialog, TablesDialog
     ],
