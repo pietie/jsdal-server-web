@@ -12,14 +12,18 @@ interface JQuery {
 }
 
 declare var humanizeDuration: (...any) => any;
-
+ 
 interface JWT {
-    access_token?: string;
+    token: string;
+    expiresEpoch: number;
+//    expiresByDate?: Date;
+    
+    /*access_token?: string;
     expires_in?: number; // seconds
     token_type?: string;
     refresh_token: string;
 
-    expiresBy?: Date;
+    expiresBy?: Date;*/
 }
 
 declare var require: any;

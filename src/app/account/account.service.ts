@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class AccountService {
 
     private loggedIn: boolean = false;
-    private jwt: string = null;
+    private jwt: JWT = null;
 
     private loggedInSubject: Subject<boolean>;
     
@@ -38,11 +38,11 @@ export class AccountService {
 
         return new Promise<boolean>((resolve, reject) => {
 
-            var jwt = L2.BrowserStore.session<string>("jwt");
-            var now = new Date();
+            let jwt = L2.BrowserStore.session<JWT>("jwt");
+            let now = new Date();
 
             // check for existing, valid JWT 
-            if (!jwt)/* || !jwt.access_token || jwt.expiresBy < now)*/ {
+            if (!jwt || !jwt.token || jwt.expiresEpoch < now.getTime()) {
                 resolve(false);
                 return;
             }
@@ -50,7 +50,6 @@ export class AccountService {
             this.jwt = jwt;
             this.loggedIn = true;
             this.loggedInSubject.next(true);
-            //?this.loggedInSubject.complete();
 
             resolve(true);
         });
@@ -146,17 +145,11 @@ export class AccountService {
                 if (r.success) {
 
                     return r.payloadPromise.then(json => {
-                        this.jwt = json.token;
+                        this.jwt = json;
+                        
+                        //this.jwt.expiresByDate =new Date(json.expiresEpoch);
 
-                        console.log("json", this.jwt);
-                         
-                        /*var expiresBy = new Date();
-
-                        expiresBy.setSeconds(expiresBy.getSeconds() + this.jwt.expires_in);
-
-                        this.jwt.expiresBy = expiresBy;*/
-
-                        L2.BrowserStore.session<string>("jwt", this.jwt);
+                        L2.BrowserStore.session<JWT>("jwt", this.jwt);
 
                         return true;
 

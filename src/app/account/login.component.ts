@@ -77,22 +77,16 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
     constructor(private router: Router, private accountService: AccountService, private changeDetectorRef: ChangeDetectorRef) {
         try {
 
-
             // see if we can login with an existing key from localStorage
             this.accountService.loginFromStore().then(isLoggedIn => {
-                console.info("loginFromStore 001");
+                
                 if (isLoggedIn) {
-                    console.info("loginFromStore 002");
-                    //alert("this.accountService.isLoggedIn:" + this.accountService.isLoggedIn);
                     this.goHome();
                     return;
                 }
-                console.info("loginFromStore 003");
+
                 // show login form
                 this.checkingCredentials = false;
-
-
-
 
             }).catch(e => {
                 this.checkingCredentials = false;

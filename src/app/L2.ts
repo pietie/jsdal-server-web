@@ -394,8 +394,7 @@ class ApiResponseEndThenChain {
                 if (!init) init = {};
                 if (!init.headers) init.headers = {};
 
-                //init.headers["Authorization"] = `Bearer ${jwt.access_token}`;
-                init.headers["x-access-token"] = jwt;
+                init.headers["x-access-token"] = jwt.token;
             }
 
             if (!init) init = {};
