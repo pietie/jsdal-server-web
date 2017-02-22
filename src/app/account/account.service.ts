@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class AccountService {
 
     private loggedIn: boolean = false;
-    private jwt: JWT = null;
+    private jwt: string = null;
 
     private loggedInSubject: Subject<boolean>;
     
@@ -25,9 +25,9 @@ export class AccountService {
         return this.loggedIn;
     }
 
-    public get authToken(): string {
-        return this.jwt.access_token;
-    }
+    // public get authToken(): string {
+    //     return this.jwt;
+    // }
 
 
     public get whenLoggedIn(): Subject<boolean> {
@@ -38,11 +38,11 @@ export class AccountService {
 
         return new Promise<boolean>((resolve, reject) => {
 
-            var jwt = L2.BrowserStore.session<JWT>("jwt");
+            var jwt = L2.BrowserStore.session<string>("jwt");
             var now = new Date();
 
             // check for existing, valid JWT 
-            if (!jwt || !jwt.access_token || jwt.expiresBy < now) {
+            if (!jwt)/* || !jwt.access_token || jwt.expiresBy < now)*/ {
                 resolve(false);
                 return;
             }
@@ -86,7 +86,7 @@ export class AccountService {
     }
 
     public updateFromWinAuth(auth: any) {
-
+/*
         if (auth.access_token) {
             console.log("0001");
             this.jwt = auth;
@@ -96,11 +96,12 @@ export class AccountService {
 
             //        this.jwt.expiresBy = expiresBy;
 
-            L2.BrowserStore.session<JWT>("jwt", this.jwt);
+            L2.BrowserStore.session<string>("jwt", this.jwt);
             console.log("0003");
             this.loggedIn = true;
             this.loggedInSubject.next(true);
         }
+        */
     }
 
     public login(options: { useWindowsAuth?: boolean, user?: string, pass?: string }): Promise<boolean> {
@@ -110,7 +111,7 @@ export class AccountService {
             window.location.assign(this.getTokenUrl());
         }
 
-        var url = 'api/auth';
+        var url = 'api/authenticate';
         // PL: Temp hack when we are running with ng serve
         if (window.location.port == '4200') url = 'http://localhost:9086/' + url;
 
@@ -145,14 +146,17 @@ export class AccountService {
                 if (r.success) {
 
                     return r.payloadPromise.then(json => {
-                        this.jwt = json;
-                        var expiresBy = new Date();
+                        this.jwt = json.token;
+
+                        console.log("json", this.jwt);
+                         
+                        /*var expiresBy = new Date();
 
                         expiresBy.setSeconds(expiresBy.getSeconds() + this.jwt.expires_in);
 
-                        this.jwt.expiresBy = expiresBy;
+                        this.jwt.expiresBy = expiresBy;*/
 
-                        L2.BrowserStore.session<JWT>("jwt", this.jwt);
+                        L2.BrowserStore.session<string>("jwt", this.jwt);
 
                         return true;
 
