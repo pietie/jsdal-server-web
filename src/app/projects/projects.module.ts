@@ -8,7 +8,6 @@ import { ProjectListComponent } from './project-list.component'
 import { projectsRouting } from './projects.routes'
 import { ProjectComponent, AddNewDatabaseSourceDialog  } from './project.component'
 import { DbSourceComponent, DbSourceRouteResolver } from './dbsource.component'
-import { DbConnectionDialog  } from './dbconnection.dialog'
 
 import { L2Dialog } from '../controls/dialog.component'
 
@@ -20,18 +19,25 @@ import { ParametersDialog } from '../metadatabrowser/parameters.dialog'
 import { ResultsErrorDialog } from '../metadatabrowser/resulterror.dialog'
 import { TablesDialog } from '../metadatabrowser/tables.dialog'
 
+import { DbConnectionDialogV2 } from './dialogs/dbconnection.dialog'
+
 
 @NgModule({
     declarations: [
         ProjectListComponent,
         ProjectComponent,
         DbSourceComponent,
-        DbConnectionDialog, AddNewDatabaseSourceDialog, RuleManagement, MetadataBrowserDialog, L2Dialog
+        
+        DbConnectionDialogV2,
+
+         AddNewDatabaseSourceDialog, RuleManagement, MetadataBrowserDialog, L2Dialog
         , ParametersDialog, ResultsErrorDialog, TablesDialog
     ],
     imports: [SharedModule, projectsRouting],
     providers: [ ProjectService, DbSourceRouteResolver ],
-    entryComponents: [DbConnectionDialog, AddNewDatabaseSourceDialog, RuleManagement, MetadataBrowserDialog, L2Dialog, ParametersDialog, ResultsErrorDialog, TablesDialog],
+    entryComponents: [
+        DbConnectionDialogV2,
+        AddNewDatabaseSourceDialog, RuleManagement, MetadataBrowserDialog, L2Dialog, ParametersDialog, ResultsErrorDialog, TablesDialog],
 
 
 })

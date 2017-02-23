@@ -100,7 +100,7 @@
                                     <template [ngIf]="execConnectionsList">
                                         <tr *ngFor="let row of execConnectionsList">
                                             <td class="anchorColumn">
-                                                <a (click)="onEditExecConnectionClicked(row)">edit</a>
+                                                <a (click)="onAddEditExecConnectionClicked(row)">edit</a>
                                                 <a (click)="onDeleteExecConnectionClicked(row)">delete</a>
                                             </td>
                                             <td>{{row.Name}}</td>
@@ -120,7 +120,7 @@
                             </table>
                         </md-card-content>
                         <md-card-actions>
-                            <button md-raised-button color="primary" (click)="onAddExecConnectionClicked()">ADD CONNECTION</button>
+                            <button md-raised-button color="primary" (click)="onAddEditExecConnectionClicked(null)">ADD CONNECTION</button>
                         </md-card-actions>
                     </md-card>
                 </md-tab>

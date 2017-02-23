@@ -1,5 +1,6 @@
 ﻿import { Component, ApplicationRef, Directive, Input, ComponentFactoryResolver, ViewContainerRef } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import * as L2 from '../L2'
 
@@ -7,8 +8,9 @@ import { ProjectService, IDBSource } from './projects.service'
 
 import { ProjectComponent } from './project.component'
 import { RuleManagement } from '../rules/rules.component'
-import { DbConnectionDialog } from './dbconnection.dialog'
 import { MetadataBrowserDialog } from '../metadatabrowser/metadatabrowser.dialog'
+
+import { DbConnectionDialogV2, AuthenticationType } from './dialogs/dbconnection.dialog';
 
 export enum DefaultRuleMode {
     Unknown = -1,
@@ -54,7 +56,6 @@ export class DbSourceComponent {
     private isReady: Boolean = false;
     private projectName: string;
 
-    public test: number = 123;
     private dbSource: IDBSource = {};
 
 
@@ -79,7 +80,9 @@ export class DbSourceComponent {
         , private project: ProjectComponent
         , private componentFactoryResolver: ComponentFactoryResolver
         , private appRef: ApplicationRef
-        , private viewContainerRef: ViewContainerRef) {
+        , private viewContainerRef: ViewContainerRef
+        , private dialog: MdDialog
+    ) {
         try {
 
             // listen and wait for the data coming in from the Resolver
@@ -141,7 +144,7 @@ export class DbSourceComponent {
     }
 
     private refreshDbConnectionList() {
-        L2.fetchJson(`/api/database/dbconnections?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
+        L2.fetchJson(`/api/dbconnections?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
             this.execConnectionsList = (<any>r).Data;
         });
     }
@@ -340,80 +343,57 @@ export class DbSourceComponent {
     }
 
 
-    private onAddExecConnectionClicked() {
+    private onAddEditExecConnectionClicked(row) {
         try {
 
-            var factory = this.componentFactoryResolver.resolveComponentFactory(DbConnectionDialog);
+            let dialogRef = this.dialog.open(DbConnectionDialogV2);
 
-            var ref = this.viewContainerRef.createComponent(factory);
+            if (row) {
+                dialogRef.componentInstance.dbConnection = {
+                    logicalName: row.Name,
+                    dataSource: row.DataSource,
+                    database: row.InitialCatalog,
+                    username: row.UserID,
+                    password: null,
+                    guid: row.Guid
+                };
+            }
 
-            ref.instance.ready.subscribe(() => {
 
-                try {
-                    ref.instance.projectName = this.projectName;
-                    ref.instance.dbSourceName = this.dbSource.Name;
-                    ref.instance.rowData = null;
+            dialogRef.afterClosed().subscribe(r => {
+                if (r) {
 
+                    try {
+                        let obj = dialogRef.componentInstance.dbConnection;
 
-                    ref.instance.show();
+                        if (!row) obj.guid = null;
 
-                }
-                catch (e) {
-                    L2.HandleException(e);
+                        if (obj.authType == AuthenticationType.Windows) {
+                            obj.username = obj.password = null;
+                        }
+
+                        L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.NullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.NullToEmpty(obj.username)}&password=${L2.NullToEmpty(obj.password)}`)
+                            .then(r => {
+                                this.refreshDbConnectionList();
+                                L2.Success("New database connection added successfully.");
+                            });
+                    }
+                    catch (e) {
+                        L2.HandleException(e);
+                    }
                 }
             });
-
-            ref.instance.onNewDbAdded.subscribe(() => {
-                this.refreshDbConnectionList();
-                L2.Success("New database connection added successfully.");
-            });
-
-
         }
         catch (e) {
             L2.HandleException(e);
         }
     }
-
-    private onEditExecConnectionClicked(row) {
-        try {
-
-            var factory = this.componentFactoryResolver.resolveComponentFactory(DbConnectionDialog);
-
-            var ref = this.viewContainerRef.createComponent(factory);
-
-            ref.instance.ready.subscribe(() => {
-
-                try {
-                    ref.instance.projectName = this.projectName;
-                    ref.instance.dbSourceName = this.dbSource.Name;
-                    ref.instance.rowData = row;
-
-                    ref.instance.show();
-
-                }
-                catch (e) {
-                    L2.HandleException(e);
-                }
-            });
-
-            ref.instance.onNewDbAdded.subscribe(() => {
-                this.refreshDbConnectionList();
-                L2.Success("Database updated successfully.");
-            });
-
-
-        }
-        catch (e) {
-            L2.HandleException(e);
-        }
-    }
-
+ 
     private onDeleteExecConnectionClicked(row) {
 
         L2.Confirm(`Are you sure you wish to delete the execution connection <strong>${row.Name}</strong>`, "Confirm action").then(r => {
 
-            L2.deleteJson(`/api/database/dbconnection?dbConnectionGuid=${row.Guid}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then(r => {
+            L2.deleteJson(`/api/dbconnection?dbConnectionGuid=${row.Guid}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then(r => {
                 L2.Success(`Database connection <strong>${row.Name}</strong> deleted sucessfully`);
                 this.refreshDbConnectionList();
             });
