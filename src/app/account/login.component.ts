@@ -79,7 +79,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
 
             // see if we can login with an existing key from localStorage
             this.accountService.loginFromStore().then(isLoggedIn => {
-                
+
                 if (isLoggedIn) {
                     this.goHome();
                     return;
@@ -90,31 +90,9 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
 
             }).catch(e => {
                 this.checkingCredentials = false;
-                console.error(e);
                 L2.HandleException(e);
             });
-            console.info("loginFromStore 010");
 
-            //return;
-
-            //fetch(`/api2/account/checkNtlm`)
-            //    .then(r => {
-
-            //        if (r.status == 401/*Unauthorised*/) {
-            //            document.write("401 - Unauthorised --> Display manual login?");
-            //            return;
-            //        }
-            //        else if (r.status == 200)
-            //        {
-            //            this.router.navigateByUrl("/home");
-            //            return;
-            //        }
-
-
-            //        console.dir(r);
-            //        console.info("HTTP STATUS CODE: %s", r.status);
-            //        return r;
-            //    });
 
         }
         catch (e) {
@@ -151,7 +129,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
                 let targetUrl: string = "/home";
 
                 if (this.accountService.redirectUrl) targetUrl = this.accountService.redirectUrl;
-console.log("navigating to", targetUrl);
+                
                 this.router.navigateByUrl(targetUrl);
 
                 /**this.router.navigateByUrl(targetUrl).then(r => {

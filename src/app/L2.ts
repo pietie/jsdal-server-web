@@ -191,8 +191,7 @@ class ApiResponseEndThenChain {
             throw ex;
         }
 
-        
-        console.error(arguments);
+       
         // TODO: Improve error here - look for specific type of failures (eg. network related)
         BootstrapDialog.alert(<any>{
             title: "fetch failed",
@@ -207,19 +206,16 @@ class ApiResponseEndThenChain {
             }
         });
 
-        //UnblockUI();
-        //MsgBoxError("fetch call failed:<br/><br/>" + ex.toString() + JSON.stringify(arguments));
+        return ex;
     }
 
-    function checkHttpStatus(response: Response) : Response {
+    function checkHttpStatus(response: Response) : Response | any {
         if (response.status >= 200 && response.status < 300) {
             return response;
         } else {
             let error: Error & { response?: any } = new Error(response.statusText)
             
             error.response = response;
-
-            console.info(response);
 
             BootstrapDialog.alert(<any>{
                 title: "HTTP " + response.status,
@@ -234,7 +230,9 @@ class ApiResponseEndThenChain {
                 }
             });
             
-            throw new ApiResponseEndThenChain();
+            throw error;
+
+            //throw new ApiResponseEndThenChain();
         }
     }
 

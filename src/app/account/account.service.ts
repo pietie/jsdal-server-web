@@ -14,7 +14,7 @@ export class AccountService {
     private jwt: JWT = null;
 
     private loggedInSubject: Subject<boolean>;
-    
+
     public redirectUrl: string;
 
     constructor() {
@@ -47,11 +47,30 @@ export class AccountService {
                 return;
             }
 
-            this.jwt = jwt;
-            this.loggedIn = true;
-            this.loggedInSubject.next(true);
+            // validate token with server
+            L2.fetchJson(`/token/validate?token=${jwt.token}`).then((r: any) => {
+                console.log("VALD?", r);
+                if (!r || !r.valid) {
+                    L2.BrowserStore.removeSessionItem("jwt");
+                    resolve(false);
+                    return;
+                }
+                else {
+                    // token is still valid so we can just login with that
+                    this.jwt = jwt;
+                    this.loggedIn = true;
+                    this.loggedInSubject.next(true);
 
-            resolve(true);
+                    resolve(true);
+                }
+
+            }).catch(() => {
+                L2.BrowserStore.removeSessionItem("jwt");
+                resolve(false);
+                return;
+            });
+
+
         });
 
     }
@@ -85,22 +104,22 @@ export class AccountService {
     }
 
     public updateFromWinAuth(auth: any) {
-/*
-        if (auth.access_token) {
-            console.log("0001");
-            this.jwt = auth;
-            var expiresBy = new Date();
-            console.log("0002");
-            expiresBy.setSeconds(expiresBy.getSeconds() + this.jwt.expires_in);
-
-            //        this.jwt.expiresBy = expiresBy;
-
-            L2.BrowserStore.session<string>("jwt", this.jwt);
-            console.log("0003");
-            this.loggedIn = true;
-            this.loggedInSubject.next(true);
-        }
-        */
+        /*
+                if (auth.access_token) {
+                    console.log("0001");
+                    this.jwt = auth;
+                    var expiresBy = new Date();
+                    console.log("0002");
+                    expiresBy.setSeconds(expiresBy.getSeconds() + this.jwt.expires_in);
+        
+                    //        this.jwt.expiresBy = expiresBy;
+        
+                    L2.BrowserStore.session<string>("jwt", this.jwt);
+                    console.log("0003");
+                    this.loggedIn = true;
+                    this.loggedInSubject.next(true);
+                }
+                */
     }
 
     public login(options: { useWindowsAuth?: boolean, user?: string, pass?: string }): Promise<boolean> {
@@ -146,7 +165,7 @@ export class AccountService {
 
                     return r.payloadPromise.then(json => {
                         this.jwt = json;
-                        
+
                         //this.jwt.expiresByDate =new Date(json.expiresEpoch);
 
                         L2.BrowserStore.session<JWT>("jwt", this.jwt);
