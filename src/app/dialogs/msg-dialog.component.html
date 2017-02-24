@@ -1,0 +1,15 @@
+<h1 md-dialog-title>{{ title }}</h1>
+
+<div md-dialog-content>
+
+    <div class="flex-vertical-center">
+        <md-icon>{{ getIcon() }}</md-icon>&nbsp;&nbsp;<span>{{ msg }}</span>
+    </div>
+
+
+</div>
+<div md-dialog-actions align="end">
+
+    <button type="button" md-button color="primary" (click)="dialogRef.close('OK')">{{getOkayTxt()}}</button>
+    <button *ngIf="type==50" type="button" md-button color="primary" (click)="dialogRef.close('CANCEL')">CANCEL</button>
+</div>

@@ -296,7 +296,7 @@ export class ProjectComponent {
         , private appRef: ApplicationRef
         , private viewContainerRef: ViewContainerRef
     ) {
-console.log("ProjectComponent cons ");
+        console.log("ProjectComponent cons ");
         this.route.params.subscribe(params => {
             this.projectName = params["name"];
             this.componentState = "enterComponent";
@@ -332,9 +332,8 @@ console.log("ProjectComponent cons ");
 
 
     refreshDbList() {
-        this.projectService.getDbSourceList(this.projectName).then(r=>
-        {
-          this.dbList = r; // TODO: bind grid directly to service  
+        this.projectService.getDbSourceList(this.projectName).then(r => {
+            this.dbList = r; // TODO: bind grid directly to service  
         });
     }
 
@@ -373,25 +372,8 @@ console.log("ProjectComponent cons ");
     }
 
     onDeleteDatabase(row) {
-
-        BootstrapDialog.show({
-            title: 'Confirm action',
-            message: `Are you sure you want to delete the database source <strong>${row.Name}</strong>?`,
-            buttons: [{
-                label: 'Delete',
-                cssClass: 'btn-primary',
-                hotkey: 13,
-                action: (dialogItself) => {
-                    this.deleteDatabaseSource(row.Name).then(() => {
-                        dialogItself.close();
-                    });
-                }
-            }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
-
+        L2.Confirm(`Are you sure you want to delete the database source <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
+            if (r) this.deleteDatabaseSource(row.Name);
         });
     }
 

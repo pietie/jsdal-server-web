@@ -106,22 +106,8 @@ export class ProjectListComponent {
     }
 
     onDeleteProject(row) {
-        BootstrapDialog.show({
-            title: 'Confirm action',
-            message: `Are you sure you want to delete the project <strong>${row.Name}</strong>?`,
-            buttons: [{
-                label: 'Delete',
-                cssClass: 'btn-primary',
-                hotkey: 13,
-                action: (dialogItself) => {
-                    this.deleteProject(row.Name).then(() => dialogItself.close());
-                }
-            }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
-
+        L2.Confirm(`Are you sure you want to delete the project <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
+            if (r) this.deleteProject(row.Name);
         });
     }
 

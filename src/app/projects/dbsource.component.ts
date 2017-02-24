@@ -216,22 +216,9 @@ export class DbSourceComponent {
     }
 
     onUninstallOrmClicked() {
-        BootstrapDialog.show({
-            title: 'Confirm action',
-            message: `Are you sure you want to uninstall the ORM from <strong>${this.dbSource.Name}</strong>?`,
-            buttons: [{
-                label: 'Uninstall',
-                cssClass: 'btn-primary',
-                hotkey: 13,
-                action: (dialogItself) => {
-                    this.performOrmUninstall().then(() => dialogItself.close());
-                }
-            }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
 
+        L2.Confirm(`Are you sure you want to uninstall the ORM from <strong>${this.dbSource.Name}</strong>?`, "Confirm action").then(r => {
+            if (r) this.performOrmUninstall();
         });
     }
 
@@ -314,22 +301,8 @@ export class DbSourceComponent {
     }
 
     private onDeleteOutputFile(row) {
-        BootstrapDialog.show({
-            title: 'Confirm action',
-            message: `Are you sure you want to delete the output file <strong>${row.Filename}</strong>?`,
-            buttons: [{
-                label: 'Delete',
-                cssClass: 'btn-primary',
-                hotkey: 13,
-                action: (dialogItself) => {
-                    this.deleteOutputFile(row).then(() => dialogItself.close());
-                }
-            }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
-
+        L2.Confirm(`Are you sure you want to delete the output file <strong>${row.Filename}</strong>?`, "Confirm action").then(r => {
+            if (r) this.deleteOutputFile(row);
         });
     }
 
@@ -388,18 +361,16 @@ export class DbSourceComponent {
             L2.HandleException(e);
         }
     }
- 
+
     private onDeleteExecConnectionClicked(row) {
 
         L2.Confirm(`Are you sure you wish to delete the execution connection <strong>${row.Name}</strong>`, "Confirm action").then(r => {
-
-            L2.deleteJson(`/api/dbconnection?dbConnectionGuid=${row.Guid}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then(r => {
-                L2.Success(`Database connection <strong>${row.Name}</strong> deleted sucessfully`);
-                this.refreshDbConnectionList();
-            });
-
-
-
+            if (r) {
+                L2.deleteJson(`/api/dbconnection?dbConnectionGuid=${row.Guid}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then(r => {
+                    L2.Success(`Database connection <strong>${row.Name}</strong> deleted sucessfully`);
+                    this.refreshDbConnectionList();
+                });
+            }
         });
     }
 
@@ -494,12 +465,13 @@ export class DbSourceComponent {
 
     private clearDbSourceCache() {
 
-        L2.Confirm(`You are about to clear the current DB source's cache.<br/>Are you sure?`, "Confirm action").then(() => {
-
-            L2.postJson(`/api/database/clearcache?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then(r => {
-                L2.Success("Cached clear successfully");
-                this.refreshSummaryInfo();
-            });
+        L2.Confirm(`You are about to clear the current DB source's cache.<br/>Are you sure?`, "Confirm action").then((r) => {
+            if (r) {
+                L2.postJson(`/api/database/clearcache?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then(r => {
+                    L2.Success("Cached clear successfully");
+                    this.refreshSummaryInfo();
+                });
+            }
 
 
         });

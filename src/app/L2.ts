@@ -1,4 +1,7 @@
-﻿class BrowserStore {
+﻿import { MdDialog, MdSnackBar } from '@angular/material';
+import { MsgDialog } from '~/dialogs/msg-dialog.component'
+
+class BrowserStore {
     constructor() {
 
     }
@@ -11,7 +14,7 @@
         return BrowserStore.processRequest<T>(window.sessionStorage, key, value, "Session");
     }
 
-//    private static removeItemVal = {};
+    //    private static removeItemVal = {};
 
     static removeSessionItem = function (key) {
         window.sessionStorage.removeItem(key);
@@ -22,7 +25,7 @@
 
     private static processRequest<T>(store: Storage, key: string, value: T, storeName: string): T {
 
-        var obj:any;
+        var obj: any;
 
         // if value is not specified at all assume we are doing a get.
         if (value == undefined) {
@@ -92,57 +95,38 @@ interface PromiseL2<R> {
 //}
 
 class L2 {
+
+    public static dialog: MdDialog;
+    private static snackBar: MdSnackBar;
+
+    public static Init(dialog: MdDialog, snackbar: MdSnackBar) {
+        L2.dialog = dialog;
+        L2.snackBar = snackbar;
+    }
+
     public static Info(msg: string, title?: string) {
-        toastr.info(msg, title);
+        L2.snackBar.open(msg, title, { duration: 2500 });
     }
 
     public static Success(msg: string, title?: string) {
-        toastr.success(msg, title);
+        L2.snackBar.open(msg, title, { duration: 2500 });
     }
 
     public static InfoDialog(msg: string, title?: string) {
         if (!title) title = "";
-        BootstrapDialog.alert({
-            title: title,
-            message: msg,
-            type: BootstrapDialog.TYPE_INFO,
-            closable: true,
-            draggable: true,
-            buttonLabel: 'Close'
-        });
+        // TODO: This need to be an INFO box
+        MsgDialog.exclamation(L2.dialog, title, msg);
     }
 
     public static Confirm(msg: string, title?: string, okayButtonLabel?: string): Promise<any> {
-
-        return new Promise((resolve, reject) => {
-
-            BootstrapDialog.show({
-                title: title ? title : "Confirm action",
-                message: msg,
-                buttons: [{
-                    label: okayButtonLabel ? okayButtonLabel : "Confirm",
-                    cssClass: 'btn-primary',
-                    hotkey: 13,
-                    action: (dialogItself) => {
-                        dialogItself.close();
-                        resolve();
-                    }
-                }
-                    , {
-                        label: 'Cancel',
-                        action: function (dialogItself) { dialogItself.close(); reject(); }
-                    }]
-
-            });
-        });
-
+        return MsgDialog.confirm(L2.dialog, title, msg);
     }
 
-    public static HandleException(e:ExceptionInformation|string|any) {
-        alert(e.toString());
+    public static HandleException(e: ExceptionInformation | string | any) {
+        MsgDialog.exclamation(L2.dialog, "Application error", e.toString());
     }
 
-    public static NullToEmpty(val:string) {
+    public static NullToEmpty(val: string) {
         if (val == null || val == undefined) return '';
         else return val;
     }
@@ -168,258 +152,212 @@ class ApiResponseEndThenChain {
     handled?: boolean;
 }
 
-//declare class Promise<R> 
-//{
-//    ifthen(...any): Promise<R>
-//}
-
 //export class L2 {
 //ifthen<TResult>(onfulfilled ?: (value: T) => TResult | PromiseLike < TResult >, onrejected ?: (reason: any) => void): Promise<TResult>;
 (<any>Promise).prototype.ifthen = function (cond, cb) {
     //if (cond) return this.then(cb);  
-    return this.then(r=> {
+    return this.then(r => {
         if (cond) return cb(r);
         else return r;
     });
 }
 
-    function fetchCatch(ex) {
-        if (ex instanceof ApiResponseEndThenChain) {
-            ex.handled = true; //?
-            // handle special case where we just threw and exception(ApiResponseEndThenChain) to end any remaining 'thens' on the promise.
-            // we have to rethrow to prevent any additional '.then' callbacks from being executed
-            throw ex;
+function fetchCatch(ex) {
+    if (ex instanceof ApiResponseEndThenChain) {
+        ex.handled = true; //?
+        // handle special case where we just threw and exception(ApiResponseEndThenChain) to end any remaining 'thens' on the promise.
+        // we have to rethrow to prevent any additional '.then' callbacks from being executed
+        throw ex;
+    }
+
+
+    // TODO: Improve error here - look for specific type of failures (eg. network related)
+    MsgDialog.exclamation(L2.dialog, "fetch failed", ex.toString());
+
+    return ex;
+}
+
+function checkHttpStatus(response: Response): Response | any {
+    if (response.status >= 200 && response.status < 300) {
+        return response;
+    } else {
+        let error: Error & { response?: any } = new Error(response.statusText)
+
+        error.response = response;
+
+        MsgDialog.exclamation(L2.dialog, "HTTP " + response.status, error.toString());
+
+        throw error;
+
+        //throw new ApiResponseEndThenChain();
+    }
+}
+
+
+function parseJSON(response) {
+
+    return response.json().then((json) => {
+        // if still a string after parsing once...
+        if (typeof (json) === "string" && json.startsWith("{")) return JSON.parse(json);
+
+        return json;
+    });
+}
+
+function processApiResponse(json): Response {
+    // if the result is a string, test for ApiResponse
+    if (typeof (json) === "object" && typeof (json.ApiResponseVer) !== "undefined") {
+
+        let apiResponse = json;
+
+        switch (apiResponse.Type) {
+            case ApiResponseType.Success:
+                return apiResponse;
+            case ApiResponseType.InfoMsg:
+                toastr.info(apiResponse.Message);
+                break;
+            case ApiResponseType.ExclamationModal:
+                 
+                MsgDialog.exclamation(L2.dialog, apiResponse.Title ? apiResponse.Title : "", apiResponse.Message);
+
+                throw new ApiResponseEndThenChain();
+            case ApiResponseType.Exception:
+                MsgDialog.exclamation(L2.dialog, "Application error occured", apiResponse.Message);
+
+                throw new ApiResponseEndThenChain();
+
+
         }
 
-       
-        // TODO: Improve error here - look for specific type of failures (eg. network related)
-        BootstrapDialog.alert(<any>{
-            title: "fetch failed",
-            message: ex.toString(),
-            type: BootstrapDialog.TYPE_DANGER,
-            closable: true,
-            draggable: true,
-            buttonLabel: 'Close',
-            callback: function (result) {
-                // result will be true if button was click, while it will be false if users close the dialog directly.
-                //alert('Result is: ' + result);
-            }
-        });
 
-        return ex;
+        return apiResponse;
+    }
+    else {
+        return json;
     }
 
-    function checkHttpStatus(response: Response) : Response | any {
-        if (response.status >= 200 && response.status < 300) {
-            return response;
-        } else {
-            let error: Error & { response?: any } = new Error(response.statusText)
-            
-            error.response = response;
+}
 
-            BootstrapDialog.alert(<any>{
-                title: "HTTP " + response.status,
-                message: error.toString(),
-                type: BootstrapDialog.TYPE_DANGER,
-                closable: true,
-                draggable: true,
-                buttonLabel: 'Close',
-                callback: function (result) {
-                    // result will be true if button was click, while it will be false if users close the dialog directly.
-                    //alert('Result is: ' + result);
-                }
-            });
-            
-            throw error;
+function fetchJson(url: string | Request, init?: RequestInit): Promise<Response> {
 
-            //throw new ApiResponseEndThenChain();
+    return (<any>fetchWrap(url, init)
+        .then(checkHttpStatus)
+        .then(parseJSON)
+        //.then(processApiResponse)
+    )
+        .ifthen(true, processApiResponse)
+        .catch(fetchCatch);
+}
+
+function postJson(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
+
+    var defaults = {
+        method: "post",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
-    }
+    };
 
+    var settings = $.extend(defaults, init);
 
-    function parseJSON(response) {
-        
-        return response.json().then((json) => {
-            // if still a string after parsing once...
-            if (typeof(json) === "string" && json.startsWith("{")) return JSON.parse(json);
-            
-            return json;
-        });
-    }
+    return (<any>fetchWrap(url, settings)
+        .then(checkHttpStatus)
+        .then(parseJSON))
+        .ifthen(true, processApiResponse)
+        .catch(fetchCatch)
 
-    function processApiResponse(json): Response {
-        // if the result is a string, test for ApiResponse
-        if (typeof (json) === "object" && typeof(json.ApiResponseVer) !== "undefined") {
+        ;
+}
 
-            let apiResponse = json;
+function putJson(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
 
-            switch (apiResponse.Type) {
-                case ApiResponseType.Success:
-                    return apiResponse;
-                case ApiResponseType.InfoMsg:
-                    toastr.info(apiResponse.Message);
-                    break;
-                case ApiResponseType.ExclamationModal:
-                    BootstrapDialog.alert(<any>{
-                        title: apiResponse.Title ? apiResponse.Title:"",
-                        message: apiResponse.Message,
-                        type: BootstrapDialog.TYPE_WARNING,
-                        closable: true,
-                        draggable: true,
-                        buttonLabel: 'Close',
-                        callback: function (result) {
-                            // result will be true if button was click, while it will be false if users close the dialog directly.
-                            //alert('Result is: ' + result);
-                        }
-                    });
-                    throw new ApiResponseEndThenChain();
-                case ApiResponseType.Exception:
-                    BootstrapDialog.alert(<any>{
-                        title: "Application error occurred",
-                        message: apiResponse.Message,
-                        type: BootstrapDialog.TYPE_DANGER,
-                        closable: true,
-                        draggable: true,
-                        buttonLabel: 'Close',
-                        callback: function (result) {
-                            // result will be true if button was click, while it will be false if users close the dialog directly.
-                            //alert('Result is: ' + result);
-                        }
-                    });
-                    
-                    throw new ApiResponseEndThenChain();
-
-
-            }
-
-
-            return apiResponse;
+    var defaults = {
+        method: "put",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
-        else {
-            return json;
+    };
+
+    var settings = $.extend(defaults, init);
+
+    return <any>fetchWrap(url, settings)
+        .then(checkHttpStatus)
+        .then(parseJSON)
+        .then(processApiResponse)
+        //!.ifthen(true, processApiResponse)
+        .catch(fetchCatch)
+        ;
+}
+
+function deleteJson(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
+
+    var defaults = {
+        method: "delete",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
+    };
 
-    }
+    var settings = $.extend(defaults, init);
 
-    function fetchJson(url: string | Request, init?: RequestInit): Promise<Response> {
-        
-        return (<any>fetchWrap(url, init)
-            .then(checkHttpStatus)
-            .then(parseJSON)
-            //.then(processApiResponse)
-            )
-            .ifthen(true, processApiResponse)
-            .catch(fetchCatch);
-    }
+    return <any>fetchWrap(url, settings)
+        .then(checkHttpStatus)
+        .then(parseJSON)
+        .then(processApiResponse)
+        //!.ifthen(true, processApiResponse)
+        .catch(fetchCatch)
 
-    function postJson(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
+        ;
 
-        var defaults = {
-            method: "post",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
+}
 
-        var settings = $.extend(defaults, init);            
+function fetchWrap(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
 
-        return (<any>fetchWrap(url, settings)
-            .then(checkHttpStatus)
-            .then(parseJSON))
-            .ifthen(true, processApiResponse)
-            .catch(fetchCatch)
+    return <any>new Promise<Response>((resolve, reject) => {
 
-            ;
-    }
+        // PL: Temp hack when we are running with ng serve
+        if (window.location.port == '4200') url = 'http://localhost:9086' + url;
 
-    function putJson(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
+        var jwt = BrowserStore.session<JWT>("jwt");
 
-        var defaults = {
-            method: "put",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
-
-        var settings = $.extend(defaults, init);
-
-        return <any>fetchWrap(url, settings)
-            .then(checkHttpStatus)
-            .then(parseJSON)
-            .then(processApiResponse)
-            //!.ifthen(true, processApiResponse)
-            .catch(fetchCatch)
-            ;
-    }
-
-    function deleteJson(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
-
-        var defaults = {
-            method: "delete",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        };
-
-        var settings = $.extend(defaults, init);
-
-        return <any>fetchWrap(url, settings)
-            .then(checkHttpStatus)
-            .then(parseJSON)
-            .then(processApiResponse)
-            //!.ifthen(true, processApiResponse)
-            .catch(fetchCatch)
-
-            ;
-    
-    }
-
-    function fetchWrap(url: string | Request, init?: RequestInit): Promise<Response> & PromiseL2<Response> {
-
-        return <any>new Promise<Response>((resolve, reject) => {
-
-            // PL: Temp hack when we are running with ng serve
-            if (window.location.port=='4200') url = 'http://localhost:9086' + url;
-            
-            var jwt = BrowserStore.session<JWT>("jwt");
-
-            // if  a JWT exists, use it
-            if (jwt != null) {
-
-                if (!init) init = {};
-                if (!init.headers) init.headers = {};
-
-                init.headers["x-access-token"] = jwt.token;
-            }
+        // if  a JWT exists, use it
+        if (jwt != null) {
 
             if (!init) init = {};
+            if (!init.headers) init.headers = {};
 
-            init.mode = 'cors';
+            init.headers["x-access-token"] = jwt.token;
+        }
+
+        if (!init) init = {};
+
+        init.mode = 'cors';
 
 
-            fetch(url, init).then((r: any) => {
-                r.fetch = { url: url, init: init };
-                resolve(r);
-            })["catch"](err => {
-                err.fetch = { url: url, init: init };
-                reject(err);
-            }).then(r => { resolve(<any>r); });
-        });
-    }
+        fetch(url, init).then((r: any) => {
+            r.fetch = { url: url, init: init };
+            resolve(r);
+        })["catch"](err => {
+            err.fetch = { url: url, init: init };
+            reject(err);
+        }).then(r => { resolve(<any>r); });
+    });
+}
 
-    
-    
 
-    var Info = L2.Info;
-    var InfoDialog = L2.InfoDialog;
-    var Success = L2.Success;
-    var Confirm = L2.Confirm;
-    var HandleException = L2.HandleException;
-    var NullToEmpty = L2.NullToEmpty;
 
-    export { fetchJson, postJson, putJson, deleteJson, ApiResponse, Info, InfoDialog, Success, Confirm, HandleException, NullToEmpty, BrowserStore }
+
+var Info = L2.Info;
+var InfoDialog = L2.InfoDialog;
+var Success = L2.Success;
+var Confirm = L2.Confirm;
+var HandleException = L2.HandleException;
+var NullToEmpty = L2.NullToEmpty;
+var Init = L2.Init;
+
+export { Init, fetchJson, postJson, putJson, deleteJson, ApiResponse, Info, InfoDialog, Success, Confirm, HandleException, NullToEmpty, BrowserStore }
 //}
 
