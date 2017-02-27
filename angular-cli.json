@@ -34,8 +34,8 @@
         "../bower_components/Sortable/Sortable.min.js",
         "../bower_components/toastr/toastr.js"
       ],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-        "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
