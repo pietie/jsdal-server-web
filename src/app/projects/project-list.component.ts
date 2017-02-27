@@ -4,13 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router'
 
 import * as L2 from '../L2'
 
-// @Component({
-//     template: `
-//     <router-outlet></router-outlet>
-//   `
-// })
-// export class ProjectsContainer { }
-
 @Component({
     templateUrl: './project-list.component.html',
     animations: [
@@ -25,13 +18,10 @@ import * as L2 from '../L2'
 
         ]),
 
-
-
     ],
 })
 export class ProjectListComponent {
     private componentState = "enterComponent";
-
 
     private projectList: any;
     private selectedProject: any;
@@ -42,74 +32,23 @@ export class ProjectListComponent {
         this.route.params.subscribe(params => {
             this.componentState = "enterComponent";
         });
-
-
-
     }
 
     onEditProject(project) {
-        let $content = $(`<div class="form-group">
-    <label for="newProjectName">Name</label>
-    <input type="text" class="form-control" id="newProjectName" placeholder="Name" value="${project.Name}" >
-</div>`);
 
-        BootstrapDialog.show({
-            title: 'Edit project',
-            message: $content,
-            buttons: [{
-                label: 'Update',
-                cssClass: 'btn-primary',
-                action: (dialogItself) => {
-                    this.updateProject(project.Name, $content.find("#newProjectName").val()).then((txt) => {
-                        if (txt == null || txt == "null") {
-                            dialogItself.close();
-                        }
-                    });
-                }
+      L2.Prompt("Update project", "Name", project.Name, "UPDATE").then((projectName: string) => {
+            if (projectName) {
+                this.updateProject(project.Name, projectName.trim());
             }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
-
         });
     }
 
     onCreateNewProjectClicked() {
-
-        L2.Prompt("Create new project", "Name", null, "Create").then(r=>
-        {
-            alert(JSON.stringify(r));
-        });
-       
-/*
-
-        let $content = $(`<div class="form-group">
-    <label for="newProjectName">Name</label>
-    <input type="text" class="form-control" id="newProjectName" placeholder="Name">
-</div>`);
-
-        BootstrapDialog.show({
-            title: 'Create new project',
-            message: $content,
-            //message: $("#createNewProjectDialog"),
-            buttons: [{
-                label: 'Create',
-                cssClass: 'btn-primary',
-                action: (dialogItself) => {
-                    this.createNewProject($content.find("#newProjectName").val()).then((txt) => {
-                        if (txt == null || txt == "null") {
-                            dialogItself.close();
-                        }
-                    });
-                }
+        L2.Prompt("Create new project", "Name", null, "CREATE").then((projectName: string) => {
+            if (projectName) {
+                this.createNewProject(projectName.trim());
             }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
-
-        });*/
+        });
     }
 
     onDeleteProject(row) {
@@ -120,7 +59,7 @@ export class ProjectListComponent {
 
     private deleteProject(name: string): Promise<any> {
         return L2.deleteJson("/api/project", { body: JSON.stringify(name) }).then(r => {
-            L2.Success(`Project <strong>${name}</strong> successfully removed.`);
+            L2.Success(`Project ${name} successfully removed.`);
             this.refresh();
         });
     }
@@ -129,7 +68,7 @@ export class ProjectListComponent {
         return L2.putJson(`/api/project/${name}`, {
             body: JSON.stringify(newName)
         }).then((r) => {
-            L2.Success(`Project <strong>${newName}</strong> successfully updated.`);
+            L2.Success(`Project ${newName} successfully updated.`);
             this.refresh();
         });
     }
@@ -151,7 +90,4 @@ export class ProjectListComponent {
         });
 
     }
-
-
-
 }

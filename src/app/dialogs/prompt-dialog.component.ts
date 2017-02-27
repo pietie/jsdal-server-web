@@ -29,12 +29,20 @@ export class PromptDialog {
             ref.componentInstance.title = title;
             ref.componentInstance.fieldName = fieldName;
             ref.componentInstance.val = val;
-            ref.componentInstance.okayTxt = okayTxt;
+            ref.componentInstance.okayTxt = okayTxt ? okayTxt.toUpperCase() : "OKAY";
 
             ref.componentInstance.dialogRef.afterClosed().subscribe(n => {
                 resolve(n);
             });
         });
+    }
+
+    private okayClicked() {
+        if (!this.val || this.val == "") {
+            return;
+        }
+
+        this.dialogRef.close(this.val);
     }
 
 }
