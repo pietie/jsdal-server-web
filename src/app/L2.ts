@@ -1,5 +1,5 @@
 ﻿import { MdDialog, MdSnackBar } from '@angular/material';
-import { MsgDialog } from '~/dialogs/msg-dialog.component'
+import { MsgDialog, PromptDialog } from '~/dialogs'
 
 class BrowserStore {
     constructor() {
@@ -120,6 +120,10 @@ class L2 {
 
     public static Confirm(msg: string, title?: string, okayButtonLabel?: string): Promise<any> {
         return MsgDialog.confirm(L2.dialog, title, msg);
+    }
+
+    public static Prompt(title?: string, fieldName?: string, val?: string, okayButtonLabel?: string): Promise<any> {
+        return PromptDialog.prompt(L2.dialog, title, fieldName, val, okayButtonLabel);
     }
 
     public static HandleException(e: ExceptionInformation | string | any) {
@@ -357,7 +361,8 @@ var Confirm = L2.Confirm;
 var HandleException = L2.HandleException;
 var NullToEmpty = L2.NullToEmpty;
 var Init = L2.Init;
+var Prompt = L2.Prompt;
 
-export { Init, fetchJson, postJson, putJson, deleteJson, ApiResponse, Info, InfoDialog, Success, Confirm, HandleException, NullToEmpty, BrowserStore }
+export { Prompt, Init, fetchJson, postJson, putJson, deleteJson, ApiResponse, Info, InfoDialog, Success, Confirm, HandleException, NullToEmpty, BrowserStore }
 //}
 

@@ -77,6 +77,13 @@ export class ProjectListComponent {
 
     onCreateNewProjectClicked() {
 
+        L2.Prompt("Create new project", "Name", null, "Create").then(r=>
+        {
+            alert(JSON.stringify(r));
+        });
+       
+/*
+
         let $content = $(`<div class="form-group">
     <label for="newProjectName">Name</label>
     <input type="text" class="form-control" id="newProjectName" placeholder="Name">
@@ -102,7 +109,7 @@ export class ProjectListComponent {
                 action: function (dialogItself) { dialogItself.close(); }
             }]
 
-        });
+        });*/
     }
 
     onDeleteProject(row) {

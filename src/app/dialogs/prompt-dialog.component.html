@@ -1,0 +1,18 @@
+<h1 md-dialog-title>{{ title }}</h1>
+
+<div md-dialog-content>
+
+    <div class="flex-vertical-center">
+        <md-input-container>
+
+            <input type="text" [placeholder]="fieldName" [(ngModel)]="val" />
+
+        </md-input-container>
+    </div>
+
+
+</div>
+<div md-dialog-actions align="end">
+    <button type="button" md-button color="primary" (click)="dialogRef.close(true)">{{okayTxt}}</button>
+    <button type="button" md-button color="primary" (click)="dialogRef.close(false)">CANCEL</button>
+</div>

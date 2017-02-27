@@ -3,7 +3,7 @@
 <div md-dialog-content>
 
     <div class="flex-vertical-center">
-        <md-icon>{{ getIcon() }}</md-icon>&nbsp;&nbsp;<span>{{ msg }}</span>
+        <md-icon>{{ getIcon() }}</md-icon>&nbsp;&nbsp;<span [innerHTML]="msg"></span>
     </div>
 
 

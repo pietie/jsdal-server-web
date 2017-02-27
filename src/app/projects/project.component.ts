@@ -296,7 +296,6 @@ export class ProjectComponent {
         , private appRef: ApplicationRef
         , private viewContainerRef: ViewContainerRef
     ) {
-        console.log("ProjectComponent cons ");
         this.route.params.subscribe(params => {
             this.projectName = params["name"];
             this.componentState = "enterComponent";

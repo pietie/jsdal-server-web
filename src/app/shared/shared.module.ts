@@ -6,13 +6,13 @@ import { MaterialModule } from '@angular/material';
 import { IsoDatePipe } from '../pipes/FromISODate';
 import { LogGrid } from '../controls/LogGrid';
 
-import { MsgDialog } from '~/dialogs/msg-dialog.component'
+import { MsgDialog, PromptDialog  } from '~/dialogs'
 
 @NgModule({
     imports: [CommonModule, FormsModule, MaterialModule],
-    declarations: [IsoDatePipe, LogGrid, MsgDialog],
+    declarations: [IsoDatePipe, LogGrid, MsgDialog, PromptDialog],
     exports: [IsoDatePipe, LogGrid, CommonModule, FormsModule, MaterialModule],
-    entryComponents: [MsgDialog]
+    entryComponents: [MsgDialog, PromptDialog]
 
 })
 export class SharedModule { }   
