@@ -32,11 +32,11 @@
                                 <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} <i class="fa fa-long-arrow-right"></i>
 
 
-                                <template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
+                                <ng-template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
                                     <div *ngFor="let row of summaryData.Orm.Groups, let last = last" style="display:inline-block">
                                         <span>{{row.Type}}</span><span> ({{row.Count}})</span> {{last? "":", "}}
                                     </div>
-                                </template>
+                                </ng-template>
 
                             </div>
                             <p *ngIf="!summaryData">
@@ -97,7 +97,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <template [ngIf]="execConnectionsList">
+                                    <ng-template [ngIf]="execConnectionsList">
                                         <tr *ngFor="let row of execConnectionsList">
                                             <td class="anchorColumn">
                                                 <a (click)="onAddEditExecConnectionClicked(row)">edit</a>
@@ -112,7 +112,7 @@
                                                 {{ row.Guid }}
                                             </td>
                                         </tr>
-                                    </template>
+                                    </ng-template>
                                     <tr *ngIf="!execConnectionsList || execConnectionsList.length == 0">
                                         <td colspan="100">No connections configured yet.</td>
                                     </tr>

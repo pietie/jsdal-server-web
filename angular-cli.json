@@ -19,20 +19,13 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "./assets/css/bootstrap.min.css",
-        "./assets/css/bootstrap-dialog.min.css",
-        "./assets/css/font-awesome.min.css",
-        "../bower_components/toastr/toastr.css"
+        "./assets/css/font-awesome.min.css"
       ],
       "scripts": [
         "./assets/js/jquery-2.2.0.min.js",
-        "./assets/js/bootstrap.min.js",
-        "./assets/js/bootstrap-dialog.min.js",
         "../bower_components/moment/moment.js",
-        "../bower_components/humanize-duration/humanize-duration.js",
-        "../bower_components/select2/dist/js/select2.full.js",
-        "../bower_components/Sortable/Sortable.min.js",
-        "../bower_components/toastr/toastr.js"
+        "../bower_components/humanize-duration/humanize-duration.js",     
+        "../bower_components/Sortable/Sortable.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -151,9 +151,9 @@ export class AddNewDatabaseSourceDialog {
 
             var data = [{ id: this.dbSource.InitialCatalog, text: this.dbSource.InitialCatalog }];
 
-            $(this.dbCbo.nativeElement).select2({ data: data, tags: true });
+            //!$(this.dbCbo.nativeElement).select2({ data: data, tags: true });
         }
-
+/*!!
         $(this.dlg.nativeElement).find("select").first().select2(<any>{
             tags: true,
             createTag: function (params) {
@@ -164,7 +164,7 @@ export class AddNewDatabaseSourceDialog {
                 }
             }
         });
-
+*/
         $(this.dlg.nativeElement).modal();//.validator("validate");
 
     }
@@ -195,7 +195,7 @@ export class AddNewDatabaseSourceDialog {
 
             var data = list.Data.map((s) => { return { id: s, text: s } });
 
-            $(this.dbCbo.nativeElement).select2({ data: data, tags: true }).select2("open");
+            //!!$(this.dbCbo.nativeElement).select2({ data: data, tags: true }).select2("open");
         }).catch(() => {
             this.isLoadingDbList = false;
         });
@@ -307,8 +307,8 @@ export class ProjectComponent {
     }
 
     ngOnInit() {
-        $("#dbCbo").select2();
-        $("#outputFileCbo").select2();
+        //!$("#dbCbo").select2();
+        //!$("#outputFileCbo").select2();
     }
 
     canDeactivate(): Observable<boolean> | boolean {

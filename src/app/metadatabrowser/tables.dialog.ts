@@ -25,14 +25,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <template [ngIf]="dataContext[key]">
+                            <ng-template [ngIf]="dataContext[key]">
                                 <tr *ngFor="let row of dataContext[key]">
                                     <td>{{ row.ColumnName }}</td>
                                     <td>{{ row.DbDataType }}</td>
                                     <td align="right">{{ row.ColumnSize }}</td>
                                     <td align="right">{{ row.NumericalPrecision }}.{{ row.NumericalScale }}</td>
                                 </tr>
-                            </template>
+                            </ng-template>
                             <tr *ngIf="!dataContext[key] || dataContext[key].length == 0">
                                 <td colspan="100">Empty result set.</td>
                             </tr>

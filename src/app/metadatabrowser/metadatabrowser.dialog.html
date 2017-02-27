@@ -84,7 +84,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <template [ngIf]="searchResults">
+                                        <ng-template [ngIf]="searchResults">
                                             <tr *ngFor="let row of searchResults" [class.deleted]="row.IsDeleted">
                                                 <td class="anchorColumn">
                                                     <a>edit</a>
@@ -103,7 +103,7 @@
                                                     <!--<span *ngIf="ResultSetError == null && (row.ResultSetMetadata == null || Object.keys(row.ResultSetMetadata).length == 0)">(no results)</span>-->
                                                 </td>
                                             </tr>
-                                        </template>
+                                        </ng-template>
                                         <tr *ngIf="!searchResults || searchResults.length == 0">
                                             <td colspan="100">No results found.</td>
                                         </tr>

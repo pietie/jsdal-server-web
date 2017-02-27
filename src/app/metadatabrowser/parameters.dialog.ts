@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <template [ngIf]="dataContext">
+                <ng-template [ngIf]="dataContext">
                     <tr *ngFor="let row of dataContext">
                         <td>
                             {{ row.ParameterName }}
@@ -29,7 +29,7 @@
                             {{ row.DefaultValue }}
                         </td>
                     </tr>
-                </template>
+                </ng-template>
                 <tr *ngIf="!dataContext || dataContext.length == 0">
                     <td colspan="100">No or empty data context set.</td>
                 </tr>

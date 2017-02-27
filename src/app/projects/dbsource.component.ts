@@ -223,33 +223,11 @@ export class DbSourceComponent {
     }
 
     onAddNewOutputFileClicked() {
-        let $content = $(`<div class="form-group">
-    <label for="newFileName">Name</label>
-    <input type="text" class="form-control" id="newFileName" placeholder="Name" autofocus>
-</div>`);
 
-
-        BootstrapDialog.show({
-            title: 'Create new output file',
-            message: $content,
-            onshown: () => { $content.find('[autofocus]').focus(); },
-            buttons: [{
-                hotkey: 13,
-                label: 'Create',
-                cssClass: 'btn-primary',
-                action: (dialogItself) => {
-                    this.createNewJsOutputFile($content.find("#newFileName").val()).then((txt) => {
-                        if (txt == null || txt == "null") {
-                            dialogItself.close();
-                        }
-                    });
-                }
+        L2.Prompt("Create new output file", "Name", null, "CREATE").then((name: string) => {
+            if (name) {
+                this.createNewJsOutputFile(name.trim());
             }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
-
         });
     }
 
@@ -262,35 +240,11 @@ export class DbSourceComponent {
     }
 
     private onEditOutputFile(row) {
-        let $content = $(`<div class="form-group">
-    <label for="newFileName">Name</label>
-    <input type="text" class="form-control" id="newFileName" placeholder="Name" autofocus value="${row.Filename}" />
-</div>`);
-
-
-        BootstrapDialog.show({
-            title: 'Edit output file',
-            message: $content,
-            onshown: () => { $content.find('[autofocus]').focus(); },
-            buttons: [{
-                hotkey: 13,
-                label: 'Update',
-                cssClass: 'btn-primary',
-                action: (dialogItself) => {
-                    this.updateOutputFileName(row.Filename, $content.find("#newFileName").val()).then((txt) => {
-                        //if (txt == null || txt == "null") {
-                        dialogItself.close();
-                        //}
-                    });
-                }
+        L2.Prompt("Update output file", "Name", row.Filename, "UPDATE").then((name: string) => {
+            if (name) {
+                this.updateOutputFileName(row.Filename, name);
             }
-                , {
-                label: 'Cancel',
-                action: function (dialogItself) { dialogItself.close(); }
-            }]
-
         });
-
     }
 
     private updateOutputFileName(oldName: string, newName: string) {
