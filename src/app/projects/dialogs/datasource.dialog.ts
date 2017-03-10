@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import * as L2 from '~/L2'
 
-export interface IDbConnection {
+export interface IDataSource {
     logicalName?: string;
     dataSource?: string;
     authType?: AuthenticationType;
     username?: string;
     password?: string;
     database?: string;
+    defaultRuleMode?: string;
     guid?: string;
 }
 
@@ -20,24 +21,32 @@ export enum AuthenticationType {
 }
 
 @Component({
-    selector: 'dbconneciton-dialog',
-    templateUrl: './dbconnection.dialog.html',
+    selector: 'datasource-dialog',
+    templateUrl: './datasource.dialog.html',
 })
-export class DbConnectionDialogV2 {
+export class DataSourceDialog {
 
-    private obj: IDbConnection = { database: null, authType: AuthenticationType.SQL, dataSource: "172.16.1.36", logicalName: "test123", username: "iceweb", password: "1CeW3B" };
+    private obj: IDataSource = {}; 
     private isTestingConnection: boolean = false;
     private isLoadingDbList: boolean = false;
 
     private addMode:boolean = true;
+    private _dataSourceMode:boolean= true;
+    private _title:string;
 
     private dbList: any[];
 
-    public get dbConnection() { return this.obj; }
-    public set dbConnection(con: IDbConnection) {
-        this.obj = con;
+    public get dataSourceMode(): boolean { return this._dataSourceMode; }
+    public set dataSourceMode(b:boolean) { this._dataSourceMode = b; }
+
+    public get title(): string { return this._title; }
+    public set title(title:string) { this._title = title; }
+
+    public get data(): IDataSource { return this.obj; }
+    public set data(data: IDataSource) {
+        this.obj = data;
         this.addMode = false;
-        if (con.username && con.username != "")
+        if (data.username && data.username != "")
         {
             this.obj.authType = AuthenticationType.SQL;
         }
@@ -49,7 +58,7 @@ export class DbConnectionDialogV2 {
 
     }
 
-    constructor(private dialogRef: MdDialogRef<DbConnectionDialogV2>) {
+    constructor(private dialogRef: MdDialogRef<DataSourceDialog>) {
 
     }
 

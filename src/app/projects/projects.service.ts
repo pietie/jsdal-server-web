@@ -16,19 +16,15 @@ export class ProjectService {
     constructor() {
 
         this.dbListSubject$ = new BehaviorSubject<IDBSource[]>(null);
-        console.log("PROJECT SERVICE CONSTRUCTED");
     }
 
     public getDbSourceList(projectName: string): Promise<IDBSource[]> {
-        console.log("calling fetch");
 
         return L2.fetchJson(`/api/database?project=${projectName}`).then((resp: any) => {
             this.dbList = resp.Data;
 
-            //this.dbListSubject$.next(resp.Data);
-            console.log("calling complete!");
-            this.dbListSubject$.complete();
 
+            this.dbListSubject$.complete();
 
             return resp.Data;
         }).catch(e => {

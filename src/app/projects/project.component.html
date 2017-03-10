@@ -16,8 +16,8 @@
                 <tr *ngFor="let row of dbList">
                     <td class="anchorColumn">
                         <a [routerLink]="['./' + row.Name]">manage</a>
-                        <a (click)="onEditDatabaseSource(row)">edit</a>
-                        <a (click)="onDeleteDatabase(row)">delete</a>
+                        <a href="javascript:void(0)" (click)="onAddEditDbSourceClicked(row)">edit</a>
+                        <a href="javascript:void(0)" (click)="onDeleteDatabase(row)">delete</a>
                     </td>
                     <td>{{row.Name}}</td>
                     <td>
@@ -42,7 +42,7 @@
 
     </md-card-content>
     <md-card-actions>
-        <button (click)="onAddNewDatabase()" md-raised-button color="primary">ADD DATABASE SOURCE</button>
+        <button (click)="onAddEditDbSourceClicked(null)" md-raised-button color="primary">ADD DATABASE SOURCE</button>
     </md-card-actions>
 </md-card>
 <router-outlet></router-outlet>

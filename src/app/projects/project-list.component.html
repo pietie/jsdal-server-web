@@ -13,9 +13,10 @@
             <tbody>
                 <tr *ngFor="let row of projectList" [class.success]="selectedProject == row">
                     <td class="anchorColumn">
+
                         <a (click)="componentState = 'childRouteActive';" [routerLink]="['./' + row.Name]">manage</a>
-                        <a (click)="onEditProject(row)">edit</a>
-                        <a (click)="onDeleteProject(row)">delete</a>
+                        <a (click)="onEditProject(row)" href="javascript:void(0)">edit</a>
+                        <a (click)="onDeleteProject(row)"  href="javascript:void(0)">delete</a>
                     </td>
                     <td>{{row.Name}}</td>
                     <td>

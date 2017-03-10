@@ -7,10 +7,10 @@ import * as L2 from '../L2'
 import { ProjectService, IDBSource } from './projects.service'
 
 import { ProjectComponent } from './project.component'
-import { RuleManagement } from '../rules/rules.component'
+
 import { MetadataBrowserDialog } from '../metadatabrowser/metadatabrowser.dialog'
 
-import { DbConnectionDialogV2, AuthenticationType } from './dialogs/dbconnection.dialog';
+import { DataSourceDialog, AuthenticationType, RulesDialog } from './dialogs';
 
 export enum DefaultRuleMode {
     Unknown = -1,
@@ -273,10 +273,12 @@ export class DbSourceComponent {
     private onAddEditExecConnectionClicked(row) {
         try {
 
-            let dialogRef = this.dialog.open(DbConnectionDialogV2);
+            let dialogRef = this.dialog.open(DataSourceDialog);
+
+            dialogRef.componentInstance.dataSourceMode = false;
 
             if (row) {
-                dialogRef.componentInstance.dbConnection = {
+                dialogRef.componentInstance.data = {
                     logicalName: row.Name,
                     dataSource: row.DataSource,
                     database: row.InitialCatalog,
@@ -291,7 +293,7 @@ export class DbSourceComponent {
                 if (r) {
 
                     try {
-                        let obj = dialogRef.componentInstance.dbConnection;
+                        let obj = dialogRef.componentInstance.data;
 
                         if (!row) obj.guid = null;
 
@@ -333,6 +335,23 @@ export class DbSourceComponent {
 
         try {
 
+            let dialogRef = this.dialog.open(RulesDialog);
+
+            dialogRef.componentInstance.projectName = this.projectName;
+            dialogRef.componentInstance.dbSource = this.dbSource.Name;
+            dialogRef.componentInstance.jsFilenameGuid = null;
+            dialogRef.componentInstance.title = this.dbSource.Name;
+            dialogRef.componentInstance.defaultRuleMode = this.dbSource.DefaultRuleMode;
+
+
+
+
+            dialogRef.afterClosed().subscribe(r => {
+
+            });
+
+
+            /***
             var factory = this.componentFactoryResolver.resolveComponentFactory(RuleManagement);
 
             var ref = this.viewContainerRef.createComponent(factory);
@@ -345,7 +364,7 @@ export class DbSourceComponent {
                     ref.instance.dbSource = this.dbSource.Name;
                     ref.instance.jsFilenameGuid = null;
                     ref.instance.title = this.dbSource.Name;
-                    //!?ref.instance.defaultRuleMode = DefaultRuleMode[this.projectService.currentDatabaseSource.DefaultRuleMode];
+                    
                     ref.instance.show();
 
                 }
@@ -353,6 +372,8 @@ export class DbSourceComponent {
                     L2.HandleException(e);
                 }
             });
+
+            */
 
 
         }
@@ -379,20 +400,21 @@ export class DbSourceComponent {
 
 
     private onJsFileManageRulesClicked(row) {
-
-        var factory = this.componentFactoryResolver.resolveComponentFactory(RuleManagement);
-
-        var ref = this.viewContainerRef.createComponent(factory);
-
-        ref.instance.ready.subscribe(() => {
-            ref.instance.projectName = this.projectName;
-            ref.instance.dbSource = this.dbSource.Name;
-            ref.instance.jsFilenameGuid = row.Guid;
-            ref.instance.title = row.Filename;
-            //!?ref.instance.defaultRuleMode = DefaultRuleMode[this.projectService.currentDatabaseSource.DefaultRuleMode];
-            ref.instance.show();
-        });
-
+        alert("TODO");
+        /**
+                var factory = this.componentFactoryResolver.resolveComponentFactory(RuleManagement);
+        
+                var ref = this.viewContainerRef.createComponent(factory);
+        
+                ref.instance.ready.subscribe(() => {
+                    ref.instance.projectName = this.projectName;
+                    ref.instance.dbSource = this.dbSource.Name;
+                    ref.instance.jsFilenameGuid = row.Guid;
+                    ref.instance.title = row.Filename;
+                    //!?ref.instance.defaultRuleMode = DefaultRuleMode[this.projectService.currentDatabaseSource.DefaultRuleMode];
+                    ref.instance.show();
+                });
+         */
     }
 
     private getLastUpdatedAge(dt) {

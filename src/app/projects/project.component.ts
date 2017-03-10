@@ -3,7 +3,11 @@
     trigger, state, style, transition, animate
 } from '@angular/core'
 
+import { MdDialog, MdDialogRef } from '@angular/material';
+
 import { ProjectService, IDBSource } from './projects.service'
+
+import { DataSourceDialog, AuthenticationType } from './dialogs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Route, CanDeactivate } from '@angular/router'
@@ -153,18 +157,18 @@ export class AddNewDatabaseSourceDialog {
 
             //!$(this.dbCbo.nativeElement).select2({ data: data, tags: true });
         }
-/*!!
-        $(this.dlg.nativeElement).find("select").first().select2(<any>{
-            tags: true,
-            createTag: function (params) {
-                return {
-                    id: params.term,
-                    text: params.term,
-                    newOption: true
-                }
-            }
-        });
-*/
+        /*!!
+                $(this.dlg.nativeElement).find("select").first().select2(<any>{
+                    tags: true,
+                    createTag: function (params) {
+                        return {
+                            id: params.term,
+                            text: params.term,
+                            newOption: true
+                        }
+                    }
+                });
+        */
         $(this.dlg.nativeElement).modal();//.validator("validate");
 
     }
@@ -266,17 +270,8 @@ export class AddNewDatabaseSourceDialog {
             state('exitComponent', style({ opacity: 0.5, transform: 'translateX(-100%)' })),
             transition('* => enterComponent', animate('300ms ease-in')),
             transition('enterComponent => exitComponent', animate('150ms ease-in'))
-
-
-            //transition('inactive => active', animate('100ms ease-in')),
-            //transition('* => inactive', animate('100ms ease-in')),
-            //transition('void => inactive', animate('100ms ease-in')),
-            //transition('active => inactive', animate('100ms ease-out'))
         ]),
-
-
-
-    ],
+    ]
 })
 export class ProjectComponent {
     private projectName: string;
@@ -286,11 +281,11 @@ export class ProjectComponent {
 
     private componentState = "enterComponent";
 
-
     constructor(
         private projectService: ProjectService
         , private route: ActivatedRoute
         , private router: Router
+        , private dialog: MdDialog
         , private componentFactoryResolver: ComponentFactoryResolver
         , private injector: Injector
         , private appRef: ApplicationRef
@@ -306,29 +301,12 @@ export class ProjectComponent {
 
     }
 
-    ngOnInit() {
-        //!$("#dbCbo").select2();
-        //!$("#outputFileCbo").select2();
-    }
+    ngOnInit() { }
 
     canDeactivate(): Observable<boolean> | boolean {
-        //window.RR = Rx.Observable.of(true);
-
         this.componentState = "exitComponent";
         return Observable.of(true).delay(200); // TODO: Hook into animation complete event
-
-        //// Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
-        //if (!this.crisis || this.crisis.name === this.editName) {
-        //    return true;
-        //}
-        //// Otherwise ask the user with the dialog service and return its
-        //// promise which resolves to true or false when the user decides
-        //let p = this.dialogService.confirm('Discard changes?');
-        //let o = Observable.fromPromise(p);
-        //return o;
     }
-
-
 
     refreshDbList() {
         this.projectService.getDbSourceList(this.projectName).then(r => {
@@ -341,6 +319,69 @@ export class ProjectComponent {
     private formatDbCboItem(item) {
         if (!item.Data) return;
         return $(`<div class="databaseSourceCboItem"><div class="h">${item.text}</div><div class="line2">${item.Data.DataSource}; ${item.Data.InitialCatalog}</div></div>`);
+    }
+
+    private onAddEditDbSourceClicked(row) {
+        try {
+
+            let dialogRef = this.dialog.open(DataSourceDialog);
+
+            dialogRef.componentInstance.title = "Add data source";
+
+            if (row) {
+                dialogRef.componentInstance.title = "Update data source";
+
+                dialogRef.componentInstance.data = {
+                    logicalName: row.Name,
+                    dataSource: row.DataSource,
+                    database: row.InitialCatalog,
+                    username: row.UserID,
+                    password: null,
+                    authType: <any>(row.UserID? AuthenticationType.SQL : AuthenticationType.Windows),
+                    defaultRuleMode: row.DefaultRuleMode.toString(),
+                    guid: row.Guid
+                };
+            }
+
+
+            dialogRef.afterClosed().subscribe(r => {
+                if (r) {
+
+                    try {
+                        let obj = dialogRef.componentInstance.data;
+
+                        if (!row) obj.guid = null;
+
+                        if (obj.authType == <any>AuthenticationType.Windows) {
+                            obj.username = obj.password = null;
+                        }
+
+                        if (!row) {
+                            // add new
+                            L2.postJson(`/api/database?project=${this.projectName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.NullToEmpty(obj.username)}&password=${L2.NullToEmpty(obj.password)}&jsNamespace=${L2.NullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
+                                , { body: JSON.stringify(obj.logicalName) }).then(r => {
+                                    L2.Success("New database source added successfully");
+                                });
+                        }
+                        else {
+                            // update
+                            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${row.Name}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.NullToEmpty(obj.username)}&password=${L2.NullToEmpty(obj.password)}&jsNamespace=${L2.NullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
+                                , { body: JSON.stringify(obj.logicalName) }).then(r => {
+                                    L2.Success("Database source updated successfully");
+                                });
+                        }
+
+                        this.refreshDbList();
+                    }
+                    catch (e) {
+                        L2.HandleException(e);
+                    }
+                }
+            });
+        }
+        catch (e) {
+            L2.HandleException(e);
+        }
     }
 
     onEditDatabaseSource(db) {

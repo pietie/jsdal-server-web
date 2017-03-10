@@ -280,11 +280,22 @@ md-input-container.field
         flex: 0 1 100%;
     }
 
+    md-select.field.full {
+        flex: 0 1 100%;
+    }
+
 TABLE TR TD.anchorColumn a, .anchorNest a {
     padding-left: 5px;
     padding-right: 5px;
     border-right: 1px solid silver;
     cursor: pointer;
+    color: blue;
+    text-decoration: none;
+}
+
+TABLE TR TD.anchorColumn a:visited, .anchorNest a:visted {
+color: blue;
+text-decoration: none;
 }
 
     TABLE TR TD.anchorColumn a:last-child, .anchorNest a:last-child {
@@ -367,3 +378,15 @@ tr.thread.stopped {
         opacity: 0;
         height: 0;
     }
+
+
+table.grid
+{
+    width: 100%;
+    margin: auto;
+}
+
+table.grid tr:nth-child(even)
+{
+    background-color: #c0c0c0;
+}

@@ -1,0 +1,111 @@
+<h1 md-dialog-title><i class="fa fa-object-group pr8"></i>Manage rules - {{title}} - <span style="font-size: 12px;">By default all routines are 
+        <md-chip color='{{defaultRuleMode==0? "primary": "accent"}}' selected="true" title="This can be changed by editting the database source properties">{{defaultRuleMode==0? "Included": "Excluded"}}</md-chip>
+    </span>
+
+</h1>
+
+
+
+
+<div md-dialog-content style="min-width:800px;">
+
+    <md-card>
+        <md-card-title>
+        </md-card-title>
+        <md-card-content>
+
+
+            <table class="grid">
+                <thead>
+                    <tr>
+                        <th style="width:120px"></th>
+                        <th>Rule</th>
+                        <th># affected</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of ruleList">
+                        <td class="anchorNest">
+                            <span *ngIf="!row.IsDataSourceRule || row.DBLevelOnly">
+                                        {{row.Ix}}.
+                                        <a href="javascript:void(0)">edit</a>
+                                        <a (click)="onDeleteRuleClicked(row)" href="javascript:void(0)">delete</a>
+                                    </span>
+                            <span *ngIf="row.IsDataSourceRule && !row.DBLevelOnly">(DB source rule)</span>
+                        </td>
+                        <td>
+                            <md-chip style="width:60px; text-align: center;" color="primary" selected="true">{{ RuleTypeValues[row.Type] }}</md-chip>&nbsp;{{row.Description}}</td>
+                        <td>{{ row.AffectedCount }}</td>
+                    </tr>
+                    <tr *ngIf="!ruleList || ruleList.length == 0">
+                        <td colspan="4">No rules configured yet.</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </md-card-content>
+        <md-card-actions>
+            <button *ngIf="!isInAddNewRuleMode" (click)="isInAddNewRuleMode=true;newTypeVal=1" color="primary" md-button>ADD NEW <strong>{{defaultRuleMode == "IncludeAll"? "EXCLUSION":"INCLUSION"}}</strong> RULE</button>
+
+        </md-card-actions>
+    </md-card>
+
+    <md-card *ngIf="isInAddNewRuleMode">
+        <md-card-title>
+            <i class="fa fa-plus-circle pr8"></i>Add new rule
+        </md-card-title>
+        <md-card-content>
+            <div class="addNewRule">
+
+
+                <div class="row">
+                    <md-radio-button #radSchema (click)="newTypeVal=0;txtSchema.focus()" radioGroup="newType" value="0">Schema</md-radio-button>
+
+                    <md-input-container>
+                        <input #txtSchema mdInput type="text" autofocus [readonly]="!radSchema.checked" (click)="radSchema.checked = true;newTypeVal=0;"
+                            placeholder="Schema name" />
+                    </md-input-container>
+                </div>
+
+                <div class="row">
+                    <md-radio-button #radSpecific (click)="newTypeVal=1;txtSpecific.focus()" radioGroup="newType" value="1">Specific</md-radio-button>
+                    <md-input-container>
+                        <input #txtSpecific mdInput type="text" (click)="radSpecific.checked = true;newTypeVal=1" placeholder="Routine name" [readonly]="!radSpecific.checked"
+                        />
+                    </md-input-container>
+                </div>
+
+                <div class="row">
+                    <md-radio-button #radRegex (click)="newTypeVal=2;txtRegex.focus();" radioGroup="newType" value="2">Regex</md-radio-button>
+                    <md-input-container>
+                        <input #txtRegex mdInput type="text" (click)="radRegex.checked = true;newTypeVal=2" placeholder="JavaScript regex" [readonly]="!radRegex.checked"
+                        />
+                    </md-input-container>
+                </div>
+            </div>
+
+
+        </md-card-content>
+
+        <md-card-actions align="end">
+            <button md-button (click)="onAddNewRuleClicked(txtSchema.value, txtSpecific.value, txtRegex.value, newTypeVal);isInAddNewRuleMode=false">ADD RULE</button>
+            <button md-button (click)="isInAddNewRuleMode=false">CANCEL</button>
+
+        </md-card-actions>
+    </md-card>
+
+
+    <md-card>
+        <md-card-title>
+            Full routine list
+        </md-card-title>
+        <md-card-content>
+            GRID
+        </md-card-content>
+    </md-card>
+
+</div>
+<div md-dialog-actions align="end">
+    <button md-button (click)="dialogRef.close(false)">CLOSE</button>
+</div>

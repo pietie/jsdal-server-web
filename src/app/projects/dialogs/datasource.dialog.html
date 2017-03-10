@@ -1,13 +1,15 @@
-<h1 md-dialog-title><i class="fa fa-plus-circle pr8"></i>{{ addMode? "Add":"Update" }} database connection</h1>
+<h1 md-dialog-title><i class="fa fa-plus-circle pr8"></i>{{ title }}</h1>
 <div md-dialog-content>
 
     <div class="form-flex" style="width:300px">
 
         <md-input-container class="field full">
-            <input mdInput type="text" placeholder="Logical name" [(ngModel)]="obj.logicalName" required [disabled]="shouldDisableControls()" />
+            <input mdInput type="text" placeholder="Logical name" [(ngModel)]="obj.logicalName" required [disabled]="shouldDisableControls()"
+            />
         </md-input-container>
         <md-input-container class="field full">
-            <input mdInput type="text" placeholder="Datasource" title="Database server IP or DNS" [(ngModel)]="obj.dataSource" required [disabled]="shouldDisableControls()" />
+            <input mdInput type="text" placeholder="Datasource" title="Database server IP or DNS" [(ngModel)]="obj.dataSource" required
+                [disabled]="shouldDisableControls()" />
         </md-input-container>
 
         <div>
@@ -30,16 +32,24 @@
 
         <md-input-container class="field full">
             <input mdInput placeholder="Database" [(ngModel)]="obj.database" [mdAutocomplete]="auto" [disabled]="shouldDisableControls()">
-            <md-hint align="end"><a href="javascript:void(0);" (click)="loadDbList()" [class.disabled]="isLoadingDbList || shouldDisableControls()" >{{ !isLoadingDbList? "load from server":"loading, please wait..." }}</a>
+            <md-hint align="end"><a href="javascript:void(0);" (click)="loadDbList()" [class.disabled]="isLoadingDbList || shouldDisableControls()">{{ !isLoadingDbList? "load from server":"loading, please wait..." }}</a>
             </md-hint>
         </md-input-container>
 
         <md-autocomplete #auto="mdAutocomplete">
             <md-option *ngFor="let row of dbList" [value]="row.id">{{row.text}}</md-option>
         </md-autocomplete>
+
+        <br/>
+        <md-select *ngIf="dataSourceMode" class="field full" placeholder="Default rule mode" required [(ngModel)]="obj.defaultRuleMode">
+          <md-option value="0">Include all routines</md-option>
+          <md-option value="1">Exclude all routines</md-option>
+        </md-select>
+
         <br/>
 
-        <button md-raised-button (click)="testConnection()" [disabled]="shouldDisableControls()">Test connection</button>
+        <button md-raised-button color="primary" (click)="testConnection()" [disabled]="shouldDisableControls()">Test connection</button>
+        <br/>
         <br/><br/>
     </div>
 
