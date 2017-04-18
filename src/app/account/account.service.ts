@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/Rx';
@@ -64,6 +64,7 @@ export class AccountService {
                 }
 
             }).catch(() => {
+                
                 L2.BrowserStore.removeSessionItem("jwt");
                 resolve(false);
                 return;

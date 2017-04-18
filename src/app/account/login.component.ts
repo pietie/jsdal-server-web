@@ -9,7 +9,7 @@ import 'rxjs/add/operator/toPromise';
 
 
 import { AccountService } from '../account/account.service';
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 
 @Component({
     selector: 'login',
@@ -90,13 +90,13 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
 
             }).catch(e => {
                 this.checkingCredentials = false;
-                L2.HandleException(e);
+                L2.handleException(e);
             });
 
 
         }
         catch (e) {
-            L2.HandleException(e);
+            L2.handleException(e);
             console.error(e);
         }
     }
@@ -159,17 +159,23 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
                     this.busyWithLogin = false;
                     this.loginFailed = !success;
 
-                    if (success) this.goHome();
+                      if (success) {
+                        this.goHome();
+                    }
+                    else {
+                        L2.exclamation("Failed to log in. Make sure you've entered your credentials correctly and try again.");
+                    }
                 }).catch(e => {
                     this.busyWithLogin = false;
                     console.error(e);
+                    L2.exclamation("Failed to log in. Please check your network connection and try again or contact support if the problem persists.");
                 });
             }
         }
         catch (e) {
             this.busyWithLogin = false;
             console.error(e);
-            L2.HandleException(e);
+            L2.handleException(e);
         }
     }
 

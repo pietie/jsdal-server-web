@@ -1,8 +1,8 @@
 ﻿import { Component, EventEmitter, Output, ViewChild, ChangeDetectorRef } from '@angular/core'
 
-import * as L2 from './../L2'
+import L2 from 'l2-lib/L2';
 
-import {DefaultRuleMode} from './../projects/dbsource.component'
+//import {DefaultRuleMode} from './../projects/dbsource.component'
 
 enum RoutineIncludeExcludeInstructionSource {
     Unknown = 0,
@@ -29,7 +29,7 @@ export class RuleManagement {
     public jsFilenameGuid: string;
     public title: string;
 
-    public defaultRuleMode: DefaultRuleMode|string = DefaultRuleMode.Unknown;
+    public defaultRuleMode: any;//DefaultRuleMode|string = DefaultRuleMode.Unknown;
 
     private ruleList: any[];
     private fullRoutineList: any[];
@@ -135,7 +135,7 @@ export class RuleManagement {
         });
         
         L2.postJson(`/api/rule?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${this.jsFilenameGuid}&json=${json}`).then(r => {
-            L2.Success("Rule successfully added");
+            L2.success("Rule successfully added");
             this.isInAddNewRuleMode = false;
             this.refreshRuleList();
             this.refreshFullRoutineList();
@@ -144,10 +144,10 @@ export class RuleManagement {
 
     private onDeleteRuleClicked(row) {
 
-        L2.Confirm(`Are you sure you want to delete the rule <strong>${row.Ix}. ${row.Description}</strong>?`).then(() => {
+        L2.confirm(`Are you sure you want to delete the rule <strong>${row.Ix}. ${row.Description}</strong>?`).then(() => {
 
             L2.deleteJson(`/api/rule?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${this.jsFilenameGuid}&ruleGuid=${row.Guid}`).then(() => {
-                L2.Success(`Rule <strong>${row.Description}</strong> successfully deleted`);
+                L2.success(`Rule <strong>${row.Description}</strong> successfully deleted`);
                 this.refreshRuleList();
                 this.refreshFullRoutineList();
             });

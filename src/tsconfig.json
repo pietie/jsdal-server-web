@@ -4,6 +4,9 @@
     "paths": {
       "~/*": [
         "./app/*"
+      ],
+      "l2-lib/*": [
+        "../node_modules/l2-lib/dist/*"
       ]
     },
     "declaration": false,
@@ -23,4 +26,4 @@
       "../node_modules/@types"
     ]
   }
-} 
+}

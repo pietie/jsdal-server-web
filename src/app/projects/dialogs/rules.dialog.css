@@ -1,0 +1,22 @@
+div.addNewRule md-radio-button { width: 90px }
+
+    div.addNewRule div.row
+    {
+        display:flex;
+        align-items: center;
+    }
+
+    div.addNewRule div.row md-input-container
+    {
+        flex: 1 1 auto;
+    }
+    
+
+    tr.routine.included
+    {
+     color: #00931e;   
+    }
+    tr.routine.excluded
+    {
+        color: #930000;
+    }    

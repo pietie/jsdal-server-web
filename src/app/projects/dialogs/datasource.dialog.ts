@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import * as L2 from '~/L2'
+import L2 from 'l2-lib/L2';
 
 export interface IDataSource {
     logicalName?: string;
@@ -77,7 +77,7 @@ export class DataSourceDialog {
             pass = this.obj.password;
         }
 
-        L2.fetchJson(`/api/util/listdbs?datasource=${this.obj.dataSource}&u=${L2.NullToEmpty(user)}&p=${L2.NullToEmpty(pass)}`).then((list: any) => {
+        L2.fetchJson(`/api/util/listdbs?datasource=${this.obj.dataSource}&u=${L2.nullToEmpty(user)}&p=${L2.nullToEmpty(pass)}`).then((list: any) => {
             this.isLoadingDbList = false;
             this.dbList = list.Data.map((s) => { return { id: s, text: s } });
         }).catch(() => {
@@ -95,10 +95,10 @@ export class DataSourceDialog {
             pass = this.obj.password;
         }
 
-        L2.fetchJson(`/api/util/testconnection?dataSource=${this.obj.dataSource}&catalog=${this.obj.database}&username=${L2.NullToEmpty(user)}&password=${L2.NullToEmpty(pass)}`).then(() => {
+        L2.fetchJson(`/api/util/testconnection?dataSource=${this.obj.dataSource}&catalog=${this.obj.database}&username=${L2.nullToEmpty(user)}&password=${L2.nullToEmpty(pass)}`).then(() => {
             this.isTestingConnection = false;
-            L2.Success("Connection successful");
-        }).catch((e) => { this.isTestingConnection = false; L2.HandleException(e); });
+            L2.success("Connection successful");
+        }).catch((e) => { this.isTestingConnection = false; L2.handleException(e); });
     }
 
 }

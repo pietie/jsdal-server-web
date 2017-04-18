@@ -5,7 +5,7 @@ import { ParametersDialog }  from './parameters.dialog'
 import { TablesDialog }  from './tables.dialog'
 import { ResultsErrorDialog }  from './resulterror.dialog'
 
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 
 
 @Component({
@@ -50,7 +50,7 @@ export class MetadataBrowserDialog {
             $(this.dlg.nativeElement).modal();
         }
         catch (e) {
-            L2.HandleException(e);
+            L2.handleException(e);
         }
     }
 
@@ -84,7 +84,7 @@ export class MetadataBrowserDialog {
 
         }
         catch (e) {
-            L2.HandleException(e);
+            L2.handleException(e);
         } 
 
     }

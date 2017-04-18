@@ -2,7 +2,7 @@
 import { Location } from '@angular/common'
 import { ActivatedRoute, Router } from '@angular/router'
 
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 
 @Component({
     templateUrl: './project-list.component.html',
@@ -36,7 +36,7 @@ export class ProjectListComponent {
 
     onEditProject(project) {
 
-      L2.Prompt("Update project", "Name", project.Name, "UPDATE").then((projectName: string) => {
+      L2.prompt("Update project", "Name", project.Name, "UPDATE").then((projectName: string) => {
             if (projectName) {
                 this.updateProject(project.Name, projectName.trim());
             }
@@ -44,7 +44,7 @@ export class ProjectListComponent {
     }
 
     onCreateNewProjectClicked() {
-        L2.Prompt("Create new project", "Name", null, "CREATE").then((projectName: string) => {
+        L2.prompt("Create new project", "Name", null, "CREATE").then((projectName: string) => {
             if (projectName) {
                 this.createNewProject(projectName.trim());
             }
@@ -52,14 +52,14 @@ export class ProjectListComponent {
     }
 
     onDeleteProject(row) {
-        L2.Confirm(`Are you sure you want to delete the project <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
+        L2.confirm(`Are you sure you want to delete the project <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
             if (r) this.deleteProject(row.Name);
         });
     }
 
     private deleteProject(name: string): Promise<any> {
         return L2.deleteJson("/api/project", { body: JSON.stringify(name) }).then(r => {
-            L2.Success(`Project ${name} successfully removed.`);
+            L2.success(`Project ${name} successfully removed.`);
             this.refresh();
         });
     }
@@ -68,7 +68,7 @@ export class ProjectListComponent {
         return L2.putJson(`/api/project/${name}`, {
             body: JSON.stringify(newName)
         }).then((r) => {
-            L2.Success(`Project ${newName} successfully updated.`);
+            L2.success(`Project ${newName} successfully updated.`);
             this.refresh();
         });
     }
@@ -78,7 +78,7 @@ export class ProjectListComponent {
         return L2.postJson("/api/project", {
             body: JSON.stringify(name)
         }).then((r) => {
-            L2.Success(`Project <strong>${name}</strong> successfully created.`);
+            L2.success(`Project <strong>${name}</strong> successfully created.`);
             this.refresh();
         });
     }

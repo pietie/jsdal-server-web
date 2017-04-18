@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 
 @Component({
     templateUrl: 'performance-detail.component.html'

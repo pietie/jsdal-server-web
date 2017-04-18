@@ -214,7 +214,7 @@
             </md-tab-group>
 
             <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
-                ORM sprocs are not installed yet. Click <strong>initialize</strong> to start the installation procedure.
+                <p>ORM sprocs are not installed yet. Click <strong>initialize</strong> to start the installation procedure.</p>
             </div>
 
             <button md-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>

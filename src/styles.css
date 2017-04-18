@@ -1,4 +1,4 @@
-@import '~@angular/material/core/theming/prebuilt/indigo-pink.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 @font-face {
     font-family: "Roboto";
@@ -388,5 +388,17 @@ table.grid
 
 table.grid tr:nth-child(even)
 {
-    background-color: #c0c0c0;
+    background-color: #f0f0f9;
+}
+
+.flex-vertical-center
+{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.flex-vertical-center md-icon
+{
+    margin-right: 8px;
 }

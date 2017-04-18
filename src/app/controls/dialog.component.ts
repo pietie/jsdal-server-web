@@ -1,6 +1,6 @@
 ﻿import { Component, EventEmitter, Output, ViewChild, ComponentFactoryResolver, ViewContainerRef } from '@angular/core'
 
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 
 @Component({
     selector: 'l2dialog',
@@ -61,7 +61,7 @@ export class L2Dialog {
              
         }
         catch (e) {
-            L2.HandleException(e);
+            L2.handleException(e);
         }
     }
 
@@ -86,13 +86,13 @@ export class L2Dialog {
                 ref.instance.show(type, options);
             }
             catch (e) {
-                L2.HandleException(e);
+                L2.handleException(e);
             }
         });
 
         //ref.instance.onNewDbAdded.subscribe(() => {
         //    this.refreshDbConnectionList();
-        //    L2.Success("New database connection added successfully.");
+        //    L2.success("New database connection added successfully.");
         //});
 
 

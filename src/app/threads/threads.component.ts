@@ -1,7 +1,7 @@
 ﻿import { Component, ModuleWithProviders } from '@angular/core'
 import { ActivatedRoute, Routes, RouterModule } from '@angular/router'
 
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 
 @Component({
     selector: 'threads',
@@ -27,7 +27,7 @@ export class ThreadsViewComponent {
 
     private startThread(row) {
         L2.postJson(`/api/threads/${row.Key}/start`).then((r) => {
-            L2.Success("Thread started.");
+            L2.success("Thread started.");
             this.reloadThreadList();
         });
         
@@ -35,10 +35,10 @@ export class ThreadsViewComponent {
 
     private stopThread(row) {
         L2.postJson(`/api/threads/${row.Key}/stop`).then((r) => {
-            L2.Success("Thread stopped.");
+            L2.success("Thread stopped.");
             this.reloadThreadList();
         });
-
+ 
     }
 } 
 

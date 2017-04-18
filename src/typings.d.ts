@@ -26,4 +26,3 @@ interface JWT {
     expiresBy?: Date;*/
 }
 
-declare var require: any;

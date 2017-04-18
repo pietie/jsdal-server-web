@@ -18,7 +18,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/toPromise';
 
 
-import * as L2 from '../L2'
+import L2 from 'l2-lib/L2';
 
 @Component({
     selector: 'addNewDatabaseSourceDialog',
@@ -194,7 +194,7 @@ export class AddNewDatabaseSourceDialog {
             pass = this.password;
         }
 
-        L2.fetchJson(`/api/util/listdbs?datasource=${this.datasource}&u=${L2.NullToEmpty(user)}&p=${L2.NullToEmpty(pass)}`).then((list: any) => {
+        L2.fetchJson(`/api/util/listdbs?datasource=${this.datasource}&u=${L2.nullToEmpty(user)}&p=${L2.nullToEmpty(pass)}`).then((list: any) => {
             this.isLoadingDbList = false;
 
             var data = list.Data.map((s) => { return { id: s, text: s } });
@@ -218,18 +218,18 @@ export class AddNewDatabaseSourceDialog {
 
         if (this.dbSource) {
 
-            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${this.dbSource.Name}&dataSource=${this.datasource}&catalog=${this.database}&username=${L2.NullToEmpty(this.username)}&password=${L2.NullToEmpty(this.password)}&jsNamespace=${L2.NullToEmpty(this.jsNamespace)}&defaultRoleMode=${this.defaulRuleMode}`
+            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${this.dbSource.Name}&dataSource=${this.datasource}&catalog=${this.database}&username=${L2.nullToEmpty(this.username)}&password=${L2.nullToEmpty(this.password)}&jsNamespace=${L2.nullToEmpty(this.jsNamespace)}&defaultRoleMode=${this.defaulRuleMode}`
                 , { body: JSON.stringify(this.logicalName) }).then(r => {
-                    L2.Success("Database source updated successfully");
+                    L2.success("Database source updated successfully");
                     this.onNewDbAdded.emit(r);
                     this.close();
                 });
             return;
         }
 
-        L2.postJson(`/api/database?project=${this.projectName}&dataSource=${this.datasource}&catalog=${this.database}&username=${L2.NullToEmpty(this.username)}&password=${L2.NullToEmpty(this.password)}&jsNamespace=${L2.NullToEmpty(this.jsNamespace)}&defaultRoleMode=${this.defaulRuleMode}`
+        L2.postJson(`/api/database?project=${this.projectName}&dataSource=${this.datasource}&catalog=${this.database}&username=${L2.nullToEmpty(this.username)}&password=${L2.nullToEmpty(this.password)}&jsNamespace=${L2.nullToEmpty(this.jsNamespace)}&defaultRoleMode=${this.defaulRuleMode}`
             , { body: JSON.stringify(this.logicalName) }).then(r => {
-                L2.Success("New database source added successfully");
+                L2.success("New database source added successfully");
                 this.onNewDbAdded.emit(r);
                 this.close();
             });
@@ -247,9 +247,9 @@ export class AddNewDatabaseSourceDialog {
             pass = this.password;
         }
 
-        L2.fetchJson(`/api/util/testconnection?dataSource=${this.datasource}&catalog=${this.database}&username=${L2.NullToEmpty(user)}&password=${L2.NullToEmpty(pass)}`).then(() => {
+        L2.fetchJson(`/api/util/testconnection?dataSource=${this.datasource}&catalog=${this.database}&username=${L2.nullToEmpty(user)}&password=${L2.nullToEmpty(pass)}`).then(() => {
             this.isTestingDbDetails = false;
-            L2.Success("Connection successful");
+            L2.success("Connection successful");
         }).catch(() => this.isTestingDbDetails = false);
 
     }
@@ -358,29 +358,29 @@ export class ProjectComponent {
 
                         if (!row) {
                             // add new
-                            L2.postJson(`/api/database?project=${this.projectName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.NullToEmpty(obj.username)}&password=${L2.NullToEmpty(obj.password)}&jsNamespace=${L2.NullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
+                            L2.postJson(`/api/database?project=${this.projectName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
-                                    L2.Success("New database source added successfully");
+                                    L2.success("New database source added successfully");
                                 });
                         }
                         else {
                             // update
-                            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${row.Name}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.NullToEmpty(obj.username)}&password=${L2.NullToEmpty(obj.password)}&jsNamespace=${L2.NullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
+                            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${row.Name}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
-                                    L2.Success("Database source updated successfully");
+                                    L2.success("Database source updated successfully");
                                 });
                         }
 
                         this.refreshDbList();
                     }
                     catch (e) {
-                        L2.HandleException(e);
+                        L2.handleException(e);
                     }
                 }
             });
         }
         catch (e) {
-            L2.HandleException(e);
+            L2.handleException(e);
         }
     }
 
@@ -412,14 +412,14 @@ export class ProjectComponent {
     }
 
     onDeleteDatabase(row) {
-        L2.Confirm(`Are you sure you want to delete the database source <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
+        L2.confirm(`Are you sure you want to delete the database source <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
             if (r) this.deleteDatabaseSource(row.Name);
         });
     }
 
     private deleteDatabaseSource(name: string) {
         return L2.deleteJson(`/api/database/${name}?projectName=${this.projectName}`, { body: JSON.stringify(name) }).then(() => {
-            L2.Success(`Database source <strong>${name}</strong> successfully deleted.`);
+            L2.success(`Database source <strong>${name}</strong> successfully deleted.`);
             this.router.navigate(["/projects/manage", { name: this.projectName }]);
             this.refreshDbList();
         });

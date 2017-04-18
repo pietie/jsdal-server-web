@@ -49,6 +49,9 @@
             <button *ngIf="!isInAddNewRuleMode" (click)="isInAddNewRuleMode=true;newTypeVal=1" color="primary" md-button>ADD NEW <strong>{{defaultRuleMode == "IncludeAll"? "EXCLUSION":"INCLUSION"}}</strong> RULE</button>
 
         </md-card-actions>
+        <md-card-footer>
+            <md-progress-bar *ngIf="isLoadingRules" mode="indeterminate"></md-progress-bar>
+        </md-card-footer>
     </md-card>
 
     <md-card *ngIf="isInAddNewRuleMode">
@@ -101,8 +104,58 @@
             Full routine list
         </md-card-title>
         <md-card-content>
-            GRID
+
+            <div *ngIf="filteredRoutineList" class="footer">Viewing <strong>{{ filteredRoutineList.length }}</strong> of <strong>{{ fullRoutineList.length }}</strong> routine(s)</div>
+
+            <div style="display: flex;">
+                <md-input-container style="flex: 1 1 auto;">
+                    <input mdInput type="text" [(ngModel)]="filterTxt" placeholder="Filter text" (keyup)="onFilterTextChanged($event.target.value)"
+                    />
+                </md-input-container>
+
+            </div>
+            <div style="height: 2px;margin-top:-3px;">
+                <md-progress-bar *ngIf="isFilteredListLoading" mode="indeterminate"></md-progress-bar>
+            </div>
+
+            <table class="grid" *ngIf="filteredRoutineList">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of filteredRoutineList" class="routine" [class.included]="row.Included" [class.excluded]="row.Excluded">
+                        <td>
+                            <!--Only show explicit incl/excl action if the current routine is not already in that state -->
+                            <a *ngIf="showIncludeExcludeButton(row)" (click)="onExplicitInludeOrExclude(row)" href="javascript:void(0)">{{defaultRuleMode == "IncludeAll"? "exclude":"include"}}</a>
+
+                        </td>
+                        <td><i class="fa pr8" [class.fa-check]="row.Included" [class.fa-times]="row.Excluded"></i> {{row.RoutineFullName}}</td>
+                        <td>
+                                <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'" class="pr8 fa fa-database"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
+                                <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
+                                <i title="Database source level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
+
+                        </td>
+
+                    </tr>
+                    <tr *ngIf="needTruncation && cutOffRoutineList">
+                        <td colspan="4" style="text-align:center;background-color:#f0f0f0;border:1px solid gray;padding:3px;">Results truncated. <a href="javascript:void(0)" (click)="cutOffRoutineList=false;refreshFilteredView(filterTxt);">Click here</a>                            to display all of the results.</td>
+                    </tr>
+                    <tr *ngIf="!filteredRoutineList || filteredRoutineList.length == 0">
+                        <td colspan="4">No routines found in cache.</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
         </md-card-content>
+        <md-card-footer>
+            <md-progress-bar *ngIf="isFilteredListLoading" mode="indeterminate"></md-progress-bar>
+        </md-card-footer>
     </md-card>
 
 </div>

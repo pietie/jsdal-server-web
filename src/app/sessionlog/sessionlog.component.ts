@@ -1,7 +1,7 @@
 ﻿import { Component  } from '@angular/core'
 
 import { LogGrid } from './../controls/LogGrid'
-import * as L2 from './../L2'
+import L2 from 'l2-lib/L2';
 
 @Component({
     selector: 'SessionLog',
