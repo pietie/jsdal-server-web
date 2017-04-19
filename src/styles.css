@@ -414,6 +414,12 @@ table.grid thead th
     color: rgba(0,0,0,0.54);
 }
 
+table.grid tr.selected td
+{
+    background-color:  #D9EFB6;
+    font-weight: bold;
+}
+
 table.grid tr:nth-child(even)
 {
     background-color: #F2F2FF;

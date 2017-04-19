@@ -283,7 +283,7 @@ export class ProjectComponent {
 
     constructor(
         private projectService: ProjectService
-        , private route: ActivatedRoute
+        , public route: ActivatedRoute
         , private router: Router
         , private dialog: MdDialog
         , private componentFactoryResolver: ComponentFactoryResolver
@@ -337,7 +337,7 @@ export class ProjectComponent {
                     database: row.InitialCatalog,
                     username: row.UserID,
                     password: null,
-                    authType: <any>(row.UserID? AuthenticationType.SQL : AuthenticationType.Windows),
+                    authType: <any>(row.UserID ? AuthenticationType.SQL : AuthenticationType.Windows),
                     defaultRuleMode: row.DefaultRuleMode.toString(),
                     guid: row.Guid
                 };
@@ -419,9 +419,16 @@ export class ProjectComponent {
 
     private deleteDatabaseSource(name: string) {
         return L2.deleteJson(`/api/database/${name}?projectName=${this.projectName}`, { body: JSON.stringify(name) }).then(() => {
-            L2.success(`Database source <strong>${name}</strong> successfully deleted.`);
-            this.router.navigate(["/projects/manage", { name: this.projectName }]);
+            L2.success(`Database source ${name} successfully deleted.`);
+
             this.refreshDbList();
+
+            let child: any = this.route.firstChild;
+
+            // redirect back up to this level if a child has been deleted
+            if (child && child.params.getValue().name == name) {
+                this.router.navigate(['./'], { relativeTo: this.route });
+            }
         });
     }
 }

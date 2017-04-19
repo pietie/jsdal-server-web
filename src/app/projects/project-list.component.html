@@ -1,4 +1,5 @@
-﻿<md-card [@componentState]="componentState">
+﻿
+<md-card [@componentState]="componentState">
     <md-card-title><div class="flex-vertical-center"><md-icon class=" pr8">web</md-icon><span>Projects</span></div></md-card-title>
     <md-card-content>
 
@@ -11,7 +12,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of projectList" [class.success]="selectedProject == row">
+                <tr *ngFor="let row of projectList" [class.selected]="route.firstChild? route.firstChild.params.getValue().name == row.Name: false">
                     <td class="anchorColumn">
                         <button (click)="componentState = 'childRouteActive';" [routerLink]="['./' + row.Name]" md-button color="primary" >manage</button>
                         <button (click)="onEditProject(row)" md-button color="primary" >edit</button>

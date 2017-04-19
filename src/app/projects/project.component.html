@@ -13,7 +13,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of dbList">
+                <tr *ngFor="let row of dbList" [class.selected]="route.firstChild? route.firstChild.params.getValue().name == row.Name: false">
                     <td class="anchorColumn">
                         <button [routerLink]="['./' + row.Name]" md-button color="primary" >manage</button>
                         <button (click)="onAddEditDbSourceClicked(row)" md-button color="primary" >edit</button>

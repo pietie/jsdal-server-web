@@ -26,17 +26,18 @@ export class ProjectListComponent {
     private projectList: any;
     private selectedProject: any;
 
-    constructor(private route: ActivatedRoute, private router: Router, private location: Location) {
+    constructor(public route: ActivatedRoute, private router: Router, private location: Location) {
         this.refresh();
 
         this.route.params.subscribe(params => {
+            console.log(route);
             this.componentState = "enterComponent";
         });
     }
 
     onEditProject(project) {
 
-      L2.prompt("Update project", "Name", project.Name, "UPDATE").then((projectName: string) => {
+        L2.prompt("Update project", "Name", project.Name, "UPDATE").then((projectName: string) => {
             if (projectName) {
                 this.updateProject(project.Name, projectName.trim());
             }
@@ -59,8 +60,15 @@ export class ProjectListComponent {
 
     private deleteProject(name: string): Promise<any> {
         return L2.deleteJson("/api/project", { body: JSON.stringify(name) }).then(r => {
-            L2.success(`Project ${name} successfully removed.`);
+            L2.success(`Project '${name}' successfully removed.`);
             this.refresh();
+
+            let child: any = this.route.firstChild;
+
+            // redirect back up to this level if a child has been deleted
+            if (child && child.params.getValue().name == name) {
+                this.router.navigate(['./'], { relativeTo: this.route });
+            }
         });
     }
 
@@ -68,7 +76,7 @@ export class ProjectListComponent {
         return L2.putJson(`/api/project/${name}`, {
             body: JSON.stringify(newName)
         }).then((r) => {
-            L2.success(`Project ${newName} successfully updated.`);
+            L2.success(`Project '${newName}' successfully updated.`);
             this.refresh();
         });
     }
@@ -78,7 +86,7 @@ export class ProjectListComponent {
         return L2.postJson("/api/project", {
             body: JSON.stringify(name)
         }).then((r) => {
-            L2.success(`Project <strong>${name}</strong> successfully created.`);
+            L2.success(`Project '${name}' successfully created.`);
             this.refresh();
         });
     }

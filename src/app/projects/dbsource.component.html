@@ -208,6 +208,9 @@
                         <md-card-actions>
                             <button md-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
                         </md-card-actions>
+                        <md-card-footer>
+                            <md-progress-bar *ngIf="outputFileBusy" mode="indeterminate"></md-progress-bar>
+                        </md-card-footer>
                     </md-card>
 
                 </md-tab>

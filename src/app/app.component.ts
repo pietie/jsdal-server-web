@@ -36,7 +36,6 @@ class X implements IL2OutputMessageHandler {
 
     exclamation(msg: string, title?: string): any {
         // incredibly crude but easiest solution for now to handle token expiration globally
-       
         if (/your access token has expired/gi.test(msg)) {
             //!this.securityService.logout();
             this.router.navigate(['/login']);

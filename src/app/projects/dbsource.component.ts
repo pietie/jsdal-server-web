@@ -58,6 +58,7 @@ export class DbSourceComponent {
 
     private execConnectionsList: any;
     private outputFileList: any;
+    public outputFileBusy: boolean = false;
     private pluginList: any;
 
     private pluginConfigIsDirty: boolean = false;
@@ -124,8 +125,12 @@ export class DbSourceComponent {
     }
 
     private refreshOutputFileList() {
+        this.outputFileBusy = true;
         L2.fetchJson(`/api/database/jsFiles?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
             this.outputFileList = r.Data;
+            this.outputFileBusy = false;
+        }).catch(e => {
+            this.outputFileBusy = false;
         });
 
     }
@@ -227,11 +232,12 @@ export class DbSourceComponent {
     }
 
     private createNewJsOutputFile(name: string): Promise<any> {
-
+        this.outputFileBusy = true;
         return L2.postJson(`/api/database/addJsfile?projectName=${this.projectName}&dbSource=${this.dbSource.Name}&jsFileName=${name}`).then((r) => {
             L2.success("Output file successfully created.");
+            this.outputFileBusy = false;
             this.refreshOutputFileList();
-        });
+        }).catch(e => { this.outputFileBusy = false; });
     }
 
     private onEditOutputFile(row) {
@@ -243,10 +249,12 @@ export class DbSourceComponent {
     }
 
     private updateOutputFileName(oldName: string, newName: string) {
+        this.outputFileBusy = true;
         return L2.putJson(`/api/database/updateJsFile?projectName=${this.projectName}&dbSource=${this.dbSource.Name}&oldName=${oldName}&newName=${newName}`).then((r) => {
-            L2.success(`Output file <strong>${newName}</strong> successfully updated.`);
+            L2.success(`Output file ${newName} successfully updated.`);
+            this.outputFileBusy = false;
             this.refreshOutputFileList();
-        });
+        }).catch(e=>this.outputFileBusy = false);
     }
 
     private onDeleteOutputFile(row) {
@@ -256,11 +264,12 @@ export class DbSourceComponent {
     }
 
     private deleteOutputFile(row) {
-
-        return L2.deleteJson(`/api/database/deleteJsFile?projectName=${this.projectName}&dbSource=${this.dbSource.Name}&jsFilenameGuid=${row.Guid}`).then(r => {
+        this.outputFileBusy = true;
+        return L2.deleteJson(`/api/jsfile/${row.Guid}?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then(r => {
             this.refreshOutputFileList();
-            L2.success(`<strong>${row.Filename}</strong> successfully deleted`);
-        });
+            this.outputFileBusy = false;
+            L2.success(`${row.Filename} successfully deleted`);
+        }).catch(e=>this.outputFileBusy = false);
 
     }
 

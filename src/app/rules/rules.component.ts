@@ -147,7 +147,7 @@ export class RuleManagement {
         L2.confirm(`Are you sure you want to delete the rule <strong>${row.Ix}. ${row.Description}</strong>?`).then(() => {
 
             L2.deleteJson(`/api/rule?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${this.jsFilenameGuid}&ruleGuid=${row.Guid}`).then(() => {
-                L2.success(`Rule <strong>${row.Description}</strong> successfully deleted`);
+                L2.success(`Rule ${row.Description} successfully deleted`);
                 this.refreshRuleList();
                 this.refreshFullRoutineList();
             });
