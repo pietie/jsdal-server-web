@@ -269,14 +269,33 @@ div.form-flex {
     align-items: center;
 }
 
+div.form-flex .field180
+{
+    font-weight: bold;
+    width: 180px;
+    display: inline-block;
+}
+
+div.form-flex .value
+{
+    width: 120px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+div.form-flex .full > .value
+{
+    width: auto;
+}
 
 md-input-container.field
 {
     width: 350px;
+    font-weight: normal;
     margin-right: 10px;
 }
 
-    md-input-container.field.full {
+    md-input-container.field.full, div.form-flex .full {
         flex: 0 1 100%;
     }
 
@@ -384,11 +403,44 @@ table.grid
 {
     width: 100%;
     margin: auto;
+
+}
+
+table.grid thead th
+{
+    background-color: #e6e8f8;
+    height: 54px;
+    font: bold 12px Roboto, "Helvetica Neue", sans-serif;
+    color: rgba(0,0,0,0.54);
 }
 
 table.grid tr:nth-child(even)
 {
-    background-color: #f0f0f9;
+    background-color: #F2F2FF;
+}
+
+table.grid tr:nth-child(odd)
+{
+    background-color: #F7F7FF;    
+}
+table.grid tbody tr:hover
+{
+    background-color: #E6E8F4;    
+}
+table.grid tbody tr td
+{
+    min-height: 50px;
+    vertical-align: middle;
+}
+table.grid tbody td{
+    padding-left: 4px;
+}
+table.grid tbody td.center
+{
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .flex-vertical-center
@@ -402,3 +454,5 @@ table.grid tr:nth-child(even)
 {
     margin-right: 8px;
 }
+
+

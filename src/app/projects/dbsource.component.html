@@ -45,8 +45,8 @@
 
                         </md-card-content>
                         <md-card-actions>
-                            <button md-button (click)="viewCachedMetadata()" href="javascript:void(0)">VIEW METADATA</button>
-                            <button md-button (click)="clearDbSourceCache()" href="javascript:void(0)">CLEAR CACHE</button>
+                            <button md-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW METADATA</button>
+                            <button md-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR CACHE</button>
                         </md-card-actions>
                     </md-card>
 
@@ -87,10 +87,10 @@
                                 Configure one or more connections to use when executing a routine.
                             </p>
 
-                            <table class="table table-striped">
+                            <table class="grid">
                                 <thead>
                                     <tr>
-                                        <th style="width:150px"></th>
+                                        <th style="width:200px"></th>
                                         <th style="width:220px">Name</th>
                                         <th>Source</th>
                                         <th>Key</th>
@@ -100,8 +100,8 @@
                                     <ng-template [ngIf]="execConnectionsList">
                                         <tr *ngFor="let row of execConnectionsList">
                                             <td class="anchorColumn">
-                                                <a (click)="onAddEditExecConnectionClicked(row)">edit</a>
-                                                <a (click)="onDeleteExecConnectionClicked(row)">delete</a>
+                                                <button (click)="onAddEditExecConnectionClicked(row)" md-button color="primary">edit</button>
+                                                <button (click)="onDeleteExecConnectionClicked(row)" md-button color="accent">delete</button>
                                             </td>
                                             <td>{{row.Name}}</td>
                                             <td>
@@ -174,10 +174,10 @@
 
 
 
-                            <table class="table table-striped" *ngIf="outputFileList">
+                            <table class="grid" *ngIf="outputFileList">
                                 <thead>
                                     <tr>
-                                        <th style="width:150px"></th>
+                                        <th style="width:200px"></th>
                                         <th style="width:220px">Name</th>
                                         <th></th>
                                         <th>Output URLs</th>
@@ -187,15 +187,15 @@
                                 <tbody>
                                     <tr *ngFor="let row of outputFileList">
                                         <td class="anchorColumn">
-                                            <a (click)="onEditOutputFile(row)">edit</a>
-                                            <a (click)="onDeleteOutputFile(row)">delete</a>
+                                            <button (click)="onEditOutputFile(row)" md-button color="primary">edit</button>
+                                            <button (click)="onDeleteOutputFile(row)" md-button color="accent">delete</button>
                                         </td>
                                         <td>{{row.Filename}}</td>
-                                        <td><a (click)="onJsFileManageRulesClicked(row)" href="javascript:void(0)">manage rules</a></td>
+                                        <td><button color="primary" md-button (click)="onJsFileManageRulesClicked(row)">manage rules</button></td>
                                         <td>
 
-                                            <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br
-                                            /> http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
+                                            <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br/> 
+                                            http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
                                         </td>
                                         <td>
                                             {{row.Guid}}
@@ -214,7 +214,7 @@
             </md-tab-group>
 
             <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
-                <p>ORM sprocs are not installed yet. Click <strong>initialize</strong> to start the installation procedure.</p>
+                <p>ORM sprocs are not installed yet. Click <strong>initialise</strong> to start the installation procedure.</p>
             </div>
 
             <button md-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>

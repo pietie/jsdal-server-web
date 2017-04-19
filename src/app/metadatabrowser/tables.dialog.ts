@@ -15,7 +15,7 @@
 	            </div>
 	            <div class="panel-body">
 
-                    <table class="table table-striped table-condensed">
+                    <table class="grid">
                         <thead>
                             <tr>
                                 <th>Name</th>

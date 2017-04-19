@@ -64,7 +64,7 @@ class X implements IL2OutputMessageHandler {
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
-    styles: [`/deep/ md-card { margin-bottom: 14px; }`]
+    styleUrls: [ 'app.component.css' ]
 })
 export class AppComponent {
     constructor(private accountService: AccountService,

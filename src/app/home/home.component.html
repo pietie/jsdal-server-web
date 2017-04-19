@@ -1,34 +1,25 @@
-﻿{{ statsData | json }}
-<hr/>
-<md-card *ngIf="statsData" style="max-width: 600px;margin:auto;">
+﻿<md-card *ngIf="statsData" style="max-width: 600px;margin:auto;">
     <md-card-content>
 
         <div class="form-flex">
+            <div class="full">
+                <span class="field180">Web server started</span>
+                <span class="value">{{ statsData.WebServerStartDate | fromISODateStr |date:'dd MMM yyyy, HH:mm:ss' }} ({{getWebServerAge(statsData.WebServerStartDate)}} ago)</span>
+            </div>
 
+            <div *ngIf="statsData.Performance">
+                <span class="field180">Resident</span>
+                <span class="value"> {{ statsData.Performance.Resident / 1024.0 / 1024.0 | number:'1.2-2' }} MB </span>
+            </div>
 
-    <div class="form-group ">
-        <label class="field">Web server started</label>
-        <div class="col-sm-10">
-            <p class="form-control-static">{{ statsData.WebServerStartDate | fromISODateStr |date:'dd MMM yyyy, HH:mm:ss' }} <span class="text-info">({{getWebServerAge(statsData.WebServerStartDate)}} ago)</span></p>
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Working set</label>
-        <div class="col-sm-10">
-            <p class="form-control-static">{{ statsData.Performance.WorkingSet / 1024.0 / 1024.0 | number:'1.2-2' }} MB <span class="text-info">({{ statsData.Performance.PeakWorkingSet / 1024.0 / 1024.0 | number: '1.2-2' }} MB peak)</span></p>
-        </div>
-    </div>
-
-
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Tick count</label>
-        <div class="col-sm-10">
-            <p class="form-control-static">{{ statsData.TickCount }}</p>
-        </div>
-    </div>
-
+            <div *ngIf="statsData.Performance">
+                <span class="field180">Heap (total)</span>
+                <span class="value"> {{ statsData.Performance.HeapTotal / 1024.0 / 1024.0 | number:'1.2-2' }} MB </span>
+            </div>
+            <div *ngIf="statsData.Performance">
+                <span class="field180">Heap (used)</span>
+                <span class="value"> {{ statsData.Performance.HeapUsed / 1024.0 / 1024.0 | number:'1.2-2' }} MB </span>
+            </div>
 
         </div>
 

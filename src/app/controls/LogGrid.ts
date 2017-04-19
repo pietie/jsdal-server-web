@@ -30,7 +30,7 @@ enum LogEntryType {
 
     </div>
 
-    <table class="table table-striped">
+    <table class="grid">
         <thead>
             <tr>
                 <th style="width:50px">Time</th>
