@@ -1,0 +1,91 @@
+<h1 md-dialog-title>
+    <div class="flex-vertical-center">
+        <md-icon>style</md-icon><span>Metadata browser</span></div>
+
+</h1>
+<div md-dialog-content>
+
+    <div class="form-flex">
+        <md-input-container class="full">
+            <input mdInput type="text" placeholder="Search query" [(ngModel)]="searchCriteria.query" (keyup.enter)="onSearchClicked()"
+            />
+        </md-input-container>
+
+        <div style="margin-top:10px;display: flex; justify-content: space-around;flex: 1 1 auto;">
+
+            <md-select [(ngModel)]="searchCriteria.routineType" placeholder="Type">
+                <md-option value="0">(All)</md-option>
+                <md-option value="function">UDF</md-option>
+                <md-option value="procedure">Sproc</md-option>
+                <md-option value="tvf">Table-valued</md-option>
+            </md-select>
+
+            <md-select [(ngModel)]="searchCriteria.status" placeholder="Status">
+                <md-option value="0">(All)</md-option>
+                <md-option value="1">Has error</md-option>
+                <md-option value="2">No error</md-option>
+            </md-select>
+
+            <md-checkbox [(ngModel)]="searchCriteria.hasjsDALMetadata">Has jsDAL metadata</md-checkbox>
+            <md-checkbox [(ngModel)]="searchCriteria.isDeleted">Is deleted</md-checkbox>
+        </div>
+
+
+    </div>
+
+    <br/>
+
+    <button md-raised-button color="primary" (click)="onSearchClicked()">SEARCH</button>
+    <hr/>
+
+    <md-progress-spinner style="height: 40px;" mode="indeterminate" *ngIf="isLoading"></md-progress-spinner>
+
+    <div *ngIf="!isLoading && searchResults">
+
+        <div class="panel-footer">
+            <md-icon>info</md-icon><span>Viewing <strong>{{ searchResults.length }}</strong> of <strong>{{ totalCount }}</strong> routine(s)</span>
+        </div>
+
+        <table class="grid">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th style="width:80px">Parameters</th>
+                    <th style="width:100px">Results</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-template [ngIf]="searchResults">
+                    <tr *ngFor="let row of searchResults" [class.deleted]="row.IsDeleted">
+                        <td>[{{row.Schema}}].[{{row.Routine}}] <a *ngIf="row.jsDALMetadata?.jsDAL" (click)="showJsDALMetadata(row)"
+                                href="javascript:void(0)">(meta)</a></td>
+                        <td>
+                            <button color="primary" md-button *ngIf="row.Parameters?.length > 0" (click)="viewParameters(row)" href="javascript:void(0)">
+                                                        {{ row.Parameters.length }} {{row.Parameters.length == 1? "parm":"parms" }}
+                                                    </button>
+
+                            <button md-button disabled="true" *ngIf="row.Parameters == null || row.Parameters.length == 0">0 parms</button>
+                        </td>
+                        <td>
+                            <button color="primary" md-button (click)="showTableResults(row)" href="javascript:void(0)">{{ getResultsText(row) }}</button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <tr *ngIf="!searchResults || searchResults.length == 0">
+                    <td colspan="100">No results found.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="panel-footer">
+            <md-icon>info</md-icon><span>Viewing <strong>{{ searchResults.length }}</strong> of <strong>{{ totalCount }}</strong> routine(s)</span>
+        </div>
+
+
+    </div>
+
+</div>
+
+<div md-dialog-actions align="end">
+    <button color="primary" md-button (click)="dialogRef.close(false)">CLOSE</button>
+</div>

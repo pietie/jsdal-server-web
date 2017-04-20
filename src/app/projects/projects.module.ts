@@ -6,20 +6,14 @@ import { ProjectService } from './projects.service'
 
 import { ProjectListComponent } from './project-list.component'
 import { projectsRouting } from './projects.routes'
-import { ProjectComponent, AddNewDatabaseSourceDialog } from './project.component'
+import { ProjectComponent } from './project.component'
 import { DbSourceComponent, DbSourceRouteResolver } from './dbsource.component'
 
-import { L2Dialog } from '../controls/dialog.component'
+// import { ParametersDialog } from '../metadatabrowser/parameters.dialog'
+// import { ResultsErrorDialog } from '../metadatabrowser/resulterror.dialog'
+// import { TablesDialog } from '../metadatabrowser/tables.dialog'
 
-
-import { RuleManagement } from '../rules/rules.component'
-
-import { MetadataBrowserDialog } from '../metadatabrowser/metadatabrowser.dialog'
-import { ParametersDialog } from '../metadatabrowser/parameters.dialog'
-import { ResultsErrorDialog } from '../metadatabrowser/resulterror.dialog'
-import { TablesDialog } from '../metadatabrowser/tables.dialog'
-
-import { DataSourceDialog, RulesDialog } from './dialogs'
+import { DataSourceDialog, RulesDialog, MetadataViewerDialog, MetadataMoreInfoDialog } from './dialogs'
 
 
 @NgModule({
@@ -30,17 +24,18 @@ import { DataSourceDialog, RulesDialog } from './dialogs'
 
         DataSourceDialog,
         RulesDialog,
+        MetadataViewerDialog,
+        MetadataMoreInfoDialog
 
-        AddNewDatabaseSourceDialog, RuleManagement, MetadataBrowserDialog, L2Dialog
-        , ParametersDialog, ResultsErrorDialog, TablesDialog
     ],
     imports: [SharedModule, projectsRouting],
     providers: [ProjectService, DbSourceRouteResolver],
     entryComponents: [
         DataSourceDialog,
         RulesDialog,
-
-        AddNewDatabaseSourceDialog, RuleManagement, MetadataBrowserDialog, L2Dialog, ParametersDialog, ResultsErrorDialog, TablesDialog],
+        MetadataViewerDialog,
+        MetadataMoreInfoDialog
+    ]
 
 
 })

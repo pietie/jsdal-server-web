@@ -1,4 +1,4 @@
-﻿
+﻿<!--
 <style>
     addNewRule.ng-enter{
         opacity: 0;
@@ -9,7 +9,7 @@
     addNewRule.ng-enter-active{
         opacity: 1;
     }
-
+ 
     tr.routine.included
     {
      color: #00931e;   
@@ -17,7 +17,7 @@
     tr.routine.excluded
     {
         color: #930000;
-    }
+    } 
 </style>
 
 <div #dlg class="modal fade" data-backdrop="static">
@@ -119,7 +119,7 @@
                                 <tbody>
                                     <tr *ngFor="let row of filteredRoutineList" class="routine" [class.included]="row.Included" [class.excluded]="row.Excluded">
                                         <td>
-                                            <!--Only show explicit incl/excl action if the current routine is not already in that state -->
+                                            < !--Only show explicit incl/excl action if the current routine is not already in that state - ->
                                             <a *ngIf="showIncludeExcludeButton(row)" (click)="onExplicitInludeOrExclude(row)" href="javascript:void(0)">{{defaultRuleMode == "IncludeAll"? "exclude":"include"}}</a>
                                              
                                         </td>
@@ -168,5 +168,5 @@
 </div>
 
 
-
+-->
  

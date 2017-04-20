@@ -8,9 +8,8 @@ import { ProjectService, IDBSource } from './projects.service'
 
 import { ProjectComponent } from './project.component'
 
-import { MetadataBrowserDialog } from '../metadatabrowser/metadatabrowser.dialog'
 
-import { DataSourceDialog, AuthenticationType, RulesDialog } from './dialogs';
+import { DataSourceDialog, AuthenticationType, RulesDialog, MetadataViewerDialog } from './dialogs';
 
 
 import { Injectable } from '@angular/core';
@@ -254,7 +253,7 @@ export class DbSourceComponent {
             L2.success(`Output file ${newName} successfully updated.`);
             this.outputFileBusy = false;
             this.refreshOutputFileList();
-        }).catch(e=>this.outputFileBusy = false);
+        }).catch(e => this.outputFileBusy = false);
     }
 
     private onDeleteOutputFile(row) {
@@ -269,7 +268,7 @@ export class DbSourceComponent {
             this.refreshOutputFileList();
             this.outputFileBusy = false;
             L2.success(`${row.Filename} successfully deleted`);
-        }).catch(e=>this.outputFileBusy = false);
+        }).catch(e => this.outputFileBusy = false);
 
     }
 
@@ -429,16 +428,10 @@ export class DbSourceComponent {
 
     private viewCachedMetadata() {
 
-        var factory = this.componentFactoryResolver.resolveComponentFactory(MetadataBrowserDialog);
-        var ref = this.viewContainerRef.createComponent(factory);
+        let dialogRef = this.dialog.open(MetadataViewerDialog);
 
-        ref.instance.ready.subscribe(() => {
-            ref.instance.projectName = this.projectName;
-            ref.instance.dbSourceName = this.dbSource.Name;
-            ref.instance.show();
-        });
-
-
+        dialogRef.componentInstance.projectName = this.projectName;
+        dialogRef.componentInstance.dbSourceName = this.dbSource.Name;
     }
 
     private clearDbSourceCache() {

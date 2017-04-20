@@ -1,0 +1,46 @@
+<h1 md-dialog-title>
+    <div class="flex-vertical-center">
+        <md-icon>info_outline</md-icon><span> {{ title }} </span></div>
+</h1>
+<div md-dialog-content>
+
+    <div *ngIf="mode == 'Parms'">
+
+        <table class="grid">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th style="width:80px">Direction</th>
+                    <th style="width:100px">Data type</th>
+                    <th style="width:80px">Length</th>
+                    <th>Default value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-template [ngIf]="dataContext">
+                    <tr *ngFor="let row of dataContext">
+                        <td>
+                            {{ row.ParameterName }}
+                        </td>
+                        <td>{{ row.ParameterMode }}</td>
+                        <td>{{ row.DataType }}</td>
+                        <td>
+                            {{ row.Length }}
+                        </td>
+                        <td>
+                            {{ row.DefaultValue }}
+                        </td>
+                    </tr>
+                </ng-template>
+                <tr *ngIf="!dataContext || dataContext.length == 0">
+                    <td colspan="100">No or empty data context set.</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div md-dialog-actions align="end">
+    <button color="primary" md-button (click)="dialogRef.close(false)">CLOSE</button>
+</div>
