@@ -4,21 +4,16 @@
 
 </h1>
 
-
-
-
 <div md-dialog-content style="min-width:800px;">
 
     <md-card>
-        <md-card-title>
-        </md-card-title>
+        <md-card-title></md-card-title>
         <md-card-content>
-
 
             <table class="grid">
                 <thead>
                     <tr>
-                        <th style="width:120px"></th>
+                        <th style="width:200px"></th>
                         <th>Rule</th>
                         <th># affected</th>
                     </tr>
@@ -28,8 +23,8 @@
                         <td class="anchorNest">
                             <span *ngIf="!row.IsDataSourceRule || row.DBLevelOnly">
                                         {{row.Ix}}.
-                                        <a href="javascript:void(0)">edit</a>
-                                        <a (click)="onDeleteRuleClicked(row)" href="javascript:void(0)">delete</a>
+                                        <button md-button color="primary">edit</button>
+                                        <button md-button color="accent" (click)="onDeleteRuleClicked(row)">delete</button>
                                     </span>
                             <span *ngIf="row.IsDataSourceRule && !row.DBLevelOnly">(DB source rule)</span>
                         </td>
@@ -46,7 +41,7 @@
 
         </md-card-content>
         <md-card-actions>
-            <button *ngIf="!isInAddNewRuleMode" (click)="isInAddNewRuleMode=true;newTypeVal=1" color="primary" md-button>ADD NEW <strong>{{defaultRuleMode == "IncludeAll"? "EXCLUSION":"INCLUSION"}}</strong> RULE</button>
+            <button *ngIf="!isInAddNewRuleMode" (click)="isInAddNewRuleMode=true;newTypeVal=1" color="primary" md-button>ADD NEW <strong>{{defaultRuleMode == 0? "EXCLUSION":"INCLUSION"}}</strong> RULE</button>
 
         </md-card-actions>
         <md-card-footer>
@@ -92,8 +87,8 @@
         </md-card-content>
 
         <md-card-actions align="end">
-            <button md-button (click)="onAddNewRuleClicked(txtSchema.value, txtSpecific.value, txtRegex.value, newTypeVal);isInAddNewRuleMode=false">ADD RULE</button>
-            <button md-button (click)="isInAddNewRuleMode=false">CANCEL</button>
+            <button md-button color="primary" (click)="onAddNewRuleClicked(txtSchema.value, txtSpecific.value, txtRegex.value, newTypeVal);isInAddNewRuleMode=false">ADD RULE</button>
+            <button md-button color="primary" (click)="isInAddNewRuleMode=false">CANCEL</button>
 
         </md-card-actions>
     </md-card>
@@ -128,22 +123,23 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let row of filteredRoutineList" class="routine" [class.included]="row.Included" [class.excluded]="row.Excluded">
-                        <td>
+                        <td class="flex-justify-center">
                             <!--Only show explicit incl/excl action if the current routine is not already in that state -->
-                            <a *ngIf="showIncludeExcludeButton(row)" (click)="onExplicitInludeOrExclude(row)" href="javascript:void(0)">{{defaultRuleMode == "IncludeAll"? "exclude":"include"}}</a>
+                            <button md-button color="primary" *ngIf="showIncludeExcludeButton(row)" (click)="onExplicitInludeOrExclude(row)" href="javascript:void(0)">{{defaultRuleMode == 0? "exclude":"include"}}</button>
 
                         </td>
                         <td><i class="fa pr8" [class.fa-check]="row.Included" [class.fa-times]="row.Excluded"></i> {{row.RoutineFullName}}</td>
                         <td>
-                                <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'" class="pr8 fa fa-database"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
-                                <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
-                                <i title="Database source level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
+                            <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'"
+                                class="pr8 fa fa-database"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
+                            <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
+                            <i title="Database source level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
 
                         </td>
 
                     </tr>
                     <tr *ngIf="needTruncation && cutOffRoutineList">
-                        <td colspan="4" style="text-align:center;background-color:#f0f0f0;border:1px solid gray;padding:3px;">Results truncated. <a href="javascript:void(0)" (click)="cutOffRoutineList=false;refreshFilteredView(filterTxt);">Click here</a>                            to display all of the results.</td>
+                        <td colspan="4" style="text-align:center;background-color:#f0f0f0;border:1px solid gray;padding:3px;">Results truncated. <button md-button color="primary" (click)="cutOffRoutineList=false;refreshFilteredView(filterTxt);">CLICK HERE</button> to display all of the results.</td>
                     </tr>
                     <tr *ngIf="!filteredRoutineList || filteredRoutineList.length == 0">
                         <td colspan="4">No routines found in cache.</td>

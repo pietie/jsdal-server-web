@@ -456,6 +456,14 @@ table.grid tbody td.center
     flex-wrap: wrap;
 }
 
+.flex-justify-center
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
 .flex-vertical-center md-icon
 {
     margin-right: 8px;
