@@ -21,7 +21,7 @@ export class MetadataViewerDialog {
     searchResults: any = null;
     totalCount: number = null;
 
-    constructor(private dialogRef: MdDialogRef<MetadataViewerDialog>, private dialog: MdDialog, private changeDetection:ChangeDetectorRef) {
+    constructor(private dialogRef: MdDialogRef<MetadataViewerDialog>, private dialog: MdDialog, private changeDetection: ChangeDetectorRef) {
 
     }
 
@@ -80,7 +80,14 @@ export class MetadataViewerDialog {
     }
 
     showJsDALMetadata(row: any) {
-        alert("TODO: " + JSON.stringify(row));
+
+        let dlg = this.dialog.open(MetadataMoreInfoDialog);
+
+        dlg.componentInstance.title = `[${row.Schema}].[${row.Routine}] JsDAL metadata`;
+        dlg.componentInstance.mode = "JsDALMetadata";
+        dlg.componentInstance.dataContext = row.jsDALMetadata.jsDAL;
+
+
     }
 
     getResultsText(row: any) {

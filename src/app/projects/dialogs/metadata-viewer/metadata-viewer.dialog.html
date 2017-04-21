@@ -57,8 +57,8 @@
             <tbody>
                 <ng-template [ngIf]="searchResults">
                     <tr *ngFor="let row of searchResults" [class.deleted]="row.IsDeleted">
-                        <td>[{{row.Schema}}].[{{row.Routine}}] <a *ngIf="row.jsDALMetadata?.jsDAL" (click)="showJsDALMetadata(row)"
-                                href="javascript:void(0)">(meta)</a></td>
+                        <td>[{{row.Schema}}].[{{row.Routine}}] 
+                            <button md-button color="primary" *ngIf="row.jsDALMetadata?.jsDAL" (click)="showJsDALMetadata(row)">(meta)</button></td>
                         <td>
                             <button color="primary" md-button *ngIf="row.Parameters?.length > 0" (click)="viewParameters(row)" href="javascript:void(0)">
                                                         {{ row.Parameters.length }} {{row.Parameters.length == 1? "parm":"parms" }}

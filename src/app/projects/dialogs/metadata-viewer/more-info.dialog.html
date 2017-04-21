@@ -40,6 +40,58 @@
         </table>
 
     </div>
+
+    <div *ngIf="mode == 'ResultSet'">
+
+        <div class="resultContainer" *ngIf="dataContextKeys">
+
+            <md-tab-group>
+
+
+
+                <md-tab *ngFor="let key of dataContextKeys" [label]="'Table ' + key">
+
+                    <table class="grid">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th style="width:100px">Data type</th>
+                                <th style="width:80px;">Size</th>
+                                <th style="width:80px;">Precision.Scale</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-template [ngIf]="dataContext[key]">
+                                <tr *ngFor="let row of dataContext[key]">
+                                    <td>{{ row.ColumnName }}</td>
+                                    <td>{{ row.DbDataType }}</td>
+                                    <td align="right">{{ row.ColumnSize }}</td>
+                                    <td align="right">{{ row.NumericalPrecision }}.{{ row.NumericalScale }}</td>
+                                </tr>
+                            </ng-template>
+                            <tr *ngIf="!dataContext[key] || dataContext[key].length == 0">
+                                <td colspan="100">Empty result set.</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </md-tab>
+
+            </md-tab-group>
+
+        </div>
+
+    </div>
+
+    <div *ngIf="mode == 'ResultSetError'">
+        <textarea [(ngModel)]="dataContext" [readonly]="true" style="font-size: 12px; width:95%;margin:auto;height: 300px;"></textarea>
+    </div>
+
+    <div *ngIf="mode == 'JsDALMetadata'">
+        <pre [innerHTML]='syntaxHighlight(dataContext)'></pre>
+    </div>
+
 </div>
 <div md-dialog-actions align="end">
     <button color="primary" md-button (click)="dialogRef.close(false)">CLOSE</button>
