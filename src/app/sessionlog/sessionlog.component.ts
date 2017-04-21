@@ -1,6 +1,5 @@
 ﻿import { Component  } from '@angular/core'
 
-import { LogGrid } from './../controls/LogGrid'
 import L2 from 'l2-lib/L2';
 
 @Component({
@@ -16,7 +15,7 @@ export class SessionLog {
     }
 
     private onRefresh() {
-        L2.fetchJson(`/api/main/sessionlog`).then((r) => { this.logData = r; });
+        L2.fetchJson(`/api/main/sessionlog`).then((r:any) => { this.logData = r.Data; });
     }
 
 }

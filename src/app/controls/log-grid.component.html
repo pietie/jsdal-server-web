@@ -1,0 +1,38 @@
+<md-card>
+    <md-card-content>
+
+            
+
+
+            <md-select placeholder="Type" [(ngModel)]="selectedType" (change)="updateList()">
+                <md-option [value]="0">(All)</md-option>
+                <md-option *ngFor="let e of LogEntryTypeValues" [value]="LogEntryType[e]">{{e}}</md-option>
+            </md-select>
+
+
+
+
+
+        <table class="grid">
+            <thead>
+                <tr>
+                    <th style="width:50px">Time</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of filteredList" title="{{row.CreateDate|fromISODateStr|date:'longDate'}}">
+                    <td>{{row.CreateDate|fromISODateStr|date:'HH:mm:ss'}}</td>
+                    <td><span style="display: inline-block;width:70px" class="label label-{{getLogEntryTypeBadgeClass(row.Type)}}">{{LogEntryType[row.Type]}}</span><span>&nbsp;&nbsp;</span>{{row.Message}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="panel-footer" *ngIf="datasource">
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;Viewing <strong *ngIf="filteredList">{{ filteredList.length }}</strong>            of <strong>{{ datasource.length }}</strong>
+        </div>
+    </md-card-content>
+    <md-card-actions>
+        <button md-raised-button color="primary" (click)="onRefreshClicked()" type="button">REFRESH</button>
+    </md-card-actions>
+</md-card>
