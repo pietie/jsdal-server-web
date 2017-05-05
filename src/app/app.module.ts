@@ -15,9 +15,9 @@ import { ProjectsModule } from './projects/projects.module'
 import { ThreadsModule } from './threads/threads.module'
 import { HomeComponent } from './home/home.component'
 import { LoginComponent } from './account/login.component'
-
 import { SessionLog } from './sessionlog/sessionlog.component'
 import { Settings } from './settings/settings.component'
+import { ExceptionViewerComponent } from './exception-viewer/exception-viewer.component'
 
 import { PerformanceModule } from './performance/performance.module'
 
@@ -38,6 +38,7 @@ import { LoggedInComponent } from './account/logged-in.component';
         , SessionLog
         , Settings
         , LoggedInComponent
+        , ExceptionViewerComponent
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService],

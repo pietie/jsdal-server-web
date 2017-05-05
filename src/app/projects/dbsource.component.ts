@@ -351,36 +351,9 @@ export class DbSourceComponent {
 
             });
 
-
-            /***
-            var factory = this.componentFactoryResolver.resolveComponentFactory(RuleManagement);
-
-            var ref = this.viewContainerRef.createComponent(factory);
-
-
-            ref.instance.ready.subscribe(() => {
-
-                try {
-                    ref.instance.projectName = this.projectName;
-                    ref.instance.dbSource = this.dbSource.Name;
-                    ref.instance.jsFilenameGuid = null;
-                    ref.instance.title = this.dbSource.Name;
-                    
-                    ref.instance.show();
-
-                }
-                catch (e) {
-                    L2.handleException(e);
-                }
-            });
-
-            */
-
-
         }
         catch (e) {
-            // TODO: Error handling
-            alert(e.toString());
+            L2.handleException(e);
         }
 
     }
@@ -401,7 +374,18 @@ export class DbSourceComponent {
 
 
     private onJsFileManageRulesClicked(row) {
-        alert("TODO");
+        let dialogRef = this.dialog.open(RulesDialog);
+
+        dialogRef.componentInstance.projectName = this.projectName;
+        dialogRef.componentInstance.dbSource = this.dbSource.Name;
+        dialogRef.componentInstance.jsFilenameGuid = row.Guid;
+        dialogRef.componentInstance.title = row.Filename;
+        dialogRef.componentInstance.defaultRuleMode = this.dbSource.DefaultRuleMode;
+
+        dialogRef.afterClosed().subscribe(r => {
+
+        });
+
         /**
                 var factory = this.componentFactoryResolver.resolveComponentFactory(RuleManagement);
         

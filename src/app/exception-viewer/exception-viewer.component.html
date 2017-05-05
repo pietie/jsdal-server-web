@@ -1,0 +1,28 @@
+<md-card>
+    <md-card-content>
+        <md-input-container>
+            <input #errRef mdInput type="text" placeholder="Error ref#" />
+        </md-input-container>
+    </md-card-content>
+    <md-card-actions>
+        <button md-button color="primary" (click)="lookupError(errRef.value)">LOOKUP</button>
+    </md-card-actions>
+</md-card>
+
+<md-card *ngIf="exceptionDetail">
+    <md-card-content>
+
+        {{ exceptionDetail.id }}<br/> {{ exceptionDetail.created }}<br/>
+        <hr/>
+        <div *ngIf="exceptionDetail.exceptionObject">
+            {{ exceptionDetail.exceptionObject.message }}
+            <hr/>
+
+            <div *ngIf="exceptionDetail.exceptionObject.stack" [innerHTML]="formatStackTrace(exceptionDetail.exceptionObject.stack)">
+
+                
+            </div>
+
+        </div>
+    </md-card-content>
+</md-card>
