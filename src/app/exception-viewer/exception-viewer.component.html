@@ -11,16 +11,15 @@
 
 <md-card *ngIf="exceptionDetail">
     <md-card-content>
-
-        {{ exceptionDetail.id }}<br/> {{ exceptionDetail.created }}<br/>
+        <span style="font-size:1.1em;font-weight:bold;">{{ exceptionDetail.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span><span>({{ exceptionDetail.id }})</span>
         <hr/>
-        <div *ngIf="exceptionDetail.exceptionObject">
-            {{ exceptionDetail.exceptionObject.message }}
+        <div class="exception-detail" *ngIf="exceptionDetail.exceptionObject">
+            <div class="msg">{{ exceptionDetail.exceptionObject.message }}</div>
             <hr/>
 
-            <div *ngIf="exceptionDetail.exceptionObject.stack" [innerHTML]="formatStackTrace(exceptionDetail.exceptionObject.stack)">
+            <div class="stack" *ngIf="exceptionDetail.exceptionObject.stack" [innerHTML]="formatStackTrace(exceptionDetail.exceptionObject.stack)">
 
-                
+
             </div>
 
         </div>

@@ -25,18 +25,24 @@
 
                             <div *ngIf="summaryData">
 
-                                <strong>Last updated:</strong> {{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd
-                                MMM yyyy, HH:mm:ss' }} <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
+                                <strong>Last updated:</strong> {{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }} <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
                                 <br />
 
-                                <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} <i class="fa fa-long-arrow-right"></i>
+                                <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} 
+<br /><br />
 
-
-                                <ng-template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
+                                <!--<ng-template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
                                     <div *ngFor="let row of summaryData.Orm.Groups, let last = last" style="display:inline-block">
                                         <span>{{row.Type}}</span><span> ({{row.Count}})</span> {{last? "":", "}}
                                     </div>
                                 </ng-template>
+                                <br/>-->
+                                
+<md-chip-list>
+  <md-chip selected="true" *ngFor="let row of summaryData.Orm.Groups, let last = last">{{ row.Type }} ({{row.Count}})</md-chip>
+</md-chip-list>
+
+
 
                             </div>
                             <p *ngIf="!summaryData">
