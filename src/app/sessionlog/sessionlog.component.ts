@@ -7,14 +7,14 @@ import L2 from 'l2-lib/L2';
     templateUrl: './sessionlog.component.html'
 })
 export class SessionLog {
-    private logData: any;     
+    public logData: any;     
 
     ngOnInit() {
         this.onRefresh();
 
     }
 
-    private onRefresh() {
+    public onRefresh() {
         L2.fetchJson(`/api/main/sessionlog`).then((r:any) => { this.logData = r.Data; });
     }
 

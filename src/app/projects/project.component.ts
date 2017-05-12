@@ -34,22 +34,22 @@ import L2 from 'l2-lib/L2';
     ]
 })
 export class ProjectComponent {
-    private projectName: string;
-    private dbList: any;
+    public projectName: string;
+    public dbList: any;
 
     public get name(): string { return this.projectName; }
 
-    private componentState = "enterComponent";
+    public componentState = "enterComponent";
 
     constructor(
-        private projectService: ProjectService
+        public projectService: ProjectService
         , public route: ActivatedRoute
-        , private router: Router
-        , private dialog: MdDialog
-        , private componentFactoryResolver: ComponentFactoryResolver
-        , private injector: Injector
-        , private appRef: ApplicationRef
-        , private viewContainerRef: ViewContainerRef
+        , public router: Router
+        , public dialog: MdDialog
+        , public componentFactoryResolver: ComponentFactoryResolver
+        , public injector: Injector
+        , public appRef: ApplicationRef
+        , public viewContainerRef: ViewContainerRef
     ) {
         this.route.params.subscribe(params => {
             this.projectName = params["name"];
@@ -76,12 +76,12 @@ export class ProjectComponent {
 
 
 
-    private formatDbCboItem(item) {
+    public formatDbCboItem(item) {
         if (!item.Data) return;
         return $(`<div class="databaseSourceCboItem"><div class="h">${item.text}</div><div class="line2">${item.Data.DataSource}; ${item.Data.InitialCatalog}</div></div>`);
     }
 
-    private onAddEditDbSourceClicked(row) {
+    public onAddEditDbSourceClicked(row) {
         try {
 
             let dialogRef = this.dialog.open(DataSourceDialog);
@@ -151,7 +151,7 @@ export class ProjectComponent {
         });
     }
 
-    private deleteDatabaseSource(name: string) {
+    public deleteDatabaseSource(name: string) {
         return L2.deleteJson(`/api/database/${name}?projectName=${this.projectName}`, { body: JSON.stringify(name) }).then(() => {
             L2.success(`Database source ${name} successfully deleted.`);
 

@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component'
 import { LoginComponent } from './account/login.component'
-import { LoggedInComponent }   from './account/logged-in.component';
 import { SessionLog } from './sessionlog/sessionlog.component'
 import { Settings } from './settings/settings.component'
 import { ExceptionViewerComponent } from './exception-viewer/exception-viewer.component';
@@ -18,7 +17,6 @@ export const appRoutes: Routes = [
         pathMatch: 'full',
     },
     { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard] },
-    { path: 'logged-in', component: LoggedInComponent },
     { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
     { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule', canActivate: [LoggedInGuard] },
     { path: 'sessionlog', component: SessionLog, canActivate: [LoggedInGuard] },

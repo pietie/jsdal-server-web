@@ -13,17 +13,17 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 })
 export class MsgDialog {
 
-    private title: string;
-    private msg: string;
+    public title: string;
+    public msg: string;
 
-    private type: MsgDialogType;
+    public type: MsgDialogType;
 
     constructor(public dialogRef: MdDialogRef<MsgDialog>) {
 
 
     }
 
-    private getIcon(): string {
+    public getIcon(): string {
         switch (this.type) {
             case MsgDialogType.Exclamation:
                 return "warning";
@@ -32,7 +32,7 @@ export class MsgDialog {
         }
     }
 
-    private getOkayTxt(): string {
+    public getOkayTxt(): string {
 
         if (this.type == MsgDialogType.Confirmation) return "CONFIRM";
 

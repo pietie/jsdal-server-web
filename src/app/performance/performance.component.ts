@@ -6,7 +6,7 @@ import L2 from 'l2-lib/L2';
 })
 export class PerformanceComponent {
 
-    private projectList: any;
+    public projectList: any;
 
     constructor() {
         this.refresh();

@@ -21,12 +21,12 @@ import L2 from 'l2-lib/L2';
     ],
 })
 export class ProjectListComponent {
-    private componentState = "enterComponent";
+    public componentState = "enterComponent";
 
-    private projectList: any;
-    private selectedProject: any;
+    public projectList: any;
+    public selectedProject: any;
 
-    constructor(public route: ActivatedRoute, private router: Router, private location: Location) {
+    constructor(public route: ActivatedRoute, public router: Router, public location: Location) {
         this.refresh();
 
         this.route.params.subscribe(params => {
@@ -58,7 +58,7 @@ export class ProjectListComponent {
         });
     }
 
-    private deleteProject(name: string): Promise<any> {
+    public deleteProject(name: string): Promise<any> {
         return L2.deleteJson("/api/project", { body: JSON.stringify(name) }).then(r => {
             L2.success(`Project '${name}' successfully removed.`);
             this.refresh();
@@ -72,7 +72,7 @@ export class ProjectListComponent {
         });
     }
 
-    private updateProject(name: string, newName: string): Promise<any> {
+    public updateProject(name: string, newName: string): Promise<any> {
         return L2.putJson(`/api/project/${name}`, {
             body: JSON.stringify(newName)
         }).then((r) => {
@@ -81,7 +81,7 @@ export class ProjectListComponent {
         });
     }
 
-    private createNewProject(name: string): Promise<any> {
+    public createNewProject(name: string): Promise<any> {
 
         return L2.postJson("/api/project", {
             body: JSON.stringify(name)

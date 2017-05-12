@@ -47,36 +47,36 @@ export class DbSourceRouteResolver implements Resolve<IDBSource> {
     templateUrl: './dbsource.component.html'
 })
 export class DbSourceComponent {
-    private isReady: Boolean = false;
-    private projectName: string;
+    public isReady: Boolean = false;
+    public projectName: string;
 
-    private dbSource: IDBSource = {};
+    public dbSource: IDBSource = {};
 
 
-    private isInstallingOrm: boolean = false;
+    public isInstallingOrm: boolean = false;
 
-    private execConnectionsList: any;
-    private outputFileList: any;
+    public execConnectionsList: any;
+    public outputFileList: any;
     public outputFileBusy: boolean = false;
-    private pluginList: any;
+    public pluginList: any;
 
-    private pluginConfigIsDirty: boolean = false;
+    public pluginConfigIsDirty: boolean = false;
 
-    private summaryData: any;
+    public summaryData: any;
 
-    private minifiedLookup: any = {};
+    public minifiedLookup: any = {};
 
-    private paramaterSub: any;
+    public paramaterSub: any;
 
-    private whitelist: any;
-    private allowAllPrivateIPs: boolean = false;
+    public whitelist: any;
+    public allowAllPrivateIPs: boolean = false;
 
-    constructor(private route: ActivatedRoute
-        , private project: ProjectComponent
-        , private componentFactoryResolver: ComponentFactoryResolver
-        , private appRef: ApplicationRef
-        , private viewContainerRef: ViewContainerRef
-        , private dialog: MdDialog
+    constructor(public route: ActivatedRoute
+        , public project: ProjectComponent
+        , public componentFactoryResolver: ComponentFactoryResolver
+        , public appRef: ApplicationRef
+        , public viewContainerRef: ViewContainerRef
+        , public dialog: MdDialog
     ) {
         try {
 
@@ -116,14 +116,14 @@ export class DbSourceComponent {
     }
 
 
-    private refreshSummaryInfo() {
+    public refreshSummaryInfo() {
         L2.fetchJson(`/api/database/summary?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
             this.summaryData = r.Data;
         });
 
     }
 
-    private refreshOutputFileList() {
+    public refreshOutputFileList() {
         this.outputFileBusy = true;
         L2.fetchJson(`/api/database/jsFiles?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
             this.outputFileList = r.Data;
@@ -134,7 +134,7 @@ export class DbSourceComponent {
 
     }
 
-    private refreshPluginList() {
+    public refreshPluginList() {
         L2.fetchJson(`/api/database/plugins?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
             this.pluginList = r.Data;
             this.pluginConfigIsDirty = false;
@@ -142,13 +142,13 @@ export class DbSourceComponent {
 
     }
 
-    private refreshDbConnectionList() {
+    public refreshDbConnectionList() {
         L2.fetchJson(`/api/dbconnections?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
             this.execConnectionsList = (<any>r).Data;
         });
     }
 
-    private refreshWhitelist() {
+    public refreshWhitelist() {
         L2.fetchJson(`/api/database/whitelist?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
             let ar: any[] = (<any>r).Data.Whitelist;
 
@@ -164,12 +164,12 @@ export class DbSourceComponent {
     }
 
 
-    private onPluginInclusionChanged() {
+    public onPluginInclusionChanged() {
         this.pluginConfigIsDirty = true;
     }
 
 
-    private onSavePluginChangesClicked() {
+    public onSavePluginChangesClicked() {
         var list = this.pluginList.map((p) => { return { Guid: p.Guid, Included: p.Included } });
 
         L2.postJson(`/api/database/plugins?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`, { body: JSON.stringify(list) }).then(r => {
@@ -205,7 +205,7 @@ export class DbSourceComponent {
         }).catch((_) => this.isReady = true);
     }
 
-    private performOrmUninstall() {
+    public performOrmUninstall() {
         return L2.postJson(`/api/database/uninstallOrm?name=${this.dbSource.Name}&projectName=${this.projectName}`).then(resp => {
             L2.success("ORM successfully uninstalled");
 
@@ -230,7 +230,7 @@ export class DbSourceComponent {
         });
     }
 
-    private createNewJsOutputFile(name: string): Promise<any> {
+    public createNewJsOutputFile(name: string): Promise<any> {
         this.outputFileBusy = true;
         return L2.postJson(`/api/database/addJsfile?projectName=${this.projectName}&dbSource=${this.dbSource.Name}&jsFileName=${name}`).then((r) => {
             L2.success("Output file successfully created.");
@@ -239,7 +239,7 @@ export class DbSourceComponent {
         }).catch(e => { this.outputFileBusy = false; });
     }
 
-    private onEditOutputFile(row) {
+    public onEditOutputFile(row) {
         L2.prompt("Update output file", "Name", row.Filename, "UPDATE").then((name: string) => {
             if (name) {
                 this.updateOutputFileName(row.Filename, name);
@@ -247,7 +247,7 @@ export class DbSourceComponent {
         });
     }
 
-    private updateOutputFileName(oldName: string, newName: string) {
+    public updateOutputFileName(oldName: string, newName: string) {
         this.outputFileBusy = true;
         return L2.putJson(`/api/database/updateJsFile?projectName=${this.projectName}&dbSource=${this.dbSource.Name}&oldName=${oldName}&newName=${newName}`).then((r) => {
             L2.success(`Output file ${newName} successfully updated.`);
@@ -256,13 +256,13 @@ export class DbSourceComponent {
         }).catch(e => this.outputFileBusy = false);
     }
 
-    private onDeleteOutputFile(row) {
+    public onDeleteOutputFile(row) {
         L2.confirm(`Are you sure you want to delete the output file <strong>${row.Filename}</strong>?`, "Confirm action").then(r => {
             if (r) this.deleteOutputFile(row);
         });
     }
 
-    private deleteOutputFile(row) {
+    public deleteOutputFile(row) {
         this.outputFileBusy = true;
         return L2.deleteJson(`/api/jsfile/${row.Guid}?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then(r => {
             this.refreshOutputFileList();
@@ -273,7 +273,7 @@ export class DbSourceComponent {
     }
 
 
-    private onAddEditExecConnectionClicked(row) {
+    public onAddEditExecConnectionClicked(row) {
         try {
 
             let dialogRef = this.dialog.open(DataSourceDialog);
@@ -321,7 +321,7 @@ export class DbSourceComponent {
         }
     }
 
-    private onDeleteExecConnectionClicked(row) {
+    public onDeleteExecConnectionClicked(row) {
 
         L2.confirm(`Are you sure you wish to delete the execution connection <strong>${row.Name}</strong>`, "Confirm action").then(r => {
             if (r) {
@@ -334,7 +334,7 @@ export class DbSourceComponent {
     }
 
 
-    private onManageRulesClicked() {
+    public onManageRulesClicked() {
 
         try {
 
@@ -358,7 +358,7 @@ export class DbSourceComponent {
 
     }
 
-    private onUpdateWhitelist(textarea) {
+    public onUpdateWhitelist(textarea) {
         try {
 
             return L2.postJson(`/api/database/whitelist?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&whitelist=${encodeURIComponent(textarea.value)}&allowAllPrivate=${this.allowAllPrivateIPs}`).then(r => {
@@ -373,7 +373,7 @@ export class DbSourceComponent {
     }
 
 
-    private onJsFileManageRulesClicked(row) {
+    public onJsFileManageRulesClicked(row) {
         let dialogRef = this.dialog.open(RulesDialog);
 
         dialogRef.componentInstance.projectName = this.projectName;
@@ -402,7 +402,7 @@ export class DbSourceComponent {
          */
     }
 
-    private getLastUpdatedAge(dt) {
+    public getLastUpdatedAge(dt) {
 
         var diffInMilliseconds = moment().diff(moment(new Date(dt)), "ms");
 
@@ -410,7 +410,7 @@ export class DbSourceComponent {
         return humanizeDuration(diffInMilliseconds, { round: true, units: ["d", "h", "m"] });
     }
 
-    private viewCachedMetadata() {
+    public viewCachedMetadata() {
 
         let dialogRef = this.dialog.open(MetadataViewerDialog);
 
@@ -418,7 +418,7 @@ export class DbSourceComponent {
         dialogRef.componentInstance.dbSourceName = this.dbSource.Name;
     }
 
-    private clearDbSourceCache() {
+    public clearDbSourceCache() {
 
         L2.confirm(`You are about to clear the current DB source's cache.<br/>Are you sure?`, "Confirm action").then((r) => {
             if (r) {

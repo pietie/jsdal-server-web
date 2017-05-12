@@ -28,7 +28,7 @@ export class MetadataMoreInfoDialog {
         return Object.keys(this.dataContext);
     }
 
-    constructor(private dialogRef: MdDialogRef<MetadataMoreInfoDialog>) {
+    constructor(public dialogRef: MdDialogRef<MetadataMoreInfoDialog>) {
 
     }
 

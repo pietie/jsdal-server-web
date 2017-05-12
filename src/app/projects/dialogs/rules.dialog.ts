@@ -32,31 +32,31 @@ export enum DefaultRuleMode {
 export class RulesDialog {
 
 
-    private isFilteredListLoading: boolean = false;
-    private filterTxt: string;
+    public isFilteredListLoading: boolean = false;
+    public filterTxt: string;
 
-    private ruleList: any[];
-    private fullRoutineList: any[];
-    private filteredRoutineList: any[];
+    public ruleList: any[];
+    public fullRoutineList: any[];
+    public filteredRoutineList: any[];
 
     public projectName: string;
     public dbSource: string;
     public jsFilenameGuid: string;
     public title: string;
 
-    private RuleTypeValues = RuleType;
-    private RoutineIncludeExcludeInstructionSourceValues = RoutineIncludeExcludeInstructionSource;
+    public RuleTypeValues = RuleType;
+    public RoutineIncludeExcludeInstructionSourceValues = RoutineIncludeExcludeInstructionSource;
     public defaultRuleMode: DefaultRuleMode | string = DefaultRuleMode.Unknown;
 
-    private isInAddNewRuleMode: boolean = false;
+    public isInAddNewRuleMode: boolean = false;
 
-    private TRUNCATE_ROUTINE_LIST_LENGTH: number = 20;
-    private cutOffRoutineList: boolean = true;
-    private needTruncation: boolean = false;
+    public TRUNCATE_ROUTINE_LIST_LENGTH: number = 20;
+    public cutOffRoutineList: boolean = true;
+    public needTruncation: boolean = false;
 
-    private isLoadingRules: boolean = false;
+    public isLoadingRules: boolean = false;
 
-    constructor(private dialogRef: MdDialogRef<RulesDialog>) {
+    constructor(public dialogRef: MdDialogRef<RulesDialog>) {
 
     }
 
@@ -65,7 +65,7 @@ export class RulesDialog {
         this.refreshRuleList();
     }
 
-    private refreshFullRoutineList() {
+    public refreshFullRoutineList() {
         this.isFilteredListLoading = true;
         L2.fetchJson(`/api/rule/routineList?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${L2.nullToEmpty(this.jsFilenameGuid)}`).then((r: any) => {
             this.isFilteredListLoading = false;
@@ -75,7 +75,7 @@ export class RulesDialog {
         }).catch(() => { this.isFilteredListLoading = false; });
     }
 
-    private refreshFilteredView(txt: string) {
+    public refreshFilteredView(txt: string) {
 
         this.isFilteredListLoading = true;
 
@@ -93,13 +93,13 @@ export class RulesDialog {
         this.isFilteredListLoading = false;
     }
 
-    private debounceTimerId: number;
+    public debounceTimerId: number;
     public onFilterTextChanged(txt) {
         clearTimeout(this.debounceTimerId);
         this.debounceTimerId = window.setTimeout(() => { this.refreshFilteredView(txt); }, 300);
     }
 
-    private refreshRuleList() {
+    public refreshRuleList() {
         this.isLoadingRules = true;
         L2.fetchJson(`/api/rule/ruleList?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${L2.nullToEmpty(this.jsFilenameGuid)}`).then((r: any) => {
             this.ruleList = r.Data;
@@ -107,14 +107,14 @@ export class RulesDialog {
         }).catch(e => { this.isLoadingRules = false; });
     }
 
-    private onAddNewRuleClicked(schema, specific, regex, typeVal) {
+    public onAddNewRuleClicked(schema, specific, regex, typeVal) {
 
         var value = [schema, specific, regex][typeVal];
 
         this.addNewRule(typeVal, value);
     }
 
-    private addNewRule(ruleType: number, text: string) {
+    public addNewRule(ruleType: number, text: string) {
         var json = JSON.stringify({
             Type: ruleType,
             Text: text
@@ -128,7 +128,7 @@ export class RulesDialog {
         });
     }
 
-    private onDeleteRuleClicked(row) {
+    public onDeleteRuleClicked(row) {
 
         L2.confirm(`Are you sure you want to delete the rule <strong>${row.Ix}. ${row.Description}</strong>?`).then((confirmed) => {
             if (!confirmed) return;
@@ -142,7 +142,7 @@ export class RulesDialog {
         });
     }
 
-    private onExplicitInludeOrExclude(row) {
+    public onExplicitInludeOrExclude(row) {
         try {
             this.addNewRule(RuleType.Specific, row.RoutineFullName);
         }

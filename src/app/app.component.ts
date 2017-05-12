@@ -66,11 +66,11 @@ class X implements IL2OutputMessageHandler {
     styleUrls: [ 'app.component.css' ]
 })
 export class AppComponent {
-    constructor(private accountService: AccountService,
-        private router: Router,
-        private changeDetectorRef: ChangeDetectorRef,
-        private dialog: MdDialog,
-        private snackBar: MdSnackBar
+    constructor(public accountService: AccountService,
+        public router: Router,
+        public changeDetectorRef: ChangeDetectorRef,
+        public dialog: MdDialog,
+        public snackBar: MdSnackBar
     ) {
 
         L2.registerOutputMessageHandler(new X(this.dialog, this.snackBar, this.router, null));

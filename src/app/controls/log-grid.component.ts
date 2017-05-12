@@ -17,11 +17,11 @@ enum LogEntryType {
 export class LogGrid {
     @Output() refresh: EventEmitter<any> = new EventEmitter();
 
-    private selectedType: any = 0;
-    private datasource: any;
-    private filteredList: any;
-    private LogEntryType = LogEntryType;
-    private LogEntryTypeValues = Object.keys(LogEntryType).filter(v => isNaN(parseInt(v)));
+    public selectedType: any = 0;
+    public datasource: any;
+    public filteredList: any;
+    public LogEntryType = LogEntryType;
+    public LogEntryTypeValues = Object.keys(LogEntryType).filter(v => isNaN(parseInt(v)));
 
     ngOnInit() {
 

@@ -21,7 +21,7 @@ export class MetadataViewerDialog {
     searchResults: any = null;
     totalCount: number = null;
 
-    constructor(private dialogRef: MdDialogRef<MetadataViewerDialog>, private dialog: MdDialog, private changeDetection: ChangeDetectorRef) {
+    constructor(public dialogRef: MdDialogRef<MetadataViewerDialog>, public dialog: MdDialog, public changeDetection: ChangeDetectorRef) {
 
     }
 

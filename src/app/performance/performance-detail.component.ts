@@ -7,11 +7,11 @@ import L2 from 'l2-lib/L2';
 })
 export class PerformanceDetailComponent {
 
-    private projectName: string;
-    private dbSourceName: string;
+    public projectName: string;
+    public dbSourceName: string;
     
 
-    constructor(private activatedRoute: ActivatedRoute) {
+    constructor(public activatedRoute: ActivatedRoute) {
 
         this.activatedRoute.params.subscribe(params => {
 

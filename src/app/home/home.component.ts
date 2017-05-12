@@ -8,14 +8,14 @@ import L2 from 'l2-lib/L2';
 })
 export class HomeComponent {
 
-    private statsData: any = null;
+    public statsData: any = null;
 
     ngOnInit() {
         console.log('home.component :: ngOnInit');
         L2.fetchJson('/api/main/stats').then((r: any) => { this.statsData = r.Data; });
     }
 
-    private getWebServerAge(startedDate) {
+    public getWebServerAge(startedDate) {
 
         var diffInMilliseconds = moment().diff(moment(new Date(startedDate)), "ms");
 

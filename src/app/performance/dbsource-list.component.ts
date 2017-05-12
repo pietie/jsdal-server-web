@@ -8,10 +8,10 @@ import L2 from 'l2-lib/L2';
 export class DbSourceListComponent {
 
 
-    private projectName: string;
-    private dbList: any;
+    public projectName: string;
+    public dbList: any;
 
-    constructor(private activatedRoute: ActivatedRoute) {
+    constructor(public activatedRoute: ActivatedRoute) {
 
         this.activatedRoute.params.subscribe(params => {
 

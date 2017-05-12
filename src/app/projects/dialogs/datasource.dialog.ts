@@ -26,15 +26,15 @@ export enum AuthenticationType {
 })
 export class DataSourceDialog {
 
-    private obj: IDataSource = {}; 
-    private isTestingConnection: boolean = false;
-    private isLoadingDbList: boolean = false;
+    public obj: IDataSource = {}; 
+    public isTestingConnection: boolean = false;
+    public isLoadingDbList: boolean = false;
 
-    private addMode:boolean = true;
-    private _dataSourceMode:boolean= true;
-    private _title:string;
+    public addMode:boolean = true;
+    public _dataSourceMode:boolean= true;
+    public _title:string;
 
-    private dbList: any[];
+    public dbList: any[];
 
     public get dataSourceMode(): boolean { return this._dataSourceMode; }
     public set dataSourceMode(b:boolean) { this._dataSourceMode = b; }
@@ -58,15 +58,15 @@ export class DataSourceDialog {
 
     }
 
-    constructor(private dialogRef: MdDialogRef<DataSourceDialog>) {
+    constructor(public dialogRef: MdDialogRef<DataSourceDialog>) {
 
     }
 
-    private shouldDisableControls() {
+    public shouldDisableControls() {
         return this.isTestingConnection;
     }
 
-    private loadDbList() {
+    public loadDbList() {
 
         this.isLoadingDbList = true;
 
@@ -85,7 +85,7 @@ export class DataSourceDialog {
         });
     }
 
-    private testConnection() {
+    public testConnection() {
         this.isTestingConnection = true;
 
         let user = null, pass = null;

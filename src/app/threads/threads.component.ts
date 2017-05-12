@@ -9,7 +9,7 @@ import L2 from 'l2-lib/L2';
 })
 export class ThreadsViewComponent {
 
-    private threadList: any;
+    public threadList: any;
 
     constructor() {
 
@@ -19,13 +19,13 @@ export class ThreadsViewComponent {
         this.reloadThreadList();
     }
 
-    private reloadThreadList() {
+    public reloadThreadList() {
         L2.fetchJson("/api/threads").then((r: any) => {
             this.threadList = r.Data;
         });
     }
 
-    private startThread(row) {
+    public startThread(row) {
         L2.postJson(`/api/threads/${row.Key}/start`).then((r) => {
             L2.success("Thread started.");
             this.reloadThreadList();
@@ -33,7 +33,7 @@ export class ThreadsViewComponent {
         
     }
 
-    private stopThread(row) {
+    public stopThread(row) {
         L2.postJson(`/api/threads/${row.Key}/stop`).then((r) => {
             L2.success("Thread stopped.");
             this.reloadThreadList();
@@ -51,10 +51,10 @@ export class ThreadsViewComponent {
 })
 export class ThreadLogComponent {
 
-    private Key: string;
-    private logData: any;
+    public Key: string;
+    public logData: any;
 
-    constructor(private route: ActivatedRoute) {
+    constructor(public route: ActivatedRoute) {
         //this.Key = params.get("key");
         //this.router.routerState.queryParams
         this.route.params.subscribe(params => {
@@ -66,7 +66,7 @@ export class ThreadLogComponent {
 
     }
 
-    private onRefresh() {
+    public onRefresh() {
         L2.fetchJson(`/api/threads/log/${this.Key}`).then((r:any) => { this.logData = r.Data; });
     }
 

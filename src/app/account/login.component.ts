@@ -60,21 +60,21 @@ md-card.login
 })
 export class LoginComponent implements CanDeactivate<LoginComponent> {
 
-    private componentState: string = "enterComponent";
-    private readyToGoHome$: Subject<boolean> = new Subject<boolean>();
+    public componentState: string = "enterComponent";
+    public readyToGoHome$: Subject<boolean> = new Subject<boolean>();
 
-    private checkingCredentials: boolean = true;
+    public checkingCredentials: boolean = true;
 
-    private username: string;
-    private password: string;
-    private useWindowsAuth: boolean = false;
+    public username: string;
+    public password: string;
+    public useWindowsAuth: boolean = false;
 
-    private loginFailed: boolean;
+    public loginFailed: boolean;
 
-    private busyWithLogin: boolean;
+    public busyWithLogin: boolean;
 
 
-    constructor(private router: Router, private accountService: AccountService, private changeDetectorRef: ChangeDetectorRef) {
+    constructor(public router: Router, public accountService: AccountService, public changeDetectorRef: ChangeDetectorRef) {
         try {
 
             // see if we can login with an existing key from localStorage

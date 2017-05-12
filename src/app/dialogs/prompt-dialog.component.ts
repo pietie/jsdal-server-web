@@ -13,10 +13,10 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 })
 export class PromptDialog {
 
-    private title: string;
-    private fieldName: string;
-    private val: string;
-    private okayTxt: string;
+    public title: string;
+    public fieldName: string;
+    public val: string;
+    public okayTxt: string;
 
     constructor(public dialogRef: MdDialogRef<PromptDialog>) {
     }
@@ -37,7 +37,7 @@ export class PromptDialog {
         });
     }
 
-    private okayClicked() {
+    public okayClicked() {
         if (!this.val || this.val == "") {
             return;
         }

@@ -26,7 +26,6 @@ import { SharedModule } from './shared/shared.module'
 import { LoggedInGuard } from './logged-in.guard';
 import { AccountService } from './account/account.service';
 
-import { LoggedInComponent } from './account/logged-in.component';
 
 @NgModule({
     imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, /*ThreadsModule,*/ routing
@@ -37,7 +36,6 @@ import { LoggedInComponent } from './account/logged-in.component';
         , LoginComponent
         , SessionLog
         , Settings
-        , LoggedInComponent
         , ExceptionViewerComponent
     ],
     bootstrap: [AppComponent],
