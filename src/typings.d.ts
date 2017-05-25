@@ -2,11 +2,9 @@
 // https://github.com/typings/typings
 // https://www.typescriptlang.org/docs/handbook/writing-declaration-files.html
 
-/// <reference path="../typings/tsd.d.ts" />
-
 declare var System: any;
 declare var BootstrapDialog: any;
-
+declare function moment(...any): any;
 interface JQuery {
     validator(...any):any;
 }
