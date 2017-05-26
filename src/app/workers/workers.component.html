@@ -1,0 +1,37 @@
+
+<md-card *ngIf="workerList">
+    <md-card-content>
+
+
+        <table class="grid">
+            <thead>
+                <tr>
+                    <th style="width:180px;">Name</th>
+                    <th style="width:250px;">Description</th>
+                    <th>Last status</th>
+                    <th style="width:200px;">Running?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of workerList">
+                    <td>
+                        <button md-button color="primary" [routerLink]='row.name'>{{ row.name }}</button>
+                    </td>
+                    <td>{{ row.desc }}</td>
+                    <td>{{ row.status }}</td>
+                    <td>{{ row.isRunning? "Running" : "Stopped" }}
+
+                            <button *ngIf="!row.isRunning" md-button color="primary">START</button>
+                            <button *ngIf="row.isRunning" md-button color="warn">STOP</button>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+    <md-card-actions>
+        <!--<button md-raised-button color="primary" (click)="onRefreshClicked()" type="button">REFRESH</button>-->
+    </md-card-actions>
+</md-card>
+<br/>
+<router-outlet></router-outlet>

@@ -1,0 +1,3 @@
+<h3 *ngIf="workerName"> {{ workerName }} log</h3>
+
+<LogGrid [datasource]="logData" (refresh)="onRefresh()"></LogGrid>

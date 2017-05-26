@@ -19,6 +19,9 @@ import { SessionLog } from './sessionlog/sessionlog.component'
 import { Settings } from './settings/settings.component'
 import { ExceptionViewerComponent } from './exception-viewer/exception-viewer.component'
 
+import { WorkersComponent } from './workers/workers.component'
+import { WorkerDetailComponent } from './workers/worker-detail.component'
+
 import { PerformanceModule } from './performance/performance.module'
 
 import { SharedModule } from './shared/shared.module'
@@ -28,15 +31,17 @@ import { AccountService } from './account/account.service';
 
 
 @NgModule({
-    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, /*ThreadsModule,*/ routing
+    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing
         /*, PerformanceModule*/
     ],
-    declarations: [AppComponent
-        , HomeComponent
-        , LoginComponent
-        , SessionLog
-        , Settings
-        , ExceptionViewerComponent
+    declarations: [AppComponent,
+        HomeComponent,
+        LoginComponent,
+        SessionLog,
+        Settings,
+        ExceptionViewerComponent,
+        WorkersComponent,
+        WorkerDetailComponent
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService],
