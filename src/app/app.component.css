@@ -5,3 +5,19 @@
     padding: 18px;
 }
 
+.menu-icon
+{
+    cursor: pointer;
+}
+
+.avatar {
+    border-radius: 50%;
+    background-color: #d0ff6b;
+    width: 35px;
+    height: 35px;
+    color: #000;
+    font: bold 16px Arial;
+    line-height: 35px;
+    text-align: center;
+    cursor: pointer;
+}

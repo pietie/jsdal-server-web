@@ -1,6 +1,9 @@
 ﻿import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { FirstTimeSetupComponent } from './1st-time/1st-time-setup.component';
+import { FirstTimeSetupCompletedGuard } from './1st-time/1st-time-setup-completed.guard';
+
 import { HomeComponent } from './home/home.component'
 import { LoginComponent } from './account/login.component'
 import { SessionLog } from './sessionlog/sessionlog.component'
@@ -16,10 +19,12 @@ import { LoggedInGuard } from './logged-in.guard';
 export const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: '/login',
-        pathMatch: 'full',
+
+        component: HomeComponent,
+        canActivate: [LoggedInGuard]
     },
-    { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard] },
+    { path: '1st-time', component: FirstTimeSetupComponent },
+    { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard], canActivate: [FirstTimeSetupCompletedGuard] },
     { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
     { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule', canActivate: [LoggedInGuard] },
     { path: 'sessionlog', component: SessionLog, canActivate: [LoggedInGuard] },

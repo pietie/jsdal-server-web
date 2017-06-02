@@ -30,12 +30,12 @@ export class DbSourceRouteResolver implements Resolve<IDBSource> {
                 return dbs;
             }
             else {
-                this.router.navigate(['/home']); // TODO: Route back to project list with error?
+                this.router.navigate(['/']); // TODO: Route back to project list with error?
                 return null;
             }
         }).catch(e => {
             console.log("bailing because of error", e);
-            this.router.navigate(['/home']);     // TODO: Route back to project list with error?
+            this.router.navigate(['/']);     // TODO: Route back to project list with error?
             return null;
         });
     }

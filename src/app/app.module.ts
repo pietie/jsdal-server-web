@@ -10,6 +10,9 @@ import { CanDeactivateGuard } from './services/can-deactivate-guard.service'
 
 import { AppComponent } from './app.component';
 
+import { FirstTimeSetupComponent } from './1st-time/1st-time-setup.component';
+import { FirstTimeSetupCompletedGuard } from './1st-time/1st-time-setup-completed.guard';
+
 import { ProjectsModule } from './projects/projects.module'
 
 import { ThreadsModule } from './threads/threads.module'
@@ -29,6 +32,8 @@ import { SharedModule } from './shared/shared.module'
 import { LoggedInGuard } from './logged-in.guard';
 import { AccountService } from './account/account.service';
 
+import { FirstTimeSetupCompletedService } from './1st-time/1st-time-setup-completed.service';
+
 
 @NgModule({
     imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing
@@ -41,10 +46,11 @@ import { AccountService } from './account/account.service';
         Settings,
         ExceptionViewerComponent,
         WorkersComponent,
-        WorkerDetailComponent
+        WorkerDetailComponent,
+        FirstTimeSetupComponent
     ],
     bootstrap: [AppComponent],
-    providers: [CanDeactivateGuard, LoggedInGuard, AccountService],
+    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService],
     entryComponents: []
 
 })

@@ -126,7 +126,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
             .queryParams
             .subscribe(params => {
 
-                let targetUrl: string = "/home";
+                let targetUrl: string = "/";
 
                 if (this.accountService.redirectUrl) targetUrl = this.accountService.redirectUrl;
                 

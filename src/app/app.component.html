@@ -1,14 +1,64 @@
 <md-sidenav-container style="background-color: #F0EDE5">
-    <md-sidenav #side mode="push" opened="false">
+    <md-sidenav #side mode="push" opened="false" style="width:260px;">
 
-        <md-nav-list>
-            <a (click)="side.close();" md-list-item [routerLink]="['/home']">Main</a>
-            <a (click)="side.close();" md-list-item [routerLink]="['/projects']">Projects</a>
-            <a (click)="side.close();" md-list-item [routerLink]="['/performance']">Performance</a>
-            <a (click)="side.close();" md-list-item [routerLink]="['/workers']">Workers</a>
-            <a (click)="side.close();" md-list-item [routerLink]="['/sessionlog']">Session log</a>
-            <a (click)="side.close();" md-list-item [routerLink]="['/settings']">Settings</a>
-            <a (click)="side.close();" md-list-item [routerLink]="['/exceptions']">Exception viewer</a>
+
+        <md-nav-list class="menu">
+
+            <h3 md-subheader>jsDAL Server</h3>
+
+            <md-list-item (click)="side.close(); go('/')">
+                <div class="flex-vertical-center">
+                    <md-icon>home</md-icon>
+                    <div md-line>Main</div>
+                </div>
+            </md-list-item>
+
+
+            <md-list-item (click)="side.close(); go('projects')">
+                <div class="flex-vertical-center">
+                    <md-icon>web</md-icon>
+                    <div md-line>Projects</div>
+                </div>
+            </md-list-item>
+
+            <md-list-item (click)="side.close(); go('workers')">
+                <div class="flex-vertical-center">
+                    <md-icon>group_work</md-icon>
+                    <div md-line>Workers</div>
+                </div>
+            </md-list-item>
+
+            <md-list-item (click)="side.close(); go('sessionlog')">
+                <div class="flex-vertical-center">
+                    <md-icon>event_note</md-icon>
+                    <div md-line>Session log</div>
+                </div>
+            </md-list-item>
+
+            <md-list-item (click)="side.close(); go('settings')">
+                <div class="flex-vertical-center">
+                    <md-icon>settings_applications</md-icon>
+                    <div md-line>Settings</div>
+                </div>
+            </md-list-item>
+
+            <md-list-item (click)="side.close(); go('performance')">
+                <div class="flex-vertical-center">
+                    <md-icon>star</md-icon>
+                    <div md-line>Performance</div>
+                </div>
+            </md-list-item>
+
+            <md-list-item (click)="side.close(); go('exceptions')">
+                <div class="flex-vertical-center">
+                    <md-icon>error_outline</md-icon>
+                    <div md-line>Exceptions</div>
+                </div>
+            </md-list-item>
+
+
+
+
         </md-nav-list>
 
 
@@ -18,20 +68,11 @@
     <div class="main-content">
 
         <md-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary" style="margin-bottom: 20px;">
-            <md-icon (click)="side.open();" style="margin-right:10px;">menu</md-icon>
-            <span>jsDAL Server</span>
+            <md-icon class="menu-icon" (click)="side.open();" style="margin-right:10px;">menu</md-icon>
+            <span (click)="side.toggle()" style="cursor: pointer">jsDAL Server</span>
 
-            <!--<div style="margin-left: 20px;">
-                <a [routerLink]="['/home']">Main</a>
-                <a [routerLink]="['/projects']">Projects</a>
-                <a [routerLink]="['/performance']">Performance</a>
-                <a [routerLink]="['/threads']">Threads</a>
-                <a [routerLink]="['/sessionlog']">Session log</a>
-                <a [routerLink]="['/settings']">Settings</a>
-            </div>-->
-
-            <div style="flex: 1 1 auto;">
-                Logged in as <span>UNKNOWN</span>, <a>logout</a>
+            <div style="flex: 1 1;display:flex;justify-content: flex-end">
+                <div [mdMenuTriggerFor]="appMenu" class="avatar">P</div>
             </div>
         </md-toolbar>
 
@@ -40,7 +81,14 @@
             <router-outlet></router-outlet>
         </div>
 
-
     </div>
+
+    <md-menu #appMenu="mdMenu">
+        <button md-menu-item> Settings </button>
+        <button md-menu-item> Help </button>
+        <button md-menu-item> Logout </button>
+        <input type="text" />
+    </md-menu>
+
 
 </md-sidenav-container>

@@ -14,7 +14,7 @@
         <span class="head">{{ exceptionDetail.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;<span>({{ exceptionDetail.id }})</span>
         <hr/>
         <div class="exception-detail" *ngIf="exceptionDetail.exceptionObject">
-            <div class="msg">{{ exceptionDetail.exceptionObject.message }}</div>
+            <div class="msg" [innerHTML]="formatMessage(exceptionDetail.exceptionObject.message)"></div>
             <hr/>
 
             <div class="stack" *ngIf="exceptionDetail.exceptionObject.stack" [innerHTML]="formatStackTrace(exceptionDetail.exceptionObject.stack)">
@@ -32,13 +32,17 @@
         
         <div *ngIf="recentExceptions">
 
+            <p *ngIf="recentExceptions.length == 0">
+                No recent exceptions found.
+            </p>
+
             <div *ngFor="let ex of recentExceptions">
                 <span [title]="ex.created | date: 'dd MMM yyyy'">{{ ex.created | date: 'HH:mm:ss' }}</span>
                 <div style="width:110px;display:inline-block">
                         <button (click)="errRef.value=ex.id;lookupError(ex.id)" md-button color="primary">{{ ex.id }}</button>
                 </div>
-                <span *ngIf="ex.exceptionObject">
-                    {{ ex.exceptionObject.message }}
+                <span *ngIf="ex.exceptionObject" [innerHTML]="formatMessage(ex.exceptionObject.message)">
+
                 </span>
                 
             </div>

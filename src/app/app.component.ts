@@ -1,5 +1,5 @@
 ﻿import { Component, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from './account/account.service'
 import { MdDialog, MdSnackBar } from '@angular/material';
 
@@ -48,7 +48,7 @@ class X implements IL2OutputMessageHandler {
         return MsgDialog.confirm(this.dialog, title, msg);
     }
 
-     prompt(title?: string, fieldName?: string, val?: string, okayButtonLabel?: string): Promise<any> {
+    prompt(title?: string, fieldName?: string, val?: string, okayButtonLabel?: string): Promise<any> {
         return PromptDialog.prompt(this.dialog, title, fieldName, val, okayButtonLabel);
     }
 
@@ -63,14 +63,15 @@ class X implements IL2OutputMessageHandler {
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
-    styleUrls: [ 'app.component.css' ]
+    styleUrls: ['app.component.css']
 })
 export class AppComponent {
     constructor(public accountService: AccountService,
         public router: Router,
         public changeDetectorRef: ChangeDetectorRef,
         public dialog: MdDialog,
-        public snackBar: MdSnackBar
+        public snackBar: MdSnackBar,
+        public activatedRoute: ActivatedRoute
     ) {
 
         L2.registerOutputMessageHandler(new X(this.dialog, this.snackBar, this.router, null));
@@ -80,6 +81,10 @@ export class AppComponent {
         this.accountService.whenLoggedIn.subscribe(loggedIn => {
             this.changeDetectorRef.detectChanges();
         });
+    }
+
+    public go(url: string) {
+        this.router.navigate([url], { relativeTo: this.activatedRoute });
     }
 
 }
