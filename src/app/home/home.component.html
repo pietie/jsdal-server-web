@@ -37,15 +37,18 @@
         <md-card-subtitle>Create and manage jsDAL projects</md-card-subtitle>
     </md-card-header>
     <md-card-content>
-        <p>
-            
+        <p *ngIf="!isLoadProjectList && projectList.length == 0; else projectDetail">
+            No projects have been created yet.
         </p>
+        <ng-template #projectDetail>
+            {{ projectList.length }} project(s) on server.
+        </ng-template>
     </md-card-content>
     <md-card-actions>
         <button color="primary" md-button [routerLink]="['/projects']">MANAGE</button>
     </md-card-actions>
     <md-card-footer>
-        <md-progress-bar mode="indeterminate"></md-progress-bar>
+        <md-progress-bar *ngIf="isLoadProjectList" mode="indeterminate"></md-progress-bar>
 
     </md-card-footer>
 </md-card>
