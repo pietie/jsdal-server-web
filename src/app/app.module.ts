@@ -36,8 +36,7 @@ import { FirstTimeSetupCompletedService } from './1st-time/1st-time-setup-comple
 
 
 @NgModule({
-    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing
-        /*, PerformanceModule*/
+    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule
     ],
     declarations: [AppComponent,
         HomeComponent,

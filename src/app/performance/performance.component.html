@@ -1,24 +1,32 @@
-﻿
+﻿<div class="page-header">
 
-<div class="page-header"><h4>jsDAL Projects</h4></div>
+    <h4>jsDAL Server performance</h4>
+</div>
+
+<md-card>
+    <md-card-content>
+
+        <table class="grid" *ngIf="projectList">
+            <thead>
+                <tr>
+                    <th style="width:40px"></th>
+                    <th style="width:250px">Project</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of projectList" [class.success]="selectedProject == row">
+                    <td class="anchorColumn">
+                        <button md-button color="primary" [routerLink]="['./' + row.Name]">select</button>
+                    </td>
+                    <td>{{row.Name}}</td>
+                </tr>
+            </tbody>
+        </table>
 
 
-<table class="grid" *ngIf="projectList">
-    <thead>
-        <tr>
-            <th style="width:200px"></th>
-            <th style="width:250px">Project</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let row of projectList" [class.success]="selectedProject == row">
-            <td class="anchorColumn">
-                <a [routerLink]="['./' + row.Name]">select</a>
-            </td>
-            <td>{{row.Name}}</td>
-        </tr>
-    </tbody>
-</table>
+    </md-card-content>
+</md-card>
+
 
 <br/>
 

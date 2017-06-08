@@ -41,7 +41,7 @@
             No projects have been created yet.
         </p>
         <ng-template #projectDetail>
-            {{ projectList.length }} project(s) on server.
+            <span *ngIf="projectList">{{ projectList.length }} project(s) on server.</span>
         </ng-template>
     </md-card-content>
     <md-card-actions>

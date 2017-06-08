@@ -77,17 +77,16 @@
         </md-toolbar>
 
 
-        <div id="app-content">
+        <div id="app-content" [class.login]="router.url == '/login'">
             <router-outlet></router-outlet>
         </div>
 
     </div>
 
     <md-menu #appMenu="mdMenu">
-        <button md-menu-item> Settings </button>
-        <button md-menu-item> Help </button>
-        <button md-menu-item> Logout </button>
-        <input type="text" />
+        <button [routerLink]="['./settings']" md-menu-item><div class="flex-vertical-center"><md-icon>settings_applications</md-icon><span>Settings</span></div> </button>
+        <button [routerLink]="['./login']" [queryParams]='{logout:true}' md-menu-item><div class="flex-vertical-center"><md-icon>exit_to_app</md-icon><span>Logout</span></div></button>
+        
     </md-menu>
 
 

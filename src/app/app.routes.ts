@@ -4,10 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { FirstTimeSetupComponent } from './1st-time/1st-time-setup.component';
 import { FirstTimeSetupCompletedGuard } from './1st-time/1st-time-setup-completed.guard';
 
-import { HomeComponent } from './home/home.component'
-import { LoginComponent } from './account/login.component'
-import { SessionLog } from './sessionlog/sessionlog.component'
-import { Settings } from './settings/settings.component'
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './account/login.component';
+import { SessionLog } from './sessionlog/sessionlog.component';
+import { Settings } from './settings/settings.component';
 import { ExceptionViewerComponent } from './exception-viewer/exception-viewer.component';
 
 import { WorkersComponent } from './workers/workers.component';
