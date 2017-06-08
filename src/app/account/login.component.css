@@ -1,0 +1,10 @@
+#app-content.login
+{
+    padding: 0;
+}
+
+md-card.login
+{
+    width: 380px;
+    margin: auto;
+}    

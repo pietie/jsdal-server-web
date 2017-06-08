@@ -122,6 +122,11 @@ export class AccountService {
                 */
     }
 
+    public logout()
+    {
+        L2.BrowserStore.removeSessionItem("jwt");
+    }
+
     public login(options: { useWindowsAuth?: boolean, user?: string, pass?: string }): Promise<boolean> {
 
         if (options.useWindowsAuth) {

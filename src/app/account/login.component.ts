@@ -1,5 +1,5 @@
 ﻿import { Component, ViewEncapsulation, trigger, state, style, transition, animate, AnimationTransitionEvent, ChangeDetectorRef } from '@angular/core'
-import { Router, CanDeactivate } from '@angular/router'
+import { Router, CanDeactivate, ActivatedRoute } from '@angular/router'
 
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
@@ -15,33 +15,7 @@ import L2 from 'l2-lib/L2';
     selector: 'login',
     encapsulation: ViewEncapsulation.None,
     templateUrl: './login.component.html',
-    styles: [
-        `
-body  {
-	    font-family: Helvetica;
-	    background-color: #eee;
-    }
-
-md-card.login
-{
-    width: 380px;
-    margin: auto;
-
-}    
-
-`, `
- 
-.form {
-	width: 380px;
-	margin: 4em auto;
-	padding: 0em 2em 2em 2em;
-	background: #fafafa;
-	border: 1px solid #ebebeb;
-	box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
-}
-
- 
-`],
+    styleUrls: ['./login.component.css'],
     animations: [
         trigger('componentState', [
             state('void', style({ opacity: 0, transform: 'translateY(-100%)' })),
@@ -49,11 +23,7 @@ md-card.login
             state('exitComponent', style({ opacity: 0.05, transform: 'translateY(200%)' })),
             transition('* => enterComponent', animate('300ms ease-in')),
             transition('enterComponent => exitComponent', animate('500ms ease-in'))
-
-
         ]),
-
-
 
     ],
 
@@ -74,8 +44,14 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
     public busyWithLogin: boolean;
 
 
-    constructor(public router: Router, public accountService: AccountService, public changeDetectorRef: ChangeDetectorRef) {
+    constructor(public router: Router, public accountService: AccountService, public changeDetectorRef: ChangeDetectorRef, public activatedRoute: ActivatedRoute) {
         try {
+            this.activatedRoute.queryParams.subscribe(qp => {
+                if (qp && qp.logout) { 
+                    this.accountService.logout();
+                    this.router.navigate(['./login']);
+                }
+            });
 
             // see if we can login with an existing key from localStorage
             this.accountService.loginFromStore().then(isLoggedIn => {
@@ -129,7 +105,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
                 let targetUrl: string = "/";
 
                 if (this.accountService.redirectUrl) targetUrl = this.accountService.redirectUrl;
-                
+
                 this.router.navigateByUrl(targetUrl);
 
                 /**this.router.navigateByUrl(targetUrl).then(r => {
@@ -159,7 +135,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
                     this.busyWithLogin = false;
                     this.loginFailed = !success;
 
-                      if (success) {
+                    if (success) {
                         this.goHome();
                     }
                     else {
