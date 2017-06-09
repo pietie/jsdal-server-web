@@ -11,6 +11,8 @@ export interface IDataSource {
     database?: string;
     defaultRuleMode?: string;
     guid?: string;
+    port?: number;
+    instanceName?: string;
 }
 
 
@@ -26,7 +28,7 @@ export enum AuthenticationType {
 })
 export class DataSourceDialog {
 
-    public obj: IDataSource = {}; 
+    public obj: IDataSource = { port: 1433 }; 
     public isTestingConnection: boolean = false;
     public isLoadingDbList: boolean = false;
 
@@ -77,7 +79,7 @@ export class DataSourceDialog {
             pass = this.obj.password;
         }
 
-        L2.fetchJson(`/api/util/listdbs?datasource=${this.obj.dataSource}&u=${L2.nullToEmpty(user)}&p=${L2.nullToEmpty(pass)}`).then((list: any) => {
+        L2.fetchJson(`/api/util/listdbs?datasource=${this.obj.dataSource}&u=${L2.nullToEmpty(user)}&p=${L2.nullToEmpty(pass)}&port=${this.obj.port}&instanceName=${L2.nullToEmpty(this.obj.instanceName)}`).then((list: any) => {
             this.isLoadingDbList = false;
             this.dbList = list.Data.map((s) => { return { id: s, text: s } });
         }).catch(() => {
@@ -95,7 +97,7 @@ export class DataSourceDialog {
             pass = this.obj.password;
         }
 
-        L2.fetchJson(`/api/util/testconnection?dataSource=${this.obj.dataSource}&catalog=${this.obj.database}&username=${L2.nullToEmpty(user)}&password=${L2.nullToEmpty(pass)}`).then(() => {
+        L2.fetchJson(`/api/util/testconnection?dataSource=${this.obj.dataSource}&catalog=${this.obj.database}&username=${L2.nullToEmpty(user)}&password=${L2.nullToEmpty(pass)}&port=${this.obj.port}&instanceName=${L2.nullToEmpty(this.obj.instanceName)}`).then(() => {
             this.isTestingConnection = false;
             L2.success("Connection successful");
         }).catch((e) => { this.isTestingConnection = false; L2.handleException(e); });

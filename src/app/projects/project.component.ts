@@ -99,10 +99,11 @@ export class ProjectComponent {
                     password: null,
                     authType: <any>(row.UserID ? AuthenticationType.SQL : AuthenticationType.Windows),
                     defaultRuleMode: row.DefaultRuleMode.toString(),
-                    guid: row.Guid
+                    guid: row.Guid,
+                    port: row.port,
+                    instanceName: row.instanceName
                 };
             }
-
 
             dialogRef.afterClosed().subscribe(r => {
                 if (r) {
@@ -118,14 +119,14 @@ export class ProjectComponent {
 
                         if (!row) {
                             // add new
-                            L2.postJson(`/api/database?project=${this.projectName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
+                            L2.postJson(`/api/database?project=${this.projectName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
                                     L2.success("New database source added successfully");
                                 });
                         }
                         else {
                             // update
-                            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${row.Name}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}`
+                            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${row.Name}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
                                     L2.success("Database source updated successfully");
                                 });
@@ -143,7 +144,7 @@ export class ProjectComponent {
             L2.handleException(e);
         }
     }
- 
+
 
     onDeleteDatabase(row) {
         L2.confirm(`Are you sure you want to delete the database source <strong>${row.Name}</strong>?`, "Confirm action").then(r => {

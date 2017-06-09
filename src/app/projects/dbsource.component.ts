@@ -287,7 +287,9 @@ export class DbSourceComponent {
                     database: row.InitialCatalog,
                     username: row.UserID,
                     password: null,
-                    guid: row.Guid
+                    guid: row.Guid,
+                    port: row.port,
+                    instanceName: row.instanceName
                 };
             }
 
@@ -304,7 +306,7 @@ export class DbSourceComponent {
                             obj.username = obj.password = null;
                         }
 
-                        L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.nullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}`)
+                        L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.nullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`)
                             .then(r => {
                                 this.refreshDbConnectionList();
                                 L2.success("New database connection added successfully.");

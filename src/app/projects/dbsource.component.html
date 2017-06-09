@@ -31,12 +31,7 @@
                                 <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} 
 <br /><br />
 
-                                <!--<ng-template [ngIf]="summaryData && summaryData.Orm.TotalCnt > 0">
-                                    <div *ngFor="let row of summaryData.Orm.Groups, let last = last" style="display:inline-block">
-                                        <span>{{row.Type}}</span><span> ({{row.Count}})</span> {{last? "":", "}}
-                                    </div>
-                                </ng-template>
-                                <br/>-->
+                           
                                 
 <md-chip-list>
   <md-chip selected="true" *ngFor="let row of summaryData.Orm.Groups, let last = last">{{ row.Type }} ({{row.Count}})</md-chip>
