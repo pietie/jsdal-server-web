@@ -20,9 +20,8 @@
                     <td>{{ row.desc }}</td>
                     <td>{{ row.status }}</td>
                     <td>{{ row.isRunning? "Running" : "Stopped" }}
-
-                            <button *ngIf="!row.isRunning" md-button color="primary">START</button>
-                            <button *ngIf="row.isRunning" md-button color="warn">STOP</button>
+                            <button (click)="startWorker(row)" *ngIf="!row.isRunning" md-button color="primary">START</button>
+                            <button (click)="stopWorker(row)" *ngIf="row.isRunning" md-button color="warn">STOP</button>
 
                     </td>
                 </tr>
