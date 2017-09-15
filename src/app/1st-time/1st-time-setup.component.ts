@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Component({
     templateUrl: './1st-time-setup.component.html'

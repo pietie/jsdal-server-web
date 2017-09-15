@@ -6,7 +6,7 @@ div.addNewRule md-radio-button { width: 90px }
         align-items: center;
     }
 
-    div.addNewRule div.row md-input-container
+    div.addNewRule div.row md-form-field
     {
         flex: 1 1 auto;
     }

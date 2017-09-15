@@ -288,14 +288,14 @@ div.form-flex .full > .value
     width: auto;
 }
 
-md-input-container.field
+md-form-field.field
 {
     width: 350px;
     font-weight: normal;
     margin-right: 10px;
 }
 
-    md-input-container.field.full, div.form-flex .full {
+    md-form-field.field.full, div.form-flex .full {
         flex: 0 1 100%;
     }
 

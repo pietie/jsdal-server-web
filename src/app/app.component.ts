@@ -4,7 +4,7 @@ import { AccountService } from './account/account.service'
 import { MdDialog, MdSnackBar } from '@angular/material';
 
 import { MsgDialog } from './dialogs/msg-dialog.component'
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 import { IL2OutputMessageHandler } from 'l2-lib/L2';
 import { PromptDialog } from "app/dialogs";
 

@@ -1,7 +1,7 @@
 ﻿import { Component, ModuleWithProviders } from '@angular/core'
 import { ActivatedRoute, Routes, RouterModule } from '@angular/router'
 
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Component({
     selector: 'threads',

@@ -9,15 +9,15 @@
         <md-card class="login">
             <md-card-content>
                 <div>
-                    <md-input-container>
+                    <md-form-field>
                         <input mdInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username" (keyup.enter)="login()" autofocus/>
-                    </md-input-container>
+                    </md-form-field>
                 </div>
                 <div>
-                    <md-input-container>
+                    <md-form-field>
                         <input mdInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password" (keyup.enter)="login()" type="password"
                         />
-                    </md-input-container>
+                    </md-form-field>
                 </div>
                 <div>
                     <md-checkbox [(ngModel)]="useWindowsAuth">Use Windows authentication</md-checkbox>

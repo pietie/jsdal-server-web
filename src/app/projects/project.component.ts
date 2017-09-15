@@ -18,7 +18,7 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/toPromise';
 
 
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Component({
     selector: 'ManageProject',

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 //import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Injectable()
 export class ProjectService {

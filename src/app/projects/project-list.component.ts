@@ -2,7 +2,7 @@
 import { Location } from '@angular/common'
 import { ActivatedRoute, Router } from '@angular/router'
 
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Component({
     templateUrl: './project-list.component.html',

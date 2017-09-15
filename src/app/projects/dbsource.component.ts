@@ -2,7 +2,7 @@
 import { ActivatedRoute } from '@angular/router'
 import { MdDialog, MdDialogRef } from '@angular/material';
 
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 import { ProjectService, IDBSource } from './projects.service'
 

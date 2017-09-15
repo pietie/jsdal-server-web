@@ -1,8 +1,8 @@
 <md-card>
     <md-card-content>
-        <md-input-container>
+        <md-form-field>
             <input #errRef mdInput type="text" placeholder="Error ref#" />
-        </md-input-container>
+        </md-form-field>
     </md-card-content>
     <md-card-actions>
         <button #lookupButton md-button color="primary" (click)="lookupError(errRef.value)">LOOKUP</button>
@@ -29,6 +29,10 @@
 <md-card>
     <md-card-title>Recent exceptions</md-card-title>
     <md-card-content>
+
+        <p>
+            (Total # of exceptions in memory: {{ totalExceptionCnt }})
+            </p>
         
         <div *ngIf="recentExceptions">
 

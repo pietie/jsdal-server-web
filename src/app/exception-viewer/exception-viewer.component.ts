@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import L2 from "l2-lib/L2";
+import { L2  } from 'l2-lib/L2';
 import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
@@ -51,6 +51,7 @@ export class ExceptionViewerComponent {
 
     public exceptionDetail: any;
     public recentExceptions: any;
+    public totalExceptionCnt:number = 0;
 
     constructor(public domSanitizer: DomSanitizer) {
 
@@ -88,7 +89,8 @@ export class ExceptionViewerComponent {
 
     fetchRecentExceptions() {
         L2.fetchJson(`/api/exception/top/200`).then((r: any) => {
-            this.recentExceptions = r.Data;
+            this.totalExceptionCnt = r.Data.TotalExceptionCnt;
+            this.recentExceptions = r.Data.Results;
         });
     }
 }

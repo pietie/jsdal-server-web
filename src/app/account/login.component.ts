@@ -9,7 +9,7 @@ import 'rxjs/add/operator/toPromise';
 
 
 import { AccountService } from '../account/account.service';
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Component({
     selector: 'login',

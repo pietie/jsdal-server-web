@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Component({
     templateUrl: 'dbsource-list.component.html'

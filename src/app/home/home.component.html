@@ -22,6 +22,15 @@
             </div>
 
         </div>
+<br/>
+        <div>
+            <button *ngIf="!usageDetail" (click)="onUsageDetailClick()" md-button color="primary">Usage detail</button>
+        </div>
+        <p *ngIf="usageDetail">
+
+             {{  usageDetail | json  }}
+
+        </p>
 
     </md-card-content>
 

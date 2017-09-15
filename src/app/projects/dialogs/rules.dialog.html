@@ -61,26 +61,26 @@
                 <div class="row">
                     <md-radio-button #radSchema (click)="newTypeVal=0;txtSchema.focus()" radioGroup="newType" value="0">Schema</md-radio-button>
 
-                    <md-input-container>
+                    <md-form-field>
                         <input #txtSchema mdInput type="text" autofocus [readonly]="!radSchema.checked" (click)="radSchema.checked = true;newTypeVal=0;"
                             placeholder="Schema name" />
-                    </md-input-container>
+                    </md-form-field>
                 </div>
 
                 <div class="row">
                     <md-radio-button #radSpecific (click)="newTypeVal=1;txtSpecific.focus()" radioGroup="newType" value="1">Specific</md-radio-button>
-                    <md-input-container>
+                    <md-form-field>
                         <input #txtSpecific mdInput type="text" (click)="radSpecific.checked = true;newTypeVal=1" placeholder="Routine name" [readonly]="!radSpecific.checked"
                         />
-                    </md-input-container>
+                    </md-form-field>
                 </div>
 
                 <div class="row">
                     <md-radio-button #radRegex (click)="newTypeVal=2;txtRegex.focus();" radioGroup="newType" value="2">Regex</md-radio-button>
-                    <md-input-container>
+                    <md-form-field>
                         <input #txtRegex mdInput type="text" (click)="radRegex.checked = true;newTypeVal=2" placeholder="JavaScript regex" [readonly]="!radRegex.checked"
                         />
-                    </md-input-container>
+                    </md-form-field>
                 </div>
             </div>
 
@@ -104,10 +104,10 @@
             <div *ngIf="filteredRoutineList" class="footer">Viewing <strong>{{ filteredRoutineList.length }}</strong> of <strong>{{ fullRoutineList.length }}</strong> routine(s)</div>
 
             <div style="display: flex;">
-                <md-input-container style="flex: 1 1 auto;">
+                <md-form-field style="flex: 1 1 auto;">
                     <input mdInput type="text" [(ngModel)]="filterTxt" placeholder="Filter text" (keyup)="onFilterTextChanged($event.target.value)"
                     />
-                </md-input-container>
+                </md-form-field>
 
             </div>
             <div style="height: 2px;margin-top:-3px;">

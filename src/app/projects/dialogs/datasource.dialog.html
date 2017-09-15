@@ -3,24 +3,24 @@
 
     <div class="form-flex" style="width:300px">
 
-        <md-input-container class="field full">
+        <md-form-field class="field full">
             <input mdInput type="text" placeholder="Logical name" [(ngModel)]="obj.logicalName" required [disabled]="shouldDisableControls()"
             />
-        </md-input-container>
+        </md-form-field>
         <div class="field full flex-vertical-center">
-            <md-input-container>
+            <md-form-field>
                 <input mdInput type="text" placeholder="Datasource" title="Database server IP or DNS" [(ngModel)]="obj.dataSource" required
                     [disabled]="shouldDisableControls()" />
-            </md-input-container>
-            <md-input-container>
+            </md-form-field>
+            <md-form-field>
                 <input mdInput type="number" placeholder="Port" [(ngModel)]="obj.port" [disabled]="shouldDisableControls()" />
-            </md-input-container>
+            </md-form-field>
         </div>
 
-        <md-input-container class="field full">
+        <md-form-field class="field full">
             <input mdInput type="type" placeholder="Instance name" [(ngModel)]="obj.instanceName" [disabled]="shouldDisableControls()"
             />
-        </md-input-container>
+        </md-form-field>
 
         <div>
             <label>Auth type</label>
@@ -30,21 +30,21 @@
             </md-radio-group>
         </div>
 
-        <md-input-container class="field full">
+        <md-form-field class="field full">
             <input mdInput type="text" placeholder="Username" [(ngModel)]="obj.username" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
             />
-        </md-input-container>
-        <md-input-container class="field full">
+        </md-form-field>
+        <md-form-field class="field full">
             <input mdInput type="password" placeholder="Password" [(ngModel)]="obj.password" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
             />
-        </md-input-container>
+        </md-form-field>
 
 
-        <md-input-container class="field full">
+        <md-form-field class="field full">
             <input mdInput placeholder="Database" [(ngModel)]="obj.database" [mdAutocomplete]="auto" [disabled]="shouldDisableControls()">
             <md-hint align="end"><a href="javascript:void(0);" (click)="loadDbList()" [class.disabled]="isLoadingDbList || shouldDisableControls()">{{ !isLoadingDbList? "load from server":"loading, please wait..." }}</a>
             </md-hint>
-        </md-input-container>
+        </md-form-field>
 
         <md-autocomplete #auto="mdAutocomplete">
             <md-option *ngFor="let row of dbList" [value]="row.id">{{row.text}}</md-option>

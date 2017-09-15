@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import L2 from 'l2-lib/L2';
+import { L2  } from 'l2-lib/L2';
 
 @Component({
     templateUrl: './workers.component.html'
