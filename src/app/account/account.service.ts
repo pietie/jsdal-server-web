@@ -1,8 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { L2  } from 'l2-lib/L2';
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject'
 
 import { environment } from '../../environments/environment';

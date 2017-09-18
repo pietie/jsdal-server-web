@@ -1,4 +1,5 @@
-﻿import { Component, ViewEncapsulation, trigger, state, style, transition, animate, AnimationTransitionEvent, ChangeDetectorRef } from '@angular/core'
+﻿import { Component, ViewEncapsulation,  AnimationTransitionEvent, ChangeDetectorRef } from '@angular/core';
+import { trigger, state, style, transition, animate, } from '@angular/animations';
 import { Router, CanDeactivate, ActivatedRoute } from '@angular/router'
 
 import { Subject } from 'rxjs/Subject';

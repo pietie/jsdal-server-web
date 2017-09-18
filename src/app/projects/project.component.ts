@@ -1,7 +1,8 @@
 ﻿import {
-    Component, Injector, ViewChild, ApplicationRef, EventEmitter, Output, Host, ComponentFactoryResolver, ViewContainerRef, Input,
-    trigger, state, style, transition, animate
+    Component, Injector, ViewChild, ApplicationRef, EventEmitter, Output, Host, ComponentFactoryResolver, ViewContainerRef, Input
 } from '@angular/core'
+
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { MdDialog, MdDialogRef } from '@angular/material';
 
@@ -52,6 +53,7 @@ export class ProjectComponent {
         , public viewContainerRef: ViewContainerRef
     ) {
         this.route.params.subscribe(params => {
+            console.log("project.component", params);
             this.projectName = params["name"];
             this.componentState = "enterComponent";
             this.refreshDbList();

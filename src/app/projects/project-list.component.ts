@@ -1,6 +1,8 @@
-﻿import { Component, trigger, state, style, transition, animate } from '@angular/core'
+﻿import { Component } from '@angular/core'
 import { Location } from '@angular/common'
 import { ActivatedRoute, Router } from '@angular/router'
+
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 import { L2  } from 'l2-lib/L2';
 
@@ -10,7 +12,7 @@ import { L2  } from 'l2-lib/L2';
         trigger('componentState', [
             state('void', style({ opacity: 1, transform: 'translateX(-100%)' })),
             state('enterComponent', style({ opacity: 1, transform: 'translateX(0) scale(1)', display: "block" })),
-            state('childRouteActive', style({ opacity: 1.0, transform: 'scale(1)', display2: "none" })),
+            state('childRouteActive', style({ opacity: 1.0, transform: 'scale(1)' })),
             state('exitComponent', style({ opacity: 0.5, transform: 'translateX(-100%)' })),
             transition('* => enterComponent', animate('300ms ease-in')),
             transition('enterComponent => childRouteActive', animate('500ms ease-in')),
@@ -30,7 +32,7 @@ export class ProjectListComponent {
         this.refresh();
 
         this.route.params.subscribe(params => {
-            console.log(route);
+            console.log("project-list.component",route);
             this.componentState = "enterComponent";
         });
     }

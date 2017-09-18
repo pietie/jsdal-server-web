@@ -9,6 +9,7 @@
                     <th style="width:180px;">Name</th>
                     <th style="width:250px;">Description</th>
                     <th>Last status</th>
+                    <th style="width:300px;">Progress</th>
                     <th style="width:200px;">Running?</th>
                 </tr>
             </thead>
@@ -19,6 +20,7 @@
                     </td>
                     <td>{{ row.desc }}</td>
                     <td>{{ row.status }}</td>
+                    <td title='{{ row.lastProgressMoment | date: "dd MMM yyyy, HH:mm:ss" }}'><span>{{ row.lastProgressMoment | date: 'HH:mm:ss' }}</span><span> - {{ row.lastProgress }}</span></td>
                     <td>{{ row.isRunning? "Running" : "Stopped" }}
                             <button (click)="startWorker(row)" *ngIf="!row.isRunning" md-button color="primary">START</button>
                             <button (click)="stopWorker(row)" *ngIf="row.isRunning" md-button color="warn">STOP</button>
