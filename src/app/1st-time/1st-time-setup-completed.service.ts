@@ -6,7 +6,16 @@ export class FirstTimeSetupCompletedService {
     private isCompletedPromise: Promise<boolean>;
 
     constructor() {
-            this.isCompletedPromise = L2.fetchJson("/api/main/issetupcomplete")
+
+        let url:string = '/api/main/issetupcomplete';
+
+        if (window.location.port == '4200') url = 'http://localhost:5000' + url;
+
+        this.isCompletedPromise = fetch(url)
+            .then(response => {
+                if (response.ok) return response.json();
+                else throw new Error("Network error");
+            })
             .then((json: any) => {
                 return json.Data;
             });

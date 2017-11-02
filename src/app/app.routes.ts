@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { FirstTimeSetupComponent } from './1st-time/1st-time-setup.component';
 import { FirstTimeSetupCompletedGuard } from './1st-time/1st-time-setup-completed.guard';
+import { FirstTimeNetworkErrorComponent } from './1st-time/1st-time-network-error.component';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './account/login.component';
@@ -24,6 +25,7 @@ export const appRoutes: Routes = [
         canActivate: [LoggedInGuard]
     },
     { path: '1st-time', component: FirstTimeSetupComponent },
+    { path: 'network-error', component: FirstTimeNetworkErrorComponent },
     { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard], canActivate: [FirstTimeSetupCompletedGuard] },
     { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
     { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule', canActivate: [LoggedInGuard] },

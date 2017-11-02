@@ -33,6 +33,7 @@ import { LoggedInGuard } from './logged-in.guard';
 import { AccountService } from './account/account.service';
 
 import { FirstTimeSetupCompletedService } from './1st-time/1st-time-setup-completed.service';
+import { FirstTimeNetworkErrorComponent } from './1st-time/1st-time-network-error.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { FirstTimeSetupCompletedService } from './1st-time/1st-time-setup-comple
         ExceptionViewerComponent,
         WorkersComponent,
         WorkerDetailComponent,
-        FirstTimeSetupComponent
+        FirstTimeSetupComponent,
+        FirstTimeNetworkErrorComponent
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService],
