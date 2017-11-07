@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { L2  } from 'l2-lib/L2';
 
 export interface IDataSource {
@@ -60,7 +60,7 @@ export class DataSourceDialog {
 
     }
 
-    constructor(public dialogRef: MdDialogRef<DataSourceDialog>) {
+    constructor(public dialogRef: MatDialogRef<DataSourceDialog>) {
 
     }
 

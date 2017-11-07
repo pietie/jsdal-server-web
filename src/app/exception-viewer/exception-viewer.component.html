@@ -1,16 +1,16 @@
-<md-card>
-    <md-card-content>
-        <md-form-field>
-            <input #errRef mdInput type="text" placeholder="Error ref#" />
-        </md-form-field>
-    </md-card-content>
-    <md-card-actions>
-        <button #lookupButton md-button color="primary" (click)="lookupError(errRef.value)">LOOKUP</button>
-    </md-card-actions>
-</md-card>
+<mat-card>
+    <mat-card-content>
+        <mat-form-field>
+            <input #errRef matInput type="text" placeholder="Error ref#" />
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+        <button #lookupButton mat-button color="primary" (click)="lookupError(errRef.value)">LOOKUP</button>
+    </mat-card-actions>
+</mat-card>
 
-<md-card *ngIf="exceptionDetail">
-    <md-card-content>
+<mat-card *ngIf="exceptionDetail">
+    <mat-card-content>
         <span class="head">{{ exceptionDetail.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;<span>({{ exceptionDetail.id }})</span>
         <hr/>
         <div class="exception-detail" *ngIf="exceptionDetail.exceptionObject">
@@ -23,12 +23,12 @@
             </div>
 
         </div>
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
-<md-card>
-    <md-card-title>Recent exceptions</md-card-title>
-    <md-card-content>
+<mat-card>
+    <mat-card-title>Recent exceptions</mat-card-title>
+    <mat-card-content>
 
         <p>
             (Total # of exceptions in memory: {{ totalExceptionCnt }})
@@ -43,7 +43,7 @@
             <div *ngFor="let ex of recentExceptions">
                 <span [title]="ex.created | date: 'dd MMM yyyy'">{{ ex.created | date: 'HH:mm:ss' }}</span>
                 <div style="width:110px;display:inline-block">
-                        <button (click)="errRef.value=ex.id;lookupError(ex.id)" md-button color="primary">{{ ex.id }}</button>
+                        <button (click)="errRef.value=ex.id;lookupError(ex.id)" mat-button color="primary">{{ ex.id }}</button>
                 </div>
                 <span *ngIf="ex.exceptionObject" [innerHTML]="formatMessage(ex.exceptionObject.message)">
 
@@ -53,5 +53,5 @@
 
         </div>
 
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>

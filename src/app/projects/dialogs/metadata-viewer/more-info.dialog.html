@@ -1,8 +1,8 @@
-<h1 md-dialog-title>
+<h1 mat-dialog-title>
     <div class="flex-vertical-center">
-        <md-icon>info_outline</md-icon><span> {{ title }} </span></div>
+        <mat-icon>info_outline</mat-icon><span> {{ title }} </span></div>
 </h1>
-<div md-dialog-content>
+<div mat-dialog-content>
 
     <div *ngIf="mode == 'Parms'">
 
@@ -45,11 +45,11 @@
 
         <div class="resultContainer" *ngIf="dataContextKeys">
 
-            <md-tab-group>
+            <mat-tab-group>
 
 
 
-                <md-tab *ngFor="let key of dataContextKeys" [label]="'Table ' + key">
+                <mat-tab *ngFor="let key of dataContextKeys" [label]="'Table ' + key">
 
                     <table class="grid">
                         <thead>
@@ -76,9 +76,9 @@
                         </tbody>
                     </table>
 
-                </md-tab>
+                </mat-tab>
 
-            </md-tab-group>
+            </mat-tab-group>
 
         </div>
 
@@ -93,6 +93,6 @@
     </div>
 
 </div>
-<div md-dialog-actions align="end">
-    <button color="primary" md-button (click)="dialogRef.close(false)">CLOSE</button>
+<div mat-dialog-actions align="end">
+    <button color="primary" mat-button (click)="dialogRef.close(false)">CLOSE</button>
 </div>

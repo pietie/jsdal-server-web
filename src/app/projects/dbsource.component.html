@@ -1,5 +1,5 @@
-﻿<md-card>
-    <md-card-title>
+﻿<mat-card>
+    <mat-card-title>
         <i class="fa fa-database pr8"></i>{{ this.dbSource.Name }} detail
         <div style="display:inline-block;margin-left:30px;font-size: 0.6em;">
             <span class="ormLabel" [class.good]="this.dbSource.IsOrmInstalled" [class.bad]="!this.dbSource.IsOrmInstalled">
@@ -9,19 +9,19 @@
             <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
             <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
         </div>
-    </md-card-title>
-    <md-card-content>
+    </mat-card-title>
+    <mat-card-content>
 
         <div class="container-fluid" *ngIf="isReady">
 
-            <md-tab-group *ngIf="this.dbSource.IsOrmInstalled" dynamicHeight="true">
-                <md-tab label="Cached routines">
+            <mat-tab-group *ngIf="this.dbSource.IsOrmInstalled" dynamicHeight="true">
+                <mat-tab label="Cached routines">
 
-                    <md-card>
-                        <md-card-title>
+                    <mat-card>
+                        <mat-card-title>
                             Cached routines
-                        </md-card-title>
-                        <md-card-content>
+                        </mat-card-title>
+                        <mat-card-content>
 
                             <div *ngIf="summaryData">
 
@@ -33,9 +33,9 @@
 
                            
                                 
-<md-chip-list>
-  <md-chip selected="true" *ngFor="let row of summaryData.Orm.Groups, let last = last">{{ row.Type }} ({{row.Count}})</md-chip>
-</md-chip-list>
+<mat-chip-list>
+  <mat-chip selected="true" *ngFor="let row of summaryData.Orm.Groups, let last = last">{{ row.Type }} ({{row.Count}})</mat-chip>
+</mat-chip-list>
 
 
 
@@ -44,21 +44,21 @@
                                 No routines cached yet.
                             </p>
 
-                        </md-card-content>
-                        <md-card-actions>
-                            <button md-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW METADATA</button>
-                            <button md-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR CACHE</button>
-                        </md-card-actions>
-                    </md-card>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW METADATA</button>
+                            <button mat-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR CACHE</button>
+                        </mat-card-actions>
+                    </mat-card>
 
-                </md-tab>
-                <md-tab label="Whitelist">
+                </mat-tab>
+                <mat-tab label="Whitelist">
 
-                    <md-card>
-                        <md-card-title>
+                    <mat-card>
+                        <mat-card-title>
                             <i class="fa fa-tags pr8"></i>Whitelisted referrers
-                        </md-card-title>
-                        <md-card-content>
+                        </mat-card-title>
+                        <mat-card-content>
                             <p>
                                 Specify a whitelist of hostnames that are allowed to access this DB source. Place each entry on a new line. For IPs, wildcard
                                 and ranges are supported, e.g. <strong>172.16.*.10-50</strong>
@@ -69,20 +69,20 @@
                                 <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
                             </p>
 
-                        </md-card-content>
-                        <md-card-actions>
-                            <button (click)="onUpdateWhitelist(whitelistTA)" md-raised-button color="primary">SAVE WHITELIST</button>
-                        </md-card-actions>
-                    </md-card>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="onUpdateWhitelist(whitelistTA)" mat-raised-button color="primary">SAVE WHITELIST</button>
+                        </mat-card-actions>
+                    </mat-card>
 
 
-                </md-tab>
-                <md-tab label="Run-time connections">
-                    <md-card>
-                        <md-card-title>
+                </mat-tab>
+                <mat-tab label="Run-time connections">
+                    <mat-card>
+                        <mat-card-title>
                             <i class="fa fa-star pr8"></i>Run-time connections
-                        </md-card-title>
-                        <md-card-content>
+                        </mat-card-title>
+                        <mat-card-content>
 
                             <p>
                                 Configure one or more connections to use when executing a routine.
@@ -101,8 +101,8 @@
                                     <ng-template [ngIf]="execConnectionsList">
                                         <tr *ngFor="let row of execConnectionsList">
                                             <td class="anchorColumn">
-                                                <button (click)="onAddEditExecConnectionClicked(row)" md-button color="primary">edit</button>
-                                                <button (click)="onDeleteExecConnectionClicked(row)" md-button color="accent">delete</button>
+                                                <button (click)="onAddEditExecConnectionClicked(row)" mat-button color="primary">edit</button>
+                                                <button (click)="onDeleteExecConnectionClicked(row)" mat-button color="accent">delete</button>
                                             </td>
                                             <td>{{row.Name}}</td>
                                             <td>
@@ -119,34 +119,34 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </md-card-content>
-                        <md-card-actions>
-                            <button md-raised-button color="primary" (click)="onAddEditExecConnectionClicked(null)">ADD CONNECTION</button>
-                        </md-card-actions>
-                    </md-card>
-                </md-tab>
-                <md-tab label="Inclusion/exclusion rules">
-                    <md-card>
-                        <md-card-title> <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (DB level)</md-card-title>
-                        <md-card-content>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" (click)="onAddEditExecConnectionClicked(null)">ADD CONNECTION</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-tab>
+                <mat-tab label="Inclusion/exclusion rules">
+                    <mat-card>
+                        <mat-card-title> <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (DB level)</mat-card-title>
+                        <mat-card-content>
                             <p>
                                 Rules defined on this level are applied to all output files.
                             </p>
 
-                            <button md-raised-button color="primary" (click)="onManageRulesClicked()">MANAGE RULES</button>
+                            <button mat-raised-button color="primary" (click)="onManageRulesClicked()">MANAGE RULES</button>
 
-                        </md-card-content>
-                    </md-card>
-                </md-tab>
-                <md-tab label="Plugins">
-                    <md-card>
-                        <md-card-title><i class="fa fa-plug pr8"></i>Plugins</md-card-title>
-                        <md-card-content>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-tab>
+                <mat-tab label="Plugins">
+                    <mat-card>
+                        <mat-card-title><i class="fa fa-plug pr8"></i>Plugins</mat-card-title>
+                        <mat-card-content>
 
-                            <md-list>
-                                <md-list-item *ngFor="let row of pluginList">
+                            <mat-list>
+                                <mat-list-item *ngFor="let row of pluginList">
                                     <div md-line style="display: flex;align-items: center;">
-                                        <md-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)"><span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span></md-slide-toggle>
+                                        <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)"><span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span></mat-slide-toggle>
                                         <span md-line style="margin-left:20px;" class="anchorNest"><a (click)="onPluginInclusionChanged()">up</a><a (click)="onPluginInclusionChanged()">down</a></span>
                                     </div>
                                     <p md-line>
@@ -155,25 +155,25 @@
                                     
                                     <hr md-line/>
                                     
-                                </md-list-item>
+                                </mat-list-item>
 
-                            </md-list>
+                            </mat-list>
 
-                        </md-card-content>
-                        <md-card-actions>
-                            <button md-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">SAVE CHANGES</button>
-                        </md-card-actions>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">SAVE CHANGES</button>
+                        </mat-card-actions>
 
-                    </md-card>
-                </md-tab>
-                <md-tab label="Output files">
+                    </mat-card>
+                </mat-tab>
+                <mat-tab label="Output files">
 
 
-                    <md-card>
-                        <md-card-title>
+                    <mat-card>
+                        <mat-card-title>
                             <i class="fa fa-code pr8"></i>Output files
-                        </md-card-title>
-                        <md-card-content>
+                        </mat-card-title>
+                        <mat-card-content>
 
 
 
@@ -190,11 +190,11 @@
                                 <tbody>
                                     <tr *ngFor="let row of outputFileList">
                                         <td class="anchorColumn">
-                                            <button (click)="onEditOutputFile(row)" md-button color="primary">edit</button>
-                                            <button (click)="onDeleteOutputFile(row)" md-button color="accent">delete</button>
+                                            <button (click)="onEditOutputFile(row)" mat-button color="primary">edit</button>
+                                            <button (click)="onDeleteOutputFile(row)" mat-button color="accent">delete</button>
                                         </td>
                                         <td>{{row.Filename}}</td>
-                                        <td><button color="primary" md-button (click)="onJsFileManageRulesClicked(row)">manage rules</button></td>
+                                        <td><button color="primary" mat-button (click)="onJsFileManageRulesClicked(row)">manage rules</button></td>
                                         <td>
 
                                             <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br/> 
@@ -207,23 +207,23 @@
                                 </tbody>
                             </table>
 
-                        </md-card-content>
-                        <md-card-actions>
-                            <button md-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
-                        </md-card-actions>
-                        <md-card-footer>
-                            <md-progress-bar *ngIf="outputFileBusy" mode="indeterminate"></md-progress-bar>
-                        </md-card-footer>
-                    </md-card>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
+                        </mat-card-actions>
+                        <mat-card-footer>
+                            <mat-progress-bar *ngIf="outputFileBusy" mode="indeterminate"></mat-progress-bar>
+                        </mat-card-footer>
+                    </mat-card>
 
-                </md-tab>
-            </md-tab-group>
+                </mat-tab>
+            </mat-tab-group>
 
             <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
                 <p>ORM sprocs are not installed yet. Click <strong>initialise</strong> to start the installation procedure.</p>
             </div>
 
-            <button md-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
+            <button mat-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
 
 
 
@@ -231,12 +231,12 @@
         </div>
 
 
-    </md-card-content>
+    </mat-card-content>
 
-    <md-card-footer>
-        <md-progress-bar *ngIf="!isReady" mode="indeterminate"></md-progress-bar>
-    </md-card-footer>
-</md-card>
+    <mat-card-footer>
+        <mat-progress-bar *ngIf="!isReady" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>
 
 <div *ngIf="!isReady">
     Loading datasource details, please wait...

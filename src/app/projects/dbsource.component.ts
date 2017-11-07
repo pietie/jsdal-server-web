@@ -1,6 +1,6 @@
 ﻿import { Component, ApplicationRef, Directive, Input, ComponentFactoryResolver, ViewContainerRef } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { L2  } from 'l2-lib/L2';
 
@@ -76,7 +76,7 @@ export class DbSourceComponent {
         , public componentFactoryResolver: ComponentFactoryResolver
         , public appRef: ApplicationRef
         , public viewContainerRef: ViewContainerRef
-        , public dialog: MdDialog
+        , public dialog: MatDialog
     ) {
         try {
 

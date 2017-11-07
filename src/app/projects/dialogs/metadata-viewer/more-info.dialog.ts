@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { L2  } from 'l2-lib/L2';
 
 @Component({
@@ -28,7 +28,7 @@ export class MetadataMoreInfoDialog {
         return Object.keys(this.dataContext);
     }
 
-    constructor(public dialogRef: MdDialogRef<MetadataMoreInfoDialog>) {
+    constructor(public dialogRef: MatDialogRef<MetadataMoreInfoDialog>) {
 
     }
 

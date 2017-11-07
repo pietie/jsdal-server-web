@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 @Component({
     templateUrl: './msg-dialog.component.html',
     styles: [`
-        md-card { margin-bottom: 10px; }
-        md-nav-list a[md-list-item].full-height /deep/ .md-list-item {
+        mat-card { margin-bottom: 10px; }
+        mat-nav-list a[mat-list-item].full-height /deep/ .mat-list-item {
             height: 100%; margin-bottom: 10px;
         }
         `],
@@ -18,7 +18,7 @@ export class MsgDialog {
 
     public type: MsgDialogType;
 
-    constructor(public dialogRef: MdDialogRef<MsgDialog>) {
+    constructor(public dialogRef: MatDialogRef<MsgDialog>) {
 
 
     }
@@ -39,7 +39,7 @@ export class MsgDialog {
         return "OKAY";
     }
 
-    public static exclamation(dialog: MdDialog, title: string, message: string) {
+    public static exclamation(dialog: MatDialog, title: string, message: string) {
         let ref = dialog.open(MsgDialog, { disableClose: false });
 
         ref.componentInstance.title = title;
@@ -47,7 +47,7 @@ export class MsgDialog {
         ref.componentInstance.type = MsgDialogType.Exclamation;
     }
 
-    public static confirm(dialog: MdDialog, title: string, message: string): Promise<boolean> {
+    public static confirm(dialog: MatDialog, title: string, message: string): Promise<boolean> {
 
         return new Promise<boolean>((resolve, reject) => {
             let ref = dialog.open(MsgDialog, { disableClose: false });

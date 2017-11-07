@@ -1,32 +1,32 @@
-<md-card style="max-width:600px;margin:auto">
-    <md-card-title>First time setup</md-card-title>
-    <md-card-content>
+<mat-card style="max-width:600px;margin:auto">
+    <mat-card-title>First time setup</mat-card-title>
+    <mat-card-content>
         You need to complete this first time setup before you can start managing the jsDAL server.
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 <br/>
-<md-card style="max-width:600px;margin:auto">
-    <md-card-title>Admin user</md-card-title>
-    <md-card-content>
+<mat-card style="max-width:600px;margin:auto">
+    <mat-card-title>Admin user</mat-card-title>
+    <mat-card-content>
         <p>
             Create an admin user.
         </p>
         <div>
 
-            <md-form-field>
-                <input [(ngModel)]="adminUser.username" mdInput placeholder="Username" autocomplete="off" />
-            </md-form-field>
-            <md-form-field>
-                <input [(ngModel)]="adminUser.password" mdInput placeholder="Password" type="password" autocomplete="new-password" />
-            </md-form-field>
-            <md-form-field>
-                <input [(ngModel)]="adminUser.passwordConfirm" mdInput placeholder="Confirm password" type="password" autocomplete="new-password" />
-            </md-form-field>
+            <mat-form-field>
+                <input [(ngModel)]="adminUser.username" matInput placeholder="Username" autocomplete="off" />
+            </mat-form-field>
+            <mat-form-field>
+                <input [(ngModel)]="adminUser.password" matInput placeholder="Password" type="password" autocomplete="new-password" />
+            </mat-form-field>
+            <mat-form-field>
+                <input [(ngModel)]="adminUser.passwordConfirm" matInput placeholder="Confirm password" type="password" autocomplete="new-password" />
+            </mat-form-field>
 
         </div>
 
-    </md-card-content>
-    <md-card-actions align="end">
-        <button md-raised-button color="primary" (click)="createAdminUser()">CREATE</button>
-    </md-card-actions>
-</md-card>
+    </mat-card-content>
+    <mat-card-actions align="end">
+        <button mat-raised-button color="primary" (click)="createAdminUser()">CREATE</button>
+    </mat-card-actions>
+</mat-card>

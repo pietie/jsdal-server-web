@@ -3,8 +3,8 @@
     <h4>jsDAL Server performance</h4>
 </div>
 
-<md-card>
-    <md-card-content>
+<mat-card>
+    <mat-card-content>
 
         <table class="grid" *ngIf="projectList">
             <thead>
@@ -16,7 +16,7 @@
             <tbody>
                 <tr *ngFor="let row of projectList" [class.success]="selectedProject == row">
                     <td class="anchorColumn">
-                        <button md-button color="primary" [routerLink]="['./' + row.Name]">select</button>
+                        <button mat-button color="primary" [routerLink]="['./' + row.Name]">select</button>
                     </td>
                     <td>{{row.Name}}</td>
                 </tr>
@@ -24,8 +24,8 @@
         </table>
 
 
-    </md-card-content>
-</md-card>
+    </mat-card-content>
+</mat-card>
 
 
 <br/>

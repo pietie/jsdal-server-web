@@ -1,13 +1,13 @@
-<md-card>
-    <md-card-content>
+<mat-card>
+    <mat-card-content>
 
             
 
 
-            <md-select placeholder="Type" [(ngModel)]="selectedType" (change)="updateList()">
-                <md-option [value]="0">(All)</md-option>
-                <md-option *ngFor="let e of LogEntryTypeValues" [value]="LogEntryType[e]">{{e}}</md-option>
-            </md-select>
+            <mat-select placeholder="Type" [(ngModel)]="selectedType" (change)="updateList()">
+                <mat-option [value]="0">(All)</mat-option>
+                <mat-option *ngFor="let e of LogEntryTypeValues" [value]="LogEntryType[e]">{{e}}</mat-option>
+            </mat-select>
 
 
 
@@ -31,8 +31,8 @@
         <div class="panel-footer" *ngIf="datasource">
             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;Viewing <strong *ngIf="filteredList">{{ filteredList.length }}</strong>            of <strong>{{ datasource.length }}</strong>
         </div>
-    </md-card-content>
-    <md-card-actions>
-        <button md-raised-button color="primary" (click)="onRefreshClicked()" type="button">REFRESH</button>
-    </md-card-actions>
-</md-card>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="onRefreshClicked()" type="button">REFRESH</button>
+    </mat-card-actions>
+</mat-card>

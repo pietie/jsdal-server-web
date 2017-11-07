@@ -1,0 +1,50 @@
+/*{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./app/*"
+      ],
+      "l2-lib/*": [
+        "../node_modules/l2-lib/dist/*"
+      ]
+    },
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2016",
+      "dom"
+    ],
+    "mapRoot": "./",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "../dist/out-tsc",
+    "sourceMap": true,
+    "target": "es5",
+    "typeRoots": [
+      "../node_modules/@types"
+    ]
+  }
+}*/
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./app/*"
+      ],
+      "l2-lib/*": [
+        "../node_modules/l2-lib/dist/*"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

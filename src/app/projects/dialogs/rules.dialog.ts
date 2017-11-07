@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { L2  } from 'l2-lib/L2';
 
 export enum RuleType {
@@ -56,7 +56,7 @@ export class RulesDialog {
 
     public isLoadingRules: boolean = false;
 
-    constructor(public dialogRef: MdDialogRef<RulesDialog>) {
+    constructor(public dialogRef: MatDialogRef<RulesDialog>) {
 
     }
 

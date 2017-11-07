@@ -1,18 +1,18 @@
-<h1 md-dialog-title>{{ title }}</h1>
+<h1 mat-dialog-title>{{ title }}</h1>
 
-<div md-dialog-content>
+<div mat-dialog-content>
 
     <div class="flex-vertical-center">
-        <md-form-field>
+        <mat-form-field>
 
-            <input mdInput type="text" [placeholder]="fieldName" [(ngModel)]="val" required />
+            <input matInput type="text" [placeholder]="fieldName" [(ngModel)]="val" required />
 
-        </md-form-field>
+        </mat-form-field>
     </div>
 
 
 </div>
-<div md-dialog-actions align="end">
-    <button type="button" md-button color="primary" (click)="okayClicked()">{{okayTxt}}</button>
-    <button type="button" md-button color="primary" (click)="dialogRef.close(null)">CANCEL</button>
+<div mat-dialog-actions align="end">
+    <button type="button" mat-button color="primary" (click)="okayClicked()">{{okayTxt}}</button>
+    <button type="button" mat-button color="primary" (click)="dialogRef.close(null)">CANCEL</button>
 </div>

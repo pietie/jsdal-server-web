@@ -1,71 +1,71 @@
-<h1 md-dialog-title><i class="fa fa-plus-circle pr8"></i>{{ title }}</h1>
-<div md-dialog-content>
+<h1 mat-dialog-title><i class="fa fa-plus-circle pr8"></i>{{ title }}</h1>
+<div mat-dialog-content>
 
     <div class="form-flex" style="width:300px">
 
-        <md-form-field class="field full">
-            <input mdInput type="text" placeholder="Logical name" [(ngModel)]="obj.logicalName" required [disabled]="shouldDisableControls()"
+        <mat-form-field class="field full">
+            <input matInput type="text" placeholder="Logical name" [(ngModel)]="obj.logicalName" required [disabled]="shouldDisableControls()"
             />
-        </md-form-field>
+        </mat-form-field>
         <div class="field full flex-vertical-center">
-            <md-form-field>
-                <input mdInput type="text" placeholder="Datasource" title="Database server IP or DNS" [(ngModel)]="obj.dataSource" required
+            <mat-form-field>
+                <input matInput type="text" placeholder="Datasource" title="Database server IP or DNS" [(ngModel)]="obj.dataSource" required
                     [disabled]="shouldDisableControls()" />
-            </md-form-field>
-            <md-form-field>
-                <input mdInput type="number" placeholder="Port" [(ngModel)]="obj.port" [disabled]="shouldDisableControls()" />
-            </md-form-field>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" placeholder="Port" [(ngModel)]="obj.port" [disabled]="shouldDisableControls()" />
+            </mat-form-field>
         </div>
 
-        <md-form-field class="field full">
-            <input mdInput type="type" placeholder="Instance name" [(ngModel)]="obj.instanceName" [disabled]="shouldDisableControls()"
+        <mat-form-field class="field full">
+            <input matInput type="type" placeholder="Instance name" [(ngModel)]="obj.instanceName" [disabled]="shouldDisableControls()"
             />
-        </md-form-field>
+        </mat-form-field>
 
         <div>
             <label>Auth type</label>
-            <md-radio-group [(ngModel)]="obj.authType" [disabled]="shouldDisableControls()">
-                <md-radio-button value="100">Windows</md-radio-button>
-                <md-radio-button value="200">SQL</md-radio-button>
-            </md-radio-group>
+            <mat-radio-group [(ngModel)]="obj.authType" [disabled]="shouldDisableControls()">
+                <mat-radio-button value="100">Windows</mat-radio-button>
+                <mat-radio-button value="200">SQL</mat-radio-button>
+            </mat-radio-group>
         </div>
 
-        <md-form-field class="field full">
-            <input mdInput type="text" placeholder="Username" [(ngModel)]="obj.username" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
+        <mat-form-field class="field full">
+            <input matInput type="text" placeholder="Username" [(ngModel)]="obj.username" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
             />
-        </md-form-field>
-        <md-form-field class="field full">
-            <input mdInput type="password" placeholder="Password" [(ngModel)]="obj.password" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
+        </mat-form-field>
+        <mat-form-field class="field full">
+            <input matInput type="password" placeholder="Password" [(ngModel)]="obj.password" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
             />
-        </md-form-field>
+        </mat-form-field>
 
 
-        <md-form-field class="field full">
-            <input mdInput placeholder="Database" [(ngModel)]="obj.database" [mdAutocomplete]="auto" [disabled]="shouldDisableControls()">
-            <md-hint align="end"><a href="javascript:void(0);" (click)="loadDbList()" [class.disabled]="isLoadingDbList || shouldDisableControls()">{{ !isLoadingDbList? "load from server":"loading, please wait..." }}</a>
-            </md-hint>
-        </md-form-field>
+        <mat-form-field class="field full">
+            <input matInput placeholder="Database" [(ngModel)]="obj.database" [matAutocomplete]="auto" [disabled]="shouldDisableControls()">
+            <mat-hint align="end"><a href="javascript:void(0);" (click)="loadDbList()" [class.disabled]="isLoadingDbList || shouldDisableControls()">{{ !isLoadingDbList? "load from server":"loading, please wait..." }}</a>
+            </mat-hint>
+        </mat-form-field>
 
-        <md-autocomplete #auto="mdAutocomplete">
-            <md-option *ngFor="let row of dbList" [value]="row.id">{{row.text}}</md-option>
-        </md-autocomplete>
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let row of dbList" [value]="row.id">{{row.text}}</mat-option>
+        </mat-autocomplete>
 
         <br/>
-        <md-select *ngIf="dataSourceMode" class="field full" placeholder="Default rule mode" required [(ngModel)]="obj.defaultRuleMode">
-            <md-option value="0">Include all routines</md-option>
-            <md-option value="1">Exclude all routines</md-option>
-        </md-select>
+        <mat-select *ngIf="dataSourceMode" class="field full" placeholder="Default rule mode" required [(ngModel)]="obj.defaultRuleMode">
+            <mat-option value="0">Include all routines</mat-option>
+            <mat-option value="1">Exclude all routines</mat-option>
+        </mat-select>
 
         <br/>
 
-        <button md-raised-button color="primary" (click)="testConnection()" [disabled]="shouldDisableControls()">Test connection</button>
+        <button mat-raised-button color="primary" (click)="testConnection()" [disabled]="shouldDisableControls()">Test connection</button>
         <br/>
         <br/><br/>
     </div>
 
 
 </div>
-<div md-dialog-actions align="end">
-    <button color="primary" md-button (click)="dialogRef.close(true)">{{addMode? "ADD":"UPDATE"}}</button>
-    <button color="primary" md-button (click)="dialogRef.close(false)">CANCEL</button>
+<div mat-dialog-actions align="end">
+    <button color="primary" mat-button (click)="dialogRef.close(true)">{{addMode? "ADD":"UPDATE"}}</button>
+    <button color="primary" mat-button (click)="dialogRef.close(false)">CANCEL</button>
 </div>

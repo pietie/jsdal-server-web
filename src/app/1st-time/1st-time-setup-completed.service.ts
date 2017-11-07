@@ -9,7 +9,7 @@ export class FirstTimeSetupCompletedService {
 
         let url:string = '/api/main/issetupcomplete';
 
-        if (window.location.port == '4200') url = 'http://localhost:5000' + url;
+        if (window.location.port == '4200') url = 'http://localhost:9086' + url;
 
         this.isCompletedPromise = fetch(url)
             .then(response => {

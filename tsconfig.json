@@ -1,4 +1,4 @@
-{
+/*{
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -25,5 +25,31 @@
     "typeRoots": [
       "../node_modules/@types"
     ]
+  }
+}*/
+
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {},
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [ "es6", "dom" ],
+    "noLib": false,
+    "mapRoot": "./",
+    "module": "es6",
+    "moduleResolution": "node",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "target": "es5",
+    "types": [],
+    "typeRoots": [
+      "node_modules/@types"
+
+    ]
+ 
+
   }
 }

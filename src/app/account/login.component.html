@@ -4,34 +4,34 @@
 
     <div *ngIf="!checkingCredentials">
 
-        <md-toolbar color="primary">jsDAL Server - Login</md-toolbar><br />
+        <mat-toolbar color="primary">jsDAL Server - Login</mat-toolbar><br />
 
-        <md-card class="login">
-            <md-card-content>
+        <mat-card class="login">
+            <mat-card-content>
                 <div>
-                    <md-form-field>
-                        <input mdInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username" (keyup.enter)="login()" autofocus/>
-                    </md-form-field>
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username" (keyup.enter)="login()" autofocus/>
+                    </mat-form-field>
                 </div>
                 <div>
-                    <md-form-field>
-                        <input mdInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password" (keyup.enter)="login()" type="password"
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password" (keyup.enter)="login()" type="password"
                         />
-                    </md-form-field>
+                    </mat-form-field>
                 </div>
                 <div>
-                    <md-checkbox [(ngModel)]="useWindowsAuth">Use Windows authentication</md-checkbox>
+                    <mat-checkbox [(ngModel)]="useWindowsAuth">Use Windows authentication</mat-checkbox>
 
                 </div>
-            </md-card-content>
-            <md-card-actions align="end">
-                <button (click)="login()" color="primary" md-raised-button>LOGIN</button>
-            </md-card-actions>
-            <md-card-footer>
-                <md-progress-bar *ngIf="busyWithLogin" mode="indeterminate"></md-progress-bar>
-            </md-card-footer>
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button (click)="login()" color="primary" mat-raised-button>LOGIN</button>
+            </mat-card-actions>
+            <mat-card-footer>
+                <mat-progress-bar *ngIf="busyWithLogin" mode="indeterminate"></mat-progress-bar>
+            </mat-card-footer>
 
-        </md-card>
+        </mat-card>
         <br/><br/>
 
 

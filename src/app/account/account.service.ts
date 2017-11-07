@@ -133,7 +133,7 @@ export class AccountService {
 
         var url = 'api/authenticate';
         // PL: Temp hack when we are running with ng serve
-        if (window.location.port == '4200') url = 'http://localhost:5000/' + url;
+        if (window.location.port == '4200') url = 'http://localhost:9086/' + url;
 
         var headers = new Headers();
 
@@ -167,8 +167,6 @@ export class AccountService {
 
                     return r.payloadPromise.then(json => {
                         this.jwt = json;
-
-                        //this.jwt.expiresByDate =new Date(json.expiresEpoch);
 
                         L2.BrowserStore.session<JWT>("jwt", this.jwt);
 

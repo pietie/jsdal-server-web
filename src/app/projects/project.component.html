@@ -1,6 +1,6 @@
-﻿<md-card [@componentState]="componentState">
-    <md-card-title><div class="flex-vertical-center"><md-icon class=" pr8">language</md-icon><span>{{projectName}} data sources</span></div></md-card-title>
-    <md-card-content>
+﻿<mat-card [@componentState]="componentState">
+    <mat-card-title><div class="flex-vertical-center"><mat-icon class="pr8">language</mat-icon><span>{{projectName}} data sources</span></div></mat-card-title>
+    <mat-card-content>
 
         <table class="grid" *ngIf="dbList">
             <thead>
@@ -15,18 +15,18 @@
             <tbody>
                 <tr *ngFor="let row of dbList" [class.selected]="route.firstChild? route.firstChild.params.getValue().name == row.Name: false">
                     <td class="anchorColumn">
-                        <button [routerLink]="['./' + row.Name]" md-button color="primary" >manage</button>
-                        <button (click)="onAddEditDbSourceClicked(row)" md-button color="primary" >edit</button>
-                        <button (click)="onDeleteDatabase(row)" md-button color="accent" >delete</button>
+                        <button [routerLink]="['./' + row.Name]" mat-button color="primary" >manage</button>
+                        <button (click)="onAddEditDbSourceClicked(row)" mat-button color="primary" >edit</button>
+                        <button (click)="onDeleteDatabase(row)" mat-button color="accent" >delete</button>
                     </td>
                     <td>{{row.Name}}</td>
                     <td>
                         {{row.DataSource}}; {{row.InitialCatalog}}
                     </td>
                     <td class="center">
-                        <md-chip-list>
-                            <md-chip color='{{row.DefaultRuleMode==0? "primary": "accent"}}' selected="true" [title]="row.DefaultRuleMode==0?'By default all routines are INCLUDED in the generated files':'By default all routines are EXCLUDED in the generated files'">{{row.DefaultRuleMode==0? "Include all": "Exclude all"}}</md-chip>
-                        </md-chip-list>
+                        <mat-chip-list>
+                            <mat-chip color='{{row.DefaultRuleMode==0? "primary": "accent"}}' selected="true" [title]="row.DefaultRuleMode==0?'By default all routines are INCLUDED in the generated files':'By default all routines are EXCLUDED in the generated files'">{{row.DefaultRuleMode==0? "Include all": "Exclude all"}}</mat-chip>
+                        </mat-chip-list>
 
                     </td>
                     <td>
@@ -40,9 +40,9 @@
             </tbody>
         </table>
 
-    </md-card-content>
-    <md-card-actions>
-        <button (click)="onAddEditDbSourceClicked(null)" md-raised-button color="primary">ADD DATABASE SOURCE</button>
-    </md-card-actions>
-</md-card>
+    </mat-card-content>
+    <mat-card-actions>
+        <button (click)="onAddEditDbSourceClicked(null)" mat-raised-button color="primary">ADD DATABASE SOURCE</button>
+    </mat-card-actions>
+</mat-card>
 <router-outlet></router-outlet>

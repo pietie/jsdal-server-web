@@ -1,4 +1,4 @@
-div.addNewRule md-radio-button { width: 90px }
+div.addNewRule mat-radio-button { width: 90px }
 
     div.addNewRule div.row
     {
@@ -6,7 +6,7 @@ div.addNewRule md-radio-button { width: 90px }
         align-items: center;
     }
 
-    div.addNewRule div.row md-form-field
+    div.addNewRule div.row mat-form-field
     {
         flex: 1 1 auto;
     }

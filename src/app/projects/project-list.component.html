@@ -1,7 +1,7 @@
 ﻿
-<md-card [@componentState]="componentState">
-    <md-card-title><div class="flex-vertical-center"><md-icon class=" pr8">web</md-icon><span>Projects</span></div></md-card-title>
-    <md-card-content>
+<mat-card [@componentState]="componentState">
+    <mat-card-title><div class="flex-vertical-center"><mat-icon class=" pr8">web</mat-icon><span>Projects</span></div></mat-card-title>
+    <mat-card-content>
 
         <table class="grid" *ngIf="projectList">
             <thead>
@@ -14,9 +14,9 @@
             <tbody>
                 <tr *ngFor="let row of projectList" [class.selected]="route.firstChild? route.firstChild.params.getValue().name == row.Name: false">
                     <td class="anchorColumn">
-                        <button (click)="componentState = 'childRouteActive';" [routerLink]="['./' + row.Name]" md-button color="primary" >manage</button>
-                        <button (click)="onEditProject(row)" md-button color="primary" >edit</button>
-                        <button (click)="onDeleteProject(row)" md-button color="accent" >delete</button>
+                        <button (click)="componentState = 'childRouteActive';" [routerLink]="['./' + row.Name]" mat-button color="primary" >manage</button>
+                        <button (click)="onEditProject(row)" mat-button color="primary" >edit</button>
+                        <button (click)="onDeleteProject(row)" mat-button color="accent" >delete</button>
                     </td>
                     <td>{{row.Name}}</td>
                     <td>
@@ -26,12 +26,12 @@
                 </tr>
             </tbody>
         </table>
-    </md-card-content>
-    <md-card-actions>
+    </mat-card-content>
+    <mat-card-actions>
 
-        <button (click)="onCreateNewProjectClicked()" md-raised-button color="primary">CREATE NEW PROJECT</button>
-    </md-card-actions>
+        <button (click)="onCreateNewProjectClicked()" mat-raised-button color="primary">CREATE NEW PROJECT</button>
+    </mat-card-actions>
 
-</md-card>
+</mat-card>
 
 <router-outlet></router-outlet>

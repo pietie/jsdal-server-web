@@ -1,7 +1,7 @@
 ﻿import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from './account/account.service'
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { MsgDialog } from './dialogs/msg-dialog.component'
 import { L2  } from 'l2-lib/L2';
@@ -11,7 +11,7 @@ import { PromptDialog } from "app/dialogs";
 // TODO: Move somewhere else
 class X implements IL2OutputMessageHandler {
 
-    constructor(private dialog: MdDialog, private snackBar: MdSnackBar, private router: Router, private accountService: AccountService) {
+    constructor(private dialog: MatDialog, private snackBar: MatSnackBar, private router: Router, private accountService: AccountService) {
 
 
     }
@@ -69,8 +69,8 @@ export class AppComponent {
     constructor(public accountService: AccountService,
         public router: Router,
         public changeDetectorRef: ChangeDetectorRef,
-        public dialog: MdDialog,
-        public snackBar: MdSnackBar,
+        public dialog: MatDialog,
+        public snackBar: MatSnackBar,
         public activatedRoute: ActivatedRoute
     ) {
 

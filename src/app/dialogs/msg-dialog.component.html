@@ -1,15 +1,15 @@
-<h1 md-dialog-title>{{ title }}</h1>
+<h1 mat-dialog-title>{{ title }}</h1>
 
-<div md-dialog-content>
+<div mat-dialog-content>
 
     <div class="flex-vertical-center">
-        <md-icon>{{ getIcon() }}</md-icon><span style="flex: 1 1;" [innerHTML]="msg"></span>
+        <mat-icon>{{ getIcon() }}</mat-icon><span style="flex: 1 1;" [innerHTML]="msg"></span>
     </div>
 
 
 </div>
-<div md-dialog-actions align="end">
+<div mat-dialog-actions align="end">
 
-    <button type="button" md-button color="primary" (click)="dialogRef.close('OK')">{{getOkayTxt()}}</button>
-    <button *ngIf="type==50" type="button" md-button color="primary" (click)="dialogRef.close('CANCEL')">CANCEL</button>
+    <button type="button" mat-button color="primary" (click)="dialogRef.close('OK')">{{getOkayTxt()}}</button>
+    <button *ngIf="type==50" type="button" mat-button color="primary" (click)="dialogRef.close('CANCEL')">CANCEL</button>
 </div>

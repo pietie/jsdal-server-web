@@ -4,7 +4,7 @@
 
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { ProjectService, IDBSource } from './projects.service'
 
@@ -46,7 +46,7 @@ export class ProjectComponent {
         public projectService: ProjectService
         , public route: ActivatedRoute
         , public router: Router
-        , public dialog: MdDialog
+        , public dialog: MatDialog
         , public componentFactoryResolver: ComponentFactoryResolver
         , public injector: Injector
         , public appRef: ApplicationRef
@@ -78,14 +78,15 @@ export class ProjectComponent {
 
 
 
-    public formatDbCboItem(item) {
-        if (!item.Data) return;
-        return $(`<div class="databaseSourceCboItem"><div class="h">${item.text}</div><div class="line2">${item.Data.DataSource}; ${item.Data.InitialCatalog}</div></div>`);
-    }
+    // public formatDbCboItem(item) {
+    //     if (!item.Data) return;
+    //     //!!!return $(`<div class="databaseSourceCboItem"><div class="h">${item.text}</div><div class="line2">${item.Data.DataSource}; ${item.Data.InitialCatalog}</div></div>`);
+    //     return "TODO TODO TODO";
+    // }
 
     public onAddEditDbSourceClicked(row) {
         try {
-
+ 
             let dialogRef = this.dialog.open(DataSourceDialog);
 
             dialogRef.componentInstance.title = "Add data source";

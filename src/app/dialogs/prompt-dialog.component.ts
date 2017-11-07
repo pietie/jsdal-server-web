@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 @Component({
     templateUrl: './prompt-dialog.component.html',
     styles: [`
-        md-card { margin-bottom: 10px; }
-        md-nav-list a[md-list-item].full-height /deep/ .md-list-item {
+        mat-card { margin-bottom: 10px; }
+        mat-nav-list a[mat-list-item].full-height /deep/ .mat-list-item {
             height: 100%; margin-bottom: 10px;
         }
         `],
@@ -18,10 +18,10 @@ export class PromptDialog {
     public val: string;
     public okayTxt: string;
 
-    constructor(public dialogRef: MdDialogRef<PromptDialog>) {
+    constructor(public dialogRef: MatDialogRef<PromptDialog>) {
     }
 
-    public static prompt(dialog: MdDialog, title: string, fieldName: string, val: string, okayTxt: string = "Okay"): Promise<boolean> {
+    public static prompt(dialog: MatDialog, title: string, fieldName: string, val: string, okayTxt: string = "Okay"): Promise<boolean> {
 
         return new Promise<boolean>((resolve, reject) => {
             let ref = dialog.open(PromptDialog, { disableClose: false });

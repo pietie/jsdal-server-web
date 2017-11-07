@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { L2  } from 'l2-lib/L2';
 
 import { MetadataMoreInfoDialog } from './more-info.dialog';
@@ -21,7 +21,7 @@ export class MetadataViewerDialog {
     searchResults: any = null;
     totalCount: number = null;
 
-    constructor(public dialogRef: MdDialogRef<MetadataViewerDialog>, public dialog: MdDialog, public changeDetection: ChangeDetectorRef) {
+    constructor(public dialogRef: MatDialogRef<MetadataViewerDialog>, public dialog: MatDialog, public changeDetection: ChangeDetectorRef) {
 
     }
 

@@ -1,33 +1,33 @@
-<h1 md-dialog-title>
+<h1 mat-dialog-title>
     <div class="flex-vertical-center">
-        <md-icon>style</md-icon><span>Metadata browser</span></div>
+        <mat-icon>style</mat-icon><span>Metadata browser</span></div>
 
 </h1>
-<div md-dialog-content>
+<div mat-dialog-content>
 
     <div class="form-flex">
-        <md-form-field class="full">
-            <input mdInput type="text" placeholder="Search query" [(ngModel)]="searchCriteria.query" (keyup.enter)="onSearchClicked()"
+        <mat-form-field class="full">
+            <input matInput type="text" placeholder="Search query" [(ngModel)]="searchCriteria.query" (keyup.enter)="onSearchClicked()"
             />
-        </md-form-field>
+        </mat-form-field>
 
         <div style="margin-top:10px;display: flex; justify-content: space-around;flex: 1 1 auto;">
 
-            <md-select [(ngModel)]="searchCriteria.routineType" placeholder="Type">
-                <md-option value="0">(All)</md-option>
-                <md-option value="function">UDF</md-option>
-                <md-option value="procedure">Sproc</md-option>
-                <md-option value="tvf">Table-valued</md-option>
-            </md-select>
+            <mat-select [(ngModel)]="searchCriteria.routineType" placeholder="Type">
+                <mat-option value="0">(All)</mat-option>
+                <mat-option value="function">UDF</mat-option>
+                <mat-option value="procedure">Sproc</mat-option>
+                <mat-option value="tvf">Table-valued</mat-option>
+            </mat-select>
 
-            <md-select [(ngModel)]="searchCriteria.status" placeholder="Status">
-                <md-option value="0">(All)</md-option>
-                <md-option value="1">Has error</md-option>
-                <md-option value="2">No error</md-option>
-            </md-select>
+            <mat-select [(ngModel)]="searchCriteria.status" placeholder="Status">
+                <mat-option value="0">(All)</mat-option>
+                <mat-option value="1">Has error</mat-option>
+                <mat-option value="2">No error</mat-option>
+            </mat-select>
 
-            <md-checkbox [(ngModel)]="searchCriteria.hasjsDALMetadata">Has jsDAL metadata</md-checkbox>
-            <md-checkbox [(ngModel)]="searchCriteria.isDeleted">Is deleted</md-checkbox>
+            <mat-checkbox [(ngModel)]="searchCriteria.hasjsDALMetadata">Has jsDAL metadata</mat-checkbox>
+            <mat-checkbox [(ngModel)]="searchCriteria.isDeleted">Is deleted</mat-checkbox>
         </div>
 
 
@@ -35,15 +35,15 @@
 
     <br/>
 
-    <button md-raised-button color="primary" (click)="onSearchClicked()">SEARCH</button>
+    <button mat-raised-button color="primary" (click)="onSearchClicked()">SEARCH</button>
     <hr/>
 
-    <md-progress-spinner style="height: 40px;" mode="indeterminate" *ngIf="isLoading"></md-progress-spinner>
+    <mat-progress-spinner style="height: 40px;" mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
 
     <div *ngIf="!isLoading && searchResults">
 
         <div class="panel-footer">
-            <md-icon>info</md-icon><span>Viewing <strong>{{ searchResults.length }}</strong> of <strong>{{ totalCount }}</strong> routine(s)</span>
+            <mat-icon>info</mat-icon><span>Viewing <strong>{{ searchResults.length }}</strong> of <strong>{{ totalCount }}</strong> routine(s)</span>
         </div>
 
         <table class="grid">
@@ -58,16 +58,16 @@
                 <ng-template [ngIf]="searchResults">
                     <tr *ngFor="let row of searchResults" [class.deleted]="row.IsDeleted">
                         <td>[{{row.Schema}}].[{{row.Routine}}] 
-                            <button md-button color="primary" *ngIf="row.jsDALMetadata?.jsDAL" (click)="showJsDALMetadata(row)">(meta)</button></td>
+                            <button mat-button color="primary" *ngIf="row.jsDALMetadata?.jsDAL" (click)="showJsDALMetadata(row)">(meta)</button></td>
                         <td>
-                            <button color="primary" md-button *ngIf="row.Parameters?.length > 0" (click)="viewParameters(row)" href="javascript:void(0)">
+                            <button color="primary" mat-button *ngIf="row.Parameters?.length > 0" (click)="viewParameters(row)" href="javascript:void(0)">
                                                         {{ row.Parameters.length }} {{row.Parameters.length == 1? "parm":"parms" }}
                                                     </button>
 
-                            <button md-button disabled="true" *ngIf="row.Parameters == null || row.Parameters.length == 0">0 parms</button>
+                            <button mat-button disabled="true" *ngIf="row.Parameters == null || row.Parameters.length == 0">0 parms</button>
                         </td>
                         <td>
-                            <button color="primary" md-button (click)="showTableResults(row)" href="javascript:void(0)">{{ getResultsText(row) }}</button>
+                            <button color="primary" mat-button (click)="showTableResults(row)" href="javascript:void(0)">{{ getResultsText(row) }}</button>
                         </td>
                     </tr>
                 </ng-template>
@@ -78,7 +78,7 @@
         </table>
 
         <div class="panel-footer">
-            <md-icon>info</md-icon><span>Viewing <strong>{{ searchResults.length }}</strong> of <strong>{{ totalCount }}</strong> routine(s)</span>
+            <mat-icon>info</mat-icon><span>Viewing <strong>{{ searchResults.length }}</strong> of <strong>{{ totalCount }}</strong> routine(s)</span>
         </div>
 
 
@@ -86,6 +86,6 @@
 
 </div>
 
-<div md-dialog-actions align="end">
-    <button color="primary" md-button (click)="dialogRef.close(false)">CLOSE</button>
+<div mat-dialog-actions align="end">
+    <button color="primary" mat-button (click)="dialogRef.close(false)">CLOSE</button>
 </div>

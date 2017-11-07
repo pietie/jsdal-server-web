@@ -12,10 +12,9 @@ export class HomeComponent {
     public isLoadProjectList: boolean = false;
     public projectList: any[] = null;
 
-    public usageDetail:any = null;
+    public usageDetail: any = null;
 
     ngOnInit() {
-        console.log('home.component :: ngOnInit');
         L2.fetchJson('/api/main/stats').then((r: any) => { this.statsData = r.Data; });
 
         this.isLoadProjectList = true;
