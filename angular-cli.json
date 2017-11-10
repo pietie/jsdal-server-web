@@ -26,7 +26,6 @@
         "../bower_components/humanize-duration/humanize-duration.js",     
         "../bower_components/Sortable/Sortable.min.js"
 
-        
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

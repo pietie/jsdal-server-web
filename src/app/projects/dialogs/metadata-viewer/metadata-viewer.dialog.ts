@@ -63,10 +63,11 @@ export class MetadataViewerDialog {
 
     }
 
-    showTableResults(row: any) {
+    showTableResults(row: any, showError:boolean) {
 
         let dlg = this.dialog.open(MetadataMoreInfoDialog);
-        if (row.ResultSetError) {
+        
+        if (showError && row.ResultSetError) {
             dlg.componentInstance.title = `[${row.Schema}].[${row.Routine}] result error`;
             dlg.componentInstance.dataContext = row.ResultSetError;
             dlg.componentInstance.mode = "ResultSetError";
@@ -92,7 +93,7 @@ export class MetadataViewerDialog {
 
     getResultsText(row: any) {
         if (row == null) return "(none)";
-        if (row.ResultSetError) return "(error)";
+        //if (row.ResultSetError) return "(error)";
         if (!row.ResultSetMetadata || Object.keys(row.ResultSetMetadata).length == 0) return "(none)";
 
         var len = Object.keys(row.ResultSetMetadata).length;

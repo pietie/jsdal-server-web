@@ -4,9 +4,11 @@ import { AccountService } from './account/account.service'
 import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { MsgDialog } from './dialogs/msg-dialog.component'
-import { L2  } from 'l2-lib/L2';
+import { L2 } from 'l2-lib/L2';
 import { IL2OutputMessageHandler } from 'l2-lib/L2';
 import { PromptDialog } from "app/dialogs";
+
+import { HubConnection } from '@aspnet/signalr-client';
 
 // TODO: Move somewhere else
 class X implements IL2OutputMessageHandler {
@@ -81,6 +83,27 @@ export class AppComponent {
         this.accountService.whenLoggedIn.subscribe(loggedIn => {
             this.changeDetectorRef.detectChanges();
         });
+
+        // let connection = new HubConnection('http://localhost:9086/main-stats');
+
+        // connection.on('send', data => {
+        //     console.log("on - send", data);
+        // });
+
+        // connection.start()
+        //     .then(() => {
+        //         //connection.invoke('send', 'Hello!');
+
+        //         connection.stream("StreamMainStats").subscribe(<any>{
+        //             next: (n => { console.log("NEXT", n); }),
+        //             error: function (err) {
+        //                 console.info("Streaming error");
+        //                 console.error(err);
+        //             }
+        //         });
+
+        //     });
+
     }
 
     public go(url: string) {

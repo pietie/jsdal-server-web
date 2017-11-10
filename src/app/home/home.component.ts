@@ -2,6 +2,8 @@
 
 import { L2 } from 'l2-lib/L2';
 
+import { HubConnection } from '@aspnet/signalr-client';
+
 @Component({
     selector: 'home',
     templateUrl: './home.component.html'
@@ -15,15 +17,35 @@ export class HomeComponent {
     public usageDetail: any = null;
 
     ngOnInit() {
-        L2.fetchJson('/api/main/stats').then((r: any) => { this.statsData = r.Data; });
+        try {
+            //!L2.fetchJson('/api/main/stats').then((r: any) => { this.statsData = r.Data; });
+            let connection = new HubConnection('http://localhost:9086/main-stats'); // TODO: sort out url
 
-        this.isLoadProjectList = true;
-        L2.fetchJson('/api/project').then((r: any) => {
-            this.projectList = r.Data;
-            this.isLoadProjectList = false;
-        }).catch(e => {
-            this.isLoadProjectList = false;
-        });
+// TODO: Disconnect when component is not active
+            connection.start()
+                .then(() => {
+                    connection.stream("StreamMainStats").subscribe(<any>{
+                        next: (n => { this.statsData = n; }),
+                        error: function (err) {
+                            console.info("Streaming error");
+                            console.error(err); 
+                        }
+                    });
+
+                });
+
+
+            this.isLoadProjectList = true;
+            L2.fetchJson('/api/project').then((r: any) => {
+                this.projectList = r.Data;
+                this.isLoadProjectList = false;
+            }).catch(e => {
+                this.isLoadProjectList = false;
+            });
+        }
+        catch (e) {
+            L2.handleException(e);
+        }
     }
 
     public getWebServerAge(startedDate) {

@@ -125,6 +125,7 @@ export class ProjectComponent {
                             L2.postJson(`/api/database?project=${this.projectName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
                                     L2.success("New database source added successfully");
+                                    this.refreshDbList();
                                 });
                         }
                         else {
@@ -132,10 +133,11 @@ export class ProjectComponent {
                             L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${row.Name}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
                                     L2.success("Database source updated successfully");
+                                    this.refreshDbList();
                                 });
                         }
 
-                        this.refreshDbList();
+                        
                     }
                     catch (e) {
                         L2.handleException(e);

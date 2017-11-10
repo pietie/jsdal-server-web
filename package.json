@@ -24,6 +24,7 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
+    "@aspnet/signalr-client": "^1.0.0-alpha2-final",
     "core-js": "^2.5.1",
     "l2-lib": "git+https://github.com/pietie/l2-lib.git",
     "rxjs": "^5.5.2",
