@@ -3,8 +3,9 @@
         <i class="fa fa-database pr8"></i>{{ this.dbSource.Name }} detail
         <div style="display:inline-block;margin-left:30px;font-size: 0.6em;">
             <span class="ormLabel" [class.good]="this.dbSource.IsOrmInstalled" [class.bad]="!this.dbSource.IsOrmInstalled">
-            <i class="fa " [class.fa-check-circle-o]="this.dbSource.IsOrmInstalled" [class.fa-times-circle-o]="!this.dbSource.IsOrmInstalled"></i>
-            ORM <span *ngIf="!this.dbSource.IsOrmInstalled">not</span> installed
+                <i class="fa " [class.fa-check-circle-o]="this.dbSource.IsOrmInstalled" [class.fa-times-circle-o]="!this.dbSource.IsOrmInstalled"></i>
+                ORM
+                <span *ngIf="!this.dbSource.IsOrmInstalled">not</span> installed
             </span>
             <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
             <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
@@ -23,19 +24,24 @@
                         </mat-card-title>
                         <mat-card-content>
 
-                            <div *ngIf="summaryData">
+                            <div *ngIf="summaryData" style="padding-left:16px;">
 
-                                <strong>Last updated:</strong> {{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }} <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
-                                <br />
 
-                                <strong># of routines:</strong> {{ summaryData.Orm.TotalCnt }} 
-<br /><br />
 
-                           
-                                
-<mat-chip-list>
-  <mat-chip selected="true" *ngFor="let row of summaryData.Orm.Groups, let last = last">{{ row.Type }} ({{row.Count}})</mat-chip>
-</mat-chip-list>
+
+
+                                <div class="flex-vertical-center">
+                                    <mat-icon>info_outline</mat-icon>
+                                    <strong class>Last updated</strong>&nbsp;
+                                    <span>{{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;
+                                    <span
+                                        class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
+                                </div>
+                                <br/>
+                                <br/> {{ summaryData.Orm.TotalCnt }} routines 
+                                <ul>
+                                    <li *ngFor="let row of summaryData.Orm.Groups, let last = last">{{row.Count}} {{ row.Type }} </li>
+                                </ul>
 
 
 
@@ -61,10 +67,12 @@
                         <mat-card-content>
                             <p>
                                 Specify a whitelist of hostnames that are allowed to access this DB source. Place each entry on a new line. For IPs, wildcard
-                                and ranges are supported, e.g. <strong>172.16.*.10-50</strong>
+                                and ranges are supported, e.g.
+                                <strong>172.16.*.10-50</strong>
                             </p>
                             <p>
-                                <label><input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
+                                <label>
+                                    <input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
                                 <br/>
                                 <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
                             </p>
@@ -127,7 +135,8 @@
                 </mat-tab>
                 <mat-tab label="Inclusion/exclusion rules">
                     <mat-card>
-                        <mat-card-title> <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (DB level)</mat-card-title>
+                        <mat-card-title>
+                            <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (DB level)</mat-card-title>
                         <mat-card-content>
                             <p>
                                 Rules defined on this level are applied to all output files.
@@ -140,21 +149,29 @@
                 </mat-tab>
                 <mat-tab label="Plugins">
                     <mat-card>
-                        <mat-card-title><i class="fa fa-plug pr8"></i>Plugins</mat-card-title>
+                        <mat-card-title>
+                            <i class="fa fa-plug pr8"></i>Plugins</mat-card-title>
                         <mat-card-content>
 
                             <mat-list>
                                 <mat-list-item *ngFor="let row of pluginList">
                                     <div md-line style="display: flex;align-items: center;">
-                                        <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)"><span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span></mat-slide-toggle>
-                                        <span md-line style="margin-left:20px;" class="anchorNest"><a (click)="onPluginInclusionChanged()">up</a><a (click)="onPluginInclusionChanged()">down</a></span>
+                                        <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
+                                            <span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span>
+                                        </mat-slide-toggle>
+                                        <span md-line style="margin-left:20px;" class="anchorNest">
+                                            <a (click)="onPluginInclusionChanged()">up</a>
+                                            <a (click)="onPluginInclusionChanged()">down</a>
+                                        </span>
                                     </div>
                                     <p md-line>
-                                       <br/>{{row.Description}}<br/><br/>
+                                        <br/>{{row.Description}}
+                                        <br/>
+                                        <br/>
                                     </p>
-                                    
+
                                     <hr md-line/>
-                                    
+
                                 </mat-list-item>
 
                             </mat-list>
@@ -194,11 +211,14 @@
                                             <button (click)="onDeleteOutputFile(row)" mat-button color="accent">delete</button>
                                         </td>
                                         <td>{{row.Filename}}</td>
-                                        <td><button color="primary" mat-button (click)="onJsFileManageRulesClicked(row)">manage rules</button></td>
+                                        <td>
+                                            <button color="primary" mat-button (click)="onJsFileManageRulesClicked(row)">manage rules</button>
+                                        </td>
                                         <td>
 
-                                            <label><input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label><br/> 
-                                            http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
+                                            <label>
+                                                <input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label>
+                                            <br/> http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
                                         </td>
                                         <td>
                                             {{row.Guid}}
@@ -220,10 +240,14 @@
             </mat-tab-group>
 
             <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
-                <p>ORM sprocs are not installed yet. Click <strong>initialise</strong> to start the installation procedure.</p>
+                <p>ORM sprocs are not installed yet. Click
+                    <strong>initialise</strong> to start the installation procedure.</p>
             </div>
 
-            <button mat-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()"><span *ngIf="!isInstallingOrm">Initialise</span><span *ngIf="isInstallingOrm">Working...</span></button>
+            <button mat-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()">
+                <span *ngIf="!isInstallingOrm">Initialise</span>
+                <span *ngIf="isInstallingOrm">Working...</span>
+            </button>
 
 
 
