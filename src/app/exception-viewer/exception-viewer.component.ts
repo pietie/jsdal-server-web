@@ -43,6 +43,26 @@ import { DomSanitizer } from "@angular/platform-browser";
         font-family: Consolas, 'Courier New', monospace;
     }
 
+    span.app-title
+    {
+        color: #ced3ff;
+        background-color: darkorchid;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        width: 100px;
+    }
+
+    span.msg
+    {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        width: 1200px;
+    }
+
 `
 
     ]
@@ -52,6 +72,7 @@ export class ExceptionViewerComponent {
     public exceptionDetail: any;
     public recentExceptions: any;
     public totalExceptionCnt:number = 0;
+    public appTitles: string[];
 
     constructor(public domSanitizer: DomSanitizer) {
 
@@ -70,6 +91,7 @@ export class ExceptionViewerComponent {
 
 
     formatMessage(msg: string) {
+        if (msg == null) return null;
         return this.domSanitizer.bypassSecurityTrustHtml(msg.replace(/##.*##/g, (match) => {
             return `<span class="procName">${match.substr(2, match.length - 4)}</span>`;
         }));
@@ -89,6 +111,10 @@ export class ExceptionViewerComponent {
 
     fetchRecentExceptions() {
         L2.fetchJson(`/api/exception/top/200`).then((r: any) => {
+            this.appTitles =  [ "(All)", ...<any>new Set(r.Data.Results.map(r=>r.appTitle)).entries()];
+
+            //this.appTitles.splice(0,0, "(All)");
+            
             this.totalExceptionCnt = r.Data.TotalExceptionCnt;
             this.recentExceptions = r.Data.Results;
         });

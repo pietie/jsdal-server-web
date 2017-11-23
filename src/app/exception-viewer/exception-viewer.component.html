@@ -13,11 +13,11 @@
     <mat-card-content>
         <span class="head">{{ exceptionDetail.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;<span>({{ exceptionDetail.id }})</span>
         <hr/>
-        <div class="exception-detail" *ngIf="exceptionDetail.exceptionObject">
-            <div class="msg" [innerHTML]="formatMessage(exceptionDetail.exceptionObject.message)"></div>
-            <hr/>
+        <div class="exception-detail" *ngIf="exceptionDetail">
+            <div class="msg" [innerHTML]="formatMessage(exceptionDetail.message)"></div>
+            <hr/> 
 
-            <div class="stack" *ngIf="exceptionDetail.exceptionObject.stack" [innerHTML]="formatStackTrace(exceptionDetail.exceptionObject.stack)">
+            <div class="stack" *ngIf="exceptionDetail.stackTrace" [innerHTML]="formatStackTrace(exceptionDetail.stackTrace)">
 
 
             </div>
@@ -42,10 +42,11 @@
 
             <div *ngFor="let ex of recentExceptions">
                 <span [title]="ex.created | date: 'dd MMM yyyy'">{{ ex.created | date: 'HH:mm:ss' }}</span>
-                <div style="width:110px;display:inline-block">
+                <div style="width:150px;display:inline-block">
                         <button (click)="errRef.value=ex.id;lookupError(ex.id)" mat-button color="primary">{{ ex.id }}</button>
                 </div>
-                <span *ngIf="ex.exceptionObject" [innerHTML]="formatMessage(ex.exceptionObject.message)">
+                <span class="app-title" *ngIf="ex.appTitle">{{ ex.appTitle }} </span>
+                <span class="msg" *ngIf="ex" [innerHTML]="formatMessage(ex.message)">
 
                 </span>
                 

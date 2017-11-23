@@ -32,7 +32,7 @@ export class HomeComponent {
                         }
                     });
 
-                });
+                }); 
 
 
             this.isLoadProjectList = true;

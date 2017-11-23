@@ -19,6 +19,10 @@
                 <span class="field180">Private</span>
                 <span class="value"> {{ statsData.Performance.PrivateMemorySize / 1024.0 / 1024.0 | number:'1.2-2' }} MB </span>
             </div>
+            <div *ngIf="statsData">
+                <span class="field180">Processors</span>
+                <span class="value"> {{ statsData.ProcessorCount }}  </span>
+            </div>
 
         </div>
 <br/>
