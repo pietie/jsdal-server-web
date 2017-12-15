@@ -21,6 +21,13 @@
                 </div>
             </mat-list-item>
 
+            <mat-list-item (click)="side.close(); go('plugins')">
+                <div class="flex-vertical-center">
+                    <mat-icon>extension</mat-icon>
+                    <div md-line>Plugins</div>
+                </div>
+            </mat-list-item>
+
             <mat-list-item (click)="side.close(); go('workers')">
                 <div class="flex-vertical-center">
                     <mat-icon>group_work</mat-icon>

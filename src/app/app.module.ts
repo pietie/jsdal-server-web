@@ -25,6 +25,8 @@ import { ExceptionViewerComponent } from './exception-viewer/exception-viewer.co
 import { WorkersComponent } from './workers/workers.component'
 import { WorkerDetailComponent } from './workers/worker-detail.component'
 
+import { PluginsComponent } from './plugins/plugins.component'
+
 import { PerformanceModule } from './performance/performance.module'
 
 import { SharedModule } from './shared/shared.module'
@@ -36,9 +38,10 @@ import { FirstTimeSetupCompletedService } from './1st-time/1st-time-setup-comple
 import { FirstTimeNetworkErrorComponent } from './1st-time/1st-time-network-error.component';
 
 
+import { AceEditorModule } from 'ng2-ace-editor';
+
 @NgModule({
-    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule
-    ],
+    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule, AceEditorModule],
     declarations: [AppComponent,
         HomeComponent,
         LoginComponent,
@@ -48,7 +51,8 @@ import { FirstTimeNetworkErrorComponent } from './1st-time/1st-time-network-erro
         WorkersComponent,
         WorkerDetailComponent,
         FirstTimeSetupComponent,
-        FirstTimeNetworkErrorComponent
+        FirstTimeNetworkErrorComponent,
+        PluginsComponent
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService],

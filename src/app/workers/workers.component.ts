@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { L2  } from 'l2-lib/L2';
+import { L2 } from 'l2-lib/L2';
 import { HubConnection } from '@aspnet/signalr-client';
 
 @Component({
@@ -12,19 +12,24 @@ export class WorkersComponent {
         //!this.reloadWorkersList();
 
         let connection = new HubConnection('http://localhost:9086/worker-hub'); // TODO: sort out url
-        
+
         // TODO: Disconnect when component is not active
-                    connection.start()
-                        .then(() => {
-                            connection.stream("StreamWorkerDetail").subscribe(<any>{
-                                next: (n => { this.workerList = n; }),
-                                error: function (err) {
-                                    console.info("Streaming error");
-                                    console.error(err); 
-                                }
-                            });
-        
-                        });
+        connection.start()
+            .then(() => {
+
+                connection.invoke("Init").then(r => {
+                    this.workerList = r;
+                });
+
+                connection.stream("StreamWorkerDetail").subscribe(<any>{
+                    next: (n => { this.workerList = n; }),
+                    error: function (err) {
+                        console.info("Streaming error");
+                        console.error(err);
+                    }
+                });
+
+            });
     }
 
     private reloadWorkersList() {

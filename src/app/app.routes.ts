@@ -14,6 +14,8 @@ import { ExceptionViewerComponent } from './exception-viewer/exception-viewer.co
 import { WorkersComponent } from './workers/workers.component';
 import { WorkerDetailComponent } from './workers/worker-detail.component'
 
+import { PluginsComponent } from './plugins/plugins.component'
+
 import { CanDeactivateGuard } from './services/can-deactivate-guard.service'
 import { LoggedInGuard } from './logged-in.guard';
 
@@ -44,6 +46,7 @@ export const appRoutes: Routes = [
 
         ]
     },
+    { path: 'plugins', component: PluginsComponent, canActivate: [LoggedInGuard] },
 
 
 ];

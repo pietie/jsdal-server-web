@@ -24,6 +24,11 @@ export class HomeComponent {
 // TODO: Disconnect when component is not active
             connection.start()
                 .then(() => {
+
+                    connection.invoke("Init").then(r => {
+                        this.statsData = r;
+                    });
+
                     connection.stream("StreamMainStats").subscribe(<any>{
                         next: (n => { this.statsData = n; }),
                         error: function (err) {

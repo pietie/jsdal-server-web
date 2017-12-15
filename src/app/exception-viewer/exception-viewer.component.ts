@@ -43,7 +43,7 @@ import { DomSanitizer } from "@angular/platform-browser";
         font-family: Consolas, 'Courier New', monospace;
     }
 
-    span.app-title
+    .app-title
     {
         color: #ced3ff;
         background-color: darkorchid;
@@ -54,7 +54,7 @@ import { DomSanitizer } from "@angular/platform-browser";
         width: 100px;
     }
 
-    span.msg
+    .msg
     {
         white-space: nowrap;
         overflow: hidden;
@@ -113,10 +113,17 @@ export class ExceptionViewerComponent {
         L2.fetchJson(`/api/exception/top/200`).then((r: any) => {
             this.appTitles =  [ "(All)", ...<any>new Set(r.Data.Results.map(r=>r.appTitle)).entries()];
 
-            //this.appTitles.splice(0,0, "(All)");
-            
             this.totalExceptionCnt = r.Data.TotalExceptionCnt;
-            this.recentExceptions = r.Data.Results;
+            this.recentExceptions = r.Data.Results;//.sort((a,b)=>a.created<=b.created);
+        });
+    }
+
+    clearAll()
+    {
+        L2.postJson('/api/exception/clear-all').then(r=>
+        {
+            L2.success('Exceptions cleared.');
+            this.fetchRecentExceptions();
         });
     }
 }
