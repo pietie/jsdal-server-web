@@ -2,26 +2,35 @@ import { Component } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { HubConnection } from '@aspnet/signalr-client';
 
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 @Component({
     templateUrl: './workers.component.html'
 })
 export class WorkersComponent {
     public workerList: any[];
 
+    public hubConnection: HubConnection;
+    private stream$:Observable<any>;
+    private streamSubscription:Subscription;
+
     ngOnInit() {
         //!this.reloadWorkersList();
 
-        let connection = new HubConnection('http://localhost:9086/worker-hub'); // TODO: sort out url
+        this.hubConnection = new HubConnection('http://localhost:9086/worker-hub'); // TODO: sort out url
 
         // TODO: Disconnect when component is not active
-        connection.start()
+        this.hubConnection.start()
             .then(() => {
 
-                connection.invoke("Init").then(r => {
+                this.hubConnection.invoke("Init").then(r => {
                     this.workerList = r;
                 });
 
-                connection.stream("StreamWorkerDetail").subscribe(<any>{
+                this.stream$ = <any>this.hubConnection.stream("StreamWorkerDetail");
+                
+                this.streamSubscription = this.stream$.subscribe(<any>{
                     next: (n => { this.workerList = n; }),
                     error: function (err) {
                         console.info("Streaming error");
@@ -30,6 +39,25 @@ export class WorkersComponent {
                 });
 
             });
+    }
+
+    ngOnDestroy() {
+        try {
+            if (this.hubConnection)
+            {
+                if (this.streamSubscription)
+                {
+                    this.streamSubscription.closed = true;
+                    this.streamSubscription.unsubscribe();
+                    this.streamSubscription = null;
+                }
+                this.hubConnection.stop();
+                this.hubConnection = null;
+            }
+        }
+        catch (e) {
+            console.warn(e);
+        }
     }
 
     private reloadWorkersList() {

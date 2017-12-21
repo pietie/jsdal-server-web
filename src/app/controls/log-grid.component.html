@@ -1,15 +1,14 @@
 <mat-card>
     <mat-card-content>
 
-            
 
-
+        <mat-form-field>
             <mat-select placeholder="Type" [(ngModel)]="selectedType" (change)="updateList()">
                 <mat-option [value]="0">(All)</mat-option>
                 <mat-option *ngFor="let e of LogEntryTypeValues" [value]="LogEntryType[e]">{{e}}</mat-option>
             </mat-select>
 
-
+        </mat-form-field>
 
 
 
@@ -23,13 +22,17 @@
             <tbody>
                 <tr *ngFor="let row of filteredList" title="{{row.CreateDate|fromISODateStr|date:'longDate'}}">
                     <td>{{row.CreateDate|fromISODateStr|date:'HH:mm:ss'}}</td>
-                    <td><span style="display: inline-block;width:70px" class="label label-{{getLogEntryTypeBadgeClass(row.Type)}}">{{LogEntryType[row.Type]}}</span><span>&nbsp;&nbsp;</span>{{row.Message}}</td>
+                    <td>
+                        <span style="display: inline-block;width:70px" class="label label-{{getLogEntryTypeBadgeClass(row.Type)}}">{{LogEntryType[row.Type]}}</span>
+                        <span>&nbsp;&nbsp;</span>{{row.Message}}</td>
                 </tr>
             </tbody>
         </table>
 
         <div class="panel-footer" *ngIf="datasource">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;Viewing <strong *ngIf="filteredList">{{ filteredList.length }}</strong>            of <strong>{{ datasource.length }}</strong>
+            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;Viewing
+            <strong *ngIf="filteredList">{{ filteredList.length }}</strong> of
+            <strong>{{ datasource.length }}</strong>
         </div>
     </mat-card-content>
     <mat-card-actions>

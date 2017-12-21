@@ -3,6 +3,8 @@
 import { L2 } from 'l2-lib/L2';
 
 import { HubConnection } from '@aspnet/signalr-client';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'home',
@@ -16,28 +18,34 @@ export class HomeComponent {
 
     public usageDetail: any = null;
 
+    public hubConnection: HubConnection;
+    private stats$: Observable<any>;
+    private statsSubscription: Subscription;
+
     ngOnInit() {
         try {
             //!L2.fetchJson('/api/main/stats').then((r: any) => { this.statsData = r.Data; });
-            let connection = new HubConnection('http://localhost:9086/main-stats'); // TODO: sort out url
+            this.hubConnection = new HubConnection('http://localhost:9086/main-stats'); // TODO: sort out url
 
-// TODO: Disconnect when component is not active
-            connection.start()
+            // TODO: Disconnect when component is not active
+            this.hubConnection.start()
                 .then(() => {
 
-                    connection.invoke("Init").then(r => {
+                    this.hubConnection.invoke("Init").then(r => {
                         this.statsData = r;
                     });
 
-                    connection.stream("StreamMainStats").subscribe(<any>{
+                    this.stats$ = <any>this.hubConnection.stream("StreamMainStats");
+
+                    this.statsSubscription = this.stats$.subscribe(<any>{
                         next: (n => { this.statsData = n; }),
                         error: function (err) {
                             console.info("Streaming error");
-                            console.error(err); 
+                            console.error(err);
                         }
                     });
 
-                }); 
+                });
 
 
             this.isLoadProjectList = true;
@@ -50,6 +58,23 @@ export class HomeComponent {
         }
         catch (e) {
             L2.handleException(e);
+        }
+    }
+
+    ngOnDestroy() {
+        try {
+            if (this.hubConnection) {
+                if (this.statsSubscription) {
+                    this.statsSubscription.closed = true;
+                    this.statsSubscription.unsubscribe();
+                    this.statsSubscription = null;
+                }
+                this.hubConnection.stop();
+                this.hubConnection = null;
+            }
+        }
+        catch (e) {
+            console.warn(e);
         }
     }
 
