@@ -23,15 +23,28 @@
                 <tr *ngFor="let row of filteredList" title="{{row.CreateDate|fromISODateStr|date:'longDate'}}">
                     <td>{{row.CreateDate|fromISODateStr|date:'HH:mm:ss'}}</td>
                     <td>
-                        <span style="display: inline-block;width:70px" class="label label-{{getLogEntryTypeBadgeClass(row.Type)}}">{{LogEntryType[row.Type]}}</span>
-                        <span>&nbsp;&nbsp;</span>{{row.Message}}</td>
+                        <!-- <span style="display: inline-block;width:70px" class="label label-{{getLogEntryTypeBadgeClass(row.Type)}}">{{LogEntryType[row.Type]}}</span> -->
+                        <mat-chip-list [selectable]="false" style="display: inline-block;width:70px">
+                            <mat-chip [color]="primary">{{LogEntryType[row.Type]}}</mat-chip>
+                        </mat-chip-list>
+                        <span>&nbsp;&nbsp;</span>
+                        
+                        <div class="msg" [ngClass]="LogEntryType[row.Type]" [innerHTML]="formatMessage(row)">
+                            
+                        </div>
+                    
+                    </td>
+                        
+                        
                 </tr>
             </tbody>
         </table>
 
-        <div class="panel-footer" *ngIf="datasource">
-            <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;&nbsp;Viewing
-            <strong *ngIf="filteredList">{{ filteredList.length }}</strong> of
+        <div class="panel-footer flex-vertical-center" *ngIf="datasource">
+            <mat-icon>info</mat-icon><span>&nbsp;&nbsp;</span>
+            <span>Viewing&nbsp;</span>
+            <strong *ngIf="filteredList">{{ filteredList.length }}</strong>
+            <span>&nbsp;of&nbsp;</span>
             <strong>{{ datasource.length }}</strong>
         </div>
     </mat-card-content>
