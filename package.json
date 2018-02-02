@@ -12,18 +12,18 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^5.1.0",
-    "@angular/cdk": "^5.0.1",
-    "@angular/common": "^5.1.0",
-    "@angular/compiler": "^5.1.0",
-    "@angular/compiler-cli": "^5.1.0",
-    "@angular/core": "^5.1.0",
-    "@angular/forms": "^5.1.0",
-    "@angular/http": "^5.1.0",
-    "@angular/material": "^5.0.1",
-    "@angular/platform-browser": "^5.1.0",
-    "@angular/platform-browser-dynamic": "^5.1.0",
-    "@angular/router": "^5.1.0",
+    "@angular/animations": "^5.2.3",
+    "@angular/cdk": "^5.1.1",
+    "@angular/common": "^5.2.3",
+    "@angular/compiler": "^5.2.3",
+    "@angular/compiler-cli": "^5.2.3",
+    "@angular/core": "^5.2.3",
+    "@angular/forms": "^5.2.3",
+    "@angular/http": "^5.2.3",
+    "@angular/material": "^5.1.1",
+    "@angular/platform-browser": "^5.2.3",
+    "@angular/platform-browser-dynamic": "^5.2.3",
+    "@angular/router": "^5.2.3",
     "@aspnet/signalr-client": "^1.0.0-alpha2-final",
     "core-js": "^2.5.1",
     "l2-lib": "git+https://github.com/pietie/l2-lib.git",
@@ -33,12 +33,11 @@
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
-    "@angular/cli": "^1.6.0-beta.0",
+    "@angular/cli": "^1.6.6",
     "@types/jquery": "^2.0.48",
     "@types/moment": "^2.13.0",
-    "@types/node": "^6.0.88",
+    "@types/node": "^9.4.0",
     "codelyzer": "~2.0.0-beta.1",
-    "ts-node": "1.2.1",
-    "typescript": "^2.5.2"
+    "ts-node": "1.2.1"
   }
 }

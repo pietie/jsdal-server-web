@@ -34,11 +34,10 @@
                                     <mat-icon>info_outline</mat-icon>
                                     <strong class>Last updated</strong>&nbsp;
                                     <span>{{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;
-                                    <span
-                                        class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
+                                    <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
                                 </div>
                                 <br/>
-                                <br/> {{ summaryData.Orm.TotalCnt }} routines 
+                                <br/> {{ summaryData.Orm.TotalCnt }} routines
                                 <ul>
                                     <li *ngFor="let row of summaryData.Orm.Groups, let last = last">{{row.Count}} {{ row.Type }} </li>
                                 </ul>
@@ -155,19 +154,22 @@
 
                             <mat-list>
                                 <mat-list-item *ngFor="let row of pluginList">
+
+
+                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;"><mat-icon>keyboard_arrow_up</mat-icon></button>
+                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;"><mat-icon>keyboard_arrow_down</mat-icon></button>
+
                                     <div md-line style="display: flex;align-items: center;">
+
                                         <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
-                                            <span style="font-size: 14px;font-weight: : bold;">{{row.Name}}</span>
+                                            <span style="font-size: 14px;font-weight: bold;;width: 200px;display:inline-block">{{row.Name}}</span>
                                         </mat-slide-toggle>
-                                        <span md-line style="margin-left:20px;" class="anchorNest">
-                                            <a (click)="onPluginInclusionChanged()">up</a>
-                                            <a (click)="onPluginInclusionChanged()">down</a>
-                                        </span>
+
+
                                     </div>
                                     <p md-line>
                                         <br/>{{row.Description}}
-                                        <br/>
-                                        <br/>
+
                                     </p>
 
                                     <hr md-line/>
