@@ -53,6 +53,7 @@ export class HomeComponent {
                 this.projectList = r.Data;
                 this.isLoadProjectList = false;
             }).catch(e => {
+                console.info("!!!", e);
                 this.isLoadProjectList = false;
             });
         }

@@ -21,6 +21,7 @@ export class FirstTimeSetupCompletedGuard implements CanActivate {
             return isComplete;
         }
         catch (e) {
+            console.log("...network-error");
             this.router.navigate(['/network-error']);
         }
     }

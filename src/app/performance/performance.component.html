@@ -3,6 +3,37 @@
     <h4>jsDAL Server performance</h4>
 </div>
 
+<h2>Real-time executions</h2>
+<div *ngIf="realtimeExectuionData">
+
+    <table class="grid">
+        <thead>
+            <tr>
+                <th style="width:40px">Name</th>
+                <th style="width:250px">Created</th>
+                <th style="width:250px">Duration</th>
+                <th style="width:250px">Rows affected</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of realtimeExectuionData">
+                <td>{{ row.name }}</td>
+                <td>{{ row.createdEpoch | fromEpoch | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                <td>{{ row.durationMS }}</td>
+                <td>{{ row.rowsAffected }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+  
+</div>
+
+<div *ngIf="perfraw">
+
+    <!-- {{ perfraw | json }} -->
+
+</div>
+
 <mat-card>
     <mat-card-content>
 

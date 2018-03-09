@@ -7,6 +7,15 @@ export class FirstTimeSetupCompletedService {
 
     constructor() {
 
+        this.retry();
+    }
+
+    public get isFirstTimeSetupComplete(): Promise<boolean> {
+        return this.isCompletedPromise;
+    }
+
+    public retry()
+    {
         let url:string = '/api/main/issetupcomplete';
 
         if (window.location.port == '4200') url = 'http://localhost:9086' + url;
@@ -19,9 +28,5 @@ export class FirstTimeSetupCompletedService {
             .then((json: any) => {
                 return json.Data;
             });
-    }
-
-    public get isFirstTimeSetupComplete(): Promise<boolean> {
-        return this.isCompletedPromise;
     }
 }

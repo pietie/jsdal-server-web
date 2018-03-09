@@ -41,6 +41,7 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IsoDatePipe } from '../pipes/FromISODate';
+import { FromEpochPipe } from '../pipes/from-epoch.pipe';
 import { LogGrid } from '../controls/log-grid.component';
 
 import { MsgDialog, PromptDialog  } from '~/dialogs'
@@ -77,8 +78,8 @@ import { MsgDialog, PromptDialog  } from '~/dialogs'
         MatToolbarModule,
         MatTooltipModule,
         MatStepperModule],
-    declarations: [IsoDatePipe, LogGrid, MsgDialog, PromptDialog],
-    exports: [IsoDatePipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule,    MatAutocompleteModule,
+    declarations: [IsoDatePipe, FromEpochPipe, LogGrid, MsgDialog, PromptDialog],
+    exports: [IsoDatePipe, FromEpochPipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule,    MatAutocompleteModule,
         MatButtonModule,
         MatButtonToggleModule,
         MatCardModule,
