@@ -19,7 +19,7 @@
             <tr *ngFor="let row of realtimeExectuionData">
                 <td>{{ row.name }}</td>
                 <td>{{ row.createdEpoch | fromEpoch | date:'yyyy-MM-dd HH:mm:ss' }}</td>
-                <td>{{ row.durationMS }}</td>
+                <td>{{ getRunningTime(row) }} {{ formatMilliseconds(row.durationMS) }}</td>
                 <td>{{ row.rowsAffected }}</td>
             </tr>
         </tbody>

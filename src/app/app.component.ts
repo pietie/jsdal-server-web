@@ -3,63 +3,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from './account/account.service'
 import { MatDialog, MatSnackBar } from '@angular/material';
 
-import { MsgDialog } from './dialogs/msg-dialog.component'
+
 import { L2 } from 'l2-lib/L2';
-import { IL2OutputMessageHandler } from 'l2-lib/L2';
-import { PromptDialog } from "app/dialogs";
+
 
 import { HubConnection } from '@aspnet/signalr-client';
 
-// TODO: Move somewhere else
-class X implements IL2OutputMessageHandler {
-
-    constructor(private dialog: MatDialog, private snackBar: MatSnackBar, private router: Router, private accountService: AccountService) {
-
-
-    }
-
-    info(msg: string, title?: string): any {
-        alert("X.info ... local info:" + msg);
-    }
-
-    warning(msg: string, title?: string): any {
-        // incredibly crude but easiest solution for now to handle token expiration globally
-        if (/your access token has expired/gi.test(msg)) {
-            //!this.securityService.logout();
-            this.router.navigate(['/login']);
-            return;
-        }
-        MsgDialog.exclamation(this.dialog, title, msg);
-    }
-
-    success(msg: string, title?: string): any {
-        this.snackBar.open(msg, title, { duration: 2500 });
-    }
-
-    exclamation(msg: string, title?: string): any {
-        // incredibly crude but easiest solution for now to handle token expiration globally
-        if (/your access token has expired/gi.test(msg)) {
-            //!this.securityService.logout();
-            this.router.navigate(['/login']);
-            return;
-        }
-        MsgDialog.exclamation(this.dialog, title, msg);
-    }
-
-    confirm(msg: string, title?: string): any {
-        return MsgDialog.confirm(this.dialog, title, msg);
-    }
-
-    prompt(title?: string, fieldName?: string, val?: string, okayButtonLabel?: string): Promise<any> {
-        return PromptDialog.prompt(this.dialog, title, fieldName, val, okayButtonLabel);
-    }
-
-    handleException(error: Error | ExceptionInformation | string, additionalKVs?: Object): any {
-        // TODO: navigate to error page? or just show message at the top? dialog would be nice I guess
-        alert("EXCEPTION ALERT (app component)" + error.toString());
-        console.error(error);
-    }
-}
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { L2MsgHandler } from './L2MsgHandler';
 
 
 @Component({
@@ -68,6 +20,7 @@ class X implements IL2OutputMessageHandler {
     styleUrls: ['app.component.css']
 })
 export class AppComponent {
+
     constructor(public accountService: AccountService,
         public router: Router,
         public changeDetectorRef: ChangeDetectorRef,
@@ -76,34 +29,58 @@ export class AppComponent {
         public activatedRoute: ActivatedRoute
     ) {
 
-        L2.registerOutputMessageHandler(new X(this.dialog, this.snackBar, this.router, null));
+        L2.registerOutputMessageHandler(new L2MsgHandler(this.dialog, this.snackBar, this.router, null));
     }
 
+    public isDisconnected: boolean = false;
+    public hubConnection: HubConnection;
+    private stats$: Observable<any>;
+    private statsSubscription: Subscription;
+
     ngOnInit() {
-        this.accountService.whenLoggedIn.subscribe(loggedIn => {
-            this.changeDetectorRef.detectChanges();
-        });
 
-        // let connection = new HubConnection('http://localhost:9086/main-stats');
+        try {
+            this.accountService.whenLoggedIn.subscribe(loggedIn => {
+                this.changeDetectorRef.detectChanges();
+            });
 
-        // connection.on('send', data => {
-        //     console.log("on - send", data);
-        // });
+            this.hubConnection = new HubConnection('http://localhost:9086/heartbeat'); // TODO: sort out url
+            this.hubConnection.onclose(e => {
+                console.info("Hub connection closed");
+                this.isDisconnected = true;
 
-        // connection.start()
-        //     .then(() => {
-        //         //connection.invoke('send', 'Hello!');
+            });
+            this.hubConnection.start()
+                .then(() => {
 
-        //         connection.stream("StreamMainStats").subscribe(<any>{
-        //             next: (n => { console.log("NEXT", n); }),
-        //             error: function (err) {
-        //                 console.info("Streaming error");
-        //                 console.error(err);
-        //             }
-        //         });
+                    this.hubConnection.invoke("Init").then(r => {
 
-        //     });
+                    });
 
+                    this.stats$ = <any>this.hubConnection.stream("StreamTick");
+
+                    this.statsSubscription = this.stats$.subscribe(<any>{
+                        next: (n => {
+                            this.isDisconnected = false;
+                        }),
+                        error: function (err) {
+                            this.isDisconnected = true;
+                            console.log("ERROR!!!! with heart beat");
+                        }
+                    });
+
+                });
+        }
+        catch (e) {
+            L2.handleException(e);
+        }
+
+
+    }
+
+    gotoLogin() {
+
+        (<any>window).location = "login";
     }
 
     public go(url: string) {

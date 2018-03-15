@@ -1,4 +1,4 @@
-﻿import { ModuleWithProviders } from '@angular/core';
+﻿import { ModuleWithProviders, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { FirstTimeSetupComponent } from './1st-time/1st-time-setup.component';
@@ -18,6 +18,7 @@ import { PluginsComponent } from './plugins/plugins.component'
 
 import { CanDeactivateGuard } from './services/can-deactivate-guard.service'
 import { LoggedInGuard } from './logged-in.guard';
+
 
 export const appRoutes: Routes = [
     {

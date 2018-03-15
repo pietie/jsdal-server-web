@@ -1,4 +1,4 @@
-<mat-sidenav-container style="background-color: #F0EDE5">
+<mat-sidenav-container style="background-color: #F0EDE5" [class.main-app-disconnected]="isDisconnected">
     <mat-sidenav #side mode="push" opened="false" style="width:260px;">
 
 
@@ -91,10 +91,42 @@
     </div>
 
     <mat-menu #appMenu="matMenu">
-        <button [routerLink]="['./settings']" mat-menu-item><div class="flex-vertical-center"><mat-icon>settings_applications</mat-icon><span>Settings</span></div> </button>
-        <button [routerLink]="['./login']" [queryParams]='{logout:true}' mat-menu-item><div class="flex-vertical-center"><mat-icon>exit_to_app</mat-icon><span>Logout</span></div></button>
-        
+        <button [routerLink]="['./settings']" mat-menu-item>
+            <div class="flex-vertical-center">
+                <mat-icon>settings_applications</mat-icon>
+                <span>Settings</span>
+            </div>
+        </button>
+        <button [routerLink]="['./login']" [queryParams]='{logout:true}' mat-menu-item>
+            <div class="flex-vertical-center">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Logout</span>
+            </div>
+        </button>
+
     </mat-menu>
 
 
 </mat-sidenav-container>
+
+<div *ngIf="isDisconnected">
+    <div class="disconnected-container">
+        <!-- <router-outlet name="disconnected-dlg"></router-outlet> -->
+
+        <mat-card style="max-width:400px;margin:auto; pointer-events: all;">
+            <mat-card-title>Connection lost</mat-card-title>
+            <mat-card-content>
+                <p>
+                    Connection to jsDAL server lost. Make sure you have a working network connection and try again.
+                </p>
+                <div>
+
+                </div>
+
+            </mat-card-content>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>

@@ -16,7 +16,7 @@ export class PerformanceComponent {
 
     public hubConnection: HubConnection;
 
-    public realtimeExectuionData:any;
+    public realtimeExectuionData: any;
     private realtimeStream$: Observable<any>;
     private realtimeExecutionsSubscription: Subscription;
 
@@ -48,10 +48,16 @@ export class PerformanceComponent {
 
                 });
 
+                this.updateRealtimeRunningTimes();
         }
         catch (e) {
             L2.handleException(e);
         }
+    }
+
+    updateRealtimeRunningTimes() {
+
+    //!    setTimeout(()=>this.updateRealtimeRunningTimes(), 300);
     }
 
     ngOnDestroy() {
@@ -85,7 +91,27 @@ export class PerformanceComponent {
 
     }
 
+    getRunningTime(row) {
+        if (!row) return null;
+        if (row.durationMS != null) return null;
 
+        let createdMom = moment(row.createdEpoch);
+
+        let diff = moment().diff(createdMom, 'ms');
+
+        if (diff < 0) diff = 0;
+
+        return this.formatMilliseconds(diff);
+    }
+
+    formatMilliseconds(ms:number)
+    {
+        if (ms == null) return null;
+        if (ms == 0) return "0s";
+        var s = (ms / 1000.0).toFixed(2);
+
+        return s+ "s";
+    }
 
 
 }
