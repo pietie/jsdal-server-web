@@ -44,7 +44,7 @@ export class AppComponent {
                 this.changeDetectorRef.detectChanges();
             });
 
-            this.hubConnection = new HubConnection('http://localhost:9086/heartbeat'); // TODO: sort out url
+            this.hubConnection = new HubConnection('https://api.jsdal.com/heartbeat'); // TODO: sort out url
             this.hubConnection.onclose(e => {
                 console.info("Hub connection closed");
                 this.isDisconnected = true;

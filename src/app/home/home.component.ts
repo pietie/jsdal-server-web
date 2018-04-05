@@ -25,7 +25,7 @@ export class HomeComponent {
     ngOnInit() {
         try {
             //!L2.fetchJson('/api/main/stats').then((r: any) => { this.statsData = r.Data; });
-            this.hubConnection = new HubConnection('http://localhost:9086/main-stats'); // TODO: sort out url
+            this.hubConnection = new HubConnection('https://api.jsdal.com/main-stats'); // TODO: sort out url
 
             // TODO: Disconnect when component is not active
             this.hubConnection.start()

@@ -1,4 +1,4 @@
-﻿import { NgModule } from '@angular/core';
+﻿import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { RouterModule } from '@angular/router'
@@ -41,6 +41,19 @@ import { FirstTimeNetworkErrorComponent } from './1st-time/1st-time-network-erro
 import { AceEditorModule } from 'ng2-ace-editor';
 
 
+export class MyErrorHandler implements ErrorHandler {
+    
+    constructor()
+    {
+
+    }
+
+    handleError(error) {
+      console.info("custom error handler: ", error);
+      throw new Error("Whoops");
+    }
+ }
+
 @NgModule({
     imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule, AceEditorModule],
     declarations: [AppComponent,
@@ -56,7 +69,7 @@ import { AceEditorModule } from 'ng2-ace-editor';
         PluginsComponent
     ],
     bootstrap: [AppComponent],
-    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService],
+    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/ ],
     entryComponents: []
 
 })

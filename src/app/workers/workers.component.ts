@@ -18,7 +18,7 @@ export class WorkersComponent {
     ngOnInit() {
         //!this.reloadWorkersList();
 
-        this.hubConnection = new HubConnection('http://localhost:9086/worker-hub'); // TODO: sort out url
+        this.hubConnection = new HubConnection('https://api.jsdal.com/worker-hub'); // TODO: sort out url
 
         // TODO: Disconnect when component is not active
         this.hubConnection.start()

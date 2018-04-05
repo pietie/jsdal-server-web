@@ -133,7 +133,7 @@ export class AccountService {
 
         var url = 'api/authenticate';
         // PL: Temp hack when we are running with ng serve
-        if (window.location.port == '4200') url = 'http://localhost:9086/' + url;
+        if (window.location.port == '4200') url = 'https://api.jsdal.com/' + url;
 
         var headers = new Headers();
 

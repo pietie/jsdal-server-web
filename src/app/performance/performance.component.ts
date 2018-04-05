@@ -26,7 +26,7 @@ export class PerformanceComponent {
 
     ngOnInit() {
         try {
-            this.hubConnection = new HubConnection('http://localhost:9086/performance-realtime-hub'); // TODO: sort out url
+            this.hubConnection = new HubConnection('https://api.jsdal.com/performance-realtime-hub'); // TODO: sort out url
 
             // TODO: Disconnect when component is not active
             this.hubConnection.start()
