@@ -1,16 +1,15 @@
-﻿import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from './account/account.service'
 import { MatDialog, MatSnackBar } from '@angular/material';
 
-
+import { environment } from './../environments/environment';
 import { L2 } from 'l2-lib/L2';
 
 
 import { HubConnection } from '@aspnet/signalr-client';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 import { L2MsgHandler } from './L2MsgHandler';
 
 
@@ -44,7 +43,7 @@ export class AppComponent {
                 this.changeDetectorRef.detectChanges();
             });
 
-            this.hubConnection = new HubConnection('https://api.jsdal.com/heartbeat'); // TODO: sort out url
+            this.hubConnection = new HubConnection(environment.apiBaseUrl + '/heartbeat'); 
             this.hubConnection.onclose(e => {
                 console.info("Hub connection closed");
                 this.isDisconnected = true;

@@ -2,39 +2,53 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../shared/shared.module';
 
+import { BreadcrumbComponent } from './master/breadcrumbs/breadcrumbs.component';
+import { BreadcrumbsService } from './master/breadcrumbs/breadcrumbs.service';
+
 import { ProjectService } from './projects.service'
+
+import { ProjectMasterComponent } from './master/project-master.component';
 
 import { ProjectListComponent } from './project-list.component'
 import { projectsRouting } from './projects.routes'
 import { ProjectComponent } from './project.component'
-import { DbSourceComponent, DbSourceRouteResolver } from './dbsource.component'
+import { DbSourceComponent } from './dbsource/dbsource.component'
 
-// import { ParametersDialog } from '../metadatabrowser/parameters.dialog'
-// import { ResultsErrorDialog } from '../metadatabrowser/resulterror.dialog'
-// import { TablesDialog } from '../metadatabrowser/tables.dialog'
+import { EndpointListComponent } from './endpoints/endpoints-list.component'
+import { EndpointDetailComponent } from './endpoints/endpoints-detail.component'
 
-import { DataSourceDialog, RulesDialog, MetadataViewerDialog, MetadataMoreInfoDialog } from './dialogs'
+
+import { DatasourceDialogComponent, RulesDialog, MetadataViewerDialog, MetadataMoreInfoDialog, ConnectionDialogComponent } from './dialogs'
+import { DbSourceRouteResolver } from './dbsource/dbsource.resolver';
+import { EndpointsDetailRouteResolver } from './endpoints/endpoints-detail.resolver';
+import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
 
 
 @NgModule({
     declarations: [
+        BreadcrumbComponent,
+        ProjectMasterComponent,
         ProjectListComponent,
         ProjectComponent,
         DbSourceComponent,
+        EndpointListComponent,
+        EndpointDetailComponent,
 
-        DataSourceDialog,
+        DatasourceDialogComponent,
         RulesDialog,
         MetadataViewerDialog,
-        MetadataMoreInfoDialog
+        MetadataMoreInfoDialog,
+        ConnectionDialogComponent
 
     ],
     imports: [SharedModule, projectsRouting],
-    providers: [ProjectService, DbSourceRouteResolver],
+    providers: [BreadcrumbsService, ProjectService, DbSourceRouteResolver, EndpointsDetailRouteResolver, EndpointDALService],
     entryComponents: [
-        DataSourceDialog,
+        DatasourceDialogComponent,
         RulesDialog,
         MetadataViewerDialog,
-        MetadataMoreInfoDialog
+        MetadataMoreInfoDialog ,
+        ConnectionDialogComponent
     ]
 
 

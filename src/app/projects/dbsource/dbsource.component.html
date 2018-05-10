@@ -1,93 +1,25 @@
 ﻿<mat-card>
     <mat-card-title>
         <i class="fa fa-database pr8"></i>{{ this.dbSource.Name }} detail
-        <div style="display:inline-block;margin-left:30px;font-size: 0.6em;">
-            <span class="ormLabel" [class.good]="this.dbSource.IsOrmInstalled" [class.bad]="!this.dbSource.IsOrmInstalled">
-                <i class="fa " [class.fa-check-circle-o]="this.dbSource.IsOrmInstalled" [class.fa-times-circle-o]="!this.dbSource.IsOrmInstalled"></i>
-                ORM
-                <span *ngIf="!this.dbSource.IsOrmInstalled">not</span> installed
-            </span>
-            <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
-            <a href="javascript:void(0)" *ngIf="this.dbSource.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
-        </div>
+    
     </mat-card-title>
     <mat-card-content>
 
         <div class="container-fluid" *ngIf="isReady">
 
-            <mat-tab-group *ngIf="this.dbSource.IsOrmInstalled" dynamicHeight="true">
-                <mat-tab label="Cached routines">
+            <mat-tab-group dynamicHeight="true">
 
-                    <mat-card>
-                        <mat-card-title>
-                            Cached routines
-                        </mat-card-title>
-                        <mat-card-content>
+                <mat-tab label="Endpoints">
+                    <endpoint-list></endpoint-list>
 
-                            <div *ngIf="summaryData" style="padding-left:16px;">
-
-
-
-
-
-                                <div class="flex-vertical-center">
-                                    <mat-icon>info_outline</mat-icon>
-                                    <strong class>Last updated</strong>&nbsp;
-                                    <span>{{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;
-                                    <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
-                                </div>
-                                <br/>
-                                <br/> {{ summaryData.Orm.TotalCnt }} routines
-                                <ul>
-                                    <li *ngFor="let row of summaryData.Orm.Groups, let last = last">{{row.Count}} {{ row.Type }} </li>
-                                </ul>
-
-
-
-                            </div>
-                            <p *ngIf="!summaryData">
-                                No routines cached yet.
-                            </p>
-
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button mat-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW METADATA</button>
-                            <button mat-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR CACHE</button>
-                        </mat-card-actions>
-                    </mat-card>
-
+                    <!-- <button [routerLink]="[{outlets: {primary: 'endpoint', 'endpoint-detail': null}}]" mat-button color="primary">CLOSE DETAIL</button> -->
                 </mat-tab>
-                <mat-tab label="Whitelist">
 
+
+                <mat-tab label="Connections">
                     <mat-card>
                         <mat-card-title>
-                            <i class="fa fa-tags pr8"></i>Whitelisted referrers
-                        </mat-card-title>
-                        <mat-card-content>
-                            <p>
-                                Specify a whitelist of hostnames that are allowed to access this DB source. Place each entry on a new line. For IPs, wildcard
-                                and ranges are supported, e.g.
-                                <strong>172.16.*.10-50</strong>
-                            </p>
-                            <p>
-                                <label>
-                                    <input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
-                                <br/>
-                                <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
-                            </p>
-
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button (click)="onUpdateWhitelist(whitelistTA)" mat-raised-button color="primary">SAVE WHITELIST</button>
-                        </mat-card-actions>
-                    </mat-card>
-
-
-                </mat-tab>
-                <mat-tab label="Run-time connections">
-                    <mat-card>
-                        <mat-card-title>
-                            <i class="fa fa-star pr8"></i>Run-time connections
+                            <i class="fa fa-star pr8"></i>Database connections
                         </mat-card-title>
                         <mat-card-content>
 
@@ -132,6 +64,76 @@
                         </mat-card-actions>
                     </mat-card>
                 </mat-tab>
+
+                <mat-tab label="Cached routines">
+
+                    <mat-card>
+                        <mat-card-title>
+                            Cached routines
+                        </mat-card-title>
+                        <mat-card-content>
+
+                            <div *ngIf="summaryData" style="padding-left:16px;">
+
+
+
+
+
+                                <div class="flex-vertical-center">
+                                    <mat-icon>info_outline</mat-icon>
+                                    <strong class>Last updated</strong>&nbsp;
+                                    <span>{{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;
+                                    <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
+                                </div>
+                                <br/>
+                                <br/> {{ summaryData.Orm.TotalCnt }} routines
+                                <ul>
+                                    <li *ngFor="let row of summaryData.Orm.Groups, let last = last">{{row.Count}} {{ row.Type }} </li>
+                                </ul>
+
+
+
+                            </div>
+                            <p *ngIf="!summaryData">
+                                No routines cached yet.
+                            </p>
+
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW METADATA</button>
+                            <button mat-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR CACHE</button>
+                        </mat-card-actions>
+                    </mat-card>
+
+                </mat-tab>
+
+                <mat-tab label="Whitelist">
+
+                    <mat-card>
+                        <mat-card-title>
+                            <i class="fa fa-tags pr8"></i>Whitelisted referrers
+                        </mat-card-title>
+                        <mat-card-content>
+                            <p>
+                                Specify a whitelist of hostnames that are allowed to access this DB source. Place each entry on a new line. For IPs, wildcard
+                                and ranges are supported, e.g.
+                                <strong>172.16.*.10-50</strong>
+                            </p>
+                            <p>
+                                <label>
+                                    <input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
+                                <br/>
+                                <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
+                            </p>
+
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="onUpdateWhitelist(whitelistTA)" mat-raised-button color="primary">SAVE WHITELIST</button>
+                        </mat-card-actions>
+                    </mat-card>
+
+
+                </mat-tab>
                 <mat-tab label="Inclusion/exclusion rules">
                     <mat-card>
                         <mat-card-title>
@@ -156,8 +158,12 @@
                                 <mat-list-item *ngFor="let row of pluginList">
 
 
-                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;"><mat-icon>keyboard_arrow_up</mat-icon></button>
-                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;"><mat-icon>keyboard_arrow_down</mat-icon></button>
+                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
+                                        <mat-icon>keyboard_arrow_up</mat-icon>
+                                    </button>
+                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
+                                        <mat-icon>keyboard_arrow_down</mat-icon>
+                                    </button>
 
                                     <div md-line style="display: flex;align-items: center;">
 
@@ -241,15 +247,6 @@
                 </mat-tab>
             </mat-tab-group>
 
-            <div *ngIf="!this.dbSource.IsOrmInstalled" class="alert alert-warning" role="alert">
-                <p>ORM sprocs are not installed yet. Click
-                    <strong>initialise</strong> to start the installation procedure.</p>
-            </div>
-
-            <button mat-raised-button color="accent" *ngIf="!this.dbSource.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()">
-                <span *ngIf="!isInstallingOrm">Initialise</span>
-                <span *ngIf="isInstallingOrm">Working...</span>
-            </button>
 
 
 

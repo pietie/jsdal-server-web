@@ -1,10 +1,10 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { L2 } from 'l2-lib/L2';
 
+import { environment } from '../../environments/environment';
 import { HubConnection } from '@aspnet/signalr-client';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 
 @Component({
     selector: 'home',
@@ -25,7 +25,7 @@ export class HomeComponent {
     ngOnInit() {
         try {
             //!L2.fetchJson('/api/main/stats').then((r: any) => { this.statsData = r.Data; });
-            this.hubConnection = new HubConnection('https://api.jsdal.com/main-stats'); // TODO: sort out url
+            this.hubConnection = new HubConnection(environment.apiBaseUrl + '/main-stats'); 
 
             // TODO: Disconnect when component is not active
             this.hubConnection.start()

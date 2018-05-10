@@ -1,10 +1,11 @@
-﻿import { Component } from '@angular/core'
-import { Location } from '@angular/common'
-import { ActivatedRoute, Router } from '@angular/router'
+﻿import { Component } from '@angular/core';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
-import { L2  } from 'l2-lib/L2';
+import { L2 } from 'l2-lib/L2';
+import { BreadcrumbsService } from './master/breadcrumbs/breadcrumbs.service';
 
 @Component({
     templateUrl: './project-list.component.html',
@@ -28,14 +29,27 @@ export class ProjectListComponent {
     public projectList: any;
     public selectedProject: any;
 
-    constructor(public route: ActivatedRoute, public router: Router, public location: Location) {
-        this.refresh();
+    constructor(public route: ActivatedRoute, public router: Router, public location: Location, public breadcrumbService: BreadcrumbsService) {
 
-        this.route.params.subscribe(params => {
-            console.log("project-list.component",route);
-            this.componentState = "enterComponent";
-        });
     }
+
+    ngOnInit() {
+        try {
+            this.refresh();
+
+            this.breadcrumbService.store([{ label: 'Projects', url: '/projects', params: [] }]);
+
+            this.route.params.subscribe(params => {
+
+                this.componentState = "enterComponent";
+            });
+        }
+        catch (e) {
+            L2.handleException(e);
+        }
+
+    }
+
 
     onEditProject(project) {
 

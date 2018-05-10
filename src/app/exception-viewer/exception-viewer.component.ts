@@ -51,7 +51,8 @@ import { DomSanitizer } from "@angular/platform-browser";
         overflow: hidden;
         text-overflow: ellipsis;
         display: inline-block;
-        width: 100px;
+        width: 130px;
+        margin-right: 4px;
     }
 
     .msg

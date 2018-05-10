@@ -2,44 +2,18 @@
 import { ActivatedRoute } from '@angular/router'
 import { MatDialog, MatDialogRef } from '@angular/material';
 
-import { L2  } from 'l2-lib/L2';
+import { L2 } from 'l2-lib/L2';
 
-import { ProjectService, IDBSource } from './projects.service'
-
-import { ProjectComponent } from './project.component'
+import { IDBSource } from './../projects.service'
 
 
-import { DataSourceDialog, AuthenticationType, RulesDialog, MetadataViewerDialog } from './dialogs';
+import { DatasourceDialogComponent, AuthenticationType, RulesDialog, MetadataViewerDialog } from './../dialogs';
 
 
-import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
+import { BreadcrumbsService } from './../master/breadcrumbs/breadcrumbs.service';
 
-@Injectable()
-export class DbSourceRouteResolver implements Resolve<IDBSource> {
-    constructor(private projectService: ProjectService, private router: Router) { }
-
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): any {
-
-        let project = route.parent.params["name"];
-        let dbSource = route.params['name'];
-
-        return this.projectService.getDbSource(project, dbSource).then(dbs => {
-            if (dbs) {
-                return dbs;
-            }
-            else {
-                this.router.navigate(['/']); // TODO: Route back to project list with error?
-                return null;
-            }
-        }).catch(e => {
-            console.log("bailing because of error", e);
-            this.router.navigate(['/']);     // TODO: Route back to project list with error?
-            return null;
-        });
-    }
-}
 
 
 @Component({
@@ -52,8 +26,6 @@ export class DbSourceComponent {
 
     public dbSource: IDBSource = {};
 
-
-    public isInstallingOrm: boolean = false;
 
     public execConnectionsList: any;
     public outputFileList: any;
@@ -72,26 +44,30 @@ export class DbSourceComponent {
     public allowAllPrivateIPs: boolean = false;
 
     constructor(public route: ActivatedRoute
-        , public project: ProjectComponent
         , public componentFactoryResolver: ComponentFactoryResolver
         , public appRef: ApplicationRef
         , public viewContainerRef: ViewContainerRef
         , public dialog: MatDialog
+        , public breadcrumb: BreadcrumbsService
     ) {
+
+
+    }
+
+    ngOnInit() {
         try {
 
             // listen and wait for the data coming in from the Resolver
             this.route.data.subscribe((d: any) => {
-                this.projectName = project.name;
+                this.projectName = this.route.snapshot.params['project'];
                 this.dbSource = d.dbSource;
 
-                if (this.dbSource.IsOrmInstalled == null) {
-                    this.onRecheckOrmClicked();
-                }
-                else {
-                    this.isReady = true;
-                    this.dbSource.IsOrmInstalled = this.dbSource.IsOrmInstalled;
-                }
+                this.breadcrumb.store([{ label: 'Projects', url: '/projects', params: [] }
+                    , { label: this.projectName, url: `/projects/${this.projectName}`, params: [] }
+                    , { label: this.dbSource.Name, url: `/projects/${this.projectName}/${this.dbSource.Name}`, params: [] }
+                ]);
+
+                this.isReady = true;
 
                 this.refreshSummaryInfo();
                 this.refreshDbConnectionList();
@@ -103,9 +79,8 @@ export class DbSourceComponent {
 
         }
         catch (e) {
-            alert("!!" + e.toString()); // TODO: Exception handling
+            L2.handleException(e);
         }
-
     }
 
     ngOnDestroy() {
@@ -177,50 +152,6 @@ export class DbSourceComponent {
         });
     }
 
-    onInitializeClicked() {
-
-        this.isInstallingOrm = true;
-
-        L2.postJson(`/api/database/installOrm?name=${this.dbSource.Name}&projectName=${this.projectName}`).then(resp => {
-            L2.success("ORM successfully installed");
-            this.isInstallingOrm = false;
-            this.dbSource.IsOrmInstalled = true;
-            //!this.projectService.currentDatabaseSource.IsOrmInstalled = true;
-
-        }).catch((_) => { this.isInstallingOrm = false });
-
-    }
-
-    onRecheckOrmClicked(forceRecheck: boolean = false) {
-        this.isReady = false;
-        L2.fetchJson(`/api/database/checkOrm?name=${this.dbSource.Name}&projectName=${this.projectName}&forceRecheck=${forceRecheck}`).then((resp: any) => {
-            this.isReady = true;
-            this.dbSource.IsOrmInstalled = resp.Data == null;
-            //!this.projectService.currentDatabaseSource.IsOrmInstalled = this.isOrmInstalled;
-
-            if (this.dbSource.IsOrmInstalled) {
-                L2.success("ORM is installed.");
-            }
-
-        }).catch((_) => this.isReady = true);
-    }
-
-    public performOrmUninstall() {
-        return L2.postJson(`/api/database/uninstallOrm?name=${this.dbSource.Name}&projectName=${this.projectName}`).then(resp => {
-            L2.success("ORM successfully uninstalled");
-
-            this.dbSource.IsOrmInstalled = false;
-
-        }).catch((_) => { this.isInstallingOrm = false });
-    }
-
-    onUninstallOrmClicked() {
-
-        L2.confirm(`Are you sure you want to uninstall the ORM from <strong>${this.dbSource.Name}</strong>?`, "Confirm action").then(r => {
-            if (r) this.performOrmUninstall();
-        });
-    }
-
     onAddNewOutputFileClicked() {
 
         L2.prompt("Create new output file", "Name", null, "CREATE").then((name: string) => {
@@ -276,20 +207,20 @@ export class DbSourceComponent {
     public onAddEditExecConnectionClicked(row) {
         try {
 
-            let dialogRef = this.dialog.open(DataSourceDialog);
+            let dialogRef = this.dialog.open(DatasourceDialogComponent);
 
             dialogRef.componentInstance.dataSourceMode = false;
 
             if (row) {
                 dialogRef.componentInstance.data = {
                     logicalName: row.Name,
-                    dataSource: row.DataSource,
-                    database: row.InitialCatalog,
-                    username: row.UserID,
-                    password: null,
-                    guid: row.Guid,
-                    port: row.port,
-                    instanceName: row.instanceName
+                    //dataSource: row.DataSource,
+                    //database: row.InitialCatalog,
+                    //username: row.UserID,
+                    //password: null,
+                    guid: row.Guid
+                    //port: row.port,
+                    //instanceName: row.instanceName
                 };
             }
 
@@ -302,11 +233,11 @@ export class DbSourceComponent {
 
                         if (!row) obj.guid = null;
 
-                        if (obj.authType == AuthenticationType.Windows) {
-                            obj.username = obj.password = null;
-                        }
+                        // if (obj.authType == AuthenticationType.Windows) {
+                        //     obj.username = obj.password = null;
+                        // }
 
-                        L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.nullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`)
+                        L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.nullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}`)
                             .then(r => {
                                 this.refreshDbConnectionList();
                                 L2.success("New database connection added successfully.");

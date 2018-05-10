@@ -8,18 +8,18 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { ProjectService, IDBSource } from './projects.service'
 
-import { DataSourceDialog, AuthenticationType } from './dialogs';
+import { DatasourceDialogComponent,  AuthenticationType } from './dialogs';
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Route, CanDeactivate } from '@angular/router'
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as  ofObservable } from 'rxjs';
+import { delay as delayObservable } from 'rxjs/operators';
 
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/toPromise';
+import { BreadcrumbsService } from './master/breadcrumbs/breadcrumbs.service';
 
 
-import { L2  } from 'l2-lib/L2';
+
+import { L2 } from 'l2-lib/L2';
 
 @Component({
     selector: 'ManageProject',
@@ -51,23 +51,27 @@ export class ProjectComponent {
         , public injector: Injector
         , public appRef: ApplicationRef
         , public viewContainerRef: ViewContainerRef
+        , public breadcrumb: BreadcrumbsService
     ) {
+    }
+
+    ngOnInit() {
+
         this.route.params.subscribe(params => {
-            console.log("project.component", params);
-            this.projectName = params["name"];
+            this.projectName = params["project"];
             this.componentState = "enterComponent";
+
+            this.breadcrumb.store([{ label: 'Projects', url: '/projects', params: [] }
+                , { label: this.projectName, url: `/projects/${this.projectName}`, params: [] }]);
+
             this.refreshDbList();
         });
 
-
-
     }
-
-    ngOnInit() { }
 
     canDeactivate(): Observable<boolean> | boolean {
         this.componentState = "exitComponent";
-        return Observable.of(true).delay(200); // TODO: Hook into animation complete event
+        return ofObservable(true).pipe(delayObservable(200)); // TODO: Hook into animation complete event
     }
 
     refreshDbList() {
@@ -86,8 +90,8 @@ export class ProjectComponent {
 
     public onAddEditDbSourceClicked(row) {
         try {
- 
-            let dialogRef = this.dialog.open(DataSourceDialog);
+
+            let dialogRef = this.dialog.open(DatasourceDialogComponent);
 
             dialogRef.componentInstance.title = "Add data source";
 
@@ -96,15 +100,8 @@ export class ProjectComponent {
 
                 dialogRef.componentInstance.data = {
                     logicalName: row.Name,
-                    dataSource: row.DataSource,
-                    database: row.InitialCatalog,
-                    username: row.UserID,
-                    password: null,
-                    authType: <any>(row.UserID ? AuthenticationType.SQL : AuthenticationType.Windows),
                     defaultRuleMode: row.DefaultRuleMode.toString(),
-                    guid: row.Guid,
-                    port: row.port,
-                    instanceName: row.instanceName
+                    guid: row.Guid
                 };
             }
 
@@ -112,13 +109,10 @@ export class ProjectComponent {
                 if (r) {
 
                     try {
-                        let obj = dialogRef.componentInstance.data;
+                        let obj:any = dialogRef.componentInstance.data;
 
                         if (!row) obj.guid = null;
 
-                        if (obj.authType == <any>AuthenticationType.Windows) {
-                            obj.username = obj.password = null;
-                        }
 
                         if (!row) {
                             // add new
@@ -137,7 +131,7 @@ export class ProjectComponent {
                                 });
                         }
 
-                        
+
                     }
                     catch (e) {
                         L2.handleException(e);
@@ -171,5 +165,7 @@ export class ProjectComponent {
             }
         });
     }
+
+
 }
 

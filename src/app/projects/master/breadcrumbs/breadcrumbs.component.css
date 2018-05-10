@@ -1,0 +1,29 @@
+.breadcrumb {
+    background-color: white;
+    padding: 4px;
+    margin-bottom: 0;
+}
+
+.breadcrumb-container
+{
+    padding: 3px;
+    background-color: #f0f0f0;
+    margin-bottom: 6px;
+}
+
+.breadcrumb-container mat-icon
+{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.breadcrumb-container a
+{
+    text-decoration: none;
+}
+
+li
+{
+     list-style: none;
+     display: inline-block;
+}

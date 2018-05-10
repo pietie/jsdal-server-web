@@ -1,0 +1,141 @@
+<h3>Endpoint:{{ endpointName }}</h3>
+
+
+<mat-tab-group dynamicHeight="true">
+    <mat-tab label="Metadata">
+
+        <div class="flex-vertical-center">
+            <h4>Metadata connection</h4>
+        </div>
+
+        <div class="connection-detail">
+
+            <div class="info" *ngIf="endpoint?.MetadataConnection;else noMetadataConnection">
+
+                <span class="field">Data source=</span>
+                <span class="value">{{ endpoint?.MetadataConnection?.DataSource }}, {{ endpoint?.MetadataConnection?.Port }}; </span>
+
+                <span class="field">Initial catalog=</span>
+                <span class="value">{{ endpoint?.MetadataConnection?.InitialCatalog }}; </span>
+
+                <span class="field" *ngIf="!(endpoint?.MetadataConnection?.IntegratedSecurity)">User ID=</span>
+                <span class="value" *ngIf="!(endpoint?.MetadataConnection?.IntegratedSecurity)">{{ endpoint?.MetadataConnection?.UserID }}; </span>
+
+                <span class="field">Integrated security=</span>
+                <span class="value">{{ endpoint?.MetadataConnection?.IntegratedSecurity }}</span>
+
+
+            </div>
+
+            <ng-template #noMetadataConnection>
+
+                <div class="flex-vertical-center">
+                    <mat-icon>info</mat-icon>No metadata connection exists yet. Configure a connection to start collecting metadata.</div>
+
+            </ng-template>
+            <br/>
+            <br/>
+            <button mat-raised-button color="primary" (click)="changeConnectionClicked(true, endpoint?.MetadataConnection)">CHANGE CONNECTION</button>
+            <br/><br/>
+            <mat-divider></mat-divider>
+
+            <br/>
+            <!-- <mat-divider></mat-divider>
+                <div>
+                    CACHE DETAIL 
+                </div> -->
+        </div>
+
+
+
+        <div *ngIf="endpoint?.MetadataConnection">
+            <div *ngIf="isCheckingOrm">
+                <div class="flex-vertical-center">
+                    <mat-progress-spinner [diameter]="30" [strokeWidth]="3" mode="indeterminate"></mat-progress-spinner>
+                    <span>Validating ORM, please wait...</span>
+                </div>
+            </div>
+
+            <div *ngIf="!isCheckingOrm">
+
+                <div class="flex-vertical-center ormLabel" [class.good]="this.endpoint.IsOrmInstalled" [class.bad]="!this.endpoint.IsOrmInstalled">
+                    <mat-icon>{{ this.endpoint.IsOrmInstalled? "done":"highlight_off" }} </mat-icon>
+                    <span>ORM&nbsp;</span>
+                    <span *ngIf="!this.endpoint.IsOrmInstalled">not</span>
+                    <span>&nbsp;installed</span>
+                </div>
+                <a href="javascript:void(0)" *ngIf="this.endpoint.IsOrmInstalled" (click)="onUninstallOrmClicked()">(uninstall)</a>
+                <a href="javascript:void(0)" *ngIf="this.endpoint.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">(recheck)</a>
+
+
+
+                <div *ngIf="!this.endpoint.IsOrmInstalled">
+                    <p>ORM sprocs are not installed yet. Click
+                        <strong>initialise</strong> to start the installation procedure.</p>
+
+                    TODO: We can only initialise once we have a MD connection so we have to check that first!
+                </div>
+
+
+                <button mat-raised-button color="accent" *ngIf="!this.endpoint.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()">
+                    <span *ngIf="!isInstallingOrm">Initialise</span>
+                    <span *ngIf="isInstallingOrm">Working...</span>
+                </button>
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+    </mat-tab>
+
+    <mat-tab label="Run-time">
+
+
+        <div class="flex-vertical-center">
+            <h4>Run-time connection</h4>
+        </div>
+
+        <div class="connection-detail">
+
+            <div class="info" *ngIf="endpoint?.ExecutionConnection;else noExecutionConnection">
+
+                <span class="field">Data source=</span>
+                <span class="value">{{ endpoint?.ExecutionConnection?.DataSource }}, {{ endpoint?.ExecutionConnection?.Port }}; </span>
+
+                <span class="field">Initial catalog=</span>
+                <span class="value">{{ endpoint?.ExecutionConnection?.InitialCatalog }}; </span>
+
+                <span class="field" *ngIf="!(endpoint?.ExecutionConnection?.IntegratedSecurity)">User ID=</span>
+                <span class="value" *ngIf="!(endpoint?.ExecutionConnection?.IntegratedSecurity)">{{ endpoint?.ExecutionConnection?.UserID }}; </span>
+
+                <span class="field">Integrated security=</span>
+                <span class="value">{{ endpoint?.ExecutionConnection?.IntegratedSecurity }}</span>
+
+
+            </div>
+
+            <ng-template #noExecutionConnection>
+
+                <div class="flex-vertical-center">
+                    <mat-icon>info</mat-icon>No run-time connection exists yet. Configure a connection to be used during execution.</div>
+
+            </ng-template>
+            <br/>
+            <br/>
+            <button mat-raised-button color="primary" (click)="changeConnectionClicked(false, endpoint?.ExecutionConnection)">CHANGE CONNECTION</button>
+            <mat-divider></mat-divider>
+            <br/>
+            <br/>
+
+        </div>
+
+
+
+    </mat-tab>
+
+</mat-tab-group>

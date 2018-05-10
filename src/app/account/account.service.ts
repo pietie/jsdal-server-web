@@ -1,6 +1,6 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { L2  } from 'l2-lib/L2';
-import { Subject } from 'rxjs/Subject'
+import { Subject } from 'rxjs'
 
 import { environment } from '../../environments/environment';
 
@@ -133,7 +133,7 @@ export class AccountService {
 
         var url = 'api/authenticate';
         // PL: Temp hack when we are running with ng serve
-        if (window.location.port == '4200') url = 'https://api.jsdal.com/' + url;
+        if (window.location.port == '4200') url = environment.apiBaseUrl + '/' + url;
 
         var headers = new Headers();
 

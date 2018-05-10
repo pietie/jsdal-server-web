@@ -1,0 +1,14 @@
+<div class="breadcrumb-container flex-vertical-center">
+
+    <ng-template ngFor let-crumb let-i="index" let-cnt="count" let-last="last" [ngForOf]="breadcrumbs">
+
+        <a *ngIf="!last" [routerLink]="hasParams(crumb)">
+            {{crumb.label}}
+        </a>
+        <span *ngIf="last">{{ crumb.label }}</span>
+        <mat-icon *ngIf="i < cnt-1">keyboard_arrow_right</mat-icon>
+
+    </ng-template>
+
+
+</div>

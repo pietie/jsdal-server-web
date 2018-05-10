@@ -470,3 +470,9 @@ table.grid tbody td.center
 }
 
 
+.flex-vertical-center mat-progress-spinner
+{
+    margin-right: 8px;
+}
+
+

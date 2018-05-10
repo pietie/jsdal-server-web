@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { HubConnection } from '@aspnet/signalr-client';
+import { environment } from './../../environments/environment';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable ,  Subscription } from 'rxjs';
 
 @Component({
     templateUrl: './workers.component.html'
@@ -18,7 +18,7 @@ export class WorkersComponent {
     ngOnInit() {
         //!this.reloadWorkersList();
 
-        this.hubConnection = new HubConnection('https://api.jsdal.com/worker-hub'); // TODO: sort out url
+        this.hubConnection = new HubConnection(environment.apiBaseUrl + '/worker-hub'); // TODO: sort out url
 
         // TODO: Disconnect when component is not active
         this.hubConnection.start()

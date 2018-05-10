@@ -1,0 +1,16 @@
+.connection-detail .field
+{
+    font-weight: bold;
+}
+
+.connection-detail .value
+{
+    color: #213E6B;
+}
+
+.connection-detail .info
+{
+    background-color: #f0f0f0;
+    border-radius: 11px;
+    padding: 8px;
+}

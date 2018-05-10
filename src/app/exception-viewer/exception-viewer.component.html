@@ -45,7 +45,7 @@
                 <div style="width:90px;display:inline-block;">
                         <button style="font-family: Courier;font-weight: 800;" (click)="errRef.value=ex.id;lookupError(ex.id)" mat-button color="primary">{{ ex.id }}</button>
                 </div>
-                <div class="app-title" *ngIf="ex.appTitle">{{ ex.appTitle }} </div>
+                <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle">{{ ex.appTitle }} </div>
                 <div class="msg" *ngIf="ex" [innerHTML]="formatMessage(ex.message)">
 
                 </div>

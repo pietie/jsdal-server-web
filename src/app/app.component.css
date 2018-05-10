@@ -5,6 +5,11 @@
     padding: 18px;
 }
 
+mat-nav-list.menu
+{
+    padding-left: 26px;
+}
+
 .menu-icon
 {
     cursor: pointer;

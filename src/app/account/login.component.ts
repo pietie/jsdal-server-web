@@ -1,12 +1,11 @@
-﻿import { Component, ViewEncapsulation,  AnimationTransitionEvent, ChangeDetectorRef } from '@angular/core';
-import { trigger, state, style, transition, animate, } from '@angular/animations';
+import { Component, ViewEncapsulation,  /*AnimationTransitionEvent,*/ ChangeDetectorRef } from '@angular/core';
+import { trigger, state, style, transition, animate, AnimationEvent } from '@angular/animations';
 import { Router, CanDeactivate, ActivatedRoute } from '@angular/router'
 
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/toPromise';
+import { Subject ,  Observable } from 'rxjs';
+
+
+
 
 
 import { AccountService } from '../account/account.service';
@@ -78,7 +77,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
         }
     }
 
-    animDone(event: AnimationTransitionEvent) {
+    animDone(event: AnimationEvent) {
 
         if (event.toState === "exitComponent") {
             this.readyToGoHome$.next(true);
@@ -88,7 +87,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
         }
     }
 
-
+ 
     canDeactivate(): Observable<boolean> | boolean {
         return true; // issue with 'Attempt to use a destroyed view: detectChange'
         //if (!this.accountService.isLoggedIn) return false;

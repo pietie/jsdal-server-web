@@ -27,16 +27,25 @@
     ]
   }
 }*/
-
 {
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "~/*": [
+        "./src/app/*"
+      ],
+      "l2-lib/*": [
+        "./node_modules/l2-lib/dist/*"
+      ]
+    },
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": [ "es6", "dom" ],
+    "lib": [
+      "es6",
+      "dom"
+    ],
     "noLib": false,
     "mapRoot": "./",
     "module": "es6",
@@ -47,9 +56,6 @@
     "types": [],
     "typeRoots": [
       "node_modules/@types"
-
     ]
- 
-
   }
 }
