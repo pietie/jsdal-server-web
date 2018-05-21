@@ -6,20 +6,20 @@ import { L2  } from 'l2-lib/L2';
     templateUrl: './worker-detail.component.html'
 })
 export class WorkerDetailComponent {
-    public workerName: string;
+    public id: string;
     public logData:any;
     
     constructor(public activatedRoute: ActivatedRoute, public router: Router) {
 
         this.activatedRoute.params.subscribe(parms => {
 
-            this.workerName = parms["id"];
+            this.id = parms["id"];
             this.onRefresh();
         });
     }
 
     public onRefresh() {
-        L2.fetchJson(`/api/workers/${this.workerName}`).then((r: any) => {
+        L2.fetchJson(`/api/workers/${this.id}`).then((r: any) => {
             this.logData = r.Data;
         });
     }

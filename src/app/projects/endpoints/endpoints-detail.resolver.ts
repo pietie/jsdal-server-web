@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
-import { ConsoleLogger } from '@aspnet/signalr-client';
 import { EndpointDALService, IEndpoint } from '~/projects/endpoints/endpoint-dal.service';
 
 @Injectable()

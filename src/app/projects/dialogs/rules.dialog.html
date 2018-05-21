@@ -26,7 +26,7 @@
                                         <button mat-button color="primary">edit</button>
                                         <button mat-button color="accent" (click)="onDeleteRuleClicked(row)">delete</button>
                                     </span>
-                            <span *ngIf="row.IsDataSourceRule && !row.DBLevelOnly">(DB source rule)</span>
+                            <span *ngIf="row.IsDataSourceRule && !row.DBLevelOnly">(Application rule)</span>
                         </td>
                         <td>
                             <span class="rule-type">{{ RuleTypeValues[row.Type] }}</span>&nbsp;{{row.Description}}</td>

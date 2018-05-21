@@ -3,8 +3,8 @@ import { L2 } from 'l2-lib/L2';
 
 import { environment } from './../../environments/environment';
 
-import { HubConnection } from '@aspnet/signalr-client';
-import { Observable ,  Subscription } from 'rxjs';
+import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     templateUrl: 'performance.component.html'
@@ -27,7 +27,12 @@ export class PerformanceComponent {
 
     ngOnInit() {
         try {
-            this.hubConnection = new HubConnection(environment.apiBaseUrl + '/performance-realtime-hub'); // TODO: sort out url
+            this.hubConnection = new HubConnectionBuilder()
+                .configureLogging(LogLevel.Debug)
+                .withUrl(environment.apiBaseUrl + '/performance-realtime-hub')
+                //?.withHubProtocol()
+                .build();
+
 
             // TODO: Disconnect when component is not active
             this.hubConnection.start()
@@ -49,7 +54,7 @@ export class PerformanceComponent {
 
                 });
 
-                this.updateRealtimeRunningTimes();
+            this.updateRealtimeRunningTimes();
         }
         catch (e) {
             L2.handleException(e);
@@ -58,7 +63,7 @@ export class PerformanceComponent {
 
     updateRealtimeRunningTimes() {
 
-    //!    setTimeout(()=>this.updateRealtimeRunningTimes(), 300);
+        //!    setTimeout(()=>this.updateRealtimeRunningTimes(), 300);
     }
 
     ngOnDestroy() {
@@ -105,13 +110,12 @@ export class PerformanceComponent {
         return this.formatMilliseconds(diff);
     }
 
-    formatMilliseconds(ms:number)
-    {
+    formatMilliseconds(ms: number) {
         if (ms == null) return null;
         if (ms == 0) return "0s";
         var s = (ms / 1000.0).toFixed(2);
 
-        return s+ "s";
+        return s + "s";
     }
 
 

@@ -40,7 +40,7 @@
                 No recent exceptions found.
             </p>
 
-            <div *ngFor="let ex of recentExceptions">
+            <div class="exception-item" *ngFor="let ex of recentExceptions">
                 <span [title]="ex.created | date: 'dd MMM yyyy'">{{ ex.created | date: 'HH:mm:ss' }}</span>
                 <div style="width:90px;display:inline-block;">
                         <button style="font-family: Courier;font-weight: 800;" (click)="errRef.value=ex.id;lookupError(ex.id)" mat-button color="primary">{{ ex.id }}</button>

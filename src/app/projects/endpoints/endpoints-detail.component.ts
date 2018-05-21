@@ -5,8 +5,10 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { L2 } from 'l2-lib/L2';
 
-import { ConnectionDialogComponent, AuthenticationType } from '~/projects/dialogs';
+import { ConnectionDialogComponent, AuthenticationType, MetadataViewerDialog } from '~/projects/dialogs';
 import { EndpointDALService, IEndpoint } from '~/projects/endpoints/endpoint-dal.service';
+
+import { BreadcrumbsService } from './../master/breadcrumbs/breadcrumbs.service';
 
 @Component({
     selector: 'endpoint-detail',
@@ -24,7 +26,9 @@ export class EndpointDetailComponent {
     isCheckingOrm: boolean = true;
     isInstallingOrm: boolean = false;
 
-    constructor(public route: ActivatedRoute, public dialog: MatDialog, public router: Router, public endpointDAL: EndpointDALService) {
+    metadataCacheSummary: any;
+
+    constructor(public route: ActivatedRoute, public dialog: MatDialog, public router: Router, public endpointDAL: EndpointDALService, public breadcrumb: BreadcrumbsService) {
 
     }
 
@@ -45,6 +49,16 @@ export class EndpointDetailComponent {
                     this.setEndpointDetail(d.endpoint);
                 });
 
+
+                this.breadcrumb.store([{ label: 'Projects', url: '/projects', params: [] }
+                    , { label: this.projectName, url: `/projects/${this.projectName}`, params: [] }
+                    , { label: this.dbSource.Name, url: `/projects/${this.projectName}/${this.dbSource.Name}`, params: [] }
+                    , { label: this.endpointName, url: `/projects/${this.projectName}/${this.dbSource.Name}/endpoint/${this.endpointName}`, params: [] }
+                ]);
+
+
+                this.refreshSummaryInfo();
+
             });
 
         }
@@ -53,7 +67,7 @@ export class EndpointDetailComponent {
         }
     }
 
-    private refreshEndpointDetail() : Promise<any> {
+    private refreshEndpointDetail(): Promise<any> {
         return this.endpointDAL.get(this.projectName, this.dbSourceName, this.endpointName).then(ep => {
             this.setEndpointDetail(ep);
         });
@@ -169,7 +183,7 @@ export class EndpointDetailComponent {
                             else {
                                 L2.success("Run-time connection updated successfully.");
                             }
-                            
+
                         });
                     }
                     catch (e) {
@@ -183,6 +197,41 @@ export class EndpointDetailComponent {
         }
     }
 
+    public refreshSummaryInfo() {
+        L2.fetchJson(`/api/endpoint/${this.endpointName}/summary?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
+            this.metadataCacheSummary = r.Data;
+        });
+
+    }
+
+    public getLastUpdatedAge(dt) {
+
+        var diffInMilliseconds = moment().diff(moment(new Date(dt)), "ms");
+
+        // for usage see https://github.com/EvanHahn/HumanizeDuration.js
+        return humanizeDuration(diffInMilliseconds, { round: true, units: ["d", "h", "m"] });
+    }
 
 
+    public viewCachedMetadata() {
+        let dialogRef = this.dialog.open(MetadataViewerDialog);
+        dialogRef.componentInstance.projectName = this.projectName;
+        dialogRef.componentInstance.dbSourceName = this.dbSource.Name;
+    }
+
+    public clearDbSourceCache() {
+
+        L2.confirm(`You are about to clear the current endpoint's cache.<br/>Are you sure?`, "Confirm action")
+            .then((r) => {
+                if (r) {
+                    L2.postJson(`/api/endpoint/${this.endpointName}/clearcache?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`)
+                        .then(r => {
+                            L2.success("Cached clear successfully");
+                            this.refreshSummaryInfo();
+                        });
+                }
+
+
+            });
+    }
 }

@@ -30,7 +30,7 @@ export class MetadataViewerDialog {
 
             this.isLoading = true;
 
-            L2.fetchJson(`/api/database/cachedroutines?projectName=${this.projectName}&dbSource=${this.dbSourceName}&q=${L2.nullToEmpty(this.searchCriteria.query)}&type=${this.searchCriteria.routineType}&results=${this.searchCriteria.status}&hasMeta=${!!this.searchCriteria.hasjsDALMetadata}&isDeleted=${!!this.searchCriteria.isDeleted}`)
+            L2.fetchJson(`/api/endpoint/cachedroutines?projectName=${this.projectName}&dbSource=${this.dbSourceName}&q=${L2.nullToEmpty(this.searchCriteria.query)}&type=${this.searchCriteria.routineType}&results=${this.searchCriteria.status}&hasMeta=${!!this.searchCriteria.hasjsDALMetadata}&isDeleted=${!!this.searchCriteria.isDeleted}`)
                 .then((r: any) => {
                     this.isLoading = false;
                     this.searchResults = r.Data.Results;

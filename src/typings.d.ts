@@ -5,9 +5,6 @@
 declare var System: any;
 
 declare function moment(...any): any;
-interface JQuery {
-    validator(...any):any;
-}
 
 declare var humanizeDuration: (...any) => any;
  

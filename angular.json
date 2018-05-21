@@ -25,7 +25,6 @@
               "src/assets/css/font-awesome.min.css"
             ],
             "scripts": [
-              "src/assets/js/jquery-2.2.0.min.js",
               "bower_components/moment/moment.js",
               "bower_components/humanize-duration/humanize-duration.js",
               "bower_components/Sortable/Sortable.min.js",

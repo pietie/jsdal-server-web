@@ -7,8 +7,7 @@ import { L2 } from 'l2-lib/L2';
 import { IDBSource } from './../projects.service'
 
 
-import { DatasourceDialogComponent, AuthenticationType, RulesDialog, MetadataViewerDialog } from './../dialogs';
-
+import { DatasourceDialogComponent, AuthenticationType, RulesDialog } from './../dialogs';
 
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
@@ -17,7 +16,7 @@ import { BreadcrumbsService } from './../master/breadcrumbs/breadcrumbs.service'
 
 
 @Component({
-    selector: 'ManageDbSource',
+    selector: 'Apps',
     templateUrl: './dbsource.component.html'
 })
 export class DbSourceComponent {
@@ -69,8 +68,6 @@ export class DbSourceComponent {
 
                 this.isReady = true;
 
-                this.refreshSummaryInfo();
-                this.refreshDbConnectionList();
                 this.refreshOutputFileList();
                 this.refreshPluginList();
                 this.refreshWhitelist();
@@ -91,13 +88,7 @@ export class DbSourceComponent {
     }
 
 
-    public refreshSummaryInfo() {
-        L2.fetchJson(`/api/database/summary?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
-            this.summaryData = r.Data;
-        });
-
-    }
-
+    
     public refreshOutputFileList() {
         this.outputFileBusy = true;
         L2.fetchJson(`/api/database/jsFiles?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
@@ -117,12 +108,7 @@ export class DbSourceComponent {
 
     }
 
-    public refreshDbConnectionList() {
-        L2.fetchJson(`/api/dbconnections?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
-            this.execConnectionsList = (<any>r).Data;
-        });
-    }
-
+  
     public refreshWhitelist() {
         L2.fetchJson(`/api/database/whitelist?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
             let ar: any[] = (<any>r).Data.Whitelist;
@@ -204,67 +190,6 @@ export class DbSourceComponent {
     }
 
 
-    public onAddEditExecConnectionClicked(row) {
-        try {
-
-            let dialogRef = this.dialog.open(DatasourceDialogComponent);
-
-            dialogRef.componentInstance.dataSourceMode = false;
-
-            if (row) {
-                dialogRef.componentInstance.data = {
-                    logicalName: row.Name,
-                    //dataSource: row.DataSource,
-                    //database: row.InitialCatalog,
-                    //username: row.UserID,
-                    //password: null,
-                    guid: row.Guid
-                    //port: row.port,
-                    //instanceName: row.instanceName
-                };
-            }
-
-
-            dialogRef.afterClosed().subscribe(r => {
-                if (r) {
-
-                    try {
-                        let obj = dialogRef.componentInstance.data;
-
-                        if (!row) obj.guid = null;
-
-                        // if (obj.authType == AuthenticationType.Windows) {
-                        //     obj.username = obj.password = null;
-                        // }
-
-                        L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.nullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}`)
-                            .then(r => {
-                                this.refreshDbConnectionList();
-                                L2.success("New database connection added successfully.");
-                            });
-                    }
-                    catch (e) {
-                        L2.handleException(e);
-                    }
-                }
-            });
-        }
-        catch (e) {
-            L2.handleException(e);
-        }
-    }
-
-    public onDeleteExecConnectionClicked(row) {
-
-        L2.confirm(`Are you sure you wish to delete the execution connection <strong>${row.Name}</strong>`, "Confirm action").then(r => {
-            if (r) {
-                L2.deleteJson(`/api/dbconnection?dbConnectionGuid=${row.Guid}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then(r => {
-                    L2.success(`Database connection <strong>${row.Name}</strong> deleted sucessfully`);
-                    this.refreshDbConnectionList();
-                });
-            }
-        });
-    }
 
 
     public onManageRulesClicked() {
@@ -335,34 +260,83 @@ export class DbSourceComponent {
          */
     }
 
-    public getLastUpdatedAge(dt) {
+    // public getLastUpdatedAge(dt) {
 
-        var diffInMilliseconds = moment().diff(moment(new Date(dt)), "ms");
+    //     var diffInMilliseconds = moment().diff(moment(new Date(dt)), "ms");
 
-        // for usage see https://github.com/EvanHahn/HumanizeDuration.js
-        return humanizeDuration(diffInMilliseconds, { round: true, units: ["d", "h", "m"] });
-    }
+    //     // for usage see https://github.com/EvanHahn/HumanizeDuration.js
+    //     return humanizeDuration(diffInMilliseconds, { round: true, units: ["d", "h", "m"] });
+    // }
 
-    public viewCachedMetadata() {
+   
 
-        let dialogRef = this.dialog.open(MetadataViewerDialog);
+      // // public refreshDbConnectionList() {
+    // //     L2.fetchJson(`/api/dbconnections?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
+    // //         this.execConnectionsList = (<any>r).Data;
+    // //     });
+    // // }
 
-        dialogRef.componentInstance.projectName = this.projectName;
-        dialogRef.componentInstance.dbSourceName = this.dbSource.Name;
-    }
+    
+    // // public onAddEditExecConnectionClicked(row) {
+    // //     try {
 
-    public clearDbSourceCache() {
+    // //         let dialogRef = this.dialog.open(DatasourceDialogComponent);
 
-        L2.confirm(`You are about to clear the current DB source's cache.<br/>Are you sure?`, "Confirm action").then((r) => {
-            if (r) {
-                L2.postJson(`/api/database/clearcache?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then(r => {
-                    L2.success("Cached clear successfully");
-                    this.refreshSummaryInfo();
-                });
-            }
+    // //         dialogRef.componentInstance.dataSourceMode = false;
+
+    // //         if (row) {
+    // //             dialogRef.componentInstance.data = {
+    // //                 logicalName: row.Name,
+    // //                 //dataSource: row.DataSource,
+    // //                 //database: row.InitialCatalog,
+    // //                 //username: row.UserID,
+    // //                 //password: null,
+    // //                 guid: row.Guid
+    // //                 //port: row.port,
+    // //                 //instanceName: row.instanceName
+    // //             };
+    // //         }
 
 
-        });
-    }
+    // //         dialogRef.afterClosed().subscribe(r => {
+    // //             if (r) {
+
+    // //                 try {
+    // //                     let obj = dialogRef.componentInstance.data;
+
+    // //                     if (!row) obj.guid = null;
+
+    // //                     // if (obj.authType == AuthenticationType.Windows) {
+    // //                     //     obj.username = obj.password = null;
+    // //                     // }
+
+    // //                     L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.nullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}`)
+    // //                         .then(r => {
+    // //                             this.refreshDbConnectionList();
+    // //                             L2.success("New database connection added successfully.");
+    // //                         });
+    // //                 }
+    // //                 catch (e) {
+    // //                     L2.handleException(e);
+    // //                 }
+    // //             }
+    // //         });
+    // //     }
+    // //     catch (e) {
+    // //         L2.handleException(e);
+    // //     }
+    // // }
+
+    // // public onDeleteExecConnectionClicked(row) {
+
+    // //     L2.confirm(`Are you sure you wish to delete the execution connection <strong>${row.Name}</strong>`, "Confirm action").then(r => {
+    // //         if (r) {
+    // //             L2.deleteJson(`/api/dbconnection?dbConnectionGuid=${row.Guid}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then(r => {
+    // //                 L2.success(`Database connection <strong>${row.Name}</strong> deleted sucessfully`);
+    // //                 this.refreshDbConnectionList();
+    // //             });
+    // //         }
+    // //     });
+    // // }
 
 }

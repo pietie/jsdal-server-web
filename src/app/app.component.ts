@@ -7,9 +7,10 @@ import { environment } from './../environments/environment';
 import { L2 } from 'l2-lib/L2';
 
 
-import { HubConnection } from '@aspnet/signalr-client';
+import { HubConnectionBuilder, HubConnection, LogLevel, JsonHubProtocol } from '@aspnet/signalr';
 
-import { Observable ,  Subscription } from 'rxjs';
+
+import { Observable, Subscription } from 'rxjs';
 import { L2MsgHandler } from './L2MsgHandler';
 
 
@@ -43,38 +44,50 @@ export class AppComponent {
                 this.changeDetectorRef.detectChanges();
             });
 
-            this.hubConnection = new HubConnection(environment.apiBaseUrl + '/heartbeat'); 
-            this.hubConnection.onclose(e => {
-                console.info("Hub connection closed");
-                this.isDisconnected = true;
-
-            });
-            this.hubConnection.start()
-                .then(() => {
-
-                    this.hubConnection.invoke("Init").then(r => {
-
-                    });
-
-                    this.stats$ = <any>this.hubConnection.stream("StreamTick");
-
-                    this.statsSubscription = this.stats$.subscribe(<any>{
-                        next: (n => {
-                            this.isDisconnected = false;
-                        }),
-                        error: function (err) {
-                            this.isDisconnected = true;
-                            console.log("ERROR!!!! with heart beat");
-                        }
-                    });
-
-                });
+this.createHubConnection();
         }
         catch (e) {
+            console.error("heartbeat error", e);
             L2.handleException(e);
         }
 
 
+    }
+
+    createHubConnection() {
+        this.hubConnection = new HubConnectionBuilder()
+            .configureLogging(LogLevel.Debug)
+            .withUrl(environment.apiBaseUrl + '/heartbeat')
+            .withHubProtocol(new JsonHubProtocol())
+            .build();
+
+        this.hubConnection.onclose(e => {
+            console.info("Hub connection closed");
+            this.isDisconnected = true;
+
+        });
+        this.hubConnection.start()
+            .then(() => {
+
+                this.hubConnection.invoke("Init").then(r => {
+
+                });
+
+                this.stats$ = <any>this.hubConnection.stream("StreamTick");
+
+                this.statsSubscription = this.stats$.subscribe(<any>{
+                    next: (n => {
+                        this.isDisconnected = false;
+                    }),
+                    error: function (err) {
+                        this.isDisconnected = true;
+                        console.log("ERROR!!!! with heart beat", err);
+                    }
+                });
+
+            }).catch(e => {
+                console.info("error from catch", e);
+            });
     }
 
     gotoLogin() {

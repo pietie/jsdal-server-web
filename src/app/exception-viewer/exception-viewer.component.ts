@@ -31,7 +31,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 
     div.exception-detail .msg
     {
-        
+      
     }
 
     div.exception-detail .stack
@@ -43,16 +43,25 @@ import { DomSanitizer } from "@angular/platform-browser";
         font-family: Consolas, 'Courier New', monospace;
     }
 
+    /*.exception-item:hover
+    {
+        background-color: #f0f0f0;
+    }*/
+
     .app-title
     {
-        color: #ced3ff;
-        background-color: darkorchid;
+        color: #fff;
+        background-color: #B873DD;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         display: inline-block;
         width: 130px;
         margin-right: 4px;
+        padding: 3px;
+
+        position: relative;
+        top: 6px;
     }
 
     .msg
@@ -62,6 +71,9 @@ import { DomSanitizer } from "@angular/platform-browser";
         text-overflow: ellipsis;
         display: inline-block;
         width: 1200px;
+
+        position: relative;
+        top: 5px;
     }
 
 `
