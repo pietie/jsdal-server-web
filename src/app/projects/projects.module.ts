@@ -12,14 +12,14 @@ import { ProjectMasterComponent } from './master/project-master.component';
 import { ProjectListComponent } from './project-list.component'
 import { projectsRouting } from './projects.routes'
 import { ProjectComponent } from './project.component'
-import { DbSourceComponent } from './dbsource/dbsource.component'
+import { ApplicationComponent } from './application/application.component'
 
 import { EndpointListComponent } from './endpoints/endpoints-list.component'
 import { EndpointDetailComponent } from './endpoints/endpoints-detail.component'
 
 
 import { DatasourceDialogComponent, RulesDialog, MetadataViewerDialog, MetadataMoreInfoDialog, ConnectionDialogComponent } from './dialogs'
-import { DbSourceRouteResolver } from './dbsource/dbsource.resolver';
+import { ApplicationRouteResolver } from './application/application.resolver';
 import { EndpointsDetailRouteResolver } from './endpoints/endpoints-detail.resolver';
 import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
 
@@ -30,7 +30,7 @@ import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
         ProjectMasterComponent,
         ProjectListComponent,
         ProjectComponent,
-        DbSourceComponent,
+        ApplicationComponent,
         EndpointListComponent,
         EndpointDetailComponent,
 
@@ -42,7 +42,7 @@ import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
 
     ],
     imports: [SharedModule, projectsRouting],
-    providers: [BreadcrumbsService, ProjectService, DbSourceRouteResolver, EndpointsDetailRouteResolver, EndpointDALService],
+    providers: [BreadcrumbsService, ProjectService, ApplicationRouteResolver, EndpointsDetailRouteResolver, EndpointDALService],
     entryComponents: [
         DatasourceDialogComponent,
         RulesDialog,

@@ -12,14 +12,14 @@ import { DatasourceDialogComponent, AuthenticationType, RulesDialog } from './..
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 
 import { BreadcrumbsService } from './../master/breadcrumbs/breadcrumbs.service';
-
+import { ApiService } from 'jsdal-api';
 
 
 @Component({
     selector: 'Apps',
-    templateUrl: './dbsource.component.html'
+    templateUrl: './application.component.html'
 })
-export class DbSourceComponent {
+export class ApplicationComponent {
     public isReady: Boolean = false;
     public projectName: string;
 
@@ -48,6 +48,7 @@ export class DbSourceComponent {
         , public viewContainerRef: ViewContainerRef
         , public dialog: MatDialog
         , public breadcrumb: BreadcrumbsService
+        , public api: ApiService
     ) {
 
 
@@ -88,7 +89,7 @@ export class DbSourceComponent {
     }
 
 
-    
+
     public refreshOutputFileList() {
         this.outputFileBusy = true;
         L2.fetchJson(`/api/database/jsFiles?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
@@ -101,25 +102,26 @@ export class DbSourceComponent {
     }
 
     public refreshPluginList() {
-        L2.fetchJson(`/api/database/plugins?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
-            this.pluginList = r.Data;
+
+        this.api.app.plugins.getAll(this.projectName, this.dbSource.Name).then(r => {
+            this.pluginList = r;
             this.pluginConfigIsDirty = false;
         });
-
     }
 
-  
+
     public refreshWhitelist() {
-        L2.fetchJson(`/api/database/whitelist?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
-            let ar: any[] = (<any>r).Data.Whitelist;
 
-            this.allowAllPrivateIPs = (<any>r).Data.AllowAllPrivate;
+        this.api.app.whitelist.getAll(this.projectName, this.dbSource.Name).then(r => {
+            if (r) {
+                this.allowAllPrivateIPs = r.AllowAllPrivate;
 
-            if (ar && ar.length > 0) {
-                this.whitelist = ar.join('\r\n');
-            }
-            else {
-                this.whitelist = null;
+                if (r.Whitelist && r.Whitelist.length > 0) {
+                    this.whitelist = r.Whitelist.join('\r\n');
+                }
+                else {
+                    this.whitelist = null;
+                }
             }
         });
     }
@@ -131,9 +133,9 @@ export class DbSourceComponent {
 
 
     public onSavePluginChangesClicked() {
-        var list = this.pluginList.map((p) => { return { Guid: p.Guid, Included: p.Included } });
+        let list = this.pluginList.map((p) => { return { Guid: p.Guid, Included: p.Included } });
 
-        L2.postJson(`/api/database/plugins?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`, { body: JSON.stringify(list) }).then(r => {
+        this.api.app.plugins.saveConfig(this.projectName, this.dbSource.Name, list).then(() => {
             L2.success("Plugin changes saved successfully");
         });
     }
@@ -218,12 +220,11 @@ export class DbSourceComponent {
 
     public onUpdateWhitelist(textarea) {
         try {
-
-            return L2.postJson(`/api/database/whitelist?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&whitelist=${encodeURIComponent(textarea.value)}&allowAllPrivate=${this.allowAllPrivateIPs}`).then(r => {
-                L2.success(`Whiteslist updated.`);
-            });
-
-
+            this.api
+                .app
+                .whitelist
+                .save(this.projectName, this.dbSource.Name, textarea.value, this.allowAllPrivateIPs)
+                .then(() => L2.success(`Whitelist updated.`));
         }
         catch (e) {
             L2.handleException(e);
@@ -268,15 +269,15 @@ export class DbSourceComponent {
     //     return humanizeDuration(diffInMilliseconds, { round: true, units: ["d", "h", "m"] });
     // }
 
-   
 
-      // // public refreshDbConnectionList() {
+
+    // // public refreshDbConnectionList() {
     // //     L2.fetchJson(`/api/dbconnections?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
     // //         this.execConnectionsList = (<any>r).Data;
     // //     });
     // // }
 
-    
+
     // // public onAddEditExecConnectionClicked(row) {
     // //     try {
 

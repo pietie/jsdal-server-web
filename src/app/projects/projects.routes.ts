@@ -5,8 +5,8 @@ import { ProjectMasterComponent } from './master/project-master.component';
 
 import { ProjectListComponent } from './project-list.component'
 import { ProjectComponent } from './project.component'
-import { DbSourceComponent } from './dbsource/dbsource.component'
-import { DbSourceRouteResolver } from './dbsource/dbsource.resolver'
+import { ApplicationComponent } from './application/application.component'
+import { ApplicationRouteResolver } from './application/application.resolver'
 import { CanDeactivateGuard } from '../services/can-deactivate-guard.service'
 import { LoggedInGuard } from '../logged-in.guard';
 
@@ -36,9 +36,9 @@ export const projectsRoutes: Routes = [
             {
                 path: ':project/:dbSource',
                 canActivate: [LoggedInGuard],
-                component: DbSourceComponent,
+                component: ApplicationComponent,
                 resolve: {
-                    dbSource: DbSourceRouteResolver
+                    dbSource: ApplicationRouteResolver
                 },
                 children: [
                     {

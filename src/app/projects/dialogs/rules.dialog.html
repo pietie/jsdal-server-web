@@ -1,5 +1,5 @@
 <h1 mat-dialog-title><i class="fa fa-object-group pr8"></i>Manage rules - {{title}} - <span style="font-size: 12px;">By default all routines are 
-        <mat-chip color='{{defaultRuleMode==0? "primary": "accent"}}' selected="true" title="This can be changed by editting the database source properties">{{defaultRuleMode==0? "Included": "Excluded"}}</mat-chip>
+        <mat-chip color='{{defaultRuleMode==0? "primary": "accent"}}' selected="true" title="This can be changed by editting the application properties">{{defaultRuleMode==0? "Included": "Excluded"}}</mat-chip>
     </span>
 
 </h1>
@@ -133,7 +133,7 @@
                             <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'"
                                 class="pr8 fa fa-database"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
                             <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
-                            <i title="Database source level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
+                            <i title="Application level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square"><span style="font-family:Roboto">&nbsp;{{row.Reason}}</span></i>
 
                         </td>
 

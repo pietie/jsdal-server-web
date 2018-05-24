@@ -75,28 +75,22 @@ export class ProjectComponent {
     }
 
     refreshDbList() {
-        this.projectService.getDbSourceList(this.projectName).then(r => {
+        this.projectService.getAllApps(this.projectName).then(r => {
             this.dbList = r; // TODO: bind grid directly to service  
         });
     }
 
 
 
-    // public formatDbCboItem(item) {
-    //     if (!item.Data) return;
-    //     //!!!return $(`<div class="databaseSourceCboItem"><div class="h">${item.text}</div><div class="line2">${item.Data.DataSource}; ${item.Data.InitialCatalog}</div></div>`);
-    //     return "TODO TODO TODO";
-    // }
-
-    public onAddEditDbSourceClicked(row) {
+    public onAddEditAppClicked(row) {
         try {
 
             let dialogRef = this.dialog.open(DatasourceDialogComponent);
 
-            dialogRef.componentInstance.title = "Add data source";
+            dialogRef.componentInstance.title = "Add application";
 
             if (row) {
-                dialogRef.componentInstance.title = "Update data source";
+                dialogRef.componentInstance.title = "Update application";
 
                 dialogRef.componentInstance.data = {
                     logicalName: row.Name,
@@ -116,17 +110,17 @@ export class ProjectComponent {
 
                         if (!row) {
                             // add new
-                            L2.postJson(`/api/database?project=${this.projectName}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`
+                            L2.postJson(`/api/app?project=${this.projectName}&jsNamespace=${L2.nullToEmpty(null)}&defaultRuleMode=${obj.defaultRuleMode}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
-                                    L2.success("New database source added successfully");
+                                    L2.success("New application added successfully");
                                     this.refreshDbList();
                                 });
                         }
                         else {
                             // update
-                            L2.putJson(`/api/database/update?project=${this.projectName}&oldName=${row.Name}&dataSource=${obj.dataSource}&catalog=${obj.database}&username=${L2.nullToEmpty(obj.username)}&password=${L2.nullToEmpty(obj.password)}&jsNamespace=${L2.nullToEmpty(null)}&defaultRoleMode=${obj.defaultRuleMode}&port=${obj.port}&instanceName=${L2.nullToEmpty(obj.instanceName)}`
+                            L2.putJson(`/api/app/update?project=${this.projectName}&oldName=${row.Name}&jsNamespace=${L2.nullToEmpty(null)}&defaultRuleMode=${obj.defaultRuleMode}`
                                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
-                                    L2.success("Database source updated successfully");
+                                    L2.success("Application updated successfully");
                                     this.refreshDbList();
                                 });
                         }
@@ -145,15 +139,15 @@ export class ProjectComponent {
     }
 
 
-    onDeleteDatabase(row) {
-        L2.confirm(`Are you sure you want to delete the database source <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
-            if (r) this.deleteDatabaseSource(row.Name);
+    onDeleteApp(row) {
+        L2.confirm(`Are you sure you want to delete the application <strong>${row.Name}</strong>?`, "Confirm action").then(r => {
+            if (r) this.deleteApplication(row.Name);
         });
     }
 
-    public deleteDatabaseSource(name: string) {
-        return L2.deleteJson(`/api/database/${name}?projectName=${this.projectName}`, { body: JSON.stringify(name) }).then(() => {
-            L2.success(`Database source ${name} successfully deleted.`);
+    public deleteApplication(name: string) {
+        return L2.deleteJson(`/api/app/${name}?project=${this.projectName}`, { body: JSON.stringify(name) }).then(() => {
+            L2.success(`Application ${name} successfully deleted.`);
 
             this.refreshDbList();
 

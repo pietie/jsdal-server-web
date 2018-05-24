@@ -16,8 +16,8 @@
                 <tr *ngFor="let row of dbList" [class.selected]="route.firstChild? route.firstChild.params.getValue().name == row.Name: false">
                     <td class="anchorColumn">
                         <button [routerLink]="['./' + row.Name]" mat-button color="primary" >manage</button>
-                        <button (click)="onAddEditDbSourceClicked(row)" mat-button color="primary" >edit</button>
-                        <button (click)="onDeleteDatabase(row)" mat-button color="accent" >delete</button>
+                        <button (click)="onAddEditAppClicked(row)" mat-button color="primary" >edit</button>
+                        <button (click)="onDeleteApp(row)" mat-button color="accent" >delete</button>
                     </td>
                     <td>{{row.Name}}</td>
                     <td>
@@ -34,7 +34,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="!dbList || dbList.length == 0">
-                    <td colspan="4">No database sources exist yet.</td>
+                    <td colspan="4">No applications exist yet.</td>
 
                 </tr>
             </tbody>
@@ -42,7 +42,7 @@
 
     </mat-card-content>
     <mat-card-actions>
-        <button (click)="onAddEditDbSourceClicked(null)" mat-raised-button color="primary">ADD DATABASE SOURCE</button>
+        <button (click)="onAddEditAppClicked(null)" mat-raised-button color="primary">ADD APPLICATION</button>
     </mat-card-actions>
 </mat-card>
 <router-outlet></router-outlet>

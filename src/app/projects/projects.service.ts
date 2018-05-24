@@ -15,9 +15,9 @@ export class ProjectService {
         this.dbListSubject$ = new BehaviorSubject<IDBSource[]>(null);
     }
 
-    public getDbSourceList(projectName: string): Promise<IDBSource[]> {
+    public getAllApps(projectName: string): Promise<IDBSource[]> {
 
-        return L2.fetchJson(`/api/database?project=${projectName}`).then((resp: any) => {
+        return L2.fetchJson(`/api/app?project=${projectName}`).then((resp: any) => {
             this.dbList = resp.Data;
 
 
@@ -31,8 +31,8 @@ export class ProjectService {
         });
     }
 
-    public getDbSource(project: string, dbSource: string): Promise<IDBSource> {
-        return L2.fetchJson(`/api/dbs/${project}/${dbSource}`).then((r: any) => r.Data);
+    public getApp(project: string, dbSource: string): Promise<IDBSource> {
+        return L2.fetchJson(`/api/app/${dbSource}?project=${project}`).then((r: any) => r.Data);
     }
 
     
