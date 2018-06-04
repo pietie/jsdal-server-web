@@ -92,13 +92,11 @@ export class ApplicationComponent {
 
     public refreshOutputFileList() {
         this.outputFileBusy = true;
-        L2.fetchJson(`/api/database/jsFiles?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
-            this.outputFileList = r.Data;
-            this.outputFileBusy = false;
-        }).catch(e => {
-            this.outputFileBusy = false;
-        });
 
+        this.api.app.jsfiles.getAll(this.projectName, this.dbSource.Name).then(r => {
+            this.outputFileList = r;
+            this.outputFileBusy = false;
+        }).catch(e => this.outputFileBusy = false);
     }
 
     public refreshPluginList() {
@@ -151,11 +149,15 @@ export class ApplicationComponent {
 
     public createNewJsOutputFile(name: string): Promise<any> {
         this.outputFileBusy = true;
-        return L2.postJson(`/api/database/addJsfile?projectName=${this.projectName}&dbSource=${this.dbSource.Name}&jsFileName=${name}`).then((r) => {
-            L2.success("Output file successfully created.");
-            this.outputFileBusy = false;
-            this.refreshOutputFileList();
-        }).catch(e => { this.outputFileBusy = false; });
+
+        return this.api
+            .app
+            .jsfiles.add(this.projectName, this.dbSource.Name, name).then(() => {
+                L2.success("Output file successfully created.");
+                this.outputFileBusy = false;
+                this.refreshOutputFileList();
+            }).catch(e => { this.outputFileBusy = false; });;
+
     }
 
     public onEditOutputFile(row) {
@@ -168,11 +170,13 @@ export class ApplicationComponent {
 
     public updateOutputFileName(oldName: string, newName: string) {
         this.outputFileBusy = true;
-        return L2.putJson(`/api/database/updateJsFile?projectName=${this.projectName}&dbSource=${this.dbSource.Name}&oldName=${oldName}&newName=${newName}`).then((r) => {
-            L2.success(`Output file ${newName} successfully updated.`);
-            this.outputFileBusy = false;
-            this.refreshOutputFileList();
-        }).catch(e => this.outputFileBusy = false);
+        return this.api.app
+            .jsfiles.update(this.projectName, this.dbSource.Name, oldName, newName)
+            .then((r) => {
+                L2.success(`Output file ${newName} successfully updated.`);
+                this.outputFileBusy = false;
+                this.refreshOutputFileList();
+            }).catch(e => this.outputFileBusy = false);
     }
 
     public onDeleteOutputFile(row) {
@@ -183,17 +187,17 @@ export class ApplicationComponent {
 
     public deleteOutputFile(row) {
         this.outputFileBusy = true;
-        return L2.deleteJson(`/api/jsfile/${row.Guid}?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then(r => {
-            this.refreshOutputFileList();
-            this.outputFileBusy = false;
-            L2.success(`${row.Filename} successfully deleted`);
-        }).catch(e => this.outputFileBusy = false);
+        return this.api.app
+            .jsfiles.delete(this.projectName, this.dbSource.Name, row.Id)
+            .then(r => {
+                this.refreshOutputFileList();
+                this.outputFileBusy = false;
+                L2.success(`${row.Filename} successfully deleted`);
+            }).catch(e => this.outputFileBusy = false);
 
     }
 
-
-
-
+    /*
     public onManageRulesClicked() {
 
         try {
@@ -216,7 +220,7 @@ export class ApplicationComponent {
             L2.handleException(e);
         }
 
-    }
+    }*/
 
     public onUpdateWhitelist(textarea) {
         try {
@@ -232,112 +236,20 @@ export class ApplicationComponent {
     }
 
 
-    public onJsFileManageRulesClicked(row) {
-        let dialogRef = this.dialog.open(RulesDialog);
+    // public onJsFileManageRulesClicked(row) {
+    //     let dialogRef = this.dialog.open(RulesDialog);
 
-        dialogRef.componentInstance.projectName = this.projectName;
-        dialogRef.componentInstance.dbSource = this.dbSource.Name;
-        dialogRef.componentInstance.jsFilenameGuid = row.Guid;
-        dialogRef.componentInstance.title = row.Filename;
-        dialogRef.componentInstance.defaultRuleMode = this.dbSource.DefaultRuleMode;
+    //     dialogRef.componentInstance.projectName = this.projectName;
+    //     dialogRef.componentInstance.dbSource = this.dbSource.Name;
+    //     dialogRef.componentInstance.jsFilenameGuid = row.Guid;
+    //     dialogRef.componentInstance.title = row.Filename;
+    //     dialogRef.componentInstance.defaultRuleMode = this.dbSource.DefaultRuleMode;
 
-        dialogRef.afterClosed().subscribe(r => {
+    //     dialogRef.afterClosed().subscribe(r => {
 
-        });
+    //     });
 
-        /**
-                var factory = this.componentFactoryResolver.resolveComponentFactory(RuleManagement);
-        
-                var ref = this.viewContainerRef.createComponent(factory);
-        
-                ref.instance.ready.subscribe(() => {
-                    ref.instance.projectName = this.projectName;
-                    ref.instance.dbSource = this.dbSource.Name;
-                    ref.instance.jsFilenameGuid = row.Guid;
-                    ref.instance.title = row.Filename;
-                    //!?ref.instance.defaultRuleMode = DefaultRuleMode[this.projectService.currentDatabaseSource.DefaultRuleMode];
-                    ref.instance.show();
-                });
-         */
-    }
-
-    // public getLastUpdatedAge(dt) {
-
-    //     var diffInMilliseconds = moment().diff(moment(new Date(dt)), "ms");
-
-    //     // for usage see https://github.com/EvanHahn/HumanizeDuration.js
-    //     return humanizeDuration(diffInMilliseconds, { round: true, units: ["d", "h", "m"] });
+         
     // }
-
-
-
-    // // public refreshDbConnectionList() {
-    // //     L2.fetchJson(`/api/dbconnections?projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then((r: any) => {
-    // //         this.execConnectionsList = (<any>r).Data;
-    // //     });
-    // // }
-
-
-    // // public onAddEditExecConnectionClicked(row) {
-    // //     try {
-
-    // //         let dialogRef = this.dialog.open(DatasourceDialogComponent);
-
-    // //         dialogRef.componentInstance.dataSourceMode = false;
-
-    // //         if (row) {
-    // //             dialogRef.componentInstance.data = {
-    // //                 logicalName: row.Name,
-    // //                 //dataSource: row.DataSource,
-    // //                 //database: row.InitialCatalog,
-    // //                 //username: row.UserID,
-    // //                 //password: null,
-    // //                 guid: row.Guid
-    // //                 //port: row.port,
-    // //                 //instanceName: row.instanceName
-    // //             };
-    // //         }
-
-
-    // //         dialogRef.afterClosed().subscribe(r => {
-    // //             if (r) {
-
-    // //                 try {
-    // //                     let obj = dialogRef.componentInstance.data;
-
-    // //                     if (!row) obj.guid = null;
-
-    // //                     // if (obj.authType == AuthenticationType.Windows) {
-    // //                     //     obj.username = obj.password = null;
-    // //                     // }
-
-    // //                     L2.postJson(`/api/dbconnection?dbConnectionGuid=${L2.nullToEmpty(obj.guid)}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}&logicalName=${obj.logicalName}`)
-    // //                         .then(r => {
-    // //                             this.refreshDbConnectionList();
-    // //                             L2.success("New database connection added successfully.");
-    // //                         });
-    // //                 }
-    // //                 catch (e) {
-    // //                     L2.handleException(e);
-    // //                 }
-    // //             }
-    // //         });
-    // //     }
-    // //     catch (e) {
-    // //         L2.handleException(e);
-    // //     }
-    // // }
-
-    // // public onDeleteExecConnectionClicked(row) {
-
-    // //     L2.confirm(`Are you sure you wish to delete the execution connection <strong>${row.Name}</strong>`, "Confirm action").then(r => {
-    // //         if (r) {
-    // //             L2.deleteJson(`/api/dbconnection?dbConnectionGuid=${row.Guid}&projectName=${this.projectName}&dbSourceName=${this.dbSource.Name}`).then(r => {
-    // //                 L2.success(`Database connection <strong>${row.Name}</strong> deleted sucessfully`);
-    // //                 this.refreshDbConnectionList();
-    // //             });
-    // //         }
-    // //     });
-    // // }
 
 }

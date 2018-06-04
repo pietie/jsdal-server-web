@@ -38,6 +38,8 @@ import { FirstTimeSetupCompletedService } from './1st-time/1st-time-setup-comple
 import { FirstTimeNetworkErrorComponent } from './1st-time/1st-time-network-error.component';
 
 
+
+
 import { AceEditorModule } from 'ng2-ace-editor';
 
 
@@ -70,7 +72,7 @@ export class MyErrorHandler implements ErrorHandler {
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/ ],
-    entryComponents: []
+    entryComponents: [  ]
 
 })
-export class AppModule { }  
+export class AppModule { }    

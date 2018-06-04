@@ -21,12 +21,12 @@
                 <tbody>
                     <tr *ngFor="let row of ruleList">
                         <td class="anchorNest">
-                            <span *ngIf="!row.IsDataSourceRule || row.DBLevelOnly">
+                            <span *ngIf="!row.IsAppRule || row.AppLevelOnly">
                                         {{row.Ix}}.
                                         <button mat-button color="primary">edit</button>
                                         <button mat-button color="accent" (click)="onDeleteRuleClicked(row)">delete</button>
                                     </span>
-                            <span *ngIf="row.IsDataSourceRule && !row.DBLevelOnly">(Application rule)</span>
+                            <span *ngIf="row.IsAppRule && !row.AppLevelOnly">(Application rule)</span>
                         </td>
                         <td>
                             <span class="rule-type">{{ RuleTypeValues[row.Type] }}</span>&nbsp;{{row.Description}}</td>

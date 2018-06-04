@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { L2  } from 'l2-lib/L2';
+import { L2 } from 'l2-lib/L2';
 
 export enum RuleType {
     Schema = 0,
@@ -67,12 +67,13 @@ export class RulesDialog {
 
     public refreshFullRoutineList() {
         this.isFilteredListLoading = true;
-        L2.fetchJson(`/api/rule/routineList?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${L2.nullToEmpty(this.jsFilenameGuid)}`).then((r: any) => {
-            this.isFilteredListLoading = false;
-            this.fullRoutineList = this.filteredRoutineList = r.Data;
+        L2.fetchJson(`/api/rule/routineList?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${L2.nullToEmpty(this.jsFilenameGuid)}`)
+            .then((r: any) => {
+                this.isFilteredListLoading = false;
+                this.fullRoutineList = this.filteredRoutineList = r.Data;
 
-            this.refreshFilteredView(this.filterTxt);
-        }).catch(() => { this.isFilteredListLoading = false; });
+                this.refreshFilteredView(this.filterTxt);
+            }).catch(() => { this.isFilteredListLoading = false; });
     }
 
     public refreshFilteredView(txt: string) {
@@ -152,7 +153,7 @@ export class RulesDialog {
     }
 
     public showIncludeExcludeButton(row) {
-        
+
         if (this.defaultRuleMode == DefaultRuleMode.IncludeAll) {
             return row.Included;
         }

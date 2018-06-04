@@ -1,190 +1,248 @@
-﻿// import { Component, EventEmitter, Output, ViewChild, ChangeDetectorRef } from '@angular/core'
+﻿import { Component } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbsService } from '~/projects/master/breadcrumbs/breadcrumbs.service';
+import { ApiService } from 'jsdal-api';
+import { L2 } from 'l2-lib/L2';
+import { RuleAddupdateDialogComponent } from '~/rules/dialogs/rule-addupdate-dialog.component';
 
-// import L2 from 'l2-lib/L2';
+export enum RuleType {
+    Schema = 0,
+    Specific = 1,
+    Regex = 2
+}
 
-// //import {DefaultRuleMode} from './../projects/dbsource.component'
-
-// enum RoutineIncludeExcludeInstructionSource {
-//     Unknown = 0,
-//     DatabaseMetadata = 10,
-//     DbSourceLevel = 20,
-//     JsFileLevel = 30
-// }
-
-
-// @Component({
-//     selector: 'RuleManagement',
-//     templateUrl: './rules.component.html',
-// })
-// export class RuleManagement {
-
-//     @Output() ready: EventEmitter<any> = new EventEmitter();
-//     @ViewChild("dlg") dlg;
-//     @ViewChild("newRuleDialog") newRuleDialog;
-
-//     private newTypeVal: number = 0;
-
-//     public projectName: string;
-//     public dbSource: string;
-//     public jsFilenameGuid: string;
-//     public title: string;
-
-//     public defaultRuleMode: any;//DefaultRuleMode|string = DefaultRuleMode.Unknown;
-
-//     private ruleList: any[];
-//     private fullRoutineList: any[];
-//     private filteredRoutineList: any[];
-
-//     private RoutineIncludeExcludeInstructionSourceValues = RoutineIncludeExcludeInstructionSource;
-
-//     private filterTxt: string;
-
-//     private isFilteredListLoading: boolean = false;
-
-//     private isInAddNewRuleMode: boolean = false;
-
-//     private RuleTypeValues = RuleType;
-
-//     private TRUNCATE_ROUTINE_LIST_LENGTH: number = 20;
-//     private cutOffRoutineList: boolean = true;
-//     private needTruncation: boolean = false;
-
-//     constructor(private changeDetectionRef: ChangeDetectorRef) {
-
-//     }
-
-//     ngAfterViewInit() {
-//         this.ready.emit(null);
-//         this.changeDetectionRef.detectChanges();
-//     }
-
-//     public show() {
-//         setTimeout(() => {
-//             $(this.dlg.nativeElement).modal();//.validator("validate");
-
-//             this.isFilteredListLoading = true;
-//             this.refreshFullRoutineList();
-//             this.refreshRuleList();
-//         }, 0);
-//     }
-
-//     private refreshFullRoutineList() {
-//         L2.fetchJson(`/api/rule/routineList?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${this.jsFilenameGuid}`).then((r: any) => {
-//             this.isFilteredListLoading = false;
-//             this.fullRoutineList = this.filteredRoutineList = r.Data;
-//             this.refreshFilteredView(this.filterTxt);
-//         }).catch(() => { this.isFilteredListLoading = false; });
-//     }
-
-//     private refreshRuleList() {
-//         L2.fetchJson(`/api/rule/ruleList?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${this.jsFilenameGuid}`).then((r: any) => {
-//             this.ruleList = r.Data;
-//         });
-//     }
-
-//     public close() {
-//         $(this.dlg.nativeElement).modal("hide").remove();
-//         $('body').removeClass('modal-open');
-//         $('.modal-backdrop').remove();
-//     }
+export enum RoutineIncludeExcludeInstructionSource {
+    Unknown = 0,
+    DatabaseMetadata = 10,
+    DbSourceLevel = 20,
+    JsFileLevel = 30
+};
 
 
-//     private debounceTimerId: number;
+export enum DefaultRuleMode {
+    Unknown = -1,
+    IncludeAll = 0,
+    ExcludeAll = 1
+}
 
-//     public onFilterTextChanged(txt) {
-//         clearTimeout(this.debounceTimerId);
+@Component({
+    templateUrl: './rules.component.html',
+    styleUrls: ['./rules.component.css']
+})
+export class RulesComponent {
 
-//         this.debounceTimerId = window.setTimeout(() => { this.refreshFilteredView(txt); }, 300);
-//     }
+    projectName: string;
+    appName: string;
+    jsFilename: string;
 
-//     private refreshFilteredView(txt: string) {
-//         console.info("Filter on: %s", txt);
-//         this.isFilteredListLoading = true;
+    isFilteredListLoading: boolean = false;
 
-//         var results = this.fullRoutineList.filter((val, ix) => { return txt == null || txt == "" || val.RoutineFullName.toLowerCase().indexOf(txt.toLowerCase()) != -1; });
+    filterTxt: string;
 
-//         this.needTruncation = results.length > this.TRUNCATE_ROUTINE_LIST_LENGTH;
+    ruleList: any[];
+    fullRoutineList: any[];
+    filteredRoutineList: any[];
 
-//         if (this.needTruncation && this.cutOffRoutineList) {
-//             results = results.slice(0, this.TRUNCATE_ROUTINE_LIST_LENGTH);
-//         }
+    //?title: string;
 
-//         this.filteredRoutineList = results;
+    RuleTypeValues = RuleType;
+    DefaultRuleModeValues = DefaultRuleMode;
 
+    RoutineIncludeExcludeInstructionSourceValues = RoutineIncludeExcludeInstructionSource;
+    defaultRuleMode: DefaultRuleMode | string = DefaultRuleMode.Unknown;
 
-//         this.isFilteredListLoading = false;
-//     }
+    isInAddNewRuleMode: boolean = false;
 
-//     private onOpenAddNewRule() {
-//         this.isInAddNewRuleMode = true;
-//     }
+    TRUNCATE_ROUTINE_LIST_LENGTH: number = 20;
+    cutOffRoutineList: boolean = true;
+    needTruncation: boolean = false;
 
-//     private onAddNewRuleClicked(a, b, c) {
+    isLoadingRules: boolean = false;
 
-//         var value = [a, b, c][this.newTypeVal];
+    constructor(public route: ActivatedRoute,
+        public dialog: MatDialog,
+        public breadcrumb: BreadcrumbsService,
+        public api: ApiService) {
 
-//         this.addNewRule(this.newTypeVal, value);
+    }
 
-//     }
+    ngOnInit() {
+        this.route.data.subscribe((d: any) => {
+            this.projectName = this.route.snapshot.params['project'];
+            this.appName = this.route.snapshot.params['app'];
 
-//     private addNewRule(ruleType: number, text: string) {
-//         var json = JSON.stringify({
-//             Type: ruleType,
-//             Text: text
-//         });
+            this.jsFilename = this.route.snapshot.params['jsfile'];
 
-//         L2.postJson(`/api/rule?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${this.jsFilenameGuid}&json=${json}`).then(r => {
-//             L2.success("Rule successfully added");
-//             this.isInAddNewRuleMode = false;
-//             this.refreshRuleList();
-//             this.refreshFullRoutineList();
-//         });
-//     }
+            if (this.jsFilename) {
+                this.breadcrumb.store([{ label: 'Projects', url: '/projects', params: [] }
+                    , { label: this.projectName, url: `/projects/${this.projectName}`, params: [] }
+                    , { label: this.appName, url: `/projects/${this.projectName}/${this.appName}`, params: [] }
+                    , { label: this.jsFilename, url: '', params: [] }
+                ]);
+            }
+            else {
 
-//     private onDeleteRuleClicked(row) {
+                this.breadcrumb.store([{ label: 'Projects', url: '/projects', params: [] }
+                    , { label: this.projectName, url: `/projects/${this.projectName}`, params: [] }
+                    , { label: this.appName, url: `/projects/${this.projectName}/${this.appName}`, params: [] }
+                    , { label: "Application rules", url: '', params: [] }
+                ]);
 
-//         L2.confirm(`Are you sure you want to delete the rule <strong>${row.Ix}. ${row.Description}</strong>?`).then(() => {
+            }
 
-//             L2.deleteJson(`/api/rule?projectName=${this.projectName}&dbSource=${this.dbSource}&jsFilenameGuid=${this.jsFilenameGuid}&ruleGuid=${row.Guid}`).then(() => {
-//                 L2.success(`Rule ${row.Description} successfully deleted`);
-//                 this.refreshRuleList();
-//                 this.refreshFullRoutineList();
-//             });
-
-//         });
-//     }
-
-//     private onExplicitInludeOrExclude(row) {
-//         try {
-
-//             this.addNewRule(RuleType.Specific, row.RoutineFullName);
-//         }
-//         catch (e) {//TODO: Error handling
-//             alert(e.toString());
-//         }
-//     }
-
-//     public showIncludeExcludeButton(row) {
-//         //  (defaultRuleMode == 'IncludeAll'? 10: 20) == ((row.Included? 20:0) + (row.Excluded? 10:0)) 
-
-//         if (this.defaultRuleMode == "IncludeAll") {
-
-//             return row.Included;
-
-//         }
-//         else if (this.defaultRuleMode == "ExcludeAll") {
-//             return row.Excluded;
-//         }
-
-//         return false;
-//     }
-
-// }
+            this.refreshFullRoutineList();
+            this.refreshRuleList();
+        });
+    }
 
 
+    public refreshFullRoutineList() {
+        this.isFilteredListLoading = true;
+        this.api.app.rules
+            .getRoutineList(this.projectName, this.appName, this.jsFilename)
+            .then(r => {
+                this.isFilteredListLoading = false;
+                this.fullRoutineList = this.filteredRoutineList = r.Routines;
+                this.defaultRuleMode = r.DefaultRuleMode;
 
-// export enum RuleType {
-//     Schema = 0,
-//     Specific = 1,
-//     Regex = 2
-// }
+
+                this.refreshFilteredView(this.filterTxt);
+            }).catch(() => { this.isFilteredListLoading = false; });
+    }
+
+    public refreshRuleList() {
+        this.isLoadingRules = true;
+
+        this.api.app.rules
+            .getRuleList(this.projectName, this.appName, this.jsFilename)
+            .then((r: any) => {
+                this.ruleList = r;
+                this.isLoadingRules = false;
+            }).catch(e => { this.isLoadingRules = false; });
+    }
+
+    public refreshFilteredView(txt: string) {
+
+        if (this.fullRoutineList == null) return;
+
+        this.isFilteredListLoading = true;
+
+        var results = this.fullRoutineList.filter((val, ix) => { return txt == null || txt == "" || val.RoutineFullName.toLowerCase().indexOf(txt.toLowerCase()) != -1; });
+
+        this.needTruncation = results.length > this.TRUNCATE_ROUTINE_LIST_LENGTH;
+
+        if (this.needTruncation && this.cutOffRoutineList) {
+            results = results.slice(0, this.TRUNCATE_ROUTINE_LIST_LENGTH);
+        }
+
+        this.filteredRoutineList = results;
+
+
+        this.isFilteredListLoading = false;
+    }
+
+    public debounceTimerId: number;
+    public onFilterTextChanged(txt) {
+        clearTimeout(this.debounceTimerId);
+        this.debounceTimerId = window.setTimeout(() => { this.refreshFilteredView(txt); }, 300);
+    }
+
+    public onAddNewRuleClicked(schema, specific, regex, typeVal) {
+
+        var value = [schema, specific, regex][typeVal];
+
+        //this.addNewRule(typeVal, value);
+    }
+
+    addNewRule() {
+
+        let dialogRef = this.dialog.open(RuleAddupdateDialogComponent, { minWidth: 550 });
+
+        dialogRef.afterClosed().subscribe(r => {
+            if (r) {
+                if (r.Value == null || r.Value == "") {
+                    L2.exclamation("Please provide a value for the new rule.");
+                    return;
+                }
+
+                this.processAddNewRule(r);
+            }
+
+        });
+    }
+
+    editRule(row) {
+        let dialogRef = this.dialog.open(RuleAddupdateDialogComponent, { minWidth: 550 });
+
+        
+        dialogRef.componentInstance.initEdit(row.Type, row.Description);
+
+        dialogRef.afterClosed().subscribe(r => {
+            if (r) {
+                if (r.Value == null || r.Value == "") {
+                    L2.exclamation("Please provide a value for the rule.");
+                    return;
+                }
+
+                this.processUpdateRule(row.Id, r);
+            }
+
+        });
+    }
+
+    onDeleteRuleClicked(row) {
+        L2.confirm(`Are you sure you want to delete the rule <strong>${row.Description}</strong>?`)
+            .then((confirmed) => {
+                if (!confirmed) return;
+
+                this.api.app.rules
+                    .deleteRule(this.projectName, this.appName, this.jsFilename, row.Id)
+                    .then(() => {
+                        L2.success(`Rule ${row.Description} successfully deleted`);
+                        this.refreshRuleList();
+                        this.refreshFullRoutineList();
+                    });
+            });
+
+    }
+
+    onExplicitInludeOrExclude(row) {
+        try {
+            this.processAddNewRule({ Type: RuleType.Specific, Value: row.RoutineFullName });
+        }
+        catch (e) {
+            L2.handleException(e);
+        }
+    }
+
+    private processAddNewRule(r: Object) {
+        this.api.app.rules.addRule(this.projectName, this.appName, this.jsFilename, r).then(r => {
+            L2.success("New rule added successfully");
+            this.refreshRuleList();
+            this.refreshFullRoutineList();
+        });
+    }
+
+    private processUpdateRule(ruleId: string, r: Object) {
+        this.api.app.rules.updateRule(this.projectName, this.appName, this.jsFilename, ruleId, r).then(r => {
+            L2.success("Rule update successfully");
+            this.refreshRuleList();
+            this.refreshFullRoutineList();
+        });
+    }
+
+    showIncludeExcludeButton(row) {
+
+        if (this.defaultRuleMode == DefaultRuleMode.IncludeAll) {
+            return row.Included;
+        }
+        else if (this.defaultRuleMode == DefaultRuleMode.ExcludeAll) {
+            return row.Excluded;
+        }
+
+        return false;
+    }
+
+
+} 

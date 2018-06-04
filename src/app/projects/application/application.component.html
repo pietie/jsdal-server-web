@@ -1,7 +1,7 @@
 ﻿<mat-card>
     <mat-card-title>
         <i class="fa fa-database pr8"></i>{{ this.dbSource.Name }} detail
-    
+
     </mat-card-title>
     <mat-card-content>
 
@@ -10,104 +10,77 @@
             <mat-tab-group dynamicHeight="true">
 
                 <mat-tab label="Endpoints">
+
                     <endpoint-list></endpoint-list>
 
-                    <!-- <button [routerLink]="[{outlets: {primary: 'endpoint', 'endpoint-detail': null}}]" mat-button color="primary">CLOSE DETAIL</button> -->
                 </mat-tab>
-
-<!--
-                <mat-tab label="Connections">
+                <mat-tab label="Inclusion/exclusion rules">
                     <mat-card>
                         <mat-card-title>
-                            <i class="fa fa-star pr8"></i>Database connections
-                        </mat-card-title>
+                            <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (App level)</mat-card-title>
                         <mat-card-content>
-
                             <p>
-                                Configure one or more connections to use when executing a routine.
+                                Rules defined on this level are applied to all output files.
                             </p>
 
-                            <table class="grid">
-                                <thead>
-                                    <tr>
-                                        <th style="width:200px"></th>
-                                        <th style="width:220px">Name</th>
-                                        <th>Source</th>
-                                        <th>Key</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <ng-template [ngIf]="execConnectionsList">
-                                        <tr *ngFor="let row of execConnectionsList">
-                                            <td class="anchorColumn">
-                                                <button (click)="onAddEditExecConnectionClicked(row)" mat-button color="primary">edit</button>
-                                                <button (click)="onDeleteExecConnectionClicked(row)" mat-button color="accent">delete</button>
-                                            </td>
-                                            <td>{{row.Name}}</td>
-                                            <td>
-                                                {{ row.DataSource }}; {{ row.InitialCatalog }}
+                            <button mat-raised-button color="primary" [routerLink]="['./rules']">MANAGE RULES</button>
 
-                                            </td>
-                                            <td>
-                                                {{ row.Guid }}
-                                            </td>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-tab>
+
+                <mat-tab label="Output files">
+
+
+                        <mat-card>
+                            <mat-card-title>
+                                <i class="fa fa-code pr8"></i>Output files
+                            </mat-card-title>
+                            <mat-card-content>
+    
+    
+    
+                                <table class="grid" *ngIf="outputFileList">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:200px"></th>
+                                            <th style="width:220px">Name</th>
+                                            <th></th>
+                                            <!-- <th>Output URLs</th> -->
                                         </tr>
-                                    </ng-template>
-                                    <tr *ngIf="!execConnectionsList || execConnectionsList.length == 0">
-                                        <td colspan="100">No connections configured yet.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button mat-raised-button color="primary" (click)="onAddEditExecConnectionClicked(null)">ADD CONNECTION</button>
-                        </mat-card-actions>
-                    </mat-card>
-                </mat-tab>
-            
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of outputFileList">
+                                            <td class="anchorColumn">
+                                                <button (click)="onEditOutputFile(row)" mat-button color="primary">edit</button>
+                                                <button (click)="onDeleteOutputFile(row)" mat-button color="accent">delete</button>
+                                            </td>
+                                            <td>{{row.Filename}}</td>
+                                            <td>
+                                                <button color="primary" mat-button [routerLink]="['./rules/' + row.Filename]">manage rules</button>
+                                            </td>
+                                            <!-- <td>
+    
+                                                <label>
+                                                    <input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Id]" />minified?</label>
+                                                <br/> http://serverIp???/api/js/{{row.Id}}?min={{!!minifiedLookup[row.Id]}}
+                                            </td> -->
+                                            
+                                        </tr>
+                                    </tbody>
+                                </table>
+    
+                            </mat-card-content>
+                            <mat-card-actions>
+                                <button mat-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
+                            </mat-card-actions>
+                            <mat-card-footer>
+                                <mat-progress-bar *ngIf="outputFileBusy" mode="indeterminate"></mat-progress-bar>
+                            </mat-card-footer>
+                        </mat-card>
+    
+                    </mat-tab>
 
-                <mat-tab label="Cached routines">
-
-                    <mat-card>
-                        <mat-card-title>
-                            Cached routines
-                        </mat-card-title>
-                        <mat-card-content>
-
-                            <div *ngIf="summaryData" style="padding-left:16px;">
-
-
-
-
-
-                                <div class="flex-vertical-center">
-                                    <mat-icon>info_outline</mat-icon>
-                                    <strong class>Last updated</strong>&nbsp;
-                                    <span>{{ summaryData.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;
-                                    <span class="text-info">({{getLastUpdatedAge(summaryData.Orm.LastUpdated)}} ago)</span>
-                                </div>
-                                <br/>
-                                <br/> {{ summaryData.Orm.TotalCnt }} routines
-                                <ul>
-                                    <li *ngFor="let row of summaryData.Orm.Groups, let last = last">{{row.Count}} {{ row.Type }} </li>
-                                </ul>
-
-
-
-                            </div>
-                            <p *ngIf="!summaryData">
-                                No routines cached yet.
-                            </p>
-
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button mat-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW METADATA</button>
-                            <button mat-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR CACHE</button>
-                        </mat-card-actions>
-                    </mat-card>
-
-                </mat-tab>
--->
                 <mat-tab label="Whitelist">
 
                     <mat-card>
@@ -135,20 +108,7 @@
 
 
                 </mat-tab>
-                <mat-tab label="Inclusion/exclusion rules">
-                    <mat-card>
-                        <mat-card-title>
-                            <i class="fa fa-tags pr8"></i>Inclusion/exclusion rules (DB level)</mat-card-title>
-                        <mat-card-content>
-                            <p>
-                                Rules defined on this level are applied to all output files.
-                            </p>
-
-                            <button mat-raised-button color="primary" (click)="onManageRulesClicked()">MANAGE RULES</button>
-
-                        </mat-card-content>
-                    </mat-card>
-                </mat-tab>
+              
                 <mat-tab label="Plugins">
                     <mat-card>
                         <mat-card-title>
@@ -192,58 +152,10 @@
 
                     </mat-card>
                 </mat-tab>
-                <mat-tab label="Output files">
+               
+                <mat-tab label="Channels">
 
-
-                    <mat-card>
-                        <mat-card-title>
-                            <i class="fa fa-code pr8"></i>Output files
-                        </mat-card-title>
-                        <mat-card-content>
-
-
-
-                            <table class="grid" *ngIf="outputFileList">
-                                <thead>
-                                    <tr>
-                                        <th style="width:200px"></th>
-                                        <th style="width:220px">Name</th>
-                                        <th></th>
-                                        <th>Output URLs</th>
-                                        <th>Key</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of outputFileList">
-                                        <td class="anchorColumn">
-                                            <button (click)="onEditOutputFile(row)" mat-button color="primary">edit</button>
-                                            <button (click)="onDeleteOutputFile(row)" mat-button color="accent">delete</button>
-                                        </td>
-                                        <td>{{row.Filename}}</td>
-                                        <td>
-                                            <button color="primary" mat-button (click)="onJsFileManageRulesClicked(row)">manage rules</button>
-                                        </td>
-                                        <td>
-
-                                            <label>
-                                                <input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Guid]" />minified?</label>
-                                            <br/> http://serverIp???/api/js/{{row.Guid}}?min={{!!minifiedLookup[row.Guid]}}
-                                        </td>
-                                        <td>
-                                            {{row.Guid}}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button mat-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
-                        </mat-card-actions>
-                        <mat-card-footer>
-                            <mat-progress-bar *ngIf="outputFileBusy" mode="indeterminate"></mat-progress-bar>
-                        </mat-card-footer>
-                    </mat-card>
+                    <p>Define SignalR channels here...Just a name and then access tokens/API keys</p>
 
                 </mat-tab>
             </mat-tab-group>
@@ -261,6 +173,10 @@
         <mat-progress-bar *ngIf="!isReady" mode="indeterminate"></mat-progress-bar>
     </mat-card-footer>
 </mat-card>
+
+
+
+<router-outlet></router-outlet>
 
 <div *ngIf="!isReady">
     Loading datasource details, please wait...

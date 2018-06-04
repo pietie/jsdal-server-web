@@ -1,0 +1,17 @@
+.row
+{
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+.row mat-radio-button
+{
+    width: 100px;
+}
+
+.row mat-form-field
+{
+    flex: 1 1 auto;
+}

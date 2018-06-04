@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>{{ editMode? "Edit rule":"Add rule" }}</h1>
+
+<div mat-dialog-content>
+  <div class="row">
+
+
+
+    <mat-radio-button #radSchema [disabled]="editMode" [checked]="type==0" (change)="type=radSchema.checked?0:type" (click)="txtSchema.focus()" radioGroup="newType" value="0">Schema</mat-radio-button>
+
+    <mat-form-field>
+      <input #txtSchema matInput [disabled]="editMode && type != 0" [(ngModel)]="schemaVal" type="text" autofocus autocomplete="off" [readonly]="!radSchema.checked" (click)="radSchema.checked = true; type=0;"
+        placeholder="Schema name" />
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-radio-button #radSpecific [disabled]="editMode" [checked]="type==1" (change)="type=radSpecific.checked?1:type" (click)="txtSpecific.focus()" radioGroup="newType" value="1">Specific</mat-radio-button>
+    <mat-form-field>
+      <input #txtSpecific matInput [disabled]="editMode && type != 1" [(ngModel)]="specificVal"  type="text" autocomplete="off"  (click)="radSpecific.checked = true; type=1;" placeholder="Routine name" [readonly]="!radSpecific.checked"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-radio-button #radRegex [disabled]="editMode" [checked]="type==2" (change)="type=radRegex.checked?2:type" (click)="txtRegex.focus();" radioGroup="newType" value="2">Regex</mat-radio-button>
+    <mat-form-field>
+      <input #txtRegex matInput [disabled]="editMode && type != 2" [(ngModel)]="regexVal"  type="text" autocomplete="off"  (click)="radRegex.checked = true; type=2;" placeholder="C# regex" [readonly]="!radRegex.checked"
+      />
+    </mat-form-field>
+  </div>
+
+</div>
+
+<div mat-dialog-actions>
+
+  <button mat-button color="primary" [disabled]="!(radSchema.checked || radSpecific.checked || radRegex.checked)" [mat-dialog-close]="getResult(radSchema, radSpecific, radRegex, txtSchema, txtSpecific, txtRegex)">{{ editMode? "UPDATE":"ADD" }} RULE</button>
+  <button mat-button color="primary" mat-dialog-close>CANCEL</button>
+</div>

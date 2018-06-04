@@ -10,12 +10,11 @@
 
 
 
-        <table class="grid">
+        <table class="grid" style="max-width: 700px;margin:0;">
             <thead>
                 <tr>
-                    <th style="width:300px"></th>
+                    <th style="width:120px"></th>
                     <th style="width:220px">Name</th>
-                    <th>Key</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,9 +26,7 @@
                             <button mat-button color="accent" (click)="onDelete(row)">delete</button>
                         </td>
                         <td>{{row.Name}}</td>
-                        <td>
-                            {{ row.Key }}
-                        </td>
+
                     </tr>
                 </ng-template>
                 <tr *ngIf="!endpoints || endpoints.length == 0">
@@ -46,5 +43,3 @@
         <button (click)="onCreateNew()" mat-raised-button color="primary">CREATE NEW ENDPOINT</button>
     </mat-card-actions>
 </mat-card>
-
-<router-outlet></router-outlet>

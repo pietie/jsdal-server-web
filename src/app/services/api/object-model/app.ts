@@ -12,7 +12,7 @@ export module app {
 
         }
 
-        static save(projectName: string, appName: string, whitelist: string, allowAllPrivateIPs: boolean) : Promise<IApiResponse> {
+        static save(projectName: string, appName: string, whitelist: string, allowAllPrivateIPs: boolean): Promise<IApiResponse> {
             return <any>L2.postJson(`/api/app/${appName}/whitelist?project=${projectName}&whitelist=${encodeURIComponent(whitelist)}&allowAllPrivate=${allowAllPrivateIPs}`);
         }
 
@@ -33,6 +33,28 @@ export module app {
             //     L2.success("Plugin changes saved successfully");
             // });
         }
+    }
+
+    export class jsfiles {
+
+        static add(projectName: string, appName: string, jsFilename: string): Promise<IApiResponse> {
+            return <any>L2.postJson(`/api/app/${appName}/file?project=${projectName}&jsFileName=${jsFilename}`);
+        }
+
+        static update(projectName: string, appName: string, oldName: string, newName: string): Promise<IApiResponse> {
+            return <any>L2.putJson(`/api/app/${appName}/file?project=${projectName}&oldName=${oldName}&newName=${newName}`);
+        }
+
+        static delete(projectName: string, appName: string, id: string): Promise<IApiResponse> {
+            return <any>L2.deleteJson(`/api/app/${appName}/file/${id}?project=${projectName}`);
+        }
+
+        static getAll(projectName: string, appName: string): Promise<{ Filename: string, Id: string }[]> {
+            return <any>L2.fetchJson(`/api/app/${appName}/file?project=${projectName}`).then((r: any) => {
+                return r.Data;
+            });
+        }
+
     }
 }
 

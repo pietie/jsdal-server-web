@@ -1,37 +1,37 @@
 ﻿<mat-card [@componentState]="componentState">
-    <mat-card-title><div class="flex-vertical-center"><mat-icon class="pr8">apps</mat-icon><span>{{projectName}} applications</span></div></mat-card-title>
+    <mat-card-title>
+        <div class="flex-vertical-center">
+            <mat-icon class="pr8">apps</mat-icon>
+            <span>{{projectName}} applications</span>
+        </div>
+    </mat-card-title>
     <mat-card-content>
 
         <table class="grid" *ngIf="dbList">
             <thead>
                 <tr>
-                    <th style="width:300px"></th>
-                    <th style="width:300px">Name</th>
-                    <th style="width:200px">Source</th>
-                    <th style="width:100px"></th>
-                    <th>Key</th>
+                    <th style="width:270px;"></th>
+                    <th>Name</th>
+                    <th style="width:100px">Default rule</th>
+
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of dbList" [class.selected]="route.firstChild? route.firstChild.params.getValue().name == row.Name: false">
+                <tr *ngFor="let row of dbList">
                     <td class="anchorColumn">
-                        <button [routerLink]="['./' + row.Name]" mat-button color="primary" >manage</button>
-                        <button (click)="onAddEditAppClicked(row)" mat-button color="primary" >edit</button>
-                        <button (click)="onDeleteApp(row)" mat-button color="accent" >delete</button>
+                        <button [routerLink]="['./' + row.Name]" mat-button color="primary">manage</button>
+                        <button (click)="onAddEditAppClicked(row)" mat-button color="primary">edit</button>
+                        <button (click)="onDeleteApp(row)" mat-button color="accent">delete</button>
                     </td>
                     <td>{{row.Name}}</td>
-                    <td>
-                        {{row.DataSource}}; {{row.InitialCatalog}}
-                    </td>
+
                     <td class="center">
                         <mat-chip-list>
                             <mat-chip color='{{row.DefaultRuleMode==0? "primary": "accent"}}' selected="true" [title]="row.DefaultRuleMode==0?'By default all routines are INCLUDED in the generated files':'By default all routines are EXCLUDED in the generated files'">{{row.DefaultRuleMode==0? "Include all": "Exclude all"}}</mat-chip>
                         </mat-chip-list>
 
                     </td>
-                    <td>
-                        {{row.Guid}}
-                    </td>
+
                 </tr>
                 <tr *ngIf="!dbList || dbList.length == 0">
                     <td colspan="4">No applications exist yet.</td>

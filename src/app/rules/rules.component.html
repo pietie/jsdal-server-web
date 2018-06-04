@@ -1,172 +1,127 @@
-﻿<!--
-<style>
-    addNewRule.ng-enter{
-        opacity: 0;
-        -webkit-transition: all ease-in-out 0.5s;
-        transition: all ease-in-out 0.5s;
-    }
+﻿<mat-card>
+    <mat-card-title>
+        Manage {{ !jsFileId? "application":"" }} rules
+    </mat-card-title>
+    <mat-card-content>
 
-    addNewRule.ng-enter-active{
-        opacity: 1;
-    }
- 
-    tr.routine.included
-    {
-     color: #00931e;   
-    }
-    tr.routine.excluded
-    {
-        color: #930000;
-    } 
-</style>
-
-<div #dlg class="modal fade" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-object-group pr8"></i>Manage rules - {{title}} - <span style="font-size: 12px;">By default all routines are </span><span title="This can be changed by editting the database source properties" style="font-size: 12px" class="label" [class.label-primary]="defaultRuleMode=='IncludeAll'" [class.label-danger]="defaultRuleMode=='ExcludeAll'">{{ defaultRuleMode == "IncludeAll"? "included":"excluded" }}</span> </h4>
-            </div>
-            <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
-
-                <div>
-                    
-                    <button style="font-size: 12px;" class="btn btn-primary" (click)="isInAddNewRuleMode = true" href="javascript:void(0)" *ngIf="!isInAddNewRuleMode">Add new <strong>{{defaultRuleMode == "IncludeAll"? "exclusion":"inclusion"}}</strong> rule</button>
-                    
-                    
-                    <div class="addNewRule ng-animate" *ngIf="isInAddNewRuleMode" style="border: 1px solid silver;border-radius:3px;padding:8px;background-color: #ecffe0 ">
-                        <i class="fa fa-plus-circle pr8"></i><strong>Add new rule</strong><br/>
-                        <div style="padding:4px;">
-                            <div style="display2:inline-block">
-                                <label>
-                                    <input #radSchema type="radio" checked name="newType" (click)="newTypeVal=0;txtSchema.focus()" /> Schema<br />
-                                </label>
-                                <input #txtSchema type="text" autofocus [readonly]="!radSchema.checked" (click)="radSchema.checked = true;newTypeVal=0;" class="form-control" placeholder="Schema name"  />
-
-                            </div>
-
-                            <div style="display2:inline-block">
-                                <label><input #radSpecific type="radio" name="newType" (click)="newTypeVal=1;txtSpecific.focus()" /> Specific</label><br />
-                                <input #txtSpecific type="text" (click)="radSpecific.checked = true;newTypeVal=1" class="form-control" placeholder="Routine name" [readonly]="!radSpecific.checked" />
-                            </div>
-
-                            <div style="display2:inline-block">
-                                <label><input #radRegex type="radio" name="newType" (click)="newTypeVal=2;txtRegex.focus()" /> Regex (C#)</label><br />
-                                <input #txtRegex type="text" (click)="radRegex.checked = true;newTypeVal=2" class="form-control" placeholder="C# regex" [readonly]="!radRegex.checked" />
-                            </div>
-                        </div>
-
-                        
-                        <hr/>
-                        <a (click)="onAddNewRuleClicked(txtSchema.value, txtSpecific.value, txtRegex.value);" href="javascript:void(0)">Commit rule</a>&nbsp;&nbsp;&nbsp;&nbsp;<a (click)="isInAddNewRuleMode = false" href="javascript:void(0)">Cancel</a>
-                    </div>
+        <p>
+            <span>By default all routines are
+                <mat-chip-list [selectable]="false" style="display: inline-block;">
+                    <mat-chip color='{{defaultRuleMode?.toString()=="0"? "primary": "accent"}}' selected="true" title="This can be changed by editting the application properties">{{defaultRuleMode?.toString()=="0"? "Included": "Excluded"}}</mat-chip>
+                </mat-chip-list>
+            </span>
+        </p>
 
 
-                    <table class="grid">
-                        <thead>
-                            <tr>
-                                <th style="width:120px"></th>
-                                <th>Rule</th>
-                                <th># affected</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of ruleList">
-                                <td class="anchorNest">
-                                    <span *ngIf="!row.IsDataSourceRule || row.DBLevelOnly">
-                                        {{row.Ix}}.
-                                        <a href="javascript:void(0)">edit</a>
-                                        <a (click)="onDeleteRuleClicked(row)" href="javascript:void(0)">delete</a>
-                                    </span>
-                                    <span *ngIf="row.IsDataSourceRule && !row.DBLevelOnly">
-                                        (DB source rule)
-                                        </span>
-</td>
-                                <td><span class="label label-info">{{ RuleTypeValues[row.Type]  }}</span>&nbsp;{{row.Description}}</td>
-                                <td>{{ row.AffectedCount }}</td>
-                            </tr>
-                            <tr *ngIf="!ruleList || ruleList.length == 0">
-                                <td colspan="4">No rules configured yet.</td>
+        <table class="grid" style="max-width: 850px;margin:0;">
+            <thead>
+                <tr>
+                    <th style="width:200px"></th>
+                    <th>Rule</th>
+                    <th style="width: 100px"># affected</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of ruleList">
+                    <td class="anchorNest">
+                        <span *ngIf="!row.IsAppRule || row.AppLevelOnly">
+                            <button mat-button color="primary" (click)="editRule(row)">edit</button>
+                            <button mat-button color="accent" (click)="onDeleteRuleClicked(row)">delete</button>
+                        </span>
+                        <span *ngIf="row.IsAppRule && !row.AppLevelOnly">(Application rule)</span>
+                    </td>
+                    <td>
+                        <span class="rule-type">{{ RuleTypeValues[row.Type] }}</span>&nbsp;{{row.Description}}</td>
+                    <td style="text-align: right; padding-right: 8px;">{{ row.AffectedCount }}</td>
+                </tr>
+                <tr *ngIf="!ruleList || ruleList.length == 0">
+                    <td colspan="4">No rules configured yet.</td>
 
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                </tr>
+            </tbody>
+        </table>
 
 
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            Full routine list<i *ngIf="isFilteredListLoading" class="fa fa-spinner fa-pulse" style="margin-left: 6px;"></i>
-                        </h3>
-                    </div>
-                    <div class="panel-footer" *ngIf="fullRoutineList && filteredRoutineList">
-                        Viewing <strong>{{ filteredRoutineList.length }}</strong> of <strong>{{ fullRoutineList.length }}</strong> routine(s)
-                    </div>
-                    <div class="panel-body">
-
-                        <input class="form-control" placeholder="Filter text" [(ngModel)]="filterTxt" (keyup)="onFilterTextChanged($event.target.value)" />
-
-                        <div style2="overflow-y: scroll; max-height: 400px;">
-                            <table class="grid" *ngIf="filteredRoutineList">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th style2="width:300px">Name</th>
-                                        <th>Reason</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of filteredRoutineList" class="routine" [class.included]="row.Included" [class.excluded]="row.Excluded">
-                                        <td>
-                                            < !--Only show explicit incl/excl action if the current routine is not already in that state - ->
-                                            <a *ngIf="showIncludeExcludeButton(row)" (click)="onExplicitInludeOrExclude(row)" href="javascript:void(0)">{{defaultRuleMode == "IncludeAll"? "exclude":"include"}}</a>
-                                             
-                                        </td>
-                                        <td><i class="fa pr8" [class.fa-check]="row.Included" [class.fa-times]="row.Excluded"></i> {{row.RoutineFullName}}</td>
-                                        <td>
-
-                                            <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'" class="pr8 fa fa-database"></i>
-                                            <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o"></i>
-                                            <i title="Database source level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square"></i>
-                                            {{row.Reason}}
-                                        </td>
-
-                                    </tr>
-                                    <tr *ngIf="needTruncation && cutOffRoutineList">
-                                        <td colspan="4" style="text-align:center;background-color:#f0f0f0;border:1px solid gray;padding:3px;">Results truncated. <a href="javascript:void(0)" (click)="cutOffRoutineList=false;refreshFilteredView(filterTxt);">Click here</a> to display all of the results.</td>
-                                    </tr>
-                                    <tr *ngIf="!filteredRoutineList || filteredRoutineList.length == 0">
-                                        <td colspan="4">No routines found in cache.</td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-
-
-
-                    </div>
-
-                    <div class="panel-footer" *ngIf="fullRoutineList && filteredRoutineList">
-                        Viewing <strong>{{ filteredRoutineList.length }}</strong> of <strong>{{ fullRoutineList.length }}</strong> routine(s)
-                    </div>
-
-                </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button (click)="addNewRule()" color="primary" mat-button>ADD NEW
+            <strong>{{defaultRuleMode?.toString() == "0"? "EXCLUSION":"INCLUSION"}}</strong> RULE</button>
+    </mat-card-actions>
+    <mat-card-footer>
+        <mat-progress-bar *ngIf="isLoadingRules" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>
 
 
 
 
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+<mat-card>
+    <mat-card-title>
+        Full routine list
+    </mat-card-title>
+    <mat-card-content>
+
+        <div *ngIf="filteredRoutineList" class="footer">Viewing
+            <strong>{{ filteredRoutineList.length }}</strong> of
+            <strong>{{ fullRoutineList.length }}</strong> routine(s)</div>
+
+        <div style="display: flex;">
+            <mat-form-field style="flex: 1 1 auto;">
+                <input matInput type="text" [(ngModel)]="filterTxt" placeholder="Filter text" (keyup)="onFilterTextChanged($event.target.value)"
+                />
+            </mat-form-field>
+
         </div>
-    </div>
-</div>
+        <div style="height: 2px;margin-top:-3px;">
+            <mat-progress-bar *ngIf="isFilteredListLoading" mode="indeterminate"></mat-progress-bar>
+        </div>
 
+        <table class="grid" *ngIf="filteredRoutineList">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of filteredRoutineList" class="routine" [class.included]="row.Included" [class.excluded]="row.Excluded">
+                    <td class="flex-justify-center" style="width: 50px;">
+                        <!--Only show explicit incl/excl action if the current routine is not already in that state -->
+                        <button mat-button color="primary" *ngIf="showIncludeExcludeButton(row)" (click)="onExplicitInludeOrExclude(row)">{{ defaultRuleMode?.toString() == "0"? "exclude":"include"}}</button>
 
--->
- 
+                    </td>
+                    <td>
+                        <i class="fa pr8" [class.fa-check]="row.Included" [class.fa-times]="row.Excluded"></i> {{row.RoutineFullName}}</td>
+                    <td>
+                        <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'"
+                            class="pr8 fa fa-database">
+                            <span style="font-family:Roboto">&nbsp;{{row.Reason}}</span>
+                        </i>
+                        <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o">
+                            <span style="font-family:Roboto">&nbsp;{{row.Reason}}</span>
+                        </i>
+                        <i title="Application level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square">
+                            <span style="font-family:Roboto">&nbsp;{{row.Reason}}</span>
+                        </i>
+
+                    </td>
+
+                </tr>
+                <tr *ngIf="needTruncation && cutOffRoutineList">
+                    <td colspan="4" style="text-align:center;background-color:#f0f0f0;border:1px solid gray;padding:3px;">Results truncated.
+                        <button mat-button color="primary" (click)="cutOffRoutineList=false;refreshFilteredView(filterTxt);">CLICK HERE</button> to display all of the results.</td>
+                </tr>
+                <tr *ngIf="!filteredRoutineList || filteredRoutineList.length == 0">
+                    <td colspan="4">No routines found in cache.</td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </mat-card-content>
+    <mat-card-footer>
+        <mat-progress-bar *ngIf="isFilteredListLoading" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

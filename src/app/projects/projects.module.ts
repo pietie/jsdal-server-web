@@ -23,6 +23,9 @@ import { ApplicationRouteResolver } from './application/application.resolver';
 import { EndpointsDetailRouteResolver } from './endpoints/endpoints-detail.resolver';
 import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
 
+import { RulesComponent } from './../rules/rules.component';
+import { RuleAddupdateDialogComponent } from './../rules/dialogs/rule-addupdate-dialog.component';
+
 
 @NgModule({
     declarations: [
@@ -38,7 +41,9 @@ import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
         RulesDialog,
         MetadataViewerDialog,
         MetadataMoreInfoDialog,
-        ConnectionDialogComponent
+        ConnectionDialogComponent,
+        RulesComponent,
+        RuleAddupdateDialogComponent
 
     ],
     imports: [SharedModule, projectsRouting],
@@ -48,7 +53,8 @@ import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
         RulesDialog,
         MetadataViewerDialog,
         MetadataMoreInfoDialog ,
-        ConnectionDialogComponent
+        ConnectionDialogComponent,
+        RuleAddupdateDialogComponent
     ]
 
 

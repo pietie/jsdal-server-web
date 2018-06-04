@@ -14,6 +14,7 @@ import { EndpointDetailComponent } from './endpoints/endpoints-detail.component'
 import { EndpointListComponent } from './endpoints/endpoints-list.component';
 import { EndpointsDetailRouteResolver } from './endpoints/endpoints-detail.resolver'
 
+import { RulesComponent } from './../rules/rules.component';
 
 export const projectsRoutes: Routes = [
     {
@@ -41,7 +42,7 @@ export const projectsRoutes: Routes = [
                     dbSource: ApplicationRouteResolver
                 },
                 children: [
-                    {
+                     {
                         path: 'endpoint/:endpoint',
                         canActivate: [LoggedInGuard],
                         component: EndpointDetailComponent,
@@ -50,61 +51,26 @@ export const projectsRoutes: Routes = [
                         }
                     }
                 ]
-            }
-
-        ]
-    }
-
-
-
-
-
-];
-
-/*
-export const projectsRoutes: Routes = [
-
-    {
-        path: 'projects',
-        canActivate: [LoggedInGuard],
-        component: ProjectListComponent,
-        children: [
+            },
             {
-                path: ':name',
-                component: ProjectComponent,
+                path: ':project/:app/rules',
                 canActivate: [LoggedInGuard],
-                canDeactivate: [CanDeactivateGuard],
-                children: [
-                    {
-                        path: ':name',
-                        canActivate: [LoggedInGuard],
-                        component: DbSourceComponent,
-                        resolve: {
-                            dbSource: DbSourceRouteResolver
-                        },
-                        children: [
-                            {
-                                path: 'endpoint',
-                                children: [
-
-                                    {
-                                        path: ':name',
-                                        canActivate: [LoggedInGuard],
-                                        outlet: 'endpoint-detail',
-                                        component: EndpointDetailComponent
-                                    }
-
-                                ]
-                            }
-
-                        ]
-                    }
-                ]
+                component: RulesComponent
+                // resolve: {
+                //     endpoint: EndpointsDetailRouteResolver
+                // }
+            },
+            { 
+                path: ':project/:app/rules/:jsfile',
+                canActivate: [LoggedInGuard],
+                component: RulesComponent
+                // resolve: {
+                //     endpoint: EndpointsDetailRouteResolver
+                // }
             }
+
         ]
     }
-
 ];
-*/
 
 export const projectsRouting: ModuleWithProviders = RouterModule.forChild(projectsRoutes);
