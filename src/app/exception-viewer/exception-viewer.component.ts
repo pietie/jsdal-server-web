@@ -31,7 +31,10 @@ import { DomSanitizer } from "@angular/platform-browser";
 
     div.exception-detail .msg
     {
-      
+        padding: 7px;
+        background-color: #303030;
+        color: #FFFA45;
+        width: 100%;
     }
 
     div.exception-detail .stack
@@ -74,6 +77,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 
         position: relative;
         top: 5px;
+
+     
     }
 
 `
@@ -116,7 +121,7 @@ export class ExceptionViewerComponent {
         let lines = st.split('\n'); //st.replace(/\n/gm,"<br/>");
 
         if (lines.length >= 1) {
-            lines[1] = '<span class="first-stacktrace-line">' + lines[1] + '</span>';
+            lines[0] = '<span class="first-stacktrace-line">' + lines[0] + '</span>';
         }
 
         return lines.join("<br/>");

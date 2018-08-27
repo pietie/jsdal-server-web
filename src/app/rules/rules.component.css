@@ -11,6 +11,35 @@
         flex: 1 1 auto;
     }
      */
+     .td-ellipsis-container 
+     {
+        display: flex;
+
+     }
+     .td-ellipsis-container > *
+     {
+        min-width: 0;
+        align-self: center;
+     }
+
+     
+     .td-ellipsis-container .desc
+     {
+         text-overflow: ellipsis;
+         white-space: nowrap;
+         overflow: hidden;
+         
+     }
+
+     .td-ellipsis-container .desc span
+     {
+        font-family: Roboto;
+     }
+
+     .rules.grid tr
+     {
+        height: 38px;
+     }
 
     tr.routine.included
     {

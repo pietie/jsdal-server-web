@@ -56,7 +56,8 @@
     "target": "es5",
     "types": [],
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types",
+      "node_modules/mirrorsharp"
     ]
   }
 }

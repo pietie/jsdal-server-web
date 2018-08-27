@@ -1,6 +1,6 @@
 ﻿<mat-card>
     <mat-card-title>
-        Manage {{ !jsFileId? "application":"" }} rules
+        Manage {{ jsFilename? jsFilename:"application" }} rules
     </mat-card-title>
     <mat-card-content>
 
@@ -13,12 +13,12 @@
         </p>
 
 
-        <table class="grid" style="max-width: 850px;margin:0;">
+        <table class="rules grid" style="width:auto;max2-width: 850px;margin:0;">
             <thead>
                 <tr>
                     <th style="width:200px"></th>
-                    <th>Rule</th>
-                    <th style="width: 100px"># affected</th>
+                    <th style="width:350px;">Rule</th>
+                    <th style="width:100px;"># affected</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,10 +28,17 @@
                             <button mat-button color="primary" (click)="editRule(row)">edit</button>
                             <button mat-button color="accent" (click)="onDeleteRuleClicked(row)">delete</button>
                         </span>
-                        <span *ngIf="row.IsAppRule && !row.AppLevelOnly">(Application rule)</span>
+                        <span *ngIf="row.IsAppRule && !row.AppLevelOnly">
+                            <a routerLink='../'>(Application rule)</a>
+
+                        </span>
                     </td>
-                    <td>
-                        <span class="rule-type">{{ RuleTypeValues[row.Type] }}</span>&nbsp;{{row.Description}}</td>
+                    <td [title]="row.Description" style="width:350px;">
+                        <div class="td-ellipsis-container" style="width:350px;">
+                            <span class="rule-type" style="flex:0 0 auto">{{ RuleTypeValues[row.Type] }}</span>&nbsp;
+                            <span class="desc">{{row.Description}}</span>
+                        </div>
+                    </td>
                     <td style="text-align: right; padding-right: 8px;">{{ row.AffectedCount }}</td>
                 </tr>
                 <tr *ngIf="!ruleList || ruleList.length == 0">
@@ -77,35 +84,39 @@
             <mat-progress-bar *ngIf="isFilteredListLoading" mode="indeterminate"></mat-progress-bar>
         </div>
 
-        <table class="grid" *ngIf="filteredRoutineList">
+        <table class="grid" *ngIf="filteredRoutineList" style="table-layout: fixed2;">
             <thead>
                 <tr>
-                    <th></th>
+                    <th style="width:110px"></th>
                     <th>Name</th>
-                    <th>Reason</th>
+                    <th style="width:350px">Reason</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let row of filteredRoutineList" class="routine" [class.included]="row.Included" [class.excluded]="row.Excluded">
-                    <td class="flex-justify-center" style="width: 50px;">
+                    <td class="flex-justify-center">
                         <!--Only show explicit incl/excl action if the current routine is not already in that state -->
                         <button mat-button color="primary" *ngIf="showIncludeExcludeButton(row)" (click)="onExplicitInludeOrExclude(row)">{{ defaultRuleMode?.toString() == "0"? "exclude":"include"}}</button>
 
                     </td>
                     <td>
                         <i class="fa pr8" [class.fa-check]="row.Included" [class.fa-times]="row.Excluded"></i> {{row.RoutineFullName}}</td>
-                    <td>
-                        <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'"
-                            class="pr8 fa fa-database">
-                            <span style="font-family:Roboto">&nbsp;{{row.Reason}}</span>
-                        </i>
-                        <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o">
-                            <span style="font-family:Roboto">&nbsp;{{row.Reason}}</span>
-                        </i>
-                        <i title="Application level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square">
-                            <span style="font-family:Roboto">&nbsp;{{row.Reason}}</span>
-                        </i>
 
+                    <td style="width:350px" [title]="row.Reason">
+
+                        <div class="td-ellipsis-container" style="width:350px;">
+
+                            <i title="Database metadata level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DatabaseMetadata'"
+                                class="pr8 fa fa-database desc">
+                                <span  [title]="row.Reason">&nbsp;{{row.Reason}}</span>
+                            </i>
+                            <i title="JS file level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'JsFileLevel'" class="pr8 fa fa-file-code-o desc">
+                                <span  [title]="row.Reason">&nbsp;{{row.Reason}}</span>
+                            </i>
+                            <i title="Application level" *ngIf="RoutineIncludeExcludeInstructionSourceValues[row.Source] == 'DbSourceLevel'" class="pr8 fa fa-square desc">
+                                <span  [title]="row.Reason">&nbsp;{{row.Reason}}</span>
+                            </i>
+                        </div>
                     </td>
 
                 </tr>

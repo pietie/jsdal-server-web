@@ -37,10 +37,12 @@ import { AccountService } from './account/account.service';
 import { FirstTimeSetupCompletedService } from './1st-time/1st-time-setup-completed.service';
 import { FirstTimeNetworkErrorComponent } from './1st-time/1st-time-network-error.component';
 
+import { CsharpTextareaComponent } from './controls/csharp-textarea/csharp-textarea.component';
 
 
 
 import { AceEditorModule } from 'ng2-ace-editor';
+import { ServerMethodsComponent } from './plugins/tabs/server-methods/server-methods.component';
 
 
 export class MyErrorHandler implements ErrorHandler {
@@ -68,7 +70,9 @@ export class MyErrorHandler implements ErrorHandler {
         WorkerDetailComponent,
         FirstTimeSetupComponent,
         FirstTimeNetworkErrorComponent,
-        PluginsComponent
+        PluginsComponent,
+        CsharpTextareaComponent,
+        ServerMethodsComponent
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/ ],

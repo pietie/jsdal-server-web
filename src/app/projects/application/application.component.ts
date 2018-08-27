@@ -7,7 +7,7 @@ import { L2 } from 'l2-lib/L2';
 import { IDBSource } from './../projects.service'
 
 
-import { DatasourceDialogComponent, AuthenticationType, RulesDialog } from './../dialogs';
+import { DatasourceDialogComponent, AuthenticationType } from './../dialogs';
 
 import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 

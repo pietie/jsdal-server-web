@@ -1,0 +1,47 @@
+<div *ngIf="!editorVisible">
+
+  <table class="grid" *ngIf="serverMethods">
+    <thead>
+      <tr>
+        <th style="width: 200px;"></th>
+
+        <th style="width: 120px;">
+          Name
+        </th>
+        <th style="width: 50px;">
+          Valid
+        </th>
+        <th>
+          Description
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of serverMethods">
+          <td class="anchorColumn">
+          <button mat-button color="primary">edit</button>
+          <button (click)="delete(row)" mat-button color="accent">delete</button>
+        </td>
+
+        <td>{{ row.Name }}</td>
+        <td>{{ row.IsValid }}</td>
+        <td>{{ row.Description }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <hr/>
+  <button mat-raised-button color="primary" (click)="onAddNew()">ADD NEW</button>
+  <br/>
+</div>
+
+<div *ngIf="editorVisible" style="background-color: orange;">
+
+  <button mat-raised-button color="primary" (click)="saveChanges()">SAVE CHANGES</button>&nbsp;&nbsp;&nbsp;&nbsp;
+  <button mat-raised-button color="warn" (click)="onCancelEditor()">CANCEL</button>
+  <hr/>
+  <csharp-textarea #ce></csharp-textarea>
+
+  <textarea class="error-output" [ngModel]="compilationError" readonly="readonly" *ngIf="compilationError"></textarea>
+</div>

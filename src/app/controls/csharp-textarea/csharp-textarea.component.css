@@ -1,0 +1,11 @@
+textarea
+{
+    width: 100%;
+    height: 100%;
+}
+
+.mirrorsharp-signature-tooltip 
+{
+    z-index: 20;
+}
+

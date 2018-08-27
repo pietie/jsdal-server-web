@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { app, appRules } from './object-model';
+import { app, appRules, serverMethods } from './object-model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,8 @@ export class ApiService {
     whitelist: app.whitelist,
     plugins: app.plugins,
     jsfiles: app.jsfiles,
-    rules: appRules.rules
+    rules: appRules.rules,
+    serverMethods: serverMethods.serverMethods
   }
 
   get app() {

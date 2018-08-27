@@ -78,7 +78,7 @@ export class RulesComponent {
                 this.breadcrumb.store([{ label: 'Projects', url: '/projects', params: [] }
                     , { label: this.projectName, url: `/projects/${this.projectName}`, params: [] }
                     , { label: this.appName, url: `/projects/${this.projectName}/${this.appName}`, params: [] }
-                    , { label: this.jsFilename, url: '', params: [] }
+                    , { label: this.jsFilename + ' rules', url: '', params: [] }
                 ]);
             }
             else {
@@ -102,10 +102,10 @@ export class RulesComponent {
         this.api.app.rules
             .getRoutineList(this.projectName, this.appName, this.jsFilename)
             .then(r => {
+                
                 this.isFilteredListLoading = false;
                 this.fullRoutineList = this.filteredRoutineList = r.Routines;
                 this.defaultRuleMode = r.DefaultRuleMode;
-
 
                 this.refreshFilteredView(this.filterTxt);
             }).catch(() => { this.isFilteredListLoading = false; });

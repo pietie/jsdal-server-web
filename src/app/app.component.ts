@@ -4,7 +4,7 @@ import { AccountService } from './account/account.service'
 import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { environment } from './../environments/environment';
-import { L2 } from 'l2-lib/L2';
+import { L2, jsDALServer } from 'l2-lib/L2';
 
 
 import { HubConnectionBuilder, HubConnection, LogLevel, JsonHubProtocol } from '@aspnet/signalr';

@@ -18,7 +18,7 @@ import { EndpointListComponent } from './endpoints/endpoints-list.component'
 import { EndpointDetailComponent } from './endpoints/endpoints-detail.component'
 
 
-import { DatasourceDialogComponent, RulesDialog, MetadataViewerDialog, MetadataMoreInfoDialog, ConnectionDialogComponent } from './dialogs'
+import { DatasourceDialogComponent, MetadataViewerDialog, MetadataMoreInfoDialog, ConnectionDialogComponent } from './dialogs'
 import { ApplicationRouteResolver } from './application/application.resolver';
 import { EndpointsDetailRouteResolver } from './endpoints/endpoints-detail.resolver';
 import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
@@ -38,7 +38,7 @@ import { RuleAddupdateDialogComponent } from './../rules/dialogs/rule-addupdate-
         EndpointDetailComponent,
 
         DatasourceDialogComponent,
-        RulesDialog,
+        
         MetadataViewerDialog,
         MetadataMoreInfoDialog,
         ConnectionDialogComponent,
@@ -50,7 +50,7 @@ import { RuleAddupdateDialogComponent } from './../rules/dialogs/rule-addupdate-
     providers: [BreadcrumbsService, ProjectService, ApplicationRouteResolver, EndpointsDetailRouteResolver, EndpointDALService],
     entryComponents: [
         DatasourceDialogComponent,
-        RulesDialog,
+        
         MetadataViewerDialog,
         MetadataMoreInfoDialog ,
         ConnectionDialogComponent,
