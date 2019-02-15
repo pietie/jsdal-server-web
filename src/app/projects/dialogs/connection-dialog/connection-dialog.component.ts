@@ -54,6 +54,7 @@ export class ConnectionDialogComponent implements OnInit {
   public set data(data: IDbConnection) {
     this.obj = data;
     this.addMode = false;
+
     if (data.username && data.username != "") {
       this.obj.authType = AuthenticationType.SQL;
     }

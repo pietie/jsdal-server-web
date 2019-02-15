@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 import { L2  } from 'l2-lib/L2';
 
 import { MetadataMoreInfoDialog } from './more-info.dialog';
+import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
 
 @Component({
     selector: 'metadata-viewer-dialog',
@@ -14,6 +15,7 @@ export class MetadataViewerDialog {
 
     public projectName: string;
     public dbSourceName: string;
+    public endpoint: string;
 
     isLoading: boolean = false;
     searchCriteria: { query?: string, routineType?: string, status?: string, hasjsDALMetadata?: boolean, isDeleted?: boolean } = { routineType: "0", status: "0" };
@@ -21,7 +23,7 @@ export class MetadataViewerDialog {
     searchResults: any = null;
     totalCount: number = null;
 
-    constructor(public dialogRef: MatDialogRef<MetadataViewerDialog>, public dialog: MatDialog, public changeDetection: ChangeDetectorRef) {
+    constructor(public dialogRef: MatDialogRef<MetadataViewerDialog>, public dialog: MatDialog, public changeDetection: ChangeDetectorRef, public api: EndpointDALService) {
 
     }
 
@@ -30,17 +32,24 @@ export class MetadataViewerDialog {
 
             this.isLoading = true;
 
-            L2.fetchJson(`/api/endpoint/cachedroutines?projectName=${this.projectName}&dbSource=${this.dbSourceName}&q=${L2.nullToEmpty(this.searchCriteria.query)}&type=${this.searchCriteria.routineType}&results=${this.searchCriteria.status}&hasMeta=${!!this.searchCriteria.hasjsDALMetadata}&isDeleted=${!!this.searchCriteria.isDeleted}`)
-                .then((r: any) => {
-                    this.isLoading = false;
-                    this.searchResults = r.Data.Results;
-                    this.totalCount = r.Data.TotalCount;
 
-                    this.changeDetection.detectChanges();
-                }).catch(e => {
-                    this.isLoading = false;
-                    this.changeDetection.detectChanges();
-                });
+            this.api.getCacheRoutines(this.projectName, this.dbSourceName, this.endpoint, L2.nullToEmpty(this.searchCriteria.query), this.searchCriteria.routineType
+                , this.searchCriteria.status, this.searchCriteria.hasjsDALMetadata, this.searchCriteria.isDeleted)
+                .then(r=>
+                    {
+                        this.isLoading = false;
+                        this.searchResults = r.Results;
+                        this.totalCount = r.TotalCount;
+    
+                        this.changeDetection.detectChanges();
+                    })
+                .catch(e => {
+                        this.isLoading = false;
+                        this.changeDetection.detectChanges();
+                    });
+            
+
+
 
         }
         catch (e) {
@@ -54,7 +63,7 @@ export class MetadataViewerDialog {
     viewParameters(row: any) {
         if (row.Parameters && row.Parameters.length > 0) {
 
-            let dlg = this.dialog.open(MetadataMoreInfoDialog);
+            let dlg = this.dialog.open(MetadataMoreInfoDialog, { width: "750px" });
 
             dlg.componentInstance.title = `[${row.Schema}].[${row.Routine}] parameters`;
             dlg.componentInstance.mode = "Parms";
@@ -65,7 +74,7 @@ export class MetadataViewerDialog {
 
     showTableResults(row: any, showError:boolean) {
 
-        let dlg = this.dialog.open(MetadataMoreInfoDialog);
+        let dlg = this.dialog.open(MetadataMoreInfoDialog, { width: "750px" });
         
         if (showError && row.ResultSetError) {
             dlg.componentInstance.title = `[${row.Schema}].[${row.Routine}] result error`;
@@ -82,7 +91,7 @@ export class MetadataViewerDialog {
 
     showJsDALMetadata(row: any) {
 
-        let dlg = this.dialog.open(MetadataMoreInfoDialog);
+        let dlg = this.dialog.open(MetadataMoreInfoDialog, { width: "750px" });
 
         dlg.componentInstance.title = `[${row.Schema}].[${row.Routine}] JsDAL metadata`;
         dlg.componentInstance.mode = "JsDALMetadata";

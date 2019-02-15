@@ -9,6 +9,9 @@ import { ConnectionDialogComponent, AuthenticationType, MetadataViewerDialog } f
 import { EndpointDALService, IEndpoint } from '~/projects/endpoints/endpoint-dal.service';
 
 import { BreadcrumbsService } from './../master/breadcrumbs/breadcrumbs.service';
+import { ApiService } from '~/services/api';
+import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'endpoint-detail',
@@ -20,15 +23,20 @@ export class EndpointDetailComponent {
     dbSourceName: string;
     endpointName: string;
 
+
     endpoint: IEndpoint;
     dbSource: any;
 
     isCheckingOrm: boolean = true;
     isInstallingOrm: boolean = false;
+    isInitialisingOrm: boolean = false;
+    initProgress: number = 0;
 
     metadataCacheSummary: any;
 
-    constructor(public route: ActivatedRoute, public dialog: MatDialog, public router: Router, public endpointDAL: EndpointDALService, public breadcrumb: BreadcrumbsService) {
+    constructor(public route: ActivatedRoute, public dialog: MatDialog, public router: Router,
+        public endpointDAL: EndpointDALService, public breadcrumb: BreadcrumbsService,
+        public api: ApiService, public bgTasks: BgTaskMonitorService) {
 
     }
 
@@ -36,7 +44,7 @@ export class EndpointDetailComponent {
         try {
 
 
-            this.route.params.subscribe(p => {
+            this.route.params.subscribe(async p => {
 
                 this.projectName = this.route.snapshot.parent.params.project;
                 this.dbSourceName = this.route.snapshot.parent.params.dbSource;
@@ -59,11 +67,22 @@ export class EndpointDetailComponent {
 
                 this.refreshSummaryInfo();
 
+                await this.bgTasks.init();
+
+                this.listenForInitProcessBgTask();
+
             });
 
         }
         catch (e) {
             L2.handleException(e);
+        }
+    }
+
+    ngOnDestroy() {
+        if (this.initBGTaskSubscription$) {
+            this.initBGTaskSubscription$.unsubscribe();
+            this.initBGTaskSubscription$ = null;
         }
     }
 
@@ -84,17 +103,57 @@ export class EndpointDetailComponent {
         }
     }
 
-    onInitializeClicked() {
+    onInitORMClicked() {
 
         this.isInstallingOrm = true;
 
-        L2.postJson(`/api/endpoint/${this.endpointName}/installOrm?projectName=${this.projectName}&dbSourceName=${this.dbSourceName}`)
-            .then(resp => {
+        this.api.app.endpoint.installOrm(this.projectName, this.dbSourceName, this.endpointName).then(resp => {
+
+            if (resp.BgTaskKey) {
+                L2.success("ORM successfully installed, performing first-time population...");
+
+                this.isInstallingOrm = false;
+
+                if (resp.Success) {
+                    this.isInitialisingOrm = true;
+
+                    //let obs = this.bgTasks.observeBgTask(`${this.endpoint.BgTaskKey}.ORM_INIT`);
+
+                    //this.listenForInitProcessBgTask(obs);
+                }
+            }
+            else {
                 L2.success("ORM successfully installed");
                 this.isInstallingOrm = false;
                 this.endpoint.IsOrmInstalled = true;
+            }
+        }).catch((_) => { this.isInstallingOrm = false });
+    }
 
-            }).catch((_) => { this.isInstallingOrm = false });
+    initBGTaskSubscription$: Subscription;
+    listenForInitProcessBgTask() {
+
+        let obs = this.bgTasks.observeBgTask(`${this.endpoint.BgTaskKey}.ORM_INIT`);
+
+        this.initBGTaskSubscription$ = obs.subscribe(bgTask => {
+            if (bgTask == null) return;
+            this.isInitialisingOrm = true;
+            if (bgTask.IsDone) {
+                this.isInitialisingOrm = false;
+
+                if (bgTask.Exception == null) {
+                    this.endpoint.IsOrmInstalled = true;
+                }
+                else {
+                    L2.exclamation(bgTask.Exception);
+                }
+            }
+            else {
+                this.initProgress = bgTask.Progress;
+            }
+
+        });
+
     }
 
     onRecheckOrmClicked(forceRecheck: boolean = false) {
@@ -140,6 +199,10 @@ export class EndpointDetailComponent {
             let title: string = "Change metadata connection";
 
             if (!isMetadata) title = "Change run-time connection";
+
+            row =  row || { };
+
+            if (row.Port == null) row.Port = 1433;
 
             if (row) {
                 dialogRef.componentInstance.title = title;
@@ -214,9 +277,11 @@ export class EndpointDetailComponent {
 
 
     public viewCachedMetadata() {
-        let dialogRef = this.dialog.open(MetadataViewerDialog);
+        let dialogRef = this.dialog.open(MetadataViewerDialog, { width: "800px" });
+
         dialogRef.componentInstance.projectName = this.projectName;
         dialogRef.componentInstance.dbSourceName = this.dbSource.Name;
+        dialogRef.componentInstance.endpoint = this.endpointName;
     }
 
     public clearDbSourceCache() {

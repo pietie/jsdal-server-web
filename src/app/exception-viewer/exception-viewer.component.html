@@ -23,6 +23,42 @@
             </div>
 
         </div>
+        <div class="exec-option" *ngIf="exceptionDetail && exceptionDetail.execOptions &&  exceptionDetail.execOptions.project">
+            <h3>
+                jsDAL execution options
+            </h3>
+            <div class="row">
+                <span class="field">Endpoint</span>
+                <span class="value">{{ exceptionDetail.execOptions.project }}/{{ exceptionDetail.execOptions.application }}/{{ exceptionDetail.execOptions.endpoint }}</span>
+            </div>
+
+            <div class="row">
+                <span class="field">Routine</span>
+                <span class="value">[{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}]</span>
+            </div>
+
+            <div class="row">
+                <span class="field">Type</span>
+                <span class="value">{{ execTypeValues[exceptionDetail.execOptions.type] }}</span>
+            </div>
+            
+ 
+
+            <div class="sql">
+                <textarea>exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}</textarea>
+            </div>
+            
+            
+            
+
+             
+
+
+            {{ exceptionDetail.execOptions.OverridingInputParameters }}
+            
+
+            {{exceptionDetail.execOptions | json}}
+        </div>
     </mat-card-content>
 </mat-card>
 

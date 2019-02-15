@@ -10,7 +10,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th style="width:80px">Direction</th>
+                    <th style="width:80px">IsOutput</th>
                     <th style="width:100px">Data type</th>
                     <th style="width:80px">Length</th>
                     <th>Default value</th>
@@ -20,12 +20,12 @@
                 <ng-template [ngIf]="dataContext">
                     <tr *ngFor="let row of dataContext">
                         <td>
-                            {{ row.ParameterName }}
+                            {{ row.Name }}
                         </td>
-                        <td>{{ row.ParameterMode }}</td>
-                        <td>{{ row.DataType }}</td>
+                        <td>{{ row.IsOutput }}</td>
+                        <td>{{ row.SqlDataType }}</td>
                         <td>
-                            {{ row.Length }}
+                            {{ row.MaxLength }}
                         </td>
                         <td>
                             {{ row.DefaultValue }}

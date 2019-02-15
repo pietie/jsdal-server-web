@@ -24,7 +24,7 @@
                     <td>{{row.CreateDate|fromISODateStr|date:'HH:mm:ss'}}</td>
                     <td>
                         <!-- <span style="display: inline-block;width:70px" class="label label-{{getLogEntryTypeBadgeClass(row.Type)}}">{{LogEntryType[row.Type]}}</span> -->
-                        <mat-chip-list [selectable]="false" style="display: inline-block;width:70px">
+                        <mat-chip-list [selectable]="false" style="display: inline-block;width:100px">
                             <mat-chip [color]="primary">{{LogEntryType[row.Type]}}</mat-chip>
                         </mat-chip-list>
                         <span>&nbsp;&nbsp;</span>

@@ -64,23 +64,24 @@ export class WorkersComponent {
         }
     }
 
-    private reloadWorkersList() {
-        L2.fetchJson(`/api/workers`).then((r: any) => {
-            this.workerList = r.Data;
-        });
-    }
+    // no longer needed as we are using SignalR
+    // private reloadWorkersList() { 
+    //     L2.fetchJson(`/api/workers`).then((r: any) => {
+    //         this.workerList = r.Data;
+    //     });
+    // }
 
     startWorker(row) {
         L2.postJson(`/api/workers/${row.id}/start`).then((r) => {
             L2.success("Worker started.");
-            this.reloadWorkersList();
+            //!this.reloadWorkersList();
         });
     }
 
     stopWorker(row) {
         L2.postJson(`/api/workers/${row.id}/stop`).then((r) => {
             L2.success("Worker stopped.");
-            this.reloadWorkersList();
+           //! this.reloadWorkersList();
         });
     }
 

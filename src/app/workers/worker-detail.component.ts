@@ -7,12 +7,10 @@ import { L2  } from 'l2-lib/L2';
 })
 export class WorkerDetailComponent {
     public id: string;
-    public logData:any;
+    public data:any;
     
     constructor(public activatedRoute: ActivatedRoute, public router: Router) {
-
         this.activatedRoute.params.subscribe(parms => {
-
             this.id = parms["id"];
             this.onRefresh();
         });
@@ -20,8 +18,7 @@ export class WorkerDetailComponent {
 
     public onRefresh() {
         L2.fetchJson(`/api/workers/${this.id}`).then((r: any) => {
-            this.logData = r.Data;
+            this.data = r.Data;
         });
     }
-
 }

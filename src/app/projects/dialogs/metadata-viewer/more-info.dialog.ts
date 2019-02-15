@@ -12,8 +12,6 @@ import { L2  } from 'l2-lib/L2';
 /deep/ .boolean { color: blue; }
 /deep/ .null { color: magenta; }
 /deep/ .key { color: red; }
-
-    
     `]
 })
 export class MetadataMoreInfoDialog {
@@ -52,8 +50,4 @@ export class MetadataMoreInfoDialog {
             return '<span class="' + cls + '">' + match + '</span>';
         });
     }
-
-
-
-
 }

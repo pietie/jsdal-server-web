@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 
+
 @Injectable()
-export class EndpointDALService {
+export class EndpointDALService { // TODO: move code into API services?
 
     constructor() { }
 
@@ -38,13 +39,17 @@ export class EndpointDALService {
         //     L2.success("Connection successful");
         // }).catch((e) => { this.isTestingConnection = false; L2.handleException(e); });
     }
+
+    public getCacheRoutines(project: string, dbSource: string, endpoint: string, query: string, type: string, status: string, hasMetadata?: boolean, isDeleted?: boolean): Promise<{ TotalCount: number, Results: any[] }> {
+        return L2.fetchJson(`/api/endpoint/${endpoint}/cachedroutines?project=${project}&dbSource=${dbSource}&q=${query}&type=${type}&status=${status}&hasMeta=${!!hasMetadata}&isDeleted=${!!isDeleted}`)
+            .then((r: any) => r.Data);
+    }
 }
-
-
 
 export interface IEndpoint {
     Name?: string;
     IsOrmInstalled?: boolean;
     MetadataConnection?: any;
     ExecutionConnection?: any;
+    BgTaskKey?: string;
 }

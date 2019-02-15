@@ -1,3 +1,3 @@
-<h3 *ngIf="id"> {{ id }} log <button (click)="this.router.navigate(['..'], { relativeTo: this.activatedRoute})" mat-button color="primary">CLOSE</button></h3>
+<h3 style="display:inline-block" *ngIf="id && data">{{ data?.Endpoint }} log </h3><button (click)="this.router.navigate(['..'], { relativeTo: this.activatedRoute})" mat-button color="primary">CLOSE</button>
 
-<LogGrid [datasource]="logData" (refresh)="onRefresh()"></LogGrid>
+<LogGrid [datasource]="data?.Log" (refresh)="onRefresh()"></LogGrid>

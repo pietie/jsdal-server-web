@@ -45,8 +45,8 @@ export module app {
             return <any>L2.putJson(`/api/app/${appName}/file?project=${projectName}&oldName=${oldName}&newName=${newName}`);
         }
 
-        static delete(projectName: string, appName: string, id: string): Promise<IApiResponse> {
-            return <any>L2.deleteJson(`/api/app/${appName}/file/${id}?project=${projectName}`);
+        static delete(projectName: string, appName: string, fileName: string): Promise<IApiResponse> {
+            return <any>L2.deleteJson(`/api/app/${appName}/file/${fileName}?project=${projectName}`);
         }
 
         static getAll(projectName: string, appName: string): Promise<{ Filename: string, Id: string }[]> {
@@ -55,6 +55,13 @@ export module app {
             });
         }
 
+    }
+
+    export class endpoint
+    {
+        static installOrm(projectName: string, appName: string, endpointName: string): Promise<{ Success: boolean, BgTaskKey: string }> {
+            return <any>L2.postJson(`/api/endpoint/${endpointName}/installOrm?projectName=${projectName}&dbSourceName=${appName}`).then((r:any)=>r.Data);
+        }
     }
 }
 

@@ -188,7 +188,7 @@ export class ApplicationComponent {
     public deleteOutputFile(row) {
         this.outputFileBusy = true;
         return this.api.app
-            .jsfiles.delete(this.projectName, this.dbSource.Name, row.Id)
+            .jsfiles.delete(this.projectName, this.dbSource.Name, row.Filename)
             .then(r => {
                 this.refreshOutputFileList();
                 this.outputFileBusy = false;

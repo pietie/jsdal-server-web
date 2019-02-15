@@ -38,6 +38,8 @@ import {
 } from '@angular/material';
 
 
+
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { IsoDatePipe } from '../pipes/FromISODate';
@@ -77,7 +79,8 @@ import { MsgDialog, PromptDialog  } from '~/dialogs'
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
-        MatStepperModule],
+        MatStepperModule
+    ],
     declarations: [IsoDatePipe, FromEpochPipe, LogGrid, MsgDialog, PromptDialog],
     exports: [IsoDatePipe, FromEpochPipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule,    MatAutocompleteModule,
         MatButtonModule,
@@ -109,7 +112,8 @@ import { MsgDialog, PromptDialog  } from '~/dialogs'
         MatTabsModule,
         MatToolbarModule,
         MatTooltipModule,
-        MatStepperModule],
+        MatStepperModule,
+    ],
     entryComponents: [MsgDialog, PromptDialog]
 
 })

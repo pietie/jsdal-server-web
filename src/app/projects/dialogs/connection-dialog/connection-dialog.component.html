@@ -16,9 +16,10 @@
 
         <div style="margin-bottom: 12px;">
             <label style="margin-right:10px;font-size:15px;color: #303030;">Auth type</label>
-            <mat-radio-group [(ngModel)]="obj.authType" [disabled]="shouldDisableControls()">
-                <mat-radio-button value="100">Windows</mat-radio-button>
-                <mat-radio-button value="200">SQL</mat-radio-button>
+            
+            <mat-radio-group name="auth-type" [(ngModel)]="obj.authType" [disabled]="shouldDisableControls()">
+                <mat-radio-button [value]="100">Windows</mat-radio-button>
+                <mat-radio-button [value]="200">SQL</mat-radio-button>
             </mat-radio-group>
         </div>
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { L2  } from 'l2-lib/L2';
+import { L2 } from 'l2-lib/L2';
 import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
@@ -26,7 +26,9 @@ import { DomSanitizer } from "@angular/platform-browser";
     /deep/.procName
     {
         font-weight: bold;
-        color: red;
+        color: #EF5D5D;
+        text-decoration: dotted;
+        text-decoration-line: underline;
     }
 
     div.exception-detail .msg
@@ -81,6 +83,28 @@ import { DomSanitizer } from "@angular/platform-browser";
      
     }
 
+    .exec-option
+    {
+        margin: 6px;
+        padding: 12px;
+        background-color: rgb(240,240,255);
+    }
+
+    .exec-option .row .field
+    {
+        font-weight: bold;
+        width: 100px;
+        display: inline-block;
+    }
+
+    .exec-option .sql textarea
+    {
+        margin: 5px auto 5px auto;
+        width:80%;
+        height: 150px;
+        border: 1;
+    }
+
 `
 
     ]
@@ -89,11 +113,12 @@ export class ExceptionViewerComponent {
 
     public exceptionDetail: any;
     public recentExceptions: any;
-    public totalExceptionCnt:number = 0;
+    public totalExceptionCnt: number = 0;
     public appTitles: string[];
 
-    constructor(public domSanitizer: DomSanitizer) {
+    execTypeValues: string[] = Object.keys(ExecOptoionsExecType).map(key => ExecOptoionsExecType[key]).filter(value => typeof value === 'string') as string[];
 
+    constructor(public domSanitizer: DomSanitizer) {
     }
 
     ngOnInit() {
@@ -129,19 +154,36 @@ export class ExceptionViewerComponent {
 
     fetchRecentExceptions() {
         L2.fetchJson(`/api/exception/top/200`).then((r: any) => {
-            this.appTitles =  [ "(All)", ...<any>new Set(r.Data.Results.map(r=>r.appTitle)).entries()];
+            this.appTitles = ["(All)", ...<any>new Set(r.Data.Results.map(r => r.appTitle)).entries()];
 
             this.totalExceptionCnt = r.Data.TotalExceptionCnt;
             this.recentExceptions = r.Data.Results;//.sort((a,b)=>a.created<=b.created);
         });
     }
 
-    clearAll()
-    {
-        L2.postJson('/api/exception/clear-all').then(r=>
-        {
+    clearAll() {
+        L2.postJson('/api/exception/clear-all').then(r => {
             L2.success('Exceptions cleared.');
             this.fetchRecentExceptions();
         });
     }
+
+    buildExecParmList(parmList: { [key: string]: string }) {
+        if (!parmList || Object.keys(parmList).length == 0) return null;
+
+        return Object.keys(parmList).map(k=>`@${k} = ${this.wrapParmValue(parmList[k])}`).join(',\r\n\t\t'); 
+    }
+
+    private wrapParmValue(val:string)
+    {
+        if (val == null) return 'null';
+
+        return `'${val}'`;
+    }
+}
+
+enum ExecOptoionsExecType {
+    Query = 0,
+    NonQuery = 1,
+    Scalar = 2
 }

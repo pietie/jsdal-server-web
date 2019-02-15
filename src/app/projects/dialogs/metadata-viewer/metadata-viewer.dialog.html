@@ -11,7 +11,7 @@
             />
         </mat-form-field>
 
-        <div style="margin-top:10px;display: flex; justify-content: space-around;flex: 1 1 auto;">
+        <div class="control-row">
 
             <mat-select [(ngModel)]="searchCriteria.routineType" placeholder="Type">
                 <mat-option value="0">(All)</mat-option>
@@ -38,7 +38,7 @@
     <button mat-raised-button color="primary" (click)="onSearchClicked()">SEARCH</button>
     <hr/>
 
-    <mat-progress-spinner [diameter]="30" [strokeWidth]="3" mode="indeterminate" *ngIf="isLoading"></mat-progress-spinner>
+    <mat-progress-spinner [diameter]="30" [strokeWidth]="3" mode="indeterminate" *ngIf="isLoading" style="display: inline-block"></mat-progress-spinner>
 
     <div *ngIf="!isLoading && searchResults">
 

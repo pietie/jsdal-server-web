@@ -31,7 +31,8 @@ export enum DefaultRuleMode {
     styleUrls: ['./rules.component.css']
 })
 export class RulesComponent {
-
+    fixedSizeData = Array(10000).fill(30);
+    
     projectName: string;
     appName: string;
     jsFilename: string;

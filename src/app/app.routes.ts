@@ -18,6 +18,7 @@ import { PluginsComponent } from './plugins/plugins.component'
 
 import { CanDeactivateGuard } from './services/can-deactivate-guard.service'
 import { LoggedInGuard } from './logged-in.guard';
+import { BgtasksComponent } from '~/bgtasks/bgtasks.component';
 
 
 export const appRoutes: Routes = [
@@ -47,6 +48,7 @@ export const appRoutes: Routes = [
 
         ]
     },
+    { path: 'bgtasks', component: BgtasksComponent, canActivate: [LoggedInGuard] },
     { path: 'plugins', component: PluginsComponent, canActivate: [LoggedInGuard] },
 
 

@@ -44,6 +44,11 @@ import { CsharpTextareaComponent } from './controls/csharp-textarea/csharp-texta
 import { AceEditorModule } from 'ng2-ace-editor';
 import { ServerMethodsComponent } from './plugins/tabs/server-methods/server-methods.component';
 
+import { BgtasksComponent } from '~/bgtasks/bgtasks.component'
+import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';
+
+
+
 
 export class MyErrorHandler implements ErrorHandler {
     
@@ -72,10 +77,11 @@ export class MyErrorHandler implements ErrorHandler {
         FirstTimeNetworkErrorComponent,
         PluginsComponent,
         CsharpTextareaComponent,
-        ServerMethodsComponent
+        ServerMethodsComponent,
+        BgtasksComponent    
     ],
     bootstrap: [AppComponent],
-    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/ ],
+    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/ ],
     entryComponents: [  ]
 
 })

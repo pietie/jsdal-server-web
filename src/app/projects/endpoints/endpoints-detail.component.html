@@ -56,9 +56,9 @@
                 </div>
             </div>
 
-            <div  *ngIf="!isCheckingOrm">
+            <div  *ngIf="!isCheckingOrm ">
 
-                <div class="orm-line flex-vertical-center">
+                <div class="orm-line flex-vertical-center" *ngIf="!isInitialisingOrm">
                     <div class="flex-vertical-center ormLabel" [class.good]="this.endpoint.IsOrmInstalled" [class.bad]="!this.endpoint.IsOrmInstalled">
                         <mat-icon>{{ this.endpoint.IsOrmInstalled? "done":"highlight_off" }} </mat-icon>
                         <span>ORM&nbsp;</span>
@@ -67,24 +67,35 @@
                     </div>
 
                     <button mat-button color="warn" *ngIf="this.endpoint.IsOrmInstalled" (click)="onUninstallOrmClicked()">UNINSTALL</button>
-                    <button mat-button color="primary" *ngIf="this.endpoint.IsOrmInstalled" (click)="onRecheckOrmClicked(true)">RECHECK</button>
+                    <button mat-button color="primary"  (click)="onRecheckOrmClicked(true)">RECHECK</button>
 
                 </div>
                 
-                <div *ngIf="!this.endpoint.IsOrmInstalled">
+                <div *ngIf="!this.endpoint.IsOrmInstalled && !isInitialisingOrm">
                     <p>ORM sprocs are not installed yet. Click
                         <strong>initialise</strong> to start the installation procedure.</p>
                 </div>
  
 
-                <button mat-raised-button color="accent" *ngIf="!this.endpoint?.IsOrmInstalled" [class.disabled]="isInstallingOrm" (click)="onInitializeClicked()">
+                <button mat-raised-button color="accent" *ngIf="!this.endpoint?.IsOrmInstalled && !isInstallingOrm && !isInitialisingOrm" [class.disabled]="isInstallingOrm || isInitialisingOrm" (click)="onInitORMClicked()">
                     <span *ngIf="!isInstallingOrm">Initialise</span>
                     <span *ngIf="isInstallingOrm">Working...</span>
                 </button>
 
+                <div *ngIf="isInstallingOrm">
+                    Installing base ORM base, please wait...
+                </div>
+
+                <div *ngIf="isInitialisingOrm">
+<p>
+    Initial ORM metadata generation, <span>{{ initProgress | number:'1.2' }}</span>%
+</p>
+
+                </div>
+
             </div>
 
-            <div *ngIf="this.endpoint.IsOrmInstalled && metadataCacheSummary" style="padding-left:16px;padding-top:10px;">
+            <div *ngIf="this.endpoint.IsOrmInstalled && metadataCacheSummary && !isInitialisingOrm" style="padding-left:16px;padding-top:10px;">
 
 
 

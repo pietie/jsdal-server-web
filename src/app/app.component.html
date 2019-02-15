@@ -41,6 +41,13 @@
                 </div>
             </mat-list-item>
 
+            <mat-list-item (click)="side.close(); go('bgtasks')">
+                <div class="flex-vertical-center">
+                    <mat-icon>work_outline</mat-icon>
+                    <div md-line>Background tasks</div>
+                </div>
+            </mat-list-item>
+
             <mat-list-item (click)="side.close(); go('sessionlog')">
                 <div class="flex-vertical-center">
                     <mat-icon>event_note</mat-icon>

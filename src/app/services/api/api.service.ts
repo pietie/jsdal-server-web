@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { app, appRules, serverMethods } from './object-model';
+import { app, appRules, serverMethods, bgTasks } from './object-model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +18,7 @@ export class ApiService {
     plugins: app.plugins,
     jsfiles: app.jsfiles,
     rules: appRules.rules,
+    endpoint: app.endpoint,
     serverMethods: serverMethods.serverMethods
   }
 
@@ -25,7 +26,10 @@ export class ApiService {
     return this.appApi;
   }
 
-
+  get bgTasks() 
+  {
+    return bgTasks;
+  }
 }
 
 

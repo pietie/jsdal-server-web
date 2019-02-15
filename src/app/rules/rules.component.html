@@ -83,6 +83,13 @@
         <div style="height: 2px;margin-top:-3px;">
             <mat-progress-bar *ngIf="isFilteredListLoading" mode="indeterminate"></mat-progress-bar>
         </div>
+        <!-- <cdk-virtual-scroll-viewport class="demo-viewport" autosize>
+                <div *cdkVirtualFor="let size of fixedSizeData; let i = index" class="demo-item"
+                     [style.height.px]="size">
+                  Item #{{i}} - ({{size}}px)
+                </div>
+              </cdk-virtual-scroll-viewport> -->
+
 
         <table class="grid" *ngIf="filteredRoutineList" style="table-layout: fixed2;">
             <thead>

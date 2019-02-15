@@ -12,7 +12,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
-            "index": "src/index.html",
+            "index": "src/index.dev.html",
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
@@ -41,6 +41,7 @@
           },
           "configurations": {
             "production": {
+              "index": "src/index.html",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -69,26 +70,8 @@
               "browserTarget": "jsdal-server-web:build:production"
             }
           }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "jsdal-server-web:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [],
-            "exclude": []
-          }
         }
       }
-    },
-    "jsdal-server-web-e2e": {
-      "root": "",
-      "sourceRoot": "",
-      "projectType": "application"
     }
   },
   "defaultProject": "jsdal-server-web",
