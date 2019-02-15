@@ -45,6 +45,7 @@ export class BgTaskMonitorService {
             this.bgTasksSubscription = this.stats$.subscribe(<any>{
               next: ((bgTask: BgTaskResponse) => {
 
+                //console.log("bgTask Update", bgTask, this.obsLookup);
                 let obs = this.obsLookup[bgTask.Key];
 
                 obs.next(bgTask);

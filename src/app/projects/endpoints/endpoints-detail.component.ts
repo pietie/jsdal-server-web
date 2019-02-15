@@ -31,6 +31,7 @@ export class EndpointDetailComponent {
     isInstallingOrm: boolean = false;
     isInitialisingOrm: boolean = false;
     initProgress: number = 0;
+    isUninstallingOrm: boolean = false;
 
     metadataCacheSummary: any;
 
@@ -51,6 +52,15 @@ export class EndpointDetailComponent {
                 this.endpointName = p.endpoint;
 
                 this.dbSource = this.route.snapshot.parent.data.dbSource;
+
+                // reset vars
+                {
+
+                    this.isCheckingOrm = true;
+                    this.isInstallingOrm = false;
+                    this.isInitialisingOrm = false;
+                    this.initProgress = 0;
+                }
 
                 this.route.data.subscribe(d => {
 
@@ -132,12 +142,21 @@ export class EndpointDetailComponent {
 
     initBGTaskSubscription$: Subscription;
     listenForInitProcessBgTask() {
+        let listenForKey: string = `${this.endpoint.BgTaskKey}.ORM_INIT`;
+        let obs = this.bgTasks.observeBgTask(listenForKey);
 
-        let obs = this.bgTasks.observeBgTask(`${this.endpoint.BgTaskKey}.ORM_INIT`);
+        if (this.initBGTaskSubscription$ != null) {
+            this.initBGTaskSubscription$.unsubscribe();
+            this.initBGTaskSubscription$ = null;
+        }
+
+        //console.log(this.endpoint.Name, " listening for ... ", this.endpoint.BgTaskKey);
 
         this.initBGTaskSubscription$ = obs.subscribe(bgTask => {
-            if (bgTask == null) return;
+            if (bgTask == null || bgTask.Key != listenForKey) return;
+
             this.isInitialisingOrm = true;
+
             if (bgTask.IsDone) {
                 this.isInitialisingOrm = false;
 
@@ -174,12 +193,15 @@ export class EndpointDetailComponent {
 
 
     performOrmUninstall() {
-        return L2.postJson(`/api/endpoint/${this.endpointName}/uninstallOrm?projectName=${this.projectName}&dbSourceName=${this.dbSourceName}`).then(resp => {
-            L2.success("ORM successfully uninstalled");
+        this.isUninstallingOrm = true;
+        return L2.postJson(`/api/endpoint/${this.endpointName}/uninstallOrm?projectName=${this.projectName}&dbSourceName=${this.dbSourceName}`)
+            .then(resp => {
+                this.isUninstallingOrm = false;
+                L2.success("ORM successfully uninstalled");
 
-            this.endpoint.IsOrmInstalled = false;
+                this.endpoint.IsOrmInstalled = false;
 
-        }).catch((_) => { this.isInstallingOrm = false });
+            }).catch((_) => { this.isUninstallingOrm = false; });
     }
 
     onUninstallOrmClicked() {
@@ -200,7 +222,7 @@ export class EndpointDetailComponent {
 
             if (!isMetadata) title = "Change run-time connection";
 
-            row =  row || { };
+            row = row || {};
 
             if (row.Port == null) row.Port = 1433;
 

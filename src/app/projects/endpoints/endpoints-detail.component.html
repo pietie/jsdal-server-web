@@ -66,8 +66,12 @@
                         <span>&nbsp;installed</span>
                     </div>
 
-                    <button mat-button color="warn" *ngIf="this.endpoint.IsOrmInstalled" (click)="onUninstallOrmClicked()">UNINSTALL</button>
+                    <button mat-button color="warn" *ngIf="this.endpoint.IsOrmInstalled" [disabled]="isUninstallingOrm" (click)="onUninstallOrmClicked()">UNINSTALL</button>
                     <button mat-button color="primary"  (click)="onRecheckOrmClicked(true)">RECHECK</button>
+
+                    <p *ngIf="isUninstallingOrm">
+                      Uninstalling ORM, please wait...  
+                    </p>
 
                 </div>
                 
