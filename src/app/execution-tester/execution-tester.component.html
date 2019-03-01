@@ -1,0 +1,162 @@
+<mat-card>
+  <mat-card-content>
+
+    <div class="flex-vertical-center row">
+      <div class="field">
+        Endpoint
+      </div>
+      <div class="value">
+        <mat-form-field style="width:300px">
+          <mat-select #epSelect (selectionChange)="onEndpointChanged(epSelect.value)" [(ngModel)]="selectedEndpointVal">
+            <mat-option *ngFor="let ep of endpoints" [value]="ep.Project+'/'+ep.App+'/'+ep.Endpoint">
+              {{ ep.Project }}/{{ ep.App }}/{{ ep.Endpoint }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div *ngIf="endpoint">
+      <div class="flex-vertical-center row">
+        <div class="field">
+          Routine
+        </div>
+        <div class="value">
+          <form [formGroup]='searchForm'>
+            <mat-form-field style="width:400px">
+              <input #routineName matInput placeholder="Routine name" autocomplete="off" [matAutocomplete]="auto"
+                formControlName='userInput' (blur)="routineName_Changed()" />
+              <button mat-button matSuffix mat-icon-button color="primary">
+                <mat-icon>search</mat-icon>
+              </button>
+
+
+            </mat-form-field>
+
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayRoutineAutocomplete"
+              panelWidth="600px" (optionSelected)="routineResult_AutoCompleteSelected($event)">
+              <mat-option *ngIf="isSearchingRoutine" class="is-loading">
+                <mat-spinner diameter="50"></mat-spinner>
+              </mat-option>
+              <ng-container *ngIf="!isSearchingRoutine">
+                <mat-option class="routine-result" *ngFor="let routine of routineSearchResults" [value]="routine">
+                  <span>{{ routine }}</span>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+
+          </form>
+        </div>
+
+
+      </div>
+
+
+      <div class="flex-vertical-center row">
+        <div class="field top">
+          Options
+        </div>
+        <div class="value" style="display: flex; flex-direction: column;">
+
+          <mat-form-field>
+            <mat-select placeholder="HTTP Method" [(ngModel)]="execMethod">
+              <mat-option value="GET">GET</mat-option>
+              <mat-option value="POST">POST</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <mat-form-field>
+            <mat-select placeholder="Exec Type" [(ngModel)]="execType">
+              <mat-option value="Query">Query</mat-option>
+              <mat-option value="NonQuery">NonQuery</mat-option>
+              <mat-option value="Scalar">Scalar</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-checkbox [(ngModel)]="execIncludeServerTiming">Include server timing</mat-checkbox>
+
+
+        </div>
+      </div>
+
+      <div class="flex-vertical-center row" *ngIf="routineMetadata?.Parameters">
+        <div class="field top">
+          Parameters
+        </div>
+        <div class="value">
+          <mat-spinner [diameter]="20" *ngIf="isFetchingMetadata"></mat-spinner>
+
+          <div class="parm-list">
+
+            <div class="parm" *ngFor="let parm of routineMetadata?.Parameters">
+              <div class="lhs">
+
+                <div *ngIf="!parm.IsCustom" class="name" [class.required]="!parm.DefaultValue">{{ parm.Name }}</div>
+                <div *ngIf="!parm.IsCustom" class="type">{{ parm.SqlDataType }}</div>
+
+                <input *ngIf="parm.IsCustom" type="text" placeholder="@parm name"
+                  [(ngModel)]="execParameters[parm.Name].name" />
+                <div *ngIf="parm.IsCustom" class="type">(custom)</div>
+
+              </div>
+              <span class="input">
+                <mat-form-field *ngIf="!parm.IsCustom">
+                  <input matInput type="text" autocomplete="off" [(ngModel)]="execParameters[parm.Name]" />
+                </mat-form-field>
+                <mat-form-field *ngIf="parm.IsCustom">
+                  <input matInput type="text" autocomplete="off" [(ngModel)]="execParameters[parm.Name].value" />
+                </mat-form-field>
+              </span>
+
+              <button *ngIf="parm.IsCustom" mat-icon-button (click)="removeParameter(parm)">
+                <mat-icon>close</mat-icon>
+              </button>
+
+            </div>
+            <div style="flex:1 0 100%;height:20px;"></div>
+
+            <button mat-button color="primary" (click)="addCustomParameter();">
+              <mat-icon>add_circle_outline</mat-icon>
+              New custom parameter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button *ngIf="endpoint"
+      [disabled]="!searchForm.get('userInput').value || isSearchingRoutine || isFetchingMetadata || isExecuting"
+      color="primary" mat-raised-button (click)="exec()">Execute</button>
+
+
+  </mat-card-actions>
+  <mat-card-footer>
+    <mat-progress-bar *ngIf="isExecuting" mode="indeterminate"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>
+
+<mat-card *ngIf="hasResult">
+
+  <mat-card-content>
+    <span class="field">Status:&nbsp;</span><span class="status-code">{{ resultStatusCode }}</span>
+
+    <div class="headers" *ngIf="resultHeaders">
+      <div *ngFor="let h of resultHeaderKeys()" class="h">
+        <span class="key">{{h}}:</span>
+        <span class="val">{{resultHeaders[h]}}</span>
+      </div>
+
+    </div>
+
+    <div id="results" class="result"
+      style="background-color:rgb(65, 68, 78);color:#fff;border-radius: 6px; width:90%;margin:auto;font-family: monospace;padding: 16px;">
+      <pre [innerHTML]="resultBody">
+
+      </pre>
+    </div>
+
+  </mat-card-content>
+</mat-card>

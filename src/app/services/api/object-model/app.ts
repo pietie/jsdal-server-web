@@ -57,10 +57,24 @@ export module app {
 
     }
 
-    export class endpoint
-    {
+    export class endpoint {
         static installOrm(projectName: string, appName: string, endpointName: string): Promise<{ Success: boolean, BgTaskKey: string }> {
-            return <any>L2.postJson(`/api/endpoint/${endpointName}/installOrm?projectName=${projectName}&dbSourceName=${appName}`).then((r:any)=>r.Data);
+            return <any>L2.postJson(`/api/endpoint/${endpointName}/installOrm?projectName=${projectName}&dbSourceName=${appName}`).then((r: any) => r.Data);
+        }
+
+        //TODO: move to appropriate class 
+        static getFullEndpointList(): Promise<[{ Project: boolean, App: string, Endpoint: string }]> {
+            return <any>L2.fetchJson(`/api/exec-tester/endpoints`).then((r: any) => r.Data);
+        }
+
+        //TODO: move to appropriate class 
+        static searchRoutine(project:string, app:string, endpoint:string, query:string): Promise<string[]> {
+            return <any>L2.fetchJson(`/api/exec-tester/search-routine?project=${project}&app=${app}&endpoint=${endpoint}&query=${query}`);
+        }
+
+        //TODO: move to appropriate class 
+        static getRoutineMetadata(project:string, app:string, endpoint:string, routine:string): Promise<string[]> {
+            return <any>L2.fetchJson(`/api/exec-tester/routine-metadata?project=${project}&app=${app}&endpoint=${endpoint}&routine=${routine}`);
         }
     }
 }

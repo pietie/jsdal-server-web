@@ -9,7 +9,7 @@
     "prod": "ng build --prod",
     "sw": "sw-precache --root=dist --config=sw-precache-config.js",
     "aot": "ng build --aot --prod",
-	"publish": "ng build --prod --output-path ../server-core/jsdal-server-core/wwwroot"  
+    "publish": "ng build --prod --output-path ../server-core/jsdal-server-core/wwwroot"
   },
   "private": true,
   "dependencies": {
@@ -27,11 +27,13 @@
     "@angular/router": "^7.0.1",
     "@aspnet/signalr": "^1.0.4",
     "core-js": "^2.5.7",
+    "json-formatter-js": "^2.2.1",
     "l2-lib": "git+https://github.com/pietie/l2-lib.git",
     "mirrorsharp": "^0.11.3",
     "ng2-ace-editor": "^0.3.8",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
+    "shortid": "^2.2.14",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.8.26"
   },
@@ -39,6 +41,7 @@
     "@angular-devkit/build-angular": "~0.10.0",
     "@angular/cli": "^7.0.3",
     "@types/node": "^10.12.1",
+    "@types/shortid": "0.0.29",
     "ts-node": "7.0.1",
     "typescript": "^3.1.4"
   }

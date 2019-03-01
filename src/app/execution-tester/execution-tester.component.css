@@ -1,0 +1,98 @@
+div.row
+{
+    display: flex;
+}
+div.field
+{
+    display: inline-block;
+    width: 140px;
+    font-weight: bold;
+}
+
+div.field.top
+{
+    align-self: flex-start;
+}
+
+div.value
+{
+    display: inline-block;
+}
+
+.routine-result
+{
+    font-size: 12px;
+}
+
+.parm-list
+{
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.9em;
+    margin: 30px;
+}
+
+.parm-list .parm
+{
+    width: 500px;
+    display: flex;
+    background-color: #F0F5FF;
+    padding: 4px;
+    border-bottom: 1px dotted silver;
+}
+
+.parm-list .parm:nth-child(even)
+{
+    background-color: #E3E7EF;
+}
+ 
+
+.parm-list .parm .lhs {
+    width: 50%;
+    padding-left: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+}
+
+.parm-list .parm .lhs .name
+{
+    font-weight: bold;
+}
+.parm-list .parm .lhs .name.required
+{
+    color: #c03030;
+}
+
+.parm-list .parm .lhs .type
+{
+    font-style: italic;
+}
+
+
+.headers
+{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.headers .h .key
+{
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
+.headers .h .val
+{
+    display: inline-block;
+}
+
+/deep/ .result pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+/deep/ .result .string { color: #CE9178; }
+/deep/ .result .number { color: #B5CEA8; }
+/deep/ .result .boolean { color: #569CD6; }
+/deep/ .result .null { color: #569CD6; }
+/deep/ .result .key { color: #CE9178; }

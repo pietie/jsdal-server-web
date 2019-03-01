@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 
 import { RouterModule } from '@angular/router'
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 
 import { routing } from './app.routes';
 
@@ -45,9 +45,8 @@ import { AceEditorModule } from 'ng2-ace-editor';
 import { ServerMethodsComponent } from './plugins/tabs/server-methods/server-methods.component';
 
 import { BgtasksComponent } from '~/bgtasks/bgtasks.component'
-import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';
-
-
+import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';;
+import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';
 
 
 export class MyErrorHandler implements ErrorHandler {
@@ -64,7 +63,7 @@ export class MyErrorHandler implements ErrorHandler {
  }
 
 @NgModule({
-    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule, AceEditorModule],
+    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule, AceEditorModule, ReactiveFormsModule],
     declarations: [AppComponent,
         HomeComponent,
         LoginComponent,
@@ -78,7 +77,9 @@ export class MyErrorHandler implements ErrorHandler {
         PluginsComponent,
         CsharpTextareaComponent,
         ServerMethodsComponent,
-        BgtasksComponent    
+        BgtasksComponent ,
+        ExecutionTesterComponent 
+          
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/ ],
