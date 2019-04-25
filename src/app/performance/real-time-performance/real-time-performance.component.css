@@ -1,0 +1,20 @@
+td.right-align
+{
+    text-align: right;
+    padding-right: 10px;
+}
+
+tr.COMPLETED
+{
+    color: green;
+}
+
+tr.RUNNING
+{
+    color: #606060;
+}
+
+tr.ERROR
+{
+    color: red;
+}

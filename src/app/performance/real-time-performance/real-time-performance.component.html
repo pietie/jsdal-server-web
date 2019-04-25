@@ -1,0 +1,39 @@
+<h3>Real-time executions </h3>
+<mat-chip-list>
+  <mat-chip>{{ signalRStatus }}</mat-chip>
+</mat-chip-list>
+<br /><br />
+
+<mat-card *ngIf="realtimeExectuionData">
+
+  <mat-card-content>
+
+
+    <table class="grid">
+      <thead>
+        <tr>
+          <th style="width:auto">Name</th>
+          <th style="width:100px;">Created</th>
+          <th style="width:100px">Duration</th>
+          <th style="width:130px">Rows</th>
+          <th style="width:130px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of realtimeExectuionData" [ngClass]="getStatus(row)">
+          <td>{{ row.n }}</td>
+          <td class="right-align">{{ row.ce | fromEpoch | date:'HH:mm:ss' }}</td>
+          <td class="right-align">{{ getRunningTime(row) }} </td>
+          <td class="right-align">{{ row.r }}</td>
+          <td>{{getStatus(row)}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>Ok</button>
+  </mat-card-actions>
+</mat-card>

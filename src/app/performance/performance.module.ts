@@ -6,13 +6,14 @@ import { PerformanceComponent } from './performance.component'
 import { DbSourceListComponent } from './dbsource-list.component'
 import { PerformanceDetailComponent } from './performance-detail.component'
 
-import { performanceRouting } from './performance.routes'
+import { performanceRouting } from './performance.routes';
+import { RealTimePerformanceComponent } from './real-time-performance/real-time-performance.component'
 
 
 
 @NgModule({
     declarations: [
-        PerformanceComponent, DbSourceListComponent, PerformanceDetailComponent
+        PerformanceComponent, DbSourceListComponent, PerformanceDetailComponent, RealTimePerformanceComponent
     ],
     imports: [SharedModule, performanceRouting]
 

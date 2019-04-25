@@ -3,9 +3,6 @@ import { L2 } from 'l2-lib/L2';
 
 import { environment } from './../../environments/environment';
 
-import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
-import { Observable, Subscription } from 'rxjs';
-
 @Component({
     templateUrl: 'performance.component.html'
 })
@@ -15,72 +12,17 @@ export class PerformanceComponent {
 
     public perfraw: any;
 
-    public hubConnection: HubConnection;
-
-    public realtimeExectuionData: any;
-    private realtimeStream$: Observable<any>;
-    private realtimeExecutionsSubscription: Subscription;
 
     constructor() {
         this.refresh();
     }
 
     ngOnInit() {
-        try {
-            this.hubConnection = new HubConnectionBuilder()
-                .configureLogging(LogLevel.Debug)
-                .withUrl(environment.apiBaseUrl + '/performance-realtime-hub')
-                //?.withHubProtocol()
-                .build();
-
-
-            // TODO: Disconnect when component is not active
-            this.hubConnection.start()
-                .then(() => {
-
-                    this.hubConnection.invoke("Init").then(r => {
-                        this.realtimeExectuionData = r;
-                    });
-
-                    this.realtimeStream$ = <any>this.hubConnection.stream("StreamRealtimeList");
-
-                    this.realtimeExecutionsSubscription = this.realtimeStream$.subscribe(<any>{
-                        next: (n => { this.realtimeExectuionData = n; }),
-                        error: function (err) {
-                            console.info("Streaming error");
-                            console.error(err);
-                        }
-                    });
-
-                });
-
-            this.updateRealtimeRunningTimes();
-        }
-        catch (e) {
-            L2.handleException(e);
-        }
-    }
-
-    updateRealtimeRunningTimes() {
-
-        //!    setTimeout(()=>this.updateRealtimeRunningTimes(), 300);
+      
     }
 
     ngOnDestroy() {
-        try {
-            if (this.hubConnection) {
-                if (this.realtimeExecutionsSubscription) {
-                    this.realtimeExecutionsSubscription.closed = true;
-                    this.realtimeExecutionsSubscription.unsubscribe();
-                    this.realtimeExecutionsSubscription = null;
-                }
-                this.hubConnection.stop();
-                this.hubConnection = null;
-            }
-        }
-        catch (e) {
-            console.warn(e);
-        }
+    
     }
 
 
@@ -97,26 +39,9 @@ export class PerformanceComponent {
 
     }
 
-    getRunningTime(row) {
-        if (!row) return null;
-        if (row.durationMS != null) return null;
+   
 
-        let createdMom = moment(row.createdEpoch);
-
-        let diff = moment().diff(createdMom, 'ms');
-
-        if (diff < 0) diff = 0;
-
-        return this.formatMilliseconds(diff);
-    }
-
-    formatMilliseconds(ms: number) {
-        if (ms == null) return null;
-        if (ms == 0) return "0s";
-        var s = (ms / 1000.0).toFixed(2);
-
-        return s + "s";
-    }
+   
 
 
 }

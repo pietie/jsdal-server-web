@@ -7,6 +7,7 @@ import { PerformanceDetailComponent } from './performance-detail.component'
 
 import { CanDeactivateGuard } from '../services/can-deactivate-guard.service'
 import { LoggedInGuard } from '../logged-in.guard';
+import { RealTimePerformanceComponent } from './real-time-performance/real-time-performance.component';
 
 export const projectsRoutes: Routes = [
     {
@@ -14,6 +15,12 @@ export const projectsRoutes: Routes = [
         canActivate: [LoggedInGuard],
         component: PerformanceComponent,
         children: [
+            {
+                path: 'real-time',
+                component: RealTimePerformanceComponent,
+                canActivate: [LoggedInGuard]
+
+            },
             {
                 path: ':project',
                 component: DbSourceListComponent,

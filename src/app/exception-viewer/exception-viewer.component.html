@@ -1,91 +1,61 @@
+<router-outlet #topEl></router-outlet>
+
 <mat-card>
     <mat-card-content>
         <mat-form-field>
-            <input #errRef matInput type="text" placeholder="Error ref#" />
+            <input #errRef matInput type="text" placeholder="Error ref#" autocomplete="off" />
         </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-        <button #lookupButton mat-button color="primary" (click)="lookupError(errRef.value)">LOOKUP</button>
+        <button [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary" (click)="lookupError(errRef.value); topEl.scrollIntoView();">LOOKUP</button>
     </mat-card-actions>
 </mat-card>
 
-<mat-card *ngIf="exceptionDetail">
-    <mat-card-content>
-        <span class="head">{{ exceptionDetail.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;<span>({{ exceptionDetail.id }})</span>
-        <hr/>
-        <div class="exception-detail" *ngIf="exceptionDetail">
-            <div class="msg" [innerHTML]="formatMessage(exceptionDetail.message)"></div>
-            <hr/> 
-
-            <div class="stack" *ngIf="exceptionDetail.stackTrace" [innerHTML]="formatStackTrace(exceptionDetail.stackTrace)">
-
-
-            </div>
-
-        </div>
-        <div class="exec-option" *ngIf="exceptionDetail && exceptionDetail.execOptions &&  exceptionDetail.execOptions.project">
-            <h3>
-                jsDAL execution options
-            </h3>
-            <div class="row">
-                <span class="field">Endpoint</span>
-                <span class="value">{{ exceptionDetail.execOptions.project }}/{{ exceptionDetail.execOptions.application }}/{{ exceptionDetail.execOptions.endpoint }}</span>
-            </div>
-
-            <div class="row">
-                <span class="field">Routine</span>
-                <span class="value">[{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}]</span>
-            </div>
-
-            <div class="row">
-                <span class="field">Type</span>
-                <span class="value">{{ execTypeValues[exceptionDetail.execOptions.type] }}</span>
-            </div>
-            
- 
-
-            <div class="sql">
-                <textarea>exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}</textarea>
-            </div>
-            
-            
-            
-
-             
-
-
-            {{ exceptionDetail.execOptions.OverridingInputParameters }}
-            
-
-            {{exceptionDetail.execOptions | json}}
-        </div>
-    </mat-card-content>
-</mat-card>
 
 <mat-card>
     <mat-card-title>Recent exceptions</mat-card-title>
     <mat-card-content>
 
         <p>
-            (Total # of exceptions in memory: {{ totalExceptionCnt }}) <button (click)="clearAll()" mat-button color="warn">CLEAR ALL</button>
-            </p>
-        
-        <div *ngIf="recentExceptions">
+            (Total # of exceptions in memory: {{ totalExceptionCnt }}) <button (click)="clearAll()" mat-button
+                color="warn">CLEAR ALL</button>
+        </p>
 
-            <p *ngIf="recentExceptions.length == 0">
+        <div *ngIf="recentExceptions">
+            <div>
+                <button mat-button color="primary" (click)="fetchRecentExceptions()" [disabled]="isLoadingExceptionList">REFRESH</button>
+
+            </div>
+            <br/><br/>
+            <div>
+                <mat-form-field>
+                    <mat-label>Top (n)</mat-label>
+                    <mat-select [(ngModel)]="topN" (selectionChange)="fetchRecentExceptions()" [disabled]="isLoadingExceptionList">
+                        <mat-option [value]="10">10</mat-option>
+                        <mat-option [value]="50">50</mat-option>
+                        <mat-option [value]="100">100</mat-option>
+                        <mat-option [value]="500">500</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <p *ngIf="recentExceptions.length == 0 && !isLoadingExceptionList">
                 No recent exceptions found.
             </p>
+
+            <mat-spinner diameter="20" *ngIf="isLoadingExceptionList"></mat-spinner>
 
             <div class="exception-item" *ngFor="let ex of recentExceptions">
                 <span [title]="ex.created | date: 'dd MMM yyyy'">{{ ex.created | date: 'HH:mm:ss' }}</span>
                 <div style="width:90px;display:inline-block;">
-                        <button style="font-family: Courier;font-weight: 800;" (click)="errRef.value=ex.id;lookupError(ex.id)" mat-button color="primary">{{ ex.id }}</button>
+                    <button [disabled]="isLoadingExceptionList" style="font-family: Courier;font-weight: 800;"
+                        (click)="errRef.value=ex.id;lookupError(ex.id); topEl.scrollIntoView();" mat-button color="primary">{{ ex.id }}</button>
                 </div>
                 <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle">{{ ex.appTitle }} </div>
                 <div class="msg" *ngIf="ex" [innerHTML]="formatMessage(ex.message)">
 
                 </div>
-                
+
             </div>
 
         </div>

@@ -20,6 +20,7 @@ import { CanDeactivateGuard } from './services/can-deactivate-guard.service'
 import { LoggedInGuard } from './logged-in.guard';
 import { BgtasksComponent } from '~/bgtasks/bgtasks.component';
 import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';
+import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component';
 
 
 export const appRoutes: Routes = [
@@ -36,7 +37,14 @@ export const appRoutes: Routes = [
     { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule', canActivate: [LoggedInGuard] },
     { path: 'sessionlog', component: SessionLog, canActivate: [LoggedInGuard] },
     { path: 'settings', component: Settings, canActivate: [LoggedInGuard] },
-    { path: 'exceptions', component: ExceptionViewerComponent, canActivate: [LoggedInGuard] },
+    {
+        path: 'exceptions', component: ExceptionViewerComponent, canActivate: [LoggedInGuard], children: [
+
+            { path: ':id', canActivate: [LoggedInGuard], component: ExceptionDetailComponent }
+
+        ]
+
+    },
     {
         path: 'workers',
         component: WorkersComponent,

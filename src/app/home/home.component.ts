@@ -4,7 +4,7 @@ import { L2 } from 'l2-lib/L2';
 
 import { environment } from '../../environments/environment';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'home',
@@ -22,16 +22,18 @@ export class HomeComponent {
     private stats$: Observable<any>;
     private statsSubscription: Subscription;
 
+
     ngOnInit() {
         try {
             this.hubConnection = new HubConnectionBuilder()
-            .configureLogging(LogLevel.Debug)
-            .withUrl(environment.apiBaseUrl + '/main-stats')
-            //?.withHubProtocol()
-            .build();
+                .configureLogging(LogLevel.Debug)
+                .withUrl(environment.apiBaseUrl + '/main-stats')
+                //?.withHubProtocol()
+                .build();
 
             // TODO: Disconnect when component is not active
-            this.hubConnection.start()
+            this.hubConnection
+                .start()
                 .then(() => {
 
                     this.hubConnection.invoke("Init").then(r => {

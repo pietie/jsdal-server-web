@@ -1,0 +1,63 @@
+div.exception-detail
+{
+
+}
+
+.head
+{
+    font-size:1.2em;
+    font-weight:bold;
+}
+
+/deep/ span.first-stacktrace-line
+{
+    font-weight: bold;
+    color: #fff;
+}
+
+/deep/.procName
+{
+    font-weight: bold;
+    color: #EF5D5D;
+    text-decoration: dotted;
+    text-decoration-line: underline;
+}
+
+div.exception-detail .msg
+{
+    padding: 7px;
+    background-color: #303030;
+    color: #FFFA45;
+    width: 100%;
+}
+
+div.exception-detail .stack
+{
+    background-color: #1E1E1E;
+    padding: 13px;
+    color: #FF8C8C;
+    overflow-y: scroll;
+    font-family: Consolas, 'Courier New', monospace;
+}
+
+.exec-option
+{
+    margin: 6px;
+    padding: 12px;
+    background-color: rgb(240,240,255);
+}
+
+.exec-option .row .field
+{
+    font-weight: bold;
+    width: 100px;
+    display: inline-block;
+}
+
+.exec-option .sql textarea
+{
+    margin: 5px auto 5px auto;
+    width:80%;
+    height: 150px;
+    border: 1;
+}

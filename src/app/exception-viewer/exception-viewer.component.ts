@@ -1,124 +1,24 @@
 import { Component } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { DomSanitizer } from "@angular/platform-browser";
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './exception-viewer.component.html',
-    styles: [
-        `
-    div.exception-detail
-    {
-
-    }
-
-    .head
-    {
-        font-size:1.2em;
-        font-weight:bold;
-    }
-
-    /deep/ span.first-stacktrace-line
-    {
-        font-weight: bold;
-        color: #fff;
-    }
-
-    /deep/.procName
-    {
-        font-weight: bold;
-        color: #EF5D5D;
-        text-decoration: dotted;
-        text-decoration-line: underline;
-    }
-
-    div.exception-detail .msg
-    {
-        padding: 7px;
-        background-color: #303030;
-        color: #FFFA45;
-        width: 100%;
-    }
-
-    div.exception-detail .stack
-    {
-        background-color: #1E1E1E;
-        padding: 13px;
-        color: #FF8C8C;
-        overflow-y: scroll;
-        font-family: Consolas, 'Courier New', monospace;
-    }
-
-    /*.exception-item:hover
-    {
-        background-color: #f0f0f0;
-    }*/
-
-    .app-title
-    {
-        color: #fff;
-        background-color: #B873DD;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-        width: 130px;
-        margin-right: 4px;
-        padding: 3px;
-
-        position: relative;
-        top: 6px;
-    }
-
-    .msg
-    {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: inline-block;
-        width: 1200px;
-
-        position: relative;
-        top: 5px;
-
-     
-    }
-
-    .exec-option
-    {
-        margin: 6px;
-        padding: 12px;
-        background-color: rgb(240,240,255);
-    }
-
-    .exec-option .row .field
-    {
-        font-weight: bold;
-        width: 100px;
-        display: inline-block;
-    }
-
-    .exec-option .sql textarea
-    {
-        margin: 5px auto 5px auto;
-        width:80%;
-        height: 150px;
-        border: 1;
-    }
-
-`
-
-    ]
+    styleUrls: ['./exception-viewer.component.css']
 })
 export class ExceptionViewerComponent {
 
-    public exceptionDetail: any;
     public recentExceptions: any;
     public totalExceptionCnt: number = 0;
     public appTitles: string[];
 
-    execTypeValues: string[] = Object.keys(ExecOptoionsExecType).map(key => ExecOptoionsExecType[key]).filter(value => typeof value === 'string') as string[];
+    public topN: number = 10;
 
-    constructor(public domSanitizer: DomSanitizer) {
+    public isLoadingExceptionList: boolean = false;
+
+
+    constructor(public domSanitizer: DomSanitizer, public router: Router) {
     }
 
     ngOnInit() {
@@ -126,38 +26,21 @@ export class ExceptionViewerComponent {
     }
 
     lookupError(errRef: string) {
-
-        L2.fetchJson(`/api/exception/${errRef}`).then((r: any) => {
-            this.exceptionDetail = r.Data;
-        });
+        this.router.navigate(['/exceptions/' + errRef]);
     }
 
-
-    formatMessage(msg: string) {
-        if (msg == null) return null;
-        return this.domSanitizer.bypassSecurityTrustHtml(msg.replace(/##.*##/g, (match) => {
-            return `<span class="procName">${match.substr(2, match.length - 4)}</span>`;
-        }));
-
-    }
-
-    formatStackTrace(st: string) {
-        if (!st) return null;
-        let lines = st.split('\n'); //st.replace(/\n/gm,"<br/>");
-
-        if (lines.length >= 1) {
-            lines[0] = '<span class="first-stacktrace-line">' + lines[0] + '</span>';
-        }
-
-        return lines.join("<br/>");
-    }
 
     fetchRecentExceptions() {
-        L2.fetchJson(`/api/exception/top/200`).then((r: any) => {
+        this.isLoadingExceptionList = true;
+        L2.fetchJson(`/api/exception/top/${this.topN}`).then((r: any) => {
+            this.isLoadingExceptionList = false;
             this.appTitles = ["(All)", ...<any>new Set(r.Data.Results.map(r => r.appTitle)).entries()];
 
             this.totalExceptionCnt = r.Data.TotalExceptionCnt;
             this.recentExceptions = r.Data.Results;//.sort((a,b)=>a.created<=b.created);
+        }).catch(e => {
+            this.isLoadingExceptionList = false;
+            L2.handleException(e);
         });
     }
 
@@ -168,22 +51,11 @@ export class ExceptionViewerComponent {
         });
     }
 
-    buildExecParmList(parmList: { [key: string]: string }) {
-        if (!parmList || Object.keys(parmList).length == 0) return null;
+    formatMessage(msg: string) {
+        if (msg == null) return null;
+        return this.domSanitizer.bypassSecurityTrustHtml(msg.replace(/##.*##/g, (match) => {
+            return `<span class="procName">${match.substr(2, match.length - 4)}</span>`;
+        }));
 
-        return Object.keys(parmList).map(k=>`@${k} = ${this.wrapParmValue(parmList[k])}`).join(',\r\n\t\t'); 
     }
-
-    private wrapParmValue(val:string)
-    {
-        if (val == null) return 'null';
-
-        return `'${val}'`;
-    }
-}
-
-enum ExecOptoionsExecType {
-    Query = 0,
-    NonQuery = 1,
-    Scalar = 2
 }

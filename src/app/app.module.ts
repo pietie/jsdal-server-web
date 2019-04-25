@@ -46,7 +46,8 @@ import { ServerMethodsComponent } from './plugins/tabs/server-methods/server-met
 
 import { BgtasksComponent } from '~/bgtasks/bgtasks.component'
 import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';;
-import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';
+import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';;
+import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component'
 
 
 export class MyErrorHandler implements ErrorHandler {
@@ -78,7 +79,8 @@ export class MyErrorHandler implements ErrorHandler {
         CsharpTextareaComponent,
         ServerMethodsComponent,
         BgtasksComponent ,
-        ExecutionTesterComponent 
+        ExecutionTesterComponent ,
+        ExceptionDetailComponent
           
     ],
     bootstrap: [AppComponent],
