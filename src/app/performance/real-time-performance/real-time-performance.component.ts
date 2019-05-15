@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection, LogLevel, IStreamResult, ISubscription } from '@aspnet/signalr';
 import { Observable, Subscription } from 'rxjs';
 import { environment } from './../../../environments/environment';
 import { L2 } from 'l2-lib/L2';
@@ -16,8 +16,8 @@ export class RealTimePerformanceComponent implements OnInit {
   public hubConnection: HubConnection;
 
   public realtimeExectuionData: any;
-  private realtimeStream$: Observable<any>;
-  private realtimeExecutionsSubscription: Subscription;
+  private realtimeStream$: IStreamResult<any>;
+  private realtimeExecutionsSubscription: ISubscription<any>;
 
   signalRStatus: string = "UNKNOWN";
 
@@ -34,6 +34,7 @@ export class RealTimePerformanceComponent implements OnInit {
         //?.withHubProtocol()
         .build();
 
+// TODO: Move ALL Hub interactions to shared service!
 
       // TODO: Disconnect when component is not active
       this.hubConnection
@@ -47,7 +48,7 @@ export class RealTimePerformanceComponent implements OnInit {
           });
 
           this.realtimeStream$ = <any>this.hubConnection.stream("StreamRealtimeList");
-
+          
           this.realtimeExecutionsSubscription = this.realtimeStream$.subscribe(<any>{
             next: (n => {
               this.realtimeExectuionData = n; this.cdr.markForCheck();
@@ -55,7 +56,7 @@ export class RealTimePerformanceComponent implements OnInit {
             error: function (err) {
               console.info("Streaming error");
               console.error(err);
-              this.cdr.markForCheck();
+           //?   this.cdr.markForCheck();
               //alert(err.toString());
             }
           });
@@ -78,12 +79,19 @@ export class RealTimePerformanceComponent implements OnInit {
   ngOnDestroy(): void {
     try {
       if (this.hubConnection) {
+
+        // if (this.realtimeStream$)
+        // {
+
+        // }
+
         if (this.realtimeExecutionsSubscription) {
-          this.realtimeExecutionsSubscription.closed = true;
-          this.realtimeExecutionsSubscription.unsubscribe();
+          this.realtimeExecutionsSubscription.dispose();
+          //this.realtimeExecutionsSubscription.unsubscribe();
           this.realtimeExecutionsSubscription = null;
         }
-        this.hubConnection.stop();
+        
+        this.hubConnection.stop().then(()=> { console.info("then...."); }).catch(e=> { console.error("failed to stop hubConnection!!! ", e); });
         this.hubConnection = null;
       }
     }
@@ -92,7 +100,6 @@ export class RealTimePerformanceComponent implements OnInit {
     }
 
   }
-
 
   updateRealtimeRunningTimes() {
     this.cdr.markForCheck();
@@ -119,6 +126,9 @@ export class RealTimePerformanceComponent implements OnInit {
   formatMilliseconds(ms: number) {
     if (ms == null) return null;
     if (ms == 0) return "0s";
+
+    //if (ms < 1000) return `${ms}ms`;
+
     var s = (ms / 1000.0).toFixed(2);
 
     return s + "s";

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { app, appRules, serverMethods, bgTasks } from './object-model';
+import { app, appRules, serverMethods, bgTasks, performance } from './object-model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +29,11 @@ export class ApiService {
   get bgTasks() 
   {
     return bgTasks;
+  }
+
+  get performance() 
+  {
+    return performance;
   }
 }
 

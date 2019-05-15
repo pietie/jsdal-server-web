@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-card-content>
+
+
+    <mat-select #metricCbo placeholder="Metric" style="width:200px;"
+      (selectionChange)="onMetricChanged(metricCbo.value)">
+      <mat-option [value]="0">Execution count</mat-option>
+      <mat-option [value]="1">Duration</mat-option>
+      <mat-option [value]="2">Rows</mat-option>
+      <!-- <mat-option *ngFor="let item of items" [value]="item.value">
+              {{item.viewValue}}
+            </mat-option> -->
+    </mat-select>
+
+  </mat-card-content>
+  <mat-card-actions>
+
+  </mat-card-actions>
+</mat-card>

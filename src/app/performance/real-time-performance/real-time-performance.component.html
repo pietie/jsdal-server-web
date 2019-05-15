@@ -4,6 +4,8 @@
 </mat-chip-list>
 <br /><br />
 
+TODO: Select ENDPOINT first? or on this view we show ALL endpoints? 
+
 <mat-card *ngIf="realtimeExectuionData">
 
   <mat-card-content>
@@ -21,7 +23,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let row of realtimeExectuionData" [ngClass]="getStatus(row)">
-          <td>{{ row.n }}</td>
+          <td>({{ row.id.toString().padStart(7,'0')  }}) {{ row.n }}</td>
           <td class="right-align">{{ row.ce | fromEpoch | date:'HH:mm:ss' }}</td>
           <td class="right-align">{{ getRunningTime(row) }} </td>
           <td class="right-align">{{ row.r }}</td>

@@ -3,23 +3,45 @@
     <h4>jsDAL Server performance</h4>
 </div>
 
-<button mat-raised-button color="primary" routerLink="./real-time">Real-time</button>
+<div class="flex-vertical-center" style="justify-content: space-evenly; max-width:500px;">
+    <button mat-raised-button color="primary" routerLink="./real-time">Real-time</button>
+    <button mat-raised-button color="primary" routerLink="./routine-list">Routine list</button>
 
-<br/><br/>
+    <button mat-raised-button color="primary" routerLink="./top">Top resources</button>
+
+
+</div>
+<hr/>
+<mat-card>
+    <mat-card-content>
+        <div class="flex-vertical-center row">
+            <div class="field">
+                Endpoint
+            </div>
+            <div class="value">
+                <mat-form-field style="width:300px">
+                    <mat-select #epSelect (selectionChange)="onEndpointChanged(epSelect.value)"
+                        [(ngModel)]="selectedEndpointVal">
+                        <mat-option *ngFor="let ep of endpoints" [value]="ep.Project+'/'+ep.App+'/'+ep.Endpoint">
+                            {{ ep.Project }}/{{ ep.App }}/{{ ep.Endpoint }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+        </div>
+    </mat-card-content>
+</mat-card>
+
+
+
 
 <router-outlet></router-outlet>
 
 
+<!-- 
+<hr />
 
-<hr/>
 
-
-
-<div *ngIf="perfraw">
-
-    <!-- {{ perfraw | json }} -->
-
-</div>
 
 <mat-card>
     <mat-card-content>
@@ -46,4 +68,4 @@
 </mat-card>
 
 
-<br/>
+<br /> -->

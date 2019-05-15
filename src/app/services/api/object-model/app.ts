@@ -63,7 +63,7 @@ export module app {
         }
 
         //TODO: move to appropriate class 
-        static getFullEndpointList(): Promise<[{ Project: boolean, App: string, Endpoint: string }]> {
+        static getFullEndpointList(): Promise<[{ Project: string, App: string, Endpoint: string }]> {
             return <any>L2.fetchJson(`/api/exec-tester/endpoints`).then((r: any) => r.Data);
         }
 

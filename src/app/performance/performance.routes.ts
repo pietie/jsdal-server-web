@@ -8,6 +8,8 @@ import { PerformanceDetailComponent } from './performance-detail.component'
 import { CanDeactivateGuard } from '../services/can-deactivate-guard.service'
 import { LoggedInGuard } from '../logged-in.guard';
 import { RealTimePerformanceComponent } from './real-time-performance/real-time-performance.component';
+import { RoutineListComponent } from './routine-list/routine-list.component';
+import { TopResourcesComponent } from './top-resources/top-resources.component';
 
 export const projectsRoutes: Routes = [
     {
@@ -22,16 +24,16 @@ export const projectsRoutes: Routes = [
 
             },
             {
-                path: ':project',
-                component: DbSourceListComponent,
-                canActivate: [LoggedInGuard],
-                children: [
-                    {
-                        path: ':dbSource',
-                        component: PerformanceDetailComponent,
-                        canActivate: [LoggedInGuard]
-                    }
-                ]
+                path: 'routine-list',
+                component: RoutineListComponent,
+                canActivate: [LoggedInGuard]
+
+            },
+            {
+                path: 'top',
+                component: TopResourcesComponent,
+                canActivate: [LoggedInGuard]
+
             }
         ]
     }
