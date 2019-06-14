@@ -20,7 +20,12 @@ export class CsharpTextareaComponent implements OnInit {
   getValue(): string {
     if (this.mirrorsharpRef == null) return null;
 
-    return  this.mirrorsharpRef.getCodeMirror().getValue();
+    return this.mirrorsharpRef.getCodeMirror().getValue();
+  }
+
+  setValue(val: string) {
+    if (this.mirrorsharpRef == null) return null;
+    return this.mirrorsharpRef.getCodeMirror().setValue(val);
   }
 
   ngOnInit() {

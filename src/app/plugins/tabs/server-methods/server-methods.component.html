@@ -18,8 +18,8 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of serverMethods">
-          <td class="anchorColumn">
-          <button mat-button color="primary">edit</button>
+        <td class="anchorColumn">
+          <button (click)="edit(row)" mat-button color="primary">edit</button>
           <button (click)="delete(row)" mat-button color="accent">delete</button>
         </td>
 
@@ -27,21 +27,35 @@
         <td>{{ row.IsValid }}</td>
         <td>{{ row.Description }}</td>
       </tr>
+      <tr *ngIf="!serverMethods || serverMethods.length == 0">
+        <td colspan="5">
+          <p>No inline server methods exist yet.</p>
+        </td>
+      </tr>
     </tbody>
 
   </table>
 
-  <hr/>
+  <hr />
   <button mat-raised-button color="primary" (click)="onAddNew()">ADD NEW</button>
-  <br/>
+  <br />
 </div>
 
-<div *ngIf="editorVisible" style="background-color: orange;">
-
+<div class="toolbar" *ngIf="editorVisible">
   <button mat-raised-button color="primary" (click)="saveChanges()">SAVE CHANGES</button>&nbsp;&nbsp;&nbsp;&nbsp;
   <button mat-raised-button color="warn" (click)="onCancelEditor()">CANCEL</button>
-  <hr/>
-  <csharp-textarea #ce></csharp-textarea>
+  <div style="width:40px;"></div>
+  <button mat-button (click)="basicTemplate()">BASIC TEMPLATE</button>
+</div>
 
-  <textarea class="error-output" [ngModel]="compilationError" readonly="readonly" *ngIf="compilationError"></textarea>
+<div class="editor-container" [class.hide]="!editorVisible">
+  <csharp-textarea #ce></csharp-textarea>
+</div>
+<div class="error-output" *ngIf="editorVisible && compilationError">
+  <div class="inner">
+    <div class="flex-vertical-center" style="padding:3px;" *ngFor="let err of compilationError">
+      <mat-icon>error</mat-icon>{{ err }}
+    </div>
+  </div>
+
 </div>

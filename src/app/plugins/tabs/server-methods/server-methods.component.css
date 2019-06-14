@@ -1,8 +1,41 @@
+.editor-container
+{
+    height: 600px;
+}
+
+.editor-container.hide
+{
+    display: none;
+}
+
+.toolbar
+{
+    height: 55px;
+    display: flex;
+    align-items: center;
+}
+
+
 .error-output
 {
-    color: #600000;
-    background-color: #c0c0c0;
+    color: #CCCCCC;
+    background-color: #1E1E1E;
 
     width: 100%;
-    height: 40px;
+    min-height: 40px;
+    max-height: 200px;
+    padding: 10px;
+    display: flex;
+}
+
+.error-output .inner
+{ 
+    overflow-y: auto;
+    width: 100%;
+    margin-right: 14px;
+}
+
+.error-output mat-icon
+{
+    color: #F48771;
 }

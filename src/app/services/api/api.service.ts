@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { app, appRules, serverMethods, bgTasks, performance } from './object-model';
+import { util } from './util';
 
 @Injectable({
   providedIn: 'root'
@@ -7,9 +8,6 @@ import { app, appRules, serverMethods, bgTasks, performance } from './object-mod
 export class ApiService {
 
   constructor() {
-    //api.projects.whatever.getIt
-    //app.plugins.getAll()  
-    //console.log("cons", this.app);
 
   }
 
@@ -26,14 +24,16 @@ export class ApiService {
     return this.appApi;
   }
 
-  get bgTasks() 
-  {
+  get bgTasks() {
     return bgTasks;
   }
 
-  get performance() 
-  {
+  get performance() {
     return performance;
+  }
+
+  get util() {
+    return util;
   }
 }
 

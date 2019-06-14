@@ -19,6 +19,10 @@ export module app {
             });
         }
 
+        static getSource(id: string): Promise<string> {
+            return <any>L2.fetchJson(`/server-api/${L2.nullToEmpty(id)}`).then((r:any)=>r.Data);
+                
+        }
 
         static delete(id: string): Promise<IApiResponse> {
             return <any>L2.deleteJson(`/server-api/${L2.nullToEmpty(id)}`);
