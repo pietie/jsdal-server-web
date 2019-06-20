@@ -11,11 +11,27 @@ import * as mirrorsharp from 'mirrorsharp';
 export class CsharpTextareaComponent implements OnInit {
 
   private mirrorsharpRef: any;
+  private codemirrorRef: any;
 
   @ViewChild('ta') textarea: ElementRef;
 
+  private _disabled: boolean = false;
 
-  constructor() { }
+  @Input()
+  set disabled(val: boolean) {
+    this._disabled = val;
+
+    if (this.codemirrorRef && val != this.codemirrorRef.options.readOnly) {
+      this.codemirrorRef.options.readOnly = val;
+    }
+  }
+
+  get disabled(): boolean { return this._disabled; }
+
+  constructor() {
+
+
+  }
 
   getValue(): string {
     if (this.mirrorsharpRef == null) return null;
@@ -33,6 +49,8 @@ export class CsharpTextareaComponent implements OnInit {
       serviceUrl: 'wss://jsdal.europassistance.co.za:443/mirrorsharp', //TODO: make url configurable!
       forCodeMirror: { lineNumbers: true, theme: 'cobalt' }
     });
+
+    this.codemirrorRef = this.mirrorsharpRef.getCodeMirror();
 
     // let actualTextarea: HTMLTextAreaElement = <HTMLTextAreaElement>ms.getCodeMirror().display.input.textarea;
 

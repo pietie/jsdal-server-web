@@ -3,29 +3,43 @@
   <table class="grid" *ngIf="serverMethods">
     <thead>
       <tr>
-        <th style="width: 200px;"></th>
+        <th style="width: 150px;text-align: center;"></th>
 
-        <th style="width: 120px;">
-          Name
+        <th style="width: 110px;">
+          Module
         </th>
         <th style="width: 50px;">
           Valid
         </th>
         <th>
-          Description
+          Plugins
         </th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let row of serverMethods">
         <td class="anchorColumn">
-          <button (click)="edit(row)" mat-button color="primary">edit</button>
-          <button (click)="delete(row)" mat-button color="accent">delete</button>
+          <button [disabled]="isWorking" (click)="edit(row)" mat-button color="primary">edit</button>
+          <button [disabled]="isWorking" (click)="delete(row)" mat-button color="accent">delete</button>
         </td>
 
-        <td>{{ row.Name }}</td>
+        <td>{{ row.Id }}</td>
         <td>{{ row.IsValid }}</td>
-        <td>{{ row.Description }}</td>
+        <td>
+
+          <table class="grid plugins">
+            <colgroup>
+              <col width="250px">
+              <col width="auto">
+            </colgroup>
+            <tr *ngFor="let plugin of row.Plugins">
+              <td>{{ plugin.Name }}</td>
+              <td>{{ plugin.Description }} </td>
+            </tr>
+          </table>
+
+
+        </td>
       </tr>
       <tr *ngIf="!serverMethods || serverMethods.length == 0">
         <td colspan="5">
@@ -37,19 +51,27 @@
   </table>
 
   <hr />
-  <button mat-raised-button color="primary" (click)="onAddNew()">ADD NEW</button>
+  <button [disabled]="isWorking" mat-raised-button color="primary" (click)="onAddNew()">ADD NEW</button>
   <br />
 </div>
 
+
+<mat-spinner diameter="20" *ngIf="isWorking && !editorVisible"></mat-spinner>
+
+
 <div class="toolbar" *ngIf="editorVisible">
-  <button mat-raised-button color="primary" (click)="saveChanges()">SAVE CHANGES</button>&nbsp;&nbsp;&nbsp;&nbsp;
-  <button mat-raised-button color="warn" (click)="onCancelEditor()">CANCEL</button>
+  <button [disabled]="isWorking" mat-raised-button color="primary" (click)="saveChanges()">
+    <div class="flex-vertical-center"><span style="padding-right:10px;">SAVE CHANGES</span> <mat-spinner *ngIf="isWorking" class="button" diameter="20"></mat-spinner></div>
+      
+
+  </button>&nbsp;&nbsp;&nbsp;&nbsp;
+  <button [disabled]="isWorking" mat-raised-button color="warn" (click)="onCancelEditor()">CANCEL</button>
   <div style="width:40px;"></div>
   <button mat-button (click)="basicTemplate()">BASIC TEMPLATE</button>
 </div>
 
 <div class="editor-container" [class.hide]="!editorVisible">
-  <csharp-textarea #ce></csharp-textarea>
+  <csharp-textarea #ce [disabled]="isWorking"></csharp-textarea>
 </div>
 <div class="error-output" *ngIf="editorVisible && compilationError">
   <div class="inner">

@@ -39,3 +39,17 @@
 {
     color: #F48771;
 }
+
+
+.grid.plugins
+{
+    font-size: 0.9em;
+}
+.grid.plugins tr td:first-child
+{
+    font-weight: bold;
+}
+
+.mat-spinner.button::ng-deep circle {
+    stroke: #fff !important;
+  }

@@ -13,9 +13,11 @@ export class ServerMethodsComponent implements OnInit {
   editorVisible: boolean = false;
   compilationError: string = null;
 
-  serverMethods: { Id: string, Name: string, Description: string, IsValid: boolean }[];
+  serverMethods: { Id: string, IsValid: boolean, Plugins: [{ Name: string, Description: string }] }[];
 
   currentId: string = null;
+
+  isWorking: boolean = false;
 
   @ViewChild('ce') csharpEditor: CsharpTextareaComponent;
 
@@ -31,29 +33,40 @@ export class ServerMethodsComponent implements OnInit {
   }
 
   edit(row) {
-    // TODO: Disable UI appropriately while downloading source
+
+    this.isWorking = true;
 
     this.api.app.serverMethods
       .getSource(row.Id)
       .then(source => {
+        this.isWorking = false;
         this.currentId = row.Id;
         this.editorVisible = true;
-        // without timeot ng does not update view immediately :/
+        // without timeout ng does not update view immediately :/
         setTimeout(() => {
           this.csharpEditor.setValue(source);
         }, 0);
+      }).catch(e => {
+        L2.handleException(e);
+        this.isWorking = false;
       });
   }
 
   delete(row) {
-    L2.confirm(`Are you sure you which to delete this server method '${row.Name}'?`, "Confirm action").then(r => {
-      if (r) {
-        this.api.app.serverMethods.delete(row.Id).then(r => {
-          L2.success("Server method deleted successfully");
-          this.refreshList();
-        });
-      }
-    });
+    this.isWorking = true;
+    L2.confirm(`Are you sure you want to delete the module '${row.Id}'?`, "Confirm action")
+      .then(r => {
+        this.isWorking = false;
+        if (r) {
+          this.api.app.serverMethods.delete(row.Id).then(r => {
+            L2.success("Server method deleted successfully");
+            this.refreshList();
+          });
+        }
+      }).catch(e => {
+        L2.handleException(e);
+        this.isWorking = false;
+      });
   }
 
   onAddNew() {
@@ -75,18 +88,24 @@ export class ServerMethodsComponent implements OnInit {
   saveChanges() {
 
     this.compilationError = null;
+    this.isWorking = true;
 
-    this.api.app.serverMethods.addUpdate(this.currentId, this.getValue()).then(r => {
+    this.api.app.serverMethods.addUpdate(this.currentId, this.getValue())
+      .then(r => {
+        this.isWorking = false;
+        if (r && r.CompilationError && !r.id) {
+          this.compilationError = r.CompilationError;
+        }
 
-      if (r) {
-        this.compilationError = r.CompilationError;
-      }
-
-      if (!r || !r.CompilationError) {
-        L2.success("Server method changes saved successfully");
-      }
-
-    });
+        else {
+          this.currentId = r.id;
+          this.refreshList();
+          L2.success("Server method changes saved successfully");
+        }
+      }).catch(e => {
+        L2.handleException(e);
+        this.isWorking = false;
+      });
   }
 
   newGuid(): Promise<string> {
@@ -112,12 +131,17 @@ export class ServerMethodsComponent implements OnInit {
 
   basicTemplate() {
 
-    this.newGuid().then(g => {
+    this.isWorking = true;
 
+    this.newGuid().then(g => {
+      this.isWorking = false;
       let template = `using jsdal_plugin;\r\n\r\n[PluginData("Plugin name","${g}", "A short description")]\r\nclass MyServerMethodPlugin : ServerMethodPlugin\r\n{\r\n\t// Create local public methods and decorate with the ServerMethod attribute to export.\r\n\t[ServerMethod]\r\n\tpublic string Test() // execute in the browser with: DAL.ServerMethods.Test().exec().then(function(r) { console.log("result", r); });\r\n\t{\r\n\t\treturn "Hello world!";\r\n\t}\r\n}`;
 
       this.csharpEditor.setValue(template);
 
+    }).catch(e => {
+      L2.handleException(e);
+      this.isWorking = false;
     });
 
 

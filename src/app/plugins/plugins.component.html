@@ -4,29 +4,37 @@
 
             <mat-tab label="Execution plugins">
                 <p>
-                    These plugins tie in with the routine execution model. You can hook into and override certain parts of this process.
+                    These plugins tie in with the routine execution model. You can hook into and override certain parts
+                    of this process.
                 </p>
                 CRUD
             </mat-tab>
             <mat-tab label="SignalR loops?">
 
-                Framework-driven plugin model where we continually do some DB checks with rowdate and then stream/notify a group of clients
+                Framework-driven plugin model where we continually do some DB checks with rowdate and then stream/notify
+                a group of clients
                 when something interesting happens.
 
             </mat-tab>
             <mat-tab label="Server methods">
                 <server-methods-tab></server-methods-tab>
             </mat-tab>
+            <mat-tab label="Diagnostics">
+                <p>
+                    TODO: Dump some diagnostic info of all types currently loaded. The type of plugins and anything else interesting....
+                </p>
+            </mat-tab>
         </mat-tab-group>
 
 
-        <br/>
-        <br/>
-        <br/>
-        <button [disabled]="!hasChangesToCompile" (click)="testCompile()" color="warn" mat-raised-button>TEST COMPILE</button>
-        <br/>
-        <br/>
-        <br/>
+        <br />
+        <br />
+        <br />
+        <button [disabled]="!hasChangesToCompile" (click)="testCompile()" color="warn" mat-raised-button>TEST
+            COMPILE</button>
+        <br />
+        <br />
+        <br />
 
         <textarea readonly="readonly" rows="10" style="width:100%;background-color:silver;">
                     {{ this.compilerOutput | json }}
