@@ -32,54 +32,58 @@
                 <mat-tab label="Output files">
 
 
-                        <mat-card>
-                            <mat-card-title>
-                                <i class="fa fa-code pr8"></i>Output files
-                            </mat-card-title>
-                            <mat-card-content>
-    
-    
-    
-                                <table class="grid" *ngIf="outputFileList">
-                                    <thead>
-                                        <tr>
-                                            <th style="width:200px"></th>
-                                            <th style="width:220px">Name</th>
-                                            <th></th>
-                                            <!-- <th>Output URLs</th> -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let row of outputFileList">
-                                            <td class="anchorColumn">
-                                                <button (click)="onEditOutputFile(row)" mat-button color="primary">edit</button>
-                                                <button (click)="onDeleteOutputFile(row)" mat-button color="accent">delete</button>
-                                            </td>
-                                            <td>{{row.Filename}}</td>
-                                            <td>
-                                                <button color="primary" mat-button [routerLink]="['./rules/' + row.Filename]">manage rules</button>
-                                            </td>
-                                            <!-- <td>
+                    <mat-card>
+                        <mat-card-title>
+                            <i class="fa fa-code pr8"></i>Output files
+                        </mat-card-title>
+                        <mat-card-content>
+
+
+
+                            <table class="grid" *ngIf="outputFileList">
+                                <thead>
+                                    <tr>
+                                        <th style="width:200px"></th>
+                                        <th style="width:220px">Name</th>
+                                        <th></th>
+                                        <!-- <th>Output URLs</th> -->
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of outputFileList">
+                                        <td class="anchorColumn">
+                                            <button (click)="onEditOutputFile(row)" mat-button
+                                                color="primary">edit</button>
+                                            <button (click)="onDeleteOutputFile(row)" mat-button
+                                                color="accent">delete</button>
+                                        </td>
+                                        <td>{{row.Filename}}</td>
+                                        <td>
+                                            <button color="primary" mat-button
+                                                [routerLink]="['./rules/' + row.Filename]">manage rules</button>
+                                        </td>
+                                        <!-- <td>
     
                                                 <label>
                                                     <input type="checkbox" [(ngModel)]="!!minifiedLookup[row.Id]" />minified?</label>
                                                 <br/> http://serverIp???/api/js/{{row.Id}}?min={{!!minifiedLookup[row.Id]}}
                                             </td> -->
-                                            
-                                        </tr>
-                                    </tbody>
-                                </table>
-    
-                            </mat-card-content>
-                            <mat-card-actions>
-                                <button mat-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW OUTPUT FILE</button>
-                            </mat-card-actions>
-                            <mat-card-footer>
-                                <mat-progress-bar *ngIf="outputFileBusy" mode="indeterminate"></mat-progress-bar>
-                            </mat-card-footer>
-                        </mat-card>
-    
-                    </mat-tab>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" (click)="onAddNewOutputFileClicked()">ADD NEW
+                                OUTPUT FILE</button>
+                        </mat-card-actions>
+                        <mat-card-footer>
+                            <mat-progress-bar *ngIf="outputFileBusy" mode="indeterminate"></mat-progress-bar>
+                        </mat-card-footer>
+                    </mat-card>
+
+                </mat-tab>
 
                 <mat-tab label="Whitelist">
 
@@ -89,91 +93,101 @@
                         </mat-card-title>
                         <mat-card-content>
                             <p>
-                                Specify a whitelist of hostnames that are allowed to access this application. Place each entry on a new line. For IPs, wildcard
+                                Specify a whitelist of hostnames that are allowed to access this application. Place each
+                                entry on a new line. For IPs, wildcard
                                 and ranges are supported, e.g.
                                 <strong>172.16.*.10-50</strong>
                             </p>
                             <p>
                                 <label>
-                                    <input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private IPs</label>
-                                <br/>
-                                <textarea #whitelistTA [ngModel]="whitelist" style="width:400px;height: 120px;"></textarea>
+                                    <input [(ngModel)]="allowAllPrivateIPs" type="checkbox" /> Allow all private
+                                    IPs</label>
+                                <br />
+                                <textarea #whitelistTA [ngModel]="whitelist"
+                                    style="width:400px;height: 120px;"></textarea>
                             </p>
 
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="onUpdateWhitelist(whitelistTA)" mat-raised-button color="primary">SAVE WHITELIST</button>
+                            <button (click)="onUpdateWhitelist(whitelistTA)" mat-raised-button color="primary">SAVE
+                                WHITELIST</button>
                         </mat-card-actions>
                     </mat-card>
 
 
                 </mat-tab>
-              
+
                 <mat-tab label="Plugins">
                     <mat-card>
                         <mat-card-title>
                             <i class="fa fa-plug pr8"></i>Plugins</mat-card-title>
                         <mat-card-content>
 
-                            TODO: Have different sections for different kind of plugins (server-method vs Execution plugin)?
-
-                            <mat-list>
-                                <mat-list-item *ngFor="let row of pluginList">
-
-
-                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
-                                        <mat-icon>keyboard_arrow_up</mat-icon>
-                                    </button>
-                                    <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
-                                        <mat-icon>keyboard_arrow_down</mat-icon>
-                                    </button>
-
-                                    <div md-line style="display: flex;align-items: center;">
-
-                                        <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
-                                            <span style="font-size: 14px;font-weight: bold;;width: 200px;display:inline-block">{{row.Name}}</span>
-                                        </mat-slide-toggle>
+                            <mat-tab-group>
+                                <mat-tab label="Execution plugins"></mat-tab>
+                                <mat-tab label="Server methods"></mat-tab>
+                            </mat-tab-group>
 
 
-                                    </div>
-                                    <p md-line>
-                                        <br/>{{row.Description}}
-
-                                    </p>
-
-                                    <hr md-line/>
-
-                                </mat-list-item>
-
-                            </mat-list>
-
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <button mat-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();" style="margin:4px 0 15px 4px ;">SAVE CHANGES</button>
-                        </mat-card-actions>
-
-                    </mat-card>
-                </mat-tab>
-               
-                <mat-tab label="Channels">
-
-                    <p>Define SignalR channels here...Just a name and then access tokens/API keys</p>
-
-                </mat-tab>
-            </mat-tab-group>
+                <mat-list>
+                    <mat-list-item *ngFor="let row of pluginList">
 
 
+                        <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
+                            <mat-icon>keyboard_arrow_up</mat-icon>
+                        </button>
+                        <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
+
+                        <div md-line style="display: flex;align-items: center;">
+
+                            <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
+                                <span
+                                    style="font-size: 14px;font-weight: bold;;width: 200px;display:inline-block">{{row.Name}}</span>
+                            </mat-slide-toggle>
 
 
+                        </div>
+                        <p md-line>
+                            <br />{{row.Description}}
 
-        </div>
+                        </p>
 
+                        <hr md-line />
+
+                    </mat-list-item>
+
+                </mat-list>
 
     </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" *ngIf="pluginConfigIsDirty" (click)="onSavePluginChangesClicked();"
+            style="margin:4px 0 15px 4px ;">SAVE CHANGES</button>
+    </mat-card-actions>
 
-    <mat-card-footer>
-        <mat-progress-bar *ngIf="!isReady" mode="indeterminate"></mat-progress-bar>
-    </mat-card-footer>
+</mat-card>
+</mat-tab>
+
+<mat-tab label="Channels">
+
+    <p>Define SignalR channels here...Just a name and then access tokens/API keys</p>
+
+</mat-tab>
+</mat-tab-group>
+
+
+
+
+
+</div>
+
+
+</mat-card-content>
+
+<mat-card-footer>
+    <mat-progress-bar *ngIf="!isReady" mode="indeterminate"></mat-progress-bar>
+</mat-card-footer>
 </mat-card>
 
 

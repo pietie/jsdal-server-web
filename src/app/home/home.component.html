@@ -1,7 +1,7 @@
 ﻿<mat-card *ngIf="statsData" style="max-width: 600px;margin:auto;">
     <mat-card-content>
          <div class="form-flex">
-            
+
             <div class="full">
                 <span class="field180">Web server started</span>
                 <span class="value">{{ statsData.WebServerStartDate | fromISODateStr |date:'dd MMM yyyy, HH:mm:ss' }} ({{getWebServerAge(statsData.WebServerStartDate)}} ago)</span>
@@ -24,6 +24,11 @@
                 <span class="field180">Processors</span>
                 <span class="value"> {{ statsData.ProcessorCount }}  </span>
             </div>
+
+            <div class="full" *ngIf="statsData">
+                    <span class="field180">Stats taken</span>
+                    <span class="value"> {{ statsData.StatsCreateDate | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}  </span>
+                </div>
 
         </div>
 <br/>

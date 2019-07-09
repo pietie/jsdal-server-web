@@ -47,7 +47,8 @@ import { ServerMethodsComponent } from './plugins/tabs/server-methods/server-met
 import { BgtasksComponent } from '~/bgtasks/bgtasks.component'
 import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';;
 import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';;
-import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component'
+import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component';
+import { BackgroundThreadsComponent } from './plugins/tabs/background-threads/background-threads/background-threads.component'
 
 
 export class MyErrorHandler implements ErrorHandler {
@@ -80,7 +81,8 @@ export class MyErrorHandler implements ErrorHandler {
         ServerMethodsComponent,
         BgtasksComponent ,
         ExecutionTesterComponent ,
-        ExceptionDetailComponent
+        ExceptionDetailComponent,
+        BackgroundThreadsComponent
           
     ],
     bootstrap: [AppComponent],

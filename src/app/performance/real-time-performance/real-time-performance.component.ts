@@ -16,8 +16,6 @@ export class RealTimePerformanceComponent implements OnInit {
   public hubConnection: HubConnection;
 
   public realtimeExectuionData: any;
-  private realtimeStream$: IStreamResult<any>;
-  private realtimeExecutionsSubscription: ISubscription<any>;
 
   signalRStatus: string = "UNKNOWN";
 
@@ -31,34 +29,22 @@ export class RealTimePerformanceComponent implements OnInit {
       this.hubConnection = new HubConnectionBuilder()
         .configureLogging(LogLevel.Debug)
         .withUrl(environment.apiBaseUrl + '/performance-realtime-hub')
-        //?.withHubProtocol()
         .build();
 
-// TODO: Move ALL Hub interactions to shared service!
+      // TODO: Move ALL Hub interactions to shared service!
 
-      // TODO: Disconnect when component is not active
       this.hubConnection
         .start()
         .then(() => {
 
           this.signalRStatus = "CONNECTED";
 
-          this.hubConnection.invoke("Init").then(r => {
-            this.realtimeExectuionData = r;
+          this.hubConnection.on("update", data => {
+            this.realtimeExectuionData = data;
           });
 
-          this.realtimeStream$ = <any>this.hubConnection.stream("StreamRealtimeList");
-          
-          this.realtimeExecutionsSubscription = this.realtimeStream$.subscribe(<any>{
-            next: (n => {
-              this.realtimeExectuionData = n; this.cdr.markForCheck();
-            }),
-            error: function (err) {
-              console.info("Streaming error");
-              console.error(err);
-           //?   this.cdr.markForCheck();
-              //alert(err.toString());
-            }
+          this.hubConnection.invoke("Init").then(r => {
+            this.realtimeExectuionData = r;
           });
 
           this.cdr.markForCheck();
@@ -80,18 +66,7 @@ export class RealTimePerformanceComponent implements OnInit {
     try {
       if (this.hubConnection) {
 
-        // if (this.realtimeStream$)
-        // {
-
-        // }
-
-        if (this.realtimeExecutionsSubscription) {
-          this.realtimeExecutionsSubscription.dispose();
-          //this.realtimeExecutionsSubscription.unsubscribe();
-          this.realtimeExecutionsSubscription = null;
-        }
-        
-        this.hubConnection.stop().then(()=> { console.info("then...."); }).catch(e=> { console.error("failed to stop hubConnection!!! ", e); });
+        this.hubConnection.stop().then(() => { console.info("then...."); }).catch(e => { console.error("failed to stop hubConnection!!! ", e); });
         this.hubConnection = null;
       }
     }
@@ -103,7 +78,7 @@ export class RealTimePerformanceComponent implements OnInit {
 
   updateRealtimeRunningTimes() {
     this.cdr.markForCheck();
-    setTimeout(() => this.updateRealtimeRunningTimes(), 50);   
+    setTimeout(() => this.updateRealtimeRunningTimes(), 50);
   }
 
   getRunningTime(row) {

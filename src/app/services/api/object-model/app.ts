@@ -33,6 +33,12 @@ export module app {
             //     L2.success("Plugin changes saved successfully");
             // });
         }
+
+        static getAllBackgroundThreads() {
+            return <any>L2.fetchJson(`/api/bgthreads`).then((r: any) => {
+                return r.Data;
+            });
+        }
     }
 
     export class jsfiles {
@@ -68,12 +74,12 @@ export module app {
         }
 
         //TODO: move to appropriate class 
-        static searchRoutine(project:string, app:string, endpoint:string, query:string): Promise<string[]> {
+        static searchRoutine(project: string, app: string, endpoint: string, query: string): Promise<string[]> {
             return <any>L2.fetchJson(`/api/exec-tester/search-routine?project=${project}&app=${app}&endpoint=${endpoint}&query=${query}`);
         }
 
         //TODO: move to appropriate class 
-        static getRoutineMetadata(project:string, app:string, endpoint:string, routine:string): Promise<string[]> {
+        static getRoutineMetadata(project: string, app: string, endpoint: string, routine: string): Promise<string[]> {
             return <any>L2.fetchJson(`/api/exec-tester/routine-metadata?project=${project}&app=${app}&endpoint=${endpoint}&routine=${routine}`);
         }
     }

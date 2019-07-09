@@ -19,41 +19,28 @@ export class HomeComponent {
     public usageDetail: any = null;
 
     public hubConnection: HubConnection;
-    private stats$: Observable<any>;
-    private statsSubscription: Subscription;
-
 
     ngOnInit() {
         try {
             this.hubConnection = new HubConnectionBuilder()
                 .configureLogging(LogLevel.Debug)
                 .withUrl(environment.apiBaseUrl + '/main-stats')
-                //?.withHubProtocol()
                 .build();
 
-            // TODO: Disconnect when component is not active
             this.hubConnection
                 .start()
                 .then(() => {
+                    this.hubConnection.on("updateStats", stats => {
+                        this.statsData = stats;
+                    });
 
                     this.hubConnection.invoke("Init").then(r => {
                         this.statsData = r;
                     });
-
-                    this.stats$ = <any>this.hubConnection.stream("StreamMainStats");
-
-                    this.statsSubscription = this.stats$.subscribe(<any>{
-                        next: (n => { this.statsData = n; }),
-                        error: function (err) {
-                            console.info("Streaming error");
-                            console.error(err);
-                        }
-                    });
-
                 });
 
-
             this.isLoadProjectList = true;
+
             L2.fetchJson('/api/project').then((r: any) => {
                 this.projectList = r.Data;
                 this.isLoadProjectList = false;
@@ -70,11 +57,6 @@ export class HomeComponent {
     ngOnDestroy() {
         try {
             if (this.hubConnection) {
-                if (this.statsSubscription) {
-                    this.statsSubscription.closed = true;
-                    this.statsSubscription.unsubscribe();
-                    this.statsSubscription = null;
-                }
                 this.hubConnection.stop();
                 this.hubConnection = null;
             }

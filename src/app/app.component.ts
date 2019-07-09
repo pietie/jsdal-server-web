@@ -34,8 +34,6 @@ export class AppComponent {
 
     public isDisconnected: boolean = false;
     public hubConnection: HubConnection;
-    private stats$: Observable<any>;
-    private statsSubscription: Subscription;
 
     ngOnInit() {
 
@@ -44,14 +42,19 @@ export class AppComponent {
                 this.changeDetectorRef.detectChanges();
             });
 
-this.createHubConnection();
+            this.createHubConnection();
         }
         catch (e) {
             console.error("heartbeat error", e);
             L2.handleException(e);
         }
+    }
 
-
+    ngOnDestroy(): void {
+        if (this.hubConnection) {
+            this.hubConnection.stop();
+            this.hubConnection = null;
+        }
     }
 
     createHubConnection() {
@@ -64,25 +67,15 @@ this.createHubConnection();
         this.hubConnection.onclose(e => {
             console.info("Hub connection closed");
             this.isDisconnected = true;
-
         });
+
         this.hubConnection.start()
             .then(() => {
 
+                this.hubConnection.on("tick", tick => { this.isDisconnected = false; });
+
                 this.hubConnection.invoke("Init").then(r => {
 
-                });
-
-                this.stats$ = <any>this.hubConnection.stream("StreamTick");
-
-                this.statsSubscription = this.stats$.subscribe(<any>{
-                    next: (n => {
-                        this.isDisconnected = false;
-                    }),
-                    error: function (err) {
-                        this.isDisconnected = true;
-                        console.log("ERROR!!!! with heart beat", err);
-                    }
                 });
 
             }).catch(e => {

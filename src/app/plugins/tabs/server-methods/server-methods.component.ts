@@ -11,6 +11,7 @@ import { CsharpTextareaComponent } from '~/controls/csharp-textarea/csharp-texta
 export class ServerMethodsComponent implements OnInit {
 
   editorVisible: boolean = false;
+  
   compilationError: string = null;
 
   serverMethods: { Id: string, IsValid: boolean, Plugins: [{ Name: string, Description: string }] }[];

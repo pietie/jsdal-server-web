@@ -19,12 +19,12 @@
                     <mat-icon>web</mat-icon>
                     <div md-line>Projects</div>
                 </div>
-               
+
             </mat-list-item>
 
             <mat-nav-list class="menu">
-                    <div mat-list-item>Project 1</div>
-                    <div mat-list-item>Project 2</div>
+                <div mat-list-item>Project 1</div>
+                <div mat-list-item>Project 2</div>
             </mat-nav-list>
 
             <mat-list-item (click)="side.close(); go('plugins')">
@@ -93,7 +93,8 @@
 
     <div class="main-content">
 
-        <mat-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary" style="margin-bottom: 20px;">
+        <mat-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary"
+            style="margin-bottom: 20px;">
             <mat-icon class="menu-icon" (click)="side.open();" style="margin-right:10px;">menu</mat-icon>
             <span (click)="side.toggle()" style="cursor: pointer">jsDAL Server</span>
 
@@ -128,9 +129,17 @@
 
 </mat-sidenav-container>
 
-<div *ngIf="isDisconnected">
+<div class="disconnected-dlg" *ngIf="isDisconnected">
+    <div class="icon">
+            <mat-icon>error</mat-icon>
+    </div>
+    <p>
+        Connection to jsDAL server lost. Make sure you have a working network connection and try again.
+    </p>
+    <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
+</div>
+<!--
     <div class="disconnected-container">
-        <!-- <router-outlet name="disconnected-dlg"></router-outlet> -->
 
         <mat-card style="max-width:400px;margin:auto; pointer-events: all;">
             <mat-card-title>Connection lost</mat-card-title>
@@ -146,6 +155,5 @@
             <mat-card-actions align="end">
                 <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
             </mat-card-actions>
-        </mat-card>
-    </div>
-</div>
+        </mat-card> 
+    </div>-->
