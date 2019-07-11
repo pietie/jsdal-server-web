@@ -6,21 +6,54 @@
       <th style="width: 110px;">
         Assembly
       </th>
-      <th style="width: 50px;">
-        Name <!--Set title/tooltip to Description?-->
+      <th style="width: 250px;">
+        Name
+        <!--Set title/tooltip to Description?-->
       </th>
-      <th style="width: 110px;">
-          Instance <!-- List each running instance, so each EP instance -->
-        </th>      
+      <th style="width: 180px;">
+        Instance
+        <!-- List each running instance, so each EP instance -->
+      </th>
       <th>
         Status
       </th>
-      <th>
-          Progress? (Merge with status field?)
-        </th>
     </tr>
   </thead>
   <tbody>
+    <ng-container *ngIf="instances; else noRows">
+      <ng-container *ngFor="let key of instanceKeys">
+        <tr *ngFor="let row of [instances[key]]" [title]="row.Description">
+          <td>
 
+            <button (click)="start(row)" *ngIf="!row.IsRunning" mat-button color="primary">START</button>
+            <button (click)="stop(row)" *ngIf="row.IsRunning" mat-button color="warn">STOP</button>
+
+          </td>
+          <td class="assembly">
+            (assembly?)
+          </td>
+          <td class="name">{{ row.Name }}</td>
+          <td class="pedigree">{{ row.EndpointPedigree }}</td>
+          <td class="status inline">
+            <div class="inline-field running-status" [class.yes]="row.IsRunning">
+              {{ row.IsRunning? "RUNNING": "STOPPED"}}</div>
+            <div class="inline-field progress"><span *ngIf="row.Progress != null">{{ row.Progress }}%</span></div>
+            <div class="inline-field status">{{ row.Status }}</div>
+
+
+          </td>
+
+        </tr>
+      </ng-container>
+    </ng-container>
+    <ng-template #noRows>
+      <tr>
+        <td colspan="99">
+          No background thread plugins instantiated.
+
+        </td>
+
+      </tr>
+    </ng-template>
   </tbody>
 </table>

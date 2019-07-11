@@ -39,6 +39,16 @@ export module app {
                 return r.Data;
             });
         }
+
+        static startBgThreadInstance(instanceId: string) // TODO: move to BGThread API?
+        {
+            return <any>L2.postJson(`/api/bgthreads/${instanceId}/start`);
+        }
+
+        static stopBgThreadInstance(instanceId: string) // TODO: move to BGThread API?
+        {
+            return <any>L2.postJson(`/api/bgthreads/${instanceId}/stop`);
+        }
     }
 
     export class jsfiles {

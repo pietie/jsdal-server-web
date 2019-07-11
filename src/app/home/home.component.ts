@@ -4,7 +4,7 @@ import { L2 } from 'l2-lib/L2';
 
 import { environment } from '../../environments/environment';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
-import { Observable, Subscription } from 'rxjs';
+
 
 @Component({
     selector: 'home',

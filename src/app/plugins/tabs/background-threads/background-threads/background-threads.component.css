@@ -1,0 +1,41 @@
+td.assembly, td.name, td.pedigree, td.status
+{
+    font-size: 0.8em;
+}
+
+td.inline
+{
+    display: flex;
+    align-items: stretch;
+}
+
+div.inline-field
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+}
+
+div.inline-field.running-status
+{
+    width: 80px;
+    background-color: #ff4e31;
+    text-align: center;
+}
+
+div.inline-field.running-status.yes
+{
+    background-color: #31ff4e;
+}
+
+div.inline-field.progress
+{
+    width: 50px;
+}
+
+div.inline-field.status
+{
+    flex: 1 1 auto;
+    justify-content: start;
+}
