@@ -13,7 +13,7 @@ export class CsharpTextareaComponent implements OnInit {
   private mirrorsharpRef: any;
   private codemirrorRef: any;
 
-  @ViewChild('ta') textarea: ElementRef;
+  @ViewChild('ta', { static: true }) textarea: ElementRef;
 
   private _disabled: boolean = false;
 

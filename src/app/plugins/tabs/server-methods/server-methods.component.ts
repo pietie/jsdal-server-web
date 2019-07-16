@@ -20,7 +20,7 @@ export class ServerMethodsComponent implements OnInit {
 
   isWorking: boolean = false;
 
-  @ViewChild('ce') csharpEditor: CsharpTextareaComponent;
+  @ViewChild('ce', { static: false }) csharpEditor: CsharpTextareaComponent;
 
   constructor(public api: ApiService, public cdr: ChangeDetectorRef) { }
 

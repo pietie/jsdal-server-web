@@ -15,7 +15,10 @@ export class BackgroundThreadsComponent implements OnInit {
   instanceKeys: string[];
   hubConnection: HubConnection;
 
+  instanceSettings: { [key: string]: any } = {};
+
   constructor(public api: ApiService) { }
+
 
   ngOnInit() {
     try {
@@ -29,25 +32,67 @@ export class BackgroundThreadsComponent implements OnInit {
         .start()
         .then(() => {
 
-          // TODO: Can we wrap this up into a single 'updateData' function and then just update the properties that match! This was we can sent IsRunning etc updates as well or multiple props at the same time...
-          this.hubConnection.on("updateStatus", data => {
+          this.hubConnection.on("updateData", data => {
+            //console.log("updateData ", data);
             if (this.instances) {
-              this.instances[data.InstanceId].Status = data.Status;
+              this.instanceSettings[data.InstanceId] = this.instanceSettings[data.InstanceId] || {};
+
+              this.instances[data.InstanceId] = { ...this.instances[data.InstanceId], ...data };
             }
-            //console.info("update status", data);
           });
 
-          this.hubConnection.on("updateProgress", data => {
-            if (this.instances) {
-              this.instances[data.InstanceId].Progress = data.Progress;
+          // // TODO: Can we wrap this up into a single 'updateData' function and then just update the properties that match! This was we can sent IsRunning etc updates as well or multiple props at the same time...
+          // this.hubConnection.on("updateStatus", data => {
+          //   if (this.instances) {
+          //     this.instances[data.InstanceId].Status = data.Status;
+          //   }
+          //   //console.info("update status", data);
+          // });
+
+          // this.hubConnection.on("updateProgress", data => {
+          //   if (this.instances) {
+          //     this.instances[data.InstanceId].Progress = data.Progress;
+          //   }
+          //   //console.info("update progress", data);
+          // });
+
+          this.hubConnection.invoke("JoinBrowserDebugGroup");
+
+          this.hubConnection.on("console.log", (data) => {
+            if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
+              console.log(data.Line);
             }
-            //console.info("update progress", data);
+          });
+
+          this.hubConnection.on("console.info", (data) => {
+            if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
+              console.info(data.Line);
+            }
+          });
+
+          this.hubConnection.on("console.warn", (data) => {
+            if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
+              console.warn(data.Line);
+            }
+          });
+
+          this.hubConnection.on("console.error", (data) => {
+            if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
+              console.error(data.Line);
+            }
+          });
+
+          this.hubConnection.on("console.dir", (data) => {
+            if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
+              console.dir(JSON.parse(data.Line));
+            }
           });
 
           this.hubConnection.invoke("JoinAdminGroup").then(r => {
             if (r) {
               this.instances = r.reduce((map, obj) => { map[obj.InstanceId] = obj; return map; }, {});
               this.instanceKeys = Object.keys(this.instances);
+              this.instanceKeys.forEach(k => { this.instanceSettings[k] = {}; })
             }
           });
         });
@@ -75,6 +120,8 @@ export class BackgroundThreadsComponent implements OnInit {
       console.log("stop resp ", r);
     });
   }
+
+
 
   ngOnDestroy(): void {
 

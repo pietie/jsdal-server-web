@@ -38,7 +38,9 @@
       "l2-lib/*": [
         "./node_modules/l2-lib/dist/*"
       ],
-      "jsdal-api": ["./src/app/services/api"]
+      "jsdal-api": [
+        "./src/app/services/api"
+      ]
     },
     "declaration": false,
     "emitDecoratorMetadata": true,
@@ -59,5 +61,8 @@
       "node_modules/@types",
       "node_modules/mirrorsharp"
     ]
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true
   }
 }
