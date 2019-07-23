@@ -49,6 +49,10 @@ export module app {
         {
             return <any>L2.postJson(`/api/bgthreads/${instanceId}/stop`);
         }
+
+        static getBgThreadAllConfigs(pluginGuid: string): Promise<{ ConfigContract?: any/*TODO: will describe the expected fields & values and their types and maybe the editor experience required!*/, Default: { [key: string]: string }, Plugin: { [key: string]: string }, App: { [key: string]: string }, Endpoint: { [key: string]: string }, Instances: any }> {
+            return <any>L2.getJson(`/api/bgthreads/${pluginGuid}/all-config`).then(r=>r.Data);
+        }
     }
 
     export class jsfiles {

@@ -39,3 +39,15 @@ div.inline-field.status
     flex: 1 1 auto;
     justify-content: start;
 }
+
+td.buttons
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+td.buttons /deep/ .mat-button
+{
+    font-size: 13px !important;
+}

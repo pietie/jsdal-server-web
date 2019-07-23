@@ -47,22 +47,24 @@ import { ServerMethodsComponent } from './plugins/tabs/server-methods/server-met
 import { BgtasksComponent } from '~/bgtasks/bgtasks.component'
 import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';;
 import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';;
-import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component';
+import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component'
+    ;
 import { BackgroundThreadsComponent } from './plugins/tabs/background-threads/background-threads/background-threads.component'
-
+    ;
+import { ManageBackgroundThreadComponent } from './plugins/tabs/background-threads/manage-background-thread/manage-background-thread.component';;
+import { KeysPipe } from './pipes/keys-pipe.pipe'
 
 export class MyErrorHandler implements ErrorHandler {
-    
-    constructor()
-    {
+
+    constructor() {
 
     }
 
     handleError(error) {
-      console.info("custom error handler: ", error);
-      throw new Error("Whoops");
+        console.info("custom error handler: ", error);
+        throw new Error("Whoops");
     }
- }
+}
 
 @NgModule({
     imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule, AceEditorModule, ReactiveFormsModule],
@@ -79,15 +81,17 @@ export class MyErrorHandler implements ErrorHandler {
         PluginsComponent,
         CsharpTextareaComponent,
         ServerMethodsComponent,
-        BgtasksComponent ,
-        ExecutionTesterComponent ,
-        ExceptionDetailComponent,
-        BackgroundThreadsComponent
-          
+        BgtasksComponent,
+        ExecutionTesterComponent,
+        ExceptionDetailComponent,
+        BackgroundThreadsComponent,
+        ManageBackgroundThreadComponent
+,
+        KeysPipe
     ],
     bootstrap: [AppComponent],
-    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/ ],
-    entryComponents: [  ]
+    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
+    entryComponents: []
 
 })
 export class AppModule { }    

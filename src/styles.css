@@ -398,6 +398,41 @@ tr.thread.stopped {
         height: 0;
     }
 
+    table.grid-transposed
+    {
+        width: 100%;
+        margin: auto;
+        font: 11px Roboto, "Helvetica Neue", sans-serif;
+    }
+
+    table.grid-transposed tr
+    {
+        height: 54px;
+    }
+
+    
+    
+table.grid-transposed tr:nth-child(even)
+{
+    background-color: #FDFFF2;
+}
+
+table.grid-transposed tr:nth-child(odd)
+{
+    background-color: #FCFFF7;    
+}
+
+    table.grid-transposed tbody tr:hover{
+        background-color: auto;
+    }
+
+    table.grid-transposed tbody tr td:first-child
+    {
+        background-color: #EBF4EC;
+        font-weight:  bold;
+        color: rgba(0,0,0,0.54);
+        width: 30%;
+    }
 
 table.grid
 {

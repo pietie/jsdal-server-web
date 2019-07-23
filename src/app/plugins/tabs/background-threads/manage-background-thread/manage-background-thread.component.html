@@ -1,0 +1,97 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Note the plugin name?</mat-card-title>
+        <mat-card-subtitle>And the specific instance here? vZero/PWA/DEV</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+        <h3>Config values</h3>
+
+        Default/Plugin (override default)/App wide/Endpoint specific
+
+        <hr/>
+
+        {{ _configs?.Plugin | json }}
+
+
+        <hr />
+        {{ _configs?.Instances | json }}
+        <hr />
+
+        <h4>Filter</h4>
+
+        <ng-container *ngIf="_configs">
+
+            <div *ngFor="let instanceKey of _configs.Instances | keys">
+                {{instanceKey}} --> Tie to freakin checkbox!
+                <br />
+                <div>
+                    <mat-checkbox *ngFor="let ep of _configs.Instances[instanceKey]" [(ngModel)]="ep.Display">
+                        {{ ep.Endpoint}}</mat-checkbox>
+                </div>
+            </div>
+        </ng-container>
+        <hr />
+
+        <table class="grid">
+            <colgroup>
+                <col width="250px">
+                <col width="100px">
+                <col width="100px">
+                <col width="auto">
+                <col width="auto">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th title="Default value provided by plugin">Default value</th>
+                    <th title="System wide override">Plugin</th>
+                    <th *ngFor="let appIdent of getActiveAppInstances()">{{ appIdent }}</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="_configs">
+                <tr class="grid-row" *ngFor="let ckName of (_configs.Default | keys)"
+                    [title]="_configs.Default[ckName].Description">
+                    <td class="field" [title]="ckName + ' - ' + _configs.Default[ckName].Description">
+                        {{ ckName }}
+                    </td>
+                    <td>
+                        {{ _configs.Default[ckName].Value }}
+                    </td>
+                    <td>
+
+                        <mat-form-field >
+                            <input [(ngModel)]="_configs.Plugin[ckName].Value" matInput value="value" type="number" autocomplete="off">
+                        </mat-form-field>
+                        
+                        <mat-slide-toggle>text</mat-slide-toggle>
+                    </td>
+
+                    <td class="app" *ngFor="let appIdent of getActiveAppInstances()">
+
+                            <table class="grid-transposed">
+                                <tbody>
+                                    <tr title="App-wide override">
+                                        <td>(App)</td>
+                                        <td>VALUE</td>
+                                    </tr>
+                                    <tr *ngFor="let epInstance of _configs.Instances[appIdent]" title="Endpoint specific value">
+                                        <td>{{ epInstance.Endpoint }}</td>
+                                        <td>VALUE...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                    </td>
+
+
+                </tr>
+            </tbody>
+        </table>
+
+
+    </mat-card-content>
+    <!-- <mat-card-actions>
+        <button mat-button>Ok</button>
+    </mat-card-actions> -->
+</mat-card>

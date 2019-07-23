@@ -1,0 +1,9 @@
+table.grid tr td.field
+{
+    font-weight: bold;
+}
+
+table tr td.app
+{
+    vertical-align: top;
+}
