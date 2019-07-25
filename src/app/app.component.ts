@@ -7,7 +7,7 @@ import { environment } from './../environments/environment';
 import { L2 } from 'l2-lib/L2';
 
 
-import { HubConnectionBuilder, HubConnection, LogLevel, JsonHubProtocol } from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection, LogLevel, JsonHubProtocol } from '@microsoft/signalr';
 
 
 import { Observable, Subscription } from 'rxjs';

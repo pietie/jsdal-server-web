@@ -42,7 +42,7 @@
 
 
       <div class="sql">
-        <textarea>exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}</textarea>
+        <textarea spellcheck="false">exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}</textarea>
       </div>
 
       <!-- Batch stuff = {{ exceptionDetail.execOptions.OverridingInputParameters }}

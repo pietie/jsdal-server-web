@@ -13,10 +13,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: inline-block;
-    width: 130px;
+    width: 150px;
     margin-right: 4px;
-    padding: 3px;
-
+    padding: 2px 0.5em;
+    border-radius: 0.4em;
     position: relative;
     top: 6px;
 }

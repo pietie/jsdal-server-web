@@ -3,12 +3,13 @@ import { Component } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 
 import { environment } from '../../environments/environment';
-import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 
 
 @Component({
     selector: 'home',
-    templateUrl: './home.component.html'
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
 
@@ -19,6 +20,10 @@ export class HomeComponent {
     public usageDetail: any = null;
 
     public hubConnection: HubConnection;
+
+    public clrCounters: any;
+
+    public sysPerfWaiting: boolean = false;
 
     ngOnInit() {
         try {
@@ -36,6 +41,16 @@ export class HomeComponent {
 
                     this.hubConnection.invoke("Init").then(r => {
                         this.statsData = r;
+                    });
+
+                    // this.hubConnection
+                    //     .invoke("SubscribeToDotnetCorePerfCounters")
+                    //     .then(() => {
+                    //         this.sysPerfWaiting = false;
+                    //     });
+
+                    this.hubConnection.on("clrCounterUpdate", data => {
+                        this.clrCounters = data;
                     });
                 });
 
@@ -80,6 +95,33 @@ export class HomeComponent {
             this.usageDetail = r.Data;
         });
 
+    }
+
+    onEnableSystemPerformanceChanged(slider) {
+        let isEnabled: boolean = !slider.checked;
+
+        this.sysPerfWaiting = true;
+
+        if (isEnabled) {
+            this.hubConnection
+                .invoke("SubscribeToDotnetCorePerfCounters")
+                .then((initialState) => {
+                    this.clrCounters = initialState;
+                    this.sysPerfWaiting = false;
+                }).catch(() => {
+                    this.sysPerfWaiting = false;
+                });
+        }
+        else {
+            this.clrCounters = null;
+            this.hubConnection
+                .invoke("UnsubscribeFromDotnetCorePerfCounters")
+                .then(() => {
+                    this.sysPerfWaiting = false;
+                }).catch(() => {
+                    this.sysPerfWaiting = false;
+                });
+        }
     }
 
 }

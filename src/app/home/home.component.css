@@ -1,0 +1,10 @@
+table.clr-counters
+{
+    font-size: 12px;
+}
+table.clr-counters td.provider
+{
+    display:flex;
+    justify-content: start;
+    font: bold 13px Roboto, Arial;
+}

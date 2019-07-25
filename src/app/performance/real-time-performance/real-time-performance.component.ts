@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { HubConnectionBuilder, HubConnection, LogLevel, IStreamResult, ISubscription } from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection, LogLevel, IStreamResult, ISubscription } from '@microsoft/signalr';
 import { Observable, Subscription } from 'rxjs';
 import { environment } from './../../../environments/environment';
 import { L2 } from 'l2-lib/L2';

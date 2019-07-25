@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import { Observable, Subscription, Subject, BehaviorSubject } from 'rxjs';
 import { environment } from '~/../environments/environment';
 import { L2 } from 'l2-lib/L2';

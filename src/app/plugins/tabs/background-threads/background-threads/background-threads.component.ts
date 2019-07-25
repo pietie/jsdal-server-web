@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { ApiService } from '~/services/api';
-import { HubConnectionBuilder, HubConnection, LogLevel } from '@aspnet/signalr';
+import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import { environment } from '../../../../../environments/environment';
 
 @Component({
