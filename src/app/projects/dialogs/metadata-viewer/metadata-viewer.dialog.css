@@ -28,3 +28,8 @@ div.panel-footer mat-icon
     flex: 1 1;
     margin-right: 15px;
 }
+
+tr.deleted
+{
+    color: #fe3020;
+}

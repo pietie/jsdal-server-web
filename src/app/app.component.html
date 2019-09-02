@@ -1,5 +1,5 @@
 <mat-sidenav-container style="background-color: #F0EDE5" [class.main-app-disconnected]="isDisconnected">
-    <mat-sidenav id="main-sidenav" #side mode="push" opened="false" style="width:260px;">
+    <mat-sidenav id="main-sidenav" #side mode="push" opened="false" style="width:260px;" [fixedInViewport]="true" >
 
 
         <mat-nav-list class="menu">
@@ -93,8 +93,7 @@
 
     <div class="main-content">
 
-        <mat-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary"
-            style="margin-bottom: 20px;">
+        <mat-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary">
             <mat-icon class="menu-icon" (click)="side.open();" style="margin-right:10px;">menu</mat-icon>
             <span (click)="side.toggle()" style="cursor: pointer">jsDAL Server</span>
 

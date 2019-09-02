@@ -2,7 +2,11 @@
 
 #app-content
 {
-    padding: 18px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    flex-grow: 1 !important;
 }
 
 mat-nav-list.menu

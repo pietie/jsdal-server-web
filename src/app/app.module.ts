@@ -53,6 +53,10 @@ import { BackgroundThreadsComponent } from './plugins/tabs/background-threads/ba
     ;
 import { ManageBackgroundThreadComponent } from './plugins/tabs/background-threads/manage-background-thread/manage-background-thread.component';;
 import { KeysPipe } from './pipes/keys-pipe.pipe'
+    ;
+import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugin.component'
+    ;
+import { PluginTemplateBottomSheetComponent } from './plugins/add-edit-plugin/plugin-template-bottom-sheet/plugin-template-bottom-sheet.component'
 
 export class MyErrorHandler implements ErrorHandler {
 
@@ -85,13 +89,14 @@ export class MyErrorHandler implements ErrorHandler {
         ExecutionTesterComponent,
         ExceptionDetailComponent,
         BackgroundThreadsComponent,
-        ManageBackgroundThreadComponent
-,
-        KeysPipe
+        ManageBackgroundThreadComponent,
+        KeysPipe,
+        AddEditPluginComponent,
+        PluginTemplateBottomSheetComponent
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
-    entryComponents: []
+    entryComponents: [PluginTemplateBottomSheetComponent]
 
 })
 export class AppModule { }    

@@ -21,6 +21,13 @@ export module app {
 
     export class plugins {
 
+        static addUpdateInline(id: string, name: string, description: string, code: string): Promise<{ CompilationError?: string, id?: string }> {
+            return <any>L2.postJson(`/inline-plugin/${L2.nullToEmpty(id)}`, { body: JSON.stringify({ name: name, description: description, code: code }) })
+                .then((r: any) => {
+                    return r.Data;
+                });
+        }
+
         static getAll(projectName: string, appName: string): Promise<{ Name: string, Description: string, Guid: string, Included: boolean, SortOrder: number }[]> {
             return <any>L2.fetchJson(`/api/app/${appName}/plugins?project=${projectName}`).then((r: any) => {
                 return r.Data;
@@ -51,7 +58,7 @@ export module app {
         }
 
         static getBgThreadAllConfigs(pluginGuid: string): Promise<{ ConfigContract?: any/*TODO: will describe the expected fields & values and their types and maybe the editor experience required!*/, Default: { [key: string]: string }, Plugin: { [key: string]: string }, App: { [key: string]: string }, Endpoint: { [key: string]: string }, Instances: any }> {
-            return <any>L2.getJson(`/api/bgthreads/${pluginGuid}/all-config`).then((r:any)=>r.Data);
+            return <any>L2.getJson(`/api/bgthreads/${pluginGuid}/all-config`).then((r: any) => r.Data);
         }
     }
 

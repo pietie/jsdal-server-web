@@ -22,6 +22,7 @@ import { BgtasksComponent } from '~/bgtasks/bgtasks.component';
 import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';
 import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component';
 import { ManageBackgroundThreadComponent } from './plugins/tabs/background-threads/manage-background-thread/manage-background-thread.component';
+import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugin.component';
 
 
 export const appRoutes: Routes = [
@@ -60,6 +61,7 @@ export const appRoutes: Routes = [
     },
     { path: 'bgtasks', component: BgtasksComponent, canActivate: [LoggedInGuard] },
     { path: 'plugins', component: PluginsComponent, canActivate: [LoggedInGuard] },
+    { path: 'plugins/edit/:id', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },
     { path: 'plugins/bgthread/:id', component: ManageBackgroundThreadComponent, canActivate: [LoggedInGuard] },
     {
         path: 'exec-test', component: ExecutionTesterComponent, canActivate: [LoggedInGuard]

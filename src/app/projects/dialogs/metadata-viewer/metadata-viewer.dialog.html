@@ -56,7 +56,7 @@
             </thead>
             <tbody>
                 <ng-template [ngIf]="searchResults">
-                    <tr *ngFor="let row of searchResults" [class.deleted]="row.IsDeleted">
+                    <tr *ngFor="let row of searchResults" [class.deleted]="row.IsDeleted" [title]="row.IsDeleted? 'Routine metadata is marked as deleted':''">
                         <td>[{{row.Schema}}].[{{row.Routine}}] 
                             <button mat-button color="primary" *ngIf="row.jsDALMetadata?.jsDAL" (click)="showJsDALMetadata(row)">(meta)</button></td>
                         <td>
