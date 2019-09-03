@@ -13,16 +13,26 @@ export class ExceptionViewerComponent {
     public totalExceptionCnt: number = 0;
     public appTitles: string[];
 
-    public topN: number = 10;
+    public topN: number = 20;
 
     public isLoadingExceptionList: boolean = false;
 
 
     constructor(public domSanitizer: DomSanitizer, public router: Router) {
+        this.loadGooglePrettyfier();
     }
 
     ngOnInit() {
         this.fetchRecentExceptions();
+    }
+
+    loadGooglePrettyfier()
+    {
+        let script = document.createElement("script");
+        
+        script.src = "https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=sql&skin=desert";
+        document.body.appendChild(script);
+
     }
 
     lookupError(errRef: string) {

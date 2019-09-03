@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef, TemplateRef, ViewRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { L2 } from 'l2-lib/L2';
 import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-exception-detail',
@@ -17,6 +18,12 @@ export class ExceptionDetailComponent implements OnInit {
 
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public domSanitizer: DomSanitizer) { }
 
+
+  @ViewChild('targetExecSql', { read: ViewContainerRef, static: false }) targetExecSql: ViewContainerRef;
+
+  @ViewChild('tpl', { read: TemplateRef, static: false }) tpl: TemplateRef<any>;
+
+
   ngOnInit() {
     this.activatedRoute.params.subscribe(p => {
       this.loadException(p["id"]);
@@ -24,10 +31,24 @@ export class ExceptionDetailComponent implements OnInit {
       setTimeout(() => {
         let topEl = document.getElementById("main-sidenav");
         if (topEl) topEl.scrollIntoView();
-        console.log("topEl...", topEl);
       }, 0)
     });
   }
+
+  ngAfterViewInit(): void {
+
+
+    // this.activatedRoute.params.subscribe(p => {
+    //   this.loadException(p["id"]);
+
+    //   setTimeout(() => {
+    //     let topEl = document.getElementById("main-sidenav");
+    //     if (topEl) topEl.scrollIntoView();
+    //   }, 0)
+    // });
+
+  }
+
 
   loadException(id: string) {
     this.isLoading = true;
@@ -35,6 +56,22 @@ export class ExceptionDetailComponent implements OnInit {
     L2.fetchJson(`/api/exception/${id}`).then((r: any) => {
       this.isLoading = false;
       this.exceptionDetail = r.Data;
+
+      // let newChild = this.tpl.createEmbeddedView(null);
+
+      // this.targetExecSql.clear();
+      // this.targetExecSql.insert(newChild);
+
+      // if (window["PR"] != null) {
+      //   setTimeout(() => {
+
+      //     //exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}
+
+      //     //document.getElementById("execSql").innerHTML = `exec [${this.exceptionDetail.execOptions.schema}].[${this.exceptionDetail.execOptions.routine}]`;
+      //     window["PR"].prettyPrint();
+      //   }, 0);
+
+      // }
     }).catch(e => {
       this.isLoading = false;
       L2.handleException(e);
@@ -79,6 +116,36 @@ export class ExceptionDetailComponent implements OnInit {
   private wrapParmValue(val: string) {
     if (val == null) return 'null';
     return `'${val}'`;
+  }
+
+  handleCodeDblClicked(pre: HTMLElement) {
+    var range, selection;
+
+    if (document.body["createTextRange"]) {
+      range = document.body["createTextRange"]();
+      range.moveToElementText(pre);
+      range.select();
+    } else if (window.getSelection) {
+      selection = window.getSelection();
+      range = document.createRange();
+      range.selectNodeContents(pre);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }
+
+  prettyPrint(input: string, lang: string) {
+    if (window["PR"] == null) return null;
+    return window["PR"].prettyPrintOne(input, lang, false);
+  }
+
+  prettyPrintExecSql()
+  {
+    if (this.exceptionDetail == null || this.exceptionDetail.execOptions == null) return null;
+
+    //exec [{{ exceptionDetail?.execOptions?.schema }}].[{{ exceptionDetail?.execOptions?.routine }}] {{ buildExecParmList(exceptionDetail?.execOptions?.inputParameters) }}
+
+    return this.prettyPrint(`exec [${ this.exceptionDetail.execOptions.schema }].[${ this.exceptionDetail.execOptions.routine }] ${ this.buildExecParmList(this.exceptionDetail.execOptions.inputParameters)}`, "sql");
   }
 }
 

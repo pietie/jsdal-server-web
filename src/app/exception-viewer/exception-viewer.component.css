@@ -35,3 +35,9 @@
  
 }
 
+/deep/ pre.prettyprint
+{
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #1E1E1E;
+} 
