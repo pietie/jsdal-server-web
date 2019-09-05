@@ -7,7 +7,8 @@
         </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-        <button [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary" (click)="lookupError(errRef.value); topEl.scrollIntoView();">LOOKUP</button>
+        <button [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary"
+            (click)="lookupError(errRef.value); topEl.scrollIntoView();">LOOKUP</button>
     </mat-card-actions>
 </mat-card>
 
@@ -23,14 +24,16 @@
 
         <div *ngIf="recentExceptions">
             <div>
-                <button mat-button color="primary" (click)="fetchRecentExceptions()" [disabled]="isLoadingExceptionList">REFRESH</button>
+                <button mat-button color="primary" (click)="refreshExceptionList()"
+                    [disabled]="isLoadingExceptionList">REFRESH</button>
 
             </div>
-            <br/><br/>
-            <div>
+            <br /><br />
+            <div class="filter-container">
+
                 <mat-form-field>
-                    <mat-label>Top (n)</mat-label>
-                    <mat-select [(ngModel)]="topN" (selectionChange)="fetchRecentExceptions()" [disabled]="isLoadingExceptionList">
+                    <mat-select placeholder="Top (n)" (selectionChange)="handleFilterChanged()"
+                        [(ngModel)]="this.filter.top" [disabled]="isLoadingExceptionList">
                         <mat-option [value]="20">20</mat-option>
                         <mat-option [value]="50">50</mat-option>
                         <mat-option [value]="100">100</mat-option>
@@ -39,6 +42,46 @@
                         <mat-option [value]="800">800</mat-option>
                     </mat-select>
                 </mat-form-field>
+
+                <mat-form-field *ngIf="(endpoints$ | async) as endpointList; else loadingEndpointCbo">
+
+                    <mat-select multiple placeholder="Endpoint" [(ngModel)]="filter.endpoint"
+                        (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
+                        <mat-option #allEP (onSelectionChange)="allOptionChanged(allEP, 'endpoint')" value="all">(All)
+                        </mat-option>
+                        <mat-option *ngFor="let ep of endpointList" [disabled]="filter.endpoint.includes('all')"
+                            [value]="ep">{{ep}}</mat-option>
+
+                    </mat-select>
+
+                </mat-form-field>
+                <ng-template #loadingEndpointCbo>
+                    <mat-spinner diameter="20"></mat-spinner>
+                </ng-template>
+
+                <mat-form-field *ngIf="(appTitles$ | async) as appTitleList; else loadingAppTitleCbo">
+
+                    <mat-select multiple placeholder="App" [(ngModel)]="filter.app"
+                        (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
+                        <mat-option #allApps (onSelectionChange)="allOptionChanged(allApps, 'app')" value="all">(All)
+                        </mat-option>
+                        <mat-option *ngFor="let app of appTitleList" [disabled]="filter.app.includes('all')"
+                            [value]="app">{{app}}</mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+                <ng-template #loadingAppTitleCbo>
+                    <mat-spinner diameter="20"></mat-spinner>
+                </ng-template>
+
+                <mat-form-field>
+                    <input matInput [(ngModel)]="filter.routine" placeholder="Routine" autocomplete="off"
+                        (blur)="handleFilterChanged()">
+                </mat-form-field>
+
+
+                <!-- Filter on: Type(Timeout), Exception Type(SQL, Memory, FileIO etc), -->
+
             </div>
 
             <p *ngIf="recentExceptions.length == 0 && !isLoadingExceptionList">
@@ -51,7 +94,8 @@
                 <span [title]="ex.created | date: 'dd MMM yyyy'">{{ ex.created | date: 'HH:mm:ss' }}</span>
                 <div style="width:90px;display:inline-block;">
                     <button [disabled]="isLoadingExceptionList" style="font-family: Courier;font-weight: 800;"
-                        (click)="errRef.value=ex.id;lookupError(ex.id); topEl.scrollIntoView();" mat-button color="primary">{{ ex.id }}</button>
+                        (click)="errRef.value=ex.id;lookupError(ex.id); topEl.scrollIntoView();" mat-button
+                        color="primary">{{ ex.id }}</button>
                 </div>
                 <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle">{{ ex.appTitle }} </div>
                 <div class="msg" *ngIf="ex" [innerHTML]="formatMessage(ex.message)">

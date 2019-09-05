@@ -1,0 +1,147 @@
+.hidden
+{
+    display: none;
+}
+
+hr
+{
+    border: 1px solid #333;
+}
+
+div.exception-detail
+{
+
+}
+
+.heading
+{
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+
+
+.heading .date
+{
+    font-size:1.2em;
+    font-weight:bold;
+}
+
+.heading .tag-element
+{
+    padding: 7px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.heading .app-title
+{
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #B873DD;
+    
+}
+
+.heading .exception-type
+{
+    color: #888;
+    font-family: 'Inconsolata', monospace;
+}
+
+
+/deep/ span.first-stacktrace-line
+{
+    font-weight: bold;
+    color: #fff;
+}
+
+/deep/.procName
+{
+    font-weight: bold;
+    color: #EF5D5D;
+    text-decoration: dotted;
+    text-decoration-line: underline;
+}
+
+.exception-detail .msg
+{
+    padding: 7px;
+    background-color: #333;
+    color: #FFFA45;
+    width: 100%;
+    border-radius: 4px;
+    width: 99%;
+    font-family: 'Inconsolata', monospace;
+}
+
+
+
+/* div.exception-detail .stack
+{
+    background-color: #1E1E1E;
+    padding: 13px;
+    color: #FF8C8C;
+    overflow-y: scroll;
+    font-family: Consolas, 'Courier New', monospace;
+} */
+
+.exec-option
+{
+    margin: 6px;
+    padding: 12px;
+    background-color: rgb(240,240,255);
+    border-radius: 8px;
+}
+
+.exec-option .row
+{
+    margin-right: 20px;
+}
+
+.exec-option .row .field
+{
+    font-weight: bold;
+    width: 80px;
+    display: inline-block;
+}
+
+.exec-option .sql, .exec-option .sql *
+{
+    font-family: 'Inconsolata', monospace !important;
+}
+ 
+div.exception-detail .stack
+{
+    overflow-y: scroll;
+    font-family: 'Inconsolata', monospace;
+    background-color: #333;
+    border-radius: 4px;
+}
+
+div.exception-detail .stack *
+{
+    font-family: 'Inconsolata', monospace !important;
+}
+
+.inner-exception-container
+{
+    margin-top: 15px;
+}
+
+.inner-exception-container .title
+{
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.inner-exception-container.even /deep/ mat-expansion-panel-header
+{
+    background-color: #a0a0ca !important; 
+}
+
+.inner-exception-container.odd /deep/ mat-expansion-panel-header
+{
+    background-color: #a0a0ea !important;
+}

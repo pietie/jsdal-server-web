@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { app, appRules, serverMethods, bgTasks, performance } from './object-model';
+import { exceptions } from './exceptions';
 import { util } from './util';
 
 @Injectable({
@@ -34,6 +35,10 @@ export class ApiService {
 
   get util() {
     return util;
+  }
+
+  get exceptions() {
+    return exceptions;
   }
 
   

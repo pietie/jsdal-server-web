@@ -56,7 +56,8 @@ import { KeysPipe } from './pipes/keys-pipe.pipe'
     ;
 import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugin.component'
     ;
-import { PluginTemplateBottomSheetComponent } from './plugins/add-edit-plugin/plugin-template-bottom-sheet/plugin-template-bottom-sheet.component'
+import { PluginTemplateBottomSheetComponent } from './plugins/add-edit-plugin/plugin-template-bottom-sheet/plugin-template-bottom-sheet.component';
+import { ExceptionUiComponent } from './exception-viewer/exception-detail/exception-ui/exception-ui.component'
 
 export class MyErrorHandler implements ErrorHandler {
 
@@ -92,7 +93,8 @@ export class MyErrorHandler implements ErrorHandler {
         ManageBackgroundThreadComponent,
         KeysPipe,
         AddEditPluginComponent,
-        PluginTemplateBottomSheetComponent
+        PluginTemplateBottomSheetComponent,
+        ExceptionUiComponent
     ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
