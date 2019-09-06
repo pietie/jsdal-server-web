@@ -1,9 +1,15 @@
 
 
-/*.exception-item:hover
+.exception-item:hover
 {
-    background-color: #f0f0f0;
-}*/
+    background-color: #f0f0fe;
+}
+
+.exception-item
+{
+    display: flex;
+    align-items: center; 
+}
 
 .app-title
 {
@@ -18,31 +24,41 @@
     padding: 2px 0.5em;
     border-radius: 0.4em;
     position: relative;
-    top: 6px;
+    flex: 0 0 150px;
 }
 
-.msg
+.msg-container
+{
+    flex: 1 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: flex;
+}
+
+.msg-container .proc-name{
+    font-weight: bold; 
+}
+
+.msg-container .msg
 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
-    width: 1200px;
-
     position: relative;
-    top: 5px;
-
- 
 }
+
 
 .filter-container
 {
     display: flex;
     align-items: center;
     justify-content: start;
+    flex-wrap: wrap;
 }
 
 .filter-container > *
 {
     margin-right: 30px;
-} 
+}  

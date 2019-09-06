@@ -21,13 +21,13 @@ export class ExceptionUiComponent implements OnInit {
 
 
 
-  formatMessage(msg: string) {
-    if (msg == null) return null;
-    return this.domSanitizer.bypassSecurityTrustHtml(msg.replace(/##.*##/g, (match) => {
-      return `<span class="procName">${match.substr(2, match.length - 4)}</span>`;
-    }));
+  // formatMessage(msg: string) {
+  //   if (msg == null) return null;
+  //   return this.domSanitizer.bypassSecurityTrustHtml(msg.replace(/##.*##/g, (match) => {
+  //     return `<span class="procName">${match.substr(2, match.length - 4)}</span>`;
+  //   }));
 
-  }
+  // }
 
   formatStackTrace(st: string) {
     if (!st) return null;

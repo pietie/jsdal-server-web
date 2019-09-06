@@ -57,22 +57,14 @@ div.exception-detail
     font-family: 'Inconsolata', monospace;
 }
 
-
+/* 
 /deep/ span.first-stacktrace-line
 {
     font-weight: bold;
     color: #fff;
-}
+} */
 
-/deep/.procName
-{
-    font-weight: bold;
-    color: #EF5D5D;
-    text-decoration: dotted;
-    text-decoration-line: underline;
-}
-
-.exception-detail .msg
+.exception-detail .main-detail
 {
     padding: 7px;
     background-color: #333;
@@ -83,8 +75,48 @@ div.exception-detail
     font-family: 'Inconsolata', monospace;
 }
 
+.exception-detail .main-detail
+{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.exception-detail .main-detail .item
+{
+    margin-right: 30px;
+}
+
+.exception-detail .main-detail .item.full
+{
+    flex: 1 1;
+}
+
+.exception-detail .main-detail .field
+{
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 6px; 
+}
+.exception-detail .main-detail .value
+{
+    color: #fff;
+}
+
+.exception-detail .main-detail .fill-up-line
+{
+    flex: 1 1;
+}
+
+/* .exception-detail .main-detail .proc-name
+{
+    font-weight: bold;
+    color: #EF5D5D;
+    text-decoration: dotted;
+    text-decoration-line: underline;
+}  */
 
 
+ 
 /* div.exception-detail .stack
 {
     background-color: #1E1E1E;

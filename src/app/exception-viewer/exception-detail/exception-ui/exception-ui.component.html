@@ -9,18 +9,40 @@
 
 <div class="exception-detail" *ngIf="exception">
 
-    <div class="msg" [innerHTML]="formatMessage(exception.message)"></div>
+    <div class="main-detail">
+
+        <div class="item" *ngIf="exception.server">
+            <span class="field">Server:</span>
+            <span class="value server-name">{{ exception.server }}</span>
+        </div>
+        <div class="item" *ngIf="exception.procedure">
+            <span class="field">Procedure</span>
+            <span class="value"><span class="proc-name">{{ exception.procedure }}</span>, line: {{ exception.line }}</span>
+        </div>
+
+        <div class="item full">
+            <span class="field">Message:</span>
+            <span class="value msg">{{ exception.message }}</span>
+        </div>
+
+        <div class="item" *ngIf="exception.errorCode || exception.level || exception.state">
+                <span class="field">Error,Level,State:</span>
+                <span class="value els">{{ exception.errorCode }},{{ exception.level }},{{ exception.state }}</span>
+            </div>
+
+    </div>
+
     <hr />
 
     <!-- <div class="stack" *ngIf="exception.stackTrace" [innerHTML]="formatStackTrace(exception.stackTrace)"></div>
       
             <hr/> -->
-<!-- 
+    <!-- 
             <div class="stack">
                     <pre class="prettyprint lang-stacktrace" >{{ exception.stackTrace }}</pre>
                 </div> -->
 
-            <!-- <div class="stack">
+    <!-- <div class="stack">
                     <pre class="prettyprint" [innerHTML]='prettyPrint(exception.stackTrace, "stacktrace")'></pre>
                 </div>
     <hr /> -->

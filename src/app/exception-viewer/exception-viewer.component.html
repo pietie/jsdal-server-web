@@ -24,7 +24,7 @@
 
         <div *ngIf="recentExceptions">
             <div>
-                <button mat-button color="primary" (click)="refreshExceptionList()"
+                <button mat-button color="primary" (click)="refreshExceptionList(true)"
                     [disabled]="isLoadingExceptionList">REFRESH</button>
 
             </div>
@@ -43,7 +43,8 @@
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field style="width:200px" *ngIf="(endpoints$ | async) as endpointList; else loadingEndpointCbo">
+                <mat-form-field style="width:350px"
+                    *ngIf="(endpoints$ | async) as endpointList; else loadingEndpointCbo">
 
                     <mat-select multiple placeholder="Endpoint" [(ngModel)]="filter.endpoint"
                         (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
@@ -59,7 +60,8 @@
                     <mat-spinner diameter="20"></mat-spinner>
                 </ng-template>
 
-                <mat-form-field style="width:200px" *ngIf="(appTitles$ | async) as appTitleList; else loadingAppTitleCbo">
+                <mat-form-field style="width:350px"
+                    *ngIf="(appTitles$ | async) as appTitleList; else loadingAppTitleCbo">
 
                     <mat-select multiple placeholder="App" [(ngModel)]="filter.app"
                         (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
@@ -75,8 +77,8 @@
                 </ng-template>
 
                 <mat-form-field>
-                    <input matInput [(ngModel)]="filter.routine" placeholder="Routine" autocomplete="off"
-                        (blur)="handleFilterChanged()">
+                    <input matInput [(ngModel)]="filter.routine" (keyup.enter)="handleFilterChanged()"
+                        placeholder="Routine" autocomplete="off" (blur)="handleFilterChanged()">
                 </mat-form-field>
 
 
@@ -98,8 +100,13 @@
                         color="primary">{{ ex.id }}</button>
                 </div>
                 <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle">{{ ex.appTitle }} </div>
-                <div class="msg" *ngIf="ex" [innerHTML]="formatMessage(ex.message)">
-
+                <div class="msg-container" *ngIf="ex">
+                    <div *ngIf="ex.procedure">
+                        <span>Procedure </span>
+                        <span class="proc-name">{{ ex.procedure }}</span>
+                        <span>,&nbsp;</span>
+                    </div>
+                    <div class="msg">{{ ex.message }}</div>
                 </div>
 
             </div>

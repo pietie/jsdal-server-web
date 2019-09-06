@@ -119,8 +119,8 @@ export class ExceptionViewerComponent {
 
 
 
-    refreshExceptionList() {
-        if (JSON.stringify(this.lastFilter) == JSON.stringify(this.filter)) {
+    refreshExceptionList(forceRefresh:boolean = false) {
+        if (!forceRefresh && JSON.stringify(this.lastFilter) == JSON.stringify(this.filter)) {
             //console.info("BAIL last=", this.lastFilter, "; filter=", this.filter);
             return;
         }
@@ -153,11 +153,4 @@ export class ExceptionViewerComponent {
         });
     }
 
-    formatMessage(msg: string) {
-        if (msg == null) return null;
-        return this.domSanitizer.bypassSecurityTrustHtml(msg.replace(/##.*##/g, (match) => {
-            return `<span class="procName">${match.substr(2, match.length - 4)}</span>`;
-        }));
-
-    }
 }
