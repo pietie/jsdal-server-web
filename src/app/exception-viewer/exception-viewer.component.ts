@@ -28,8 +28,6 @@ export class ExceptionViewerComponent {
 
 
     constructor(public domSanitizer: DomSanitizer, public router: Router, public activatedRoute: ActivatedRoute, public api: ApiService, public cdr: ChangeDetectorRef) {
-        this.loadGooglePrettyfier();
-
         this.appTitles$ = this.api.exceptions.getAppTitles();//.then(r => ["(All)", ...r]);
         this.endpoints$ = this.api.exceptions.getEndpoints();//.then(r => ["(All)", ...r]);
 
@@ -79,16 +77,6 @@ export class ExceptionViewerComponent {
 
 
         });
-    }
-
-
-
-    loadGooglePrettyfier() {
-        let script = document.createElement("script");
-
-        script.src = "https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=sql&skin=desert";
-        document.body.appendChild(script);
-
     }
 
     lookupError(errRef: string) {

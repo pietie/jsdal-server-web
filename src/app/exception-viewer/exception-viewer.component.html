@@ -43,7 +43,7 @@
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field *ngIf="(endpoints$ | async) as endpointList; else loadingEndpointCbo">
+                <mat-form-field style="width:200px" *ngIf="(endpoints$ | async) as endpointList; else loadingEndpointCbo">
 
                     <mat-select multiple placeholder="Endpoint" [(ngModel)]="filter.endpoint"
                         (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
@@ -59,7 +59,7 @@
                     <mat-spinner diameter="20"></mat-spinner>
                 </ng-template>
 
-                <mat-form-field *ngIf="(appTitles$ | async) as appTitleList; else loadingAppTitleCbo">
+                <mat-form-field style="width:200px" *ngIf="(appTitles$ | async) as appTitleList; else loadingAppTitleCbo">
 
                     <mat-select multiple placeholder="App" [(ngModel)]="filter.app"
                         (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">

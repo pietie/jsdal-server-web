@@ -15,10 +15,18 @@
     <!-- <div class="stack" *ngIf="exception.stackTrace" [innerHTML]="formatStackTrace(exception.stackTrace)"></div>
       
             <hr/> -->
-    <!-- <pre class="prettyprint lang-cs stack">{{ exception?.stackTrace }}</pre> -->
+<!-- 
+            <div class="stack">
+                    <pre class="prettyprint lang-stacktrace" >{{ exception.stackTrace }}</pre>
+                </div> -->
+
+            <!-- <div class="stack">
+                    <pre class="prettyprint" [innerHTML]='prettyPrint(exception.stackTrace, "stacktrace")'></pre>
+                </div>
+    <hr /> -->
 
     <div class="stack">
-        <pre class="prettyprint " [innerHTML]='prettyPrint(exception.stackTrace, "cs")'></pre>
+        <pre class="prettyprint" [innerHTML]='prettyPrint(exception.stackTrace, "stacktrace")'></pre>
     </div>
 
 </div>
@@ -59,14 +67,18 @@
 
 </div>
 
-<div class="inner-exception-container" *ngIf="exception?.innerException" [class.even]="innerExceptionIx % 2 == 0" [class.odd]="innerExceptionIx % 2 == 1">
+<div class="inner-exception-container" *ngIf="exception?.innerException" [class.even]="innerExceptionIx % 2 == 0"
+    [class.odd]="innerExceptionIx % 2 == 1">
     <mat-accordion>
         <mat-expansion-panel>
             <mat-expansion-panel-header>
-                <div class="title flex-vertical-center"><mat-icon>report</mat-icon>Inner exception</div>
+                <div class="title flex-vertical-center">
+                    <mat-icon>report</mat-icon>Inner exception
+                </div>
             </mat-expansion-panel-header>
-            <br/>
-            <exception-ui [exception]="exception?.innerException" [innerExceptionIx]="this.innerExceptionIx+1"></exception-ui>
+            <br />
+            <exception-ui [exception]="exception?.innerException" [innerExceptionIx]="this.innerExceptionIx+1">
+            </exception-ui>
         </mat-expansion-panel>
 
     </mat-accordion>

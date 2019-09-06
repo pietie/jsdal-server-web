@@ -9,14 +9,96 @@
     <link rel="shortcut icon" href="favicon.png" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" async>
     <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet" async>
+
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=desert" async
+        defer></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=sql&skin=desert"
+        async defer></script>
+    
+
 </head>
 
 <body style="margin:0;padding:0;">
     <app-root>
         <div style="background-color: #7592C4; position:fixed;width:100%;height:100%;">
-            <div style="display:flex;align-items: center; width:100%;height:100%;font: 4em bold; font-family: Roboto, Arial;justify-content: center;color: #000;">LOADING...</div>
+            <div
+                style="display:flex;align-items: center; width:100%;height:100%;font: 4em bold; font-family: Roboto, Arial;justify-content: center;color: #000;">
+                LOADING...</div>
         </div>
     </app-root>
+
+    <script>
+
+        addEventListener('load', (event) => {
+
+            PR['PR_LINE_NUM'] = PR["PR_COMMENT"];
+            PR['PR_FILE'] = PR["PR_COMMENT"];
+
+            PR['registerLangHandler'](
+                PR['createSimpleLexer'](
+                    [
+                        // Whitespace.
+                        [PR['PR_PLAIN'], /^[\t\n\r \xA0]+/, null, '\t\n\r \xA0'],
+                    ],
+                    [
+
+                        [PR['PR_FILE'], /[A-Za-z\d._]+\(/],
+                        [PR['PR_FILE'], /(in\b).*(?:line)/],
+                        [PR['PR_LINE_NUM'], /\s\d+$/],
+
+                        // Generic type number thingies e.g. List`1
+                        //[PR['PR_TYPE'], /^(?:List`)\d\b*/],
+
+                        // `import`, `library`, `part of`, `part`, `as`, `show`, and `hide`
+                        // keywords.
+                        [PR['PR_KEYWORD'], /^\b(?:at|in)\b/i],
+
+
+
+                        // Declaration keywords.
+                        //[PR['PR_KEYWORD'], /^\b(?:abstract|const|extends|factory|final|get|implements|native|operator|set|static|typedef|var)\b/i],
+
+                        // Keywords for types.
+                        [PR['PR_TYPE'], /^\b(?:Dictionary`\d|List`\d|Action`\d)\b/i],
+
+
+                        // Keywords for constants.
+                        //[PR['PR_KEYWORD'], /^\b(?:false|null|true)\b/i],
+
+                        // Multiline strings, single- and double-quoted.
+                        //[PR['PR_STRING'], /^r?[\']{3}[\s|\S]*?[^\\][\']{3}/],
+                        //[PR['PR_STRING'], /^r?[\"]{3}[\s|\S]*?[^\\][\"]{3}/],
+
+                        // Normal and raw strings, single- and double-quoted.
+                        //[PR['PR_STRING'], /^r?\'(\'|(?:[^\n\r\f])*?[^\\]\')/],
+                        //[PR['PR_STRING'], /^r?\"(\"|(?:[^\n\r\f])*?[^\\]\")/],
+                        // [PR['PR_STRING'], /^\b(?:in)(?:\b)(.*)(?::line\s+\d+)/i, '\1',null],
+
+                        // Types are capitalized by convention.
+                        [PR['PR_TYPE'], /^[A-Z]\w*/],
+
+                        // Identifiers.
+                        [PR['PR_PLAIN'], /^[a-z_$][a-z0-9_]*/i],
+
+                        // Operators.
+                        //[PR['PR_PUNCTUATION'], /^[~!%^&*+=|?:<>/-]/],
+
+                        // Hex numbers.
+                        [PR['PR_LITERAL'], /^\b0x[0-9a-f]+/i],
+
+                        // Decimal numbers.
+                        [PR['PR_LITERAL'], /^\b\d+(?:\.\d*)?(?:e[+-]?\d+)?/i],
+                        [PR['PR_LITERAL'], /^\b\.\d+(?:e[+-]?\d+)?/i],
+
+                        // Punctuation.
+                        [PR['PR_PUNCTUATION'], /^\b(?:System)/i]
+                    ]),
+                ['stacktrace']);
+
+
+        }, false);
+
+    </script>
 </body>
 
 </html>

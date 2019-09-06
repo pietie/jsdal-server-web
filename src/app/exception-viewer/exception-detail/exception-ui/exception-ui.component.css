@@ -8,14 +8,21 @@ hr
     border: 1px solid #333;
 }
 
+pre.prettyprint
+{
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #333;
+} 
+
 div.exception-detail
 {
-
+ 
 }
 
 .heading
 {
-    margin-bottom: 10px;
+    margin-bottom: 10px; 
     display: flex;
     align-items: center;
 }
