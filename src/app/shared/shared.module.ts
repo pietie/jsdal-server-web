@@ -35,7 +35,8 @@ import {
     MatToolbarModule,
     MatTooltipModule,
     MatStepperModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatBadgeModule
 } from '@angular/material';
 
 
@@ -81,7 +82,8 @@ import { MsgDialog, PromptDialog  } from '~/dialogs'
         MatToolbarModule,
         MatTooltipModule,
         MatStepperModule,
-        MatBottomSheetModule
+        MatBottomSheetModule,
+        MatBadgeModule
     ],
     declarations: [IsoDatePipe, FromEpochPipe, LogGrid, MsgDialog, PromptDialog],
     exports: [IsoDatePipe, FromEpochPipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule,    MatAutocompleteModule,
@@ -115,7 +117,8 @@ import { MsgDialog, PromptDialog  } from '~/dialogs'
         MatToolbarModule,
         MatTooltipModule,
         MatStepperModule,
-        MatBottomSheetModule
+        MatBottomSheetModule,
+        MatBadgeModule
     ],
     entryComponents: [MsgDialog, PromptDialog]
 

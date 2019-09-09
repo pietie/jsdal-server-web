@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewContainerRef, TemplateRef, ViewRef } 
 import { Router, ActivatedRoute } from '@angular/router';
 import { L2 } from 'l2-lib/L2';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ApiService } from '~/services/api';
 
 
 @Component({
@@ -14,7 +15,7 @@ export class ExceptionDetailComponent implements OnInit {
   isLoading: boolean = false;
   exceptionDetail: any;
 
-    constructor(public router: Router, public activatedRoute: ActivatedRoute, public domSanitizer: DomSanitizer) { }
+  constructor(public router: Router, public activatedRoute: ActivatedRoute, public domSanitizer: DomSanitizer, public api: ApiService) { }
 
 
   @ViewChild('targetExecSql', { read: ViewContainerRef, static: false }) targetExecSql: ViewContainerRef;
@@ -24,7 +25,10 @@ export class ExceptionDetailComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(p => {
-      this.loadException(p["id"]);
+      this.loadException(p["id"], this.activatedRoute.snapshot.queryParams["parentId"]);
+
+
+      // TODO: Need a way to specify PARENT / RELATED ids
 
       setTimeout(() => {
         let topEl = document.getElementById("main-sidenav");
@@ -48,32 +52,41 @@ export class ExceptionDetailComponent implements OnInit {
   }
 
 
-  loadException(id: string) {
+  loadException(id: string, parentId: string) {
     this.isLoading = true;
 
-    L2.fetchJson(`/api/exception/${id}`).then((r: any) => {
+    this.api.exceptions.get(id, parentId).then(r => {
       this.isLoading = false;
-      this.exceptionDetail = r.Data;
+      this.exceptionDetail = r;
 
-      // let newChild = this.tpl.createEmbeddedView(null);
-
-      // this.targetExecSql.clear();
-      // this.targetExecSql.insert(newChild);
-
-      // if (window["PR"] != null) {
-      //   setTimeout(() => {
-
-      //     //exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}
-
-      //     //document.getElementById("execSql").innerHTML = `exec [${this.exceptionDetail.execOptions.schema}].[${this.exceptionDetail.execOptions.routine}]`;
-      //     window["PR"].prettyPrint();
-      //   }, 0);
-
-      // }
     }).catch(e => {
       this.isLoading = false;
       L2.handleException(e);
     });
+
+    // L2.fetchJson(`/api/exception/${id}`).then((r: any) => {
+    //   this.isLoading = false;
+    //   this.exceptionDetail = r.Data;
+
+    //   // let newChild = this.tpl.createEmbeddedView(null);
+
+    //   // this.targetExecSql.clear();
+    //   // this.targetExecSql.insert(newChild);
+
+    //   // if (window["PR"] != null) {
+    //   //   setTimeout(() => {
+
+    //   //     //exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}
+
+    //   //     //document.getElementById("execSql").innerHTML = `exec [${this.exceptionDetail.execOptions.schema}].[${this.exceptionDetail.execOptions.routine}]`;
+    //   //     window["PR"].prettyPrint();
+    //   //   }, 0);
+
+    //   // }
+    // }).catch(e => {
+    //   this.isLoading = false;
+    //   L2.handleException(e);
+    // });
   }
 
 }

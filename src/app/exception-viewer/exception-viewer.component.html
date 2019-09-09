@@ -7,8 +7,8 @@
         </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-        <button [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary"
-            (click)="lookupError(errRef.value); topEl.scrollIntoView();">LOOKUP</button>
+        <!-- (click)="lookupError(errRef.value); topEl.scrollIntoView();" -->
+        <button [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary">LOOKUP</button>
     </mat-card-actions>
 </mat-card>
 
@@ -92,24 +92,10 @@
 
             <mat-spinner diameter="20" *ngIf="isLoadingExceptionList"></mat-spinner>
 
-            <div class="exception-item" *ngFor="let ex of recentExceptions">
-                <span [title]="ex.created | date: 'dd MMM yyyy'">{{ ex.created | date: 'HH:mm:ss' }}</span>
-                <div style="width:90px;display:inline-block;">
-                    <button [disabled]="isLoadingExceptionList" style="font-family: Courier;font-weight: 800;"
-                        (click)="errRef.value=ex.id;lookupError(ex.id); topEl.scrollIntoView();" mat-button
-                        color="primary">{{ ex.id }}</button>
-                </div>
-                <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle">{{ ex.appTitle }} </div>
-                <div class="msg-container" *ngIf="ex">
-                    <div *ngIf="ex.procedure">
-                        <span>Procedure </span>
-                        <span class="proc-name">{{ ex.procedure }}</span>
-                        <span>,&nbsp;</span>
-                    </div>
-                    <div class="msg">{{ ex.message }}</div>
-                </div>
+            <exception-recent-item *ngFor="let ex of recentExceptions" (onNavigating)="onNavigating($event)"
+                [exception]="ex" [isLoading]="isLoadingExceptionList"></exception-recent-item>
 
-            </div>
+
 
         </div>
 

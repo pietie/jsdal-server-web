@@ -1,8 +1,6 @@
 import { L2 } from 'l2-lib/L2';
 import { IApiResponse } from './../api-response';
 
-//export module app {
-
 export class exceptions {
 
     static getRecent(filter: { top?: number, app?: string[], endpoint?: string[], routine?: string }): Promise<{ TotalExceptionCnt: number, Results: ExceptionWrapper }> {
@@ -17,6 +15,15 @@ export class exceptions {
 
         return L2.fetchJson(`/api/exception/recent?${qs}`)
             .then((r: any) => r.Data);
+    }
+
+    static get(id: string, parentId: string = null): Promise<any> {
+        if (parentId != null) return L2.fetchJson(`/api/exception/${id}?parent=${parentId}`).then((r: any) => r.Data);
+        else return L2.fetchJson(`/api/exception/${id}`).then((r: any) => r.Data);
+    }
+
+    static getRelated(id: string): Promise<any> {
+        return L2.fetchJson(`/api/exception/${id}/related`).then((r: any) => r.Data);
     }
 
     static getAppTitles(): Promise<string[]> {

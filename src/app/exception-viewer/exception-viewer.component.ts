@@ -79,15 +79,6 @@ export class ExceptionViewerComponent {
         });
     }
 
-    lookupError(errRef: string) {
-        this.isNavigatingToChild = true;
-        this.router.navigate(['/exceptions/' + errRef], { queryParamsHandling: "merge" })
-            .then(r => {
-                this.isNavigatingToChild = false;
-            });
-    }
-
-
     handleFilterChanged(ev: Event = null) {
         // if (ev.preventDefault) ev.preventDefault();
         // if (ev.stopPropagation) ev.stopPropagation();
@@ -119,12 +110,12 @@ export class ExceptionViewerComponent {
 
 
 
-    refreshExceptionList(forceRefresh:boolean = false) {
+    refreshExceptionList(forceRefresh: boolean = false) {
         if (!forceRefresh && JSON.stringify(this.lastFilter) == JSON.stringify(this.filter)) {
             //console.info("BAIL last=", this.lastFilter, "; filter=", this.filter);
             return;
         }
-        
+
         this.isLoadingExceptionList = true;
 
         this.appTitles$ = this.api.exceptions.getAppTitles();//.then(r => ["(All)", ...r]);
@@ -152,5 +143,10 @@ export class ExceptionViewerComponent {
             this.refreshExceptionList();
         });
     }
+
+    onNavigating(val: boolean) {
+        this.isNavigatingToChild = val;
+    }
+
 
 }

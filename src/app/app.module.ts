@@ -58,7 +58,8 @@ import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugi
     ;
 import { PluginTemplateBottomSheetComponent } from './plugins/add-edit-plugin/plugin-template-bottom-sheet/plugin-template-bottom-sheet.component';
 import { ExceptionUiComponent } from './exception-viewer/exception-detail/exception-ui/exception-ui.component'
-
+;
+import { ExceptionRecentItemComponent } from './exception-viewer/exception-recent-item/exception-recent-item.component'
 export class MyErrorHandler implements ErrorHandler {
 
     constructor() {
@@ -95,7 +96,8 @@ export class MyErrorHandler implements ErrorHandler {
         AddEditPluginComponent,
         PluginTemplateBottomSheetComponent,
         ExceptionUiComponent
-    ],
+,
+        ExceptionRecentItemComponent    ],
     bootstrap: [AppComponent],
     providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
     entryComponents: [PluginTemplateBottomSheetComponent]
