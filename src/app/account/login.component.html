@@ -10,13 +10,14 @@
             <mat-card-content>
                 <div>
                     <mat-form-field>
-                        <input matInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username" (keyup.enter)="login()" autofocus/>
+                        <input matInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username"
+                            (keyup.enter)="login()" autofocus autocomplete="off" />
                     </mat-form-field>
                 </div>
                 <div>
                     <mat-form-field>
-                        <input matInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password" (keyup.enter)="login()" type="password"
-                        />
+                        <input matInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password"
+                            (keyup.enter)="login()" type="password" autocomplete="off" />
                     </mat-form-field>
                 </div>
                 <div>
@@ -32,7 +33,7 @@
             </mat-card-footer>
 
         </mat-card>
-        <br/><br/>
+        <br /><br />
 
 
 

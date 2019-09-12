@@ -28,12 +28,10 @@ export class ExceptionDetailComponent implements OnInit {
       this.loadException(p["id"], this.activatedRoute.snapshot.queryParams["parentId"]);
 
 
-      // TODO: Need a way to specify PARENT / RELATED ids
-
-      setTimeout(() => {
-        let topEl = document.getElementById("main-sidenav");
-        if (topEl) topEl.scrollIntoView();
-      }, 0)
+      // setTimeout(() => {
+      //   let topEl = document.getElementById("main-sidenav");
+      //   if (topEl) topEl.scrollIntoView();
+      // }, 0)
     });
   }
 
@@ -58,7 +56,7 @@ export class ExceptionDetailComponent implements OnInit {
     this.api.exceptions.get(id, parentId).then(r => {
       this.isLoading = false;
       this.exceptionDetail = r;
-
+      top.scroll(0,0)
     }).catch(e => {
       this.isLoading = false;
       L2.handleException(e);

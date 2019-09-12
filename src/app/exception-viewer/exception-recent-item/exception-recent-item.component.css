@@ -1,13 +1,17 @@
 
 .exception-item:hover
 {
-    background-color: #f0f0fe;
+    /* background-color: #f0f0fe; */
+    border: 1px dashed #e0e0e0;  
 }
 
 .exception-item
 {
-    display: flex;
+    border: 1px dashed #fff;
+    border-radius: 8px;
+    display: flex; 
     align-items: center; 
+    padding: 4px;
 }
 
 .app-title
@@ -68,8 +72,20 @@ mat-icon.related.disabled
     opacity: 0.1;
     cursor: default;
 } 
-
+ 
 div.related-children-container
 {
     margin-left: 15px;
+    background-color: rgba(223, 205, 102, 0.1);
+    border-radius: 8px; 
 }
+
+div.related-children-container .exception-item
+{
+    border: 1px dashed rgba(223, 205, 102, 0.1); 
+}  
+
+div.related-children-container .exception-item:hover
+{
+    border: 1px dashed #c0c0c0;   
+} 
