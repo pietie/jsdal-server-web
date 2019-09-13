@@ -51,6 +51,16 @@ div.exception-detail
     
 }
 
+.heading .app-ver
+{
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #222;
+    
+    border-style: dotted;
+    
+}
+
 .heading .exception-type
 {
     color: #888;

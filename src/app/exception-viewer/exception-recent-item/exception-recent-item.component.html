@@ -13,6 +13,7 @@
     </mat-icon>
 
     <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle"><span>{{ ex.appTitle }}</span></div>
+    <div class="app-ver" *ngIf="ex.appVersion" [title]="'Version: ' + ex.appVersion"><span>v{{ ex.appVersion }}</span></div>
     <div class="msg-container" *ngIf="ex">
         <div *ngIf="ex.procedure">
             <span>Procedure </span>

@@ -3,6 +3,7 @@
     <div class="date">{{ exception.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</div>
     <div class="exception-id">({{ exception.id }})</div>
     <div class="tag-element app-title" *ngIf="exception?.appTitle">{{ exception.appTitle }}</div>
+    <div class="tag-element app-ver" *ngIf="exception?.appVersion" title="Version">{{ exception.appVersion }}</div>
     <div class="tag-element exception-type" *ngIf="exception?.type">{{ exception.type }}</div>
 </div>
 

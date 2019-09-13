@@ -29,6 +29,14 @@
     position: relative;
     flex: 0 0 150px;
 }
+.app-ver
+{
+    margin-left: 4px;
+    margin-right: 6px;
+    border-bottom: 1px silver dotted;
+    font-size: 0.85em;
+    font-weight: bold;
+}
 
 .msg-container
 {
