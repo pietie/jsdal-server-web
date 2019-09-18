@@ -10,10 +10,11 @@
         matBadgeSize="small" matBadgePosition="above after" matBadgeOverlap="true" matBadgeColor="accent"
         [class.disabled]="isLoading || (ex.relatedCount == null || ex.relatedCount <= 0)">
         {{ isRelated? "minimize":"more" }}
-    </mat-icon>
+    </mat-icon> 
 
     <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle"><span>{{ ex.appTitle }}</span></div>
-    <div class="app-ver" *ngIf="ex.appVersion" [title]="'Version: ' + ex.appVersion"><span>v{{ ex.appVersion }}</span></div>
+    <div class="app-ver" *ngIf="ex.appVersion" [title]="'Version: ' + ex.appVersion"><span>v{{ ex.appVersion }}</span>
+    </div>
     <div class="msg-container" *ngIf="ex">
         <div *ngIf="ex.procedure">
             <span>Procedure </span>
@@ -25,7 +26,8 @@
 </div>
 
 <mat-spinner diameter="16" *ngIf="isLoadingRelated"></mat-spinner>
-<div class="related-children-container" *ngIf="related">
-    <exception-recent-item *ngFor="let ex of related" (onNavigating)="onChildNavigating($event)" [exception]="ex" [isLoading]="isLoading" [parentId]="exception.id">
+<div class="related-children-container" *ngIf="relatedBlockToggle && related">
+    <exception-recent-item *ngFor="let ex of related" (onNavigating)="onChildNavigating($event)" [exception]="ex"
+        [isLoading]="isLoading" [parentId]="exception.id">
     </exception-recent-item>
 </div>

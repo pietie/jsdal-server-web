@@ -29,7 +29,12 @@ export class ExceptionRecentItemComponent implements OnInit {
     return this.parentId != null;
   }
 
+  relatedBlockToggle: boolean = false;
+  hasSearchedForRelated:boolean = false;
+
   loadRelated() {
+    this.relatedBlockToggle = !this.relatedBlockToggle;
+    if (this.hasSearchedForRelated) return;
     if (this.exception == null || !(this.exception.relatedCount > 0)) return;
     if (this.isRelated) return;
 
@@ -38,6 +43,7 @@ export class ExceptionRecentItemComponent implements OnInit {
 
     this.api.exceptions.getRelated(this.exception.id)
       .then(r => {
+        this.hasSearchedForRelated = true;
         this.isLoading = false;
         this.isLoadingRelated = false;
         this.related = r;

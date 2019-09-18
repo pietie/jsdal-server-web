@@ -2,12 +2,12 @@
 .exception-item:hover
 {
     /* background-color: #f0f0fe; */
-    border: 1px dashed #e0e0e0;  
+    border: 1px dashed #aaa;  
 }
 
 .exception-item
 {
-    border: 1px dashed #fff;
+    border: 1px dotted #fff;
     border-radius: 8px;
     display: flex; 
     align-items: center; 
@@ -80,15 +80,15 @@ mat-icon.related.disabled
     opacity: 0.1;
     cursor: default;
 } 
- 
+
 div.related-children-container
 {
-    margin-left: 15px;
+    margin-left: 50px; 
     background-color: rgba(223, 205, 102, 0.1);
     border-radius: 8px; 
 }
 
-div.related-children-container .exception-item
+div.related-children-container .exception-item 
 {
     border: 1px dashed rgba(223, 205, 102, 0.1); 
 }  
