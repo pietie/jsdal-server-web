@@ -11,10 +11,10 @@ import { CsharpTextareaComponent } from '~/controls/csharp-textarea/csharp-texta
 export class ServerMethodsComponent implements OnInit {
 
   editorVisible: boolean = false;
-  
+
   compilationError: string = null;
 
-  serverMethods: { Id: string, IsValid: boolean, Plugins: [{ Name: string, Description: string }] }[];
+  serverMethods: { Id: string, InlineEntryId: string, Name: string, IsInline: boolean, IsValid: boolean, Plugins: [{ Name: string, Description: string }] }[];
 
   currentId: string = null;
 
@@ -33,41 +33,41 @@ export class ServerMethodsComponent implements OnInit {
     return this.csharpEditor.getValue();
   }
 
-  edit(row) {
+  // edit(row) {
 
-    this.isWorking = true;
+  //   this.isWorking = true;
 
-    this.api.app.serverMethods
-      .getSource(row.Id)
-      .then(source => {
-        this.isWorking = false;
-        this.currentId = row.Id;
-        this.editorVisible = true;
-        // without timeout ng does not update view immediately :/
-        setTimeout(() => {
-          this.csharpEditor.setValue(source);
-        }, 0);
-      }).catch(e => {
-        L2.handleException(e);
-        this.isWorking = false;
-      });
-  }
+  //   this.api.app.serverMethods
+  //     .getSource(row.Id)
+  //     .then(source => {
+  //       this.isWorking = false;
+  //       this.currentId = row.Id;
+  //       this.editorVisible = true;
+  //       // without timeout ng does not update view immediately :/
+  //       setTimeout(() => {
+  //         this.csharpEditor.setValue(source);
+  //       }, 0);
+  //     }).catch(e => {
+  //       L2.handleException(e);
+  //       this.isWorking = false;
+  //     });
+  // }
 
   delete(row) {
-    this.isWorking = true;
-    L2.confirm(`Are you sure you want to delete the module '${row.Id}'?`, "Confirm action")
-      .then(r => {
-        this.isWorking = false;
-        if (r) {
-          this.api.app.serverMethods.delete(row.Id).then(r => {
-            L2.success("Server method deleted successfully");
-            this.refreshList();
-          });
-        }
-      }).catch(e => {
-        L2.handleException(e);
-        this.isWorking = false;
-      });
+    // this.isWorking = true;
+    // L2.confirm(`Are you sure you want to delete the module '${row.Id}'?`, "Confirm action")
+    //   .then(r => {
+    //     this.isWorking = false;
+    //     if (r) {
+    //       this.api.app.serverMethods.delete(row.Id).then(r => {
+    //         L2.success("Server method deleted successfully");
+    //         this.refreshList();
+    //       });
+    //     }
+    //   }).catch(e => {
+    //     L2.handleException(e);
+    //     this.isWorking = false;
+    //   });
   }
 
   onAddNew() {
@@ -81,32 +81,34 @@ export class ServerMethodsComponent implements OnInit {
   }
 
   refreshList() {
-    this.api.app.serverMethods.getList().then(r => {
-      this.serverMethods = r;
-    });
+    this.api.app.serverMethods
+      .getList()
+      .then(r => {
+        this.serverMethods = r;
+      });
   }
 
   saveChanges() {
 
-    this.compilationError = null;
-    this.isWorking = true;
+    // // this.compilationError = null;
+    // // this.isWorking = true;
 
-    this.api.app.serverMethods.addUpdate(this.currentId, this.getValue())
-      .then(r => {
-        this.isWorking = false;
-        if (r && r.CompilationError && !r.id) {
-          this.compilationError = r.CompilationError;
-        }
+    // // this.api.app.serverMethods.addUpdate(this.currentId, this.getValue())
+    // //   .then(r => {
+    // //     this.isWorking = false;
+    // //     if (r && r.CompilationError && !r.id) {
+    // //       this.compilationError = r.CompilationError;
+    // //     }
 
-        else {
-          this.currentId = r.id;
-          this.refreshList();
-          L2.success("Server method changes saved successfully");
-        }
-      }).catch(e => {
-        L2.handleException(e);
-        this.isWorking = false;
-      });
+    // //     else {
+    // //       this.currentId = r.id;
+    // //       this.refreshList();
+    // //       L2.success("Server method changes saved successfully");
+    // //     }
+    // //   }).catch(e => {
+    // //     L2.handleException(e);
+    // //     this.isWorking = false;
+    // //   });
   }
 
   newGuid(): Promise<string> {

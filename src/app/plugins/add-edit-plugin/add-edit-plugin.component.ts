@@ -6,6 +6,7 @@ import { ApiService } from '~/services/api';
 import { CsharpTextareaComponent } from '~/controls/csharp-textarea/csharp-textarea.component';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { PluginTemplateBottomSheetComponent } from './plugin-template-bottom-sheet/plugin-template-bottom-sheet.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-plugin',
@@ -21,7 +22,11 @@ export class AddEditPluginComponent implements OnInit {
   isWorking: boolean = false;
   compilationError: string = null;
 
+  isNew: boolean = false;
+
   @ViewChild('ce', { static: false }) csharpEditor: CsharpTextareaComponent;
+
+  sub$: Subscription;
 
   constructor(public activatedRoute: ActivatedRoute,
     public router: Router,
@@ -30,13 +35,47 @@ export class AddEditPluginComponent implements OnInit {
     private templateBottomSheet: MatBottomSheet
 
   ) {
-    this.activatedRoute.params.subscribe(params => {
-      this.id = params["id"];
 
-    });
   }
 
   ngOnInit() {
+    this.sub$ = this.activatedRoute.params.subscribe(params => {
+      this.id = params["id"];
+      this.isNew = this.id == undefined || this.id == null;
+
+      if (!this.isNew) {
+        this.loadExistingSource(this.id);
+      }
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub$) {
+      this.sub$.unsubscribe();
+      this.sub$ = null;
+    }
+  }
+
+  loadExistingSource(id: string) {
+    this.isWorking = true;
+
+    this.api.app.plugins
+      .getInlineSource(id)
+      .then(ret => {
+        this.isWorking = false;
+        
+        this.name = ret.Name;
+        this.description = ret.Description;
+ 
+        // without timeout ng does not update view immediately :/
+        setTimeout(() => {
+          this.csharpEditor.setValue(ret.Source);
+        }, 0);
+
+      })
+      .catch(e => { this.isWorking = false; L2.handleException(e); })
+      ;
   }
 
   saveChanges() {

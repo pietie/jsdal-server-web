@@ -61,6 +61,7 @@ export const appRoutes: Routes = [
     },
     { path: 'bgtasks', component: BgtasksComponent, canActivate: [LoggedInGuard] },
     { path: 'plugins', component: PluginsComponent, canActivate: [LoggedInGuard] },
+    { path: 'plugins/edit', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },
     { path: 'plugins/edit/:id', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },
     { path: 'plugins/bgthread/:id', component: ManageBackgroundThreadComponent, canActivate: [LoggedInGuard] },
     {

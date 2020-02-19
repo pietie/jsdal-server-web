@@ -28,6 +28,10 @@ export module app {
                 });
         }
 
+        static getInlineSource(id: string): Promise<{ Name: string, Description: string, Source: string }> {
+            return <any>L2.fetchJson(`/inline-plugin/${L2.nullToEmpty(id)}`).then((r: any) => r.Data);
+        }
+
         static getAll(projectName: string, appName: string): Promise<{ Name: string, Description: string, Guid: string, Included: boolean, SortOrder: number }[]> {
             return <any>L2.fetchJson(`/api/app/${appName}/plugins?project=${projectName}`).then((r: any) => {
                 return r.Data;
@@ -60,6 +64,8 @@ export module app {
         static getBgThreadAllConfigs(pluginGuid: string): Promise<{ ConfigContract?: any/*TODO: will describe the expected fields & values and their types and maybe the editor experience required!*/, Default: { [key: string]: string }, Plugin: { [key: string]: string }, App: { [key: string]: string }, Endpoint: { [key: string]: string }, Instances: any }> {
             return <any>L2.getJson(`/api/bgthreads/${pluginGuid}/all-config`).then((r: any) => r.Data);
         }
+
+
     }
 
     export class jsfiles {
