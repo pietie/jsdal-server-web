@@ -1,4 +1,5 @@
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { IL2OutputMessageHandler } from 'l2-lib/L2';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from './account/account.service';

@@ -4,7 +4,7 @@
 
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { ProjectService, IDBSource } from './projects.service'
 

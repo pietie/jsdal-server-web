@@ -1,6 +1,6 @@
 ﻿import { Component, ApplicationRef, Directive, Input, ComponentFactoryResolver, ViewContainerRef } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { L2 } from 'l2-lib/L2';
 
