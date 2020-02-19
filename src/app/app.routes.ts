@@ -36,7 +36,7 @@ export const appRoutes: Routes = [
     { path: 'network-error', component: FirstTimeNetworkErrorComponent },
     { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard], canActivate: [FirstTimeSetupCompletedGuard] },
     { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
-    { path: 'projects', loadChildren: './projects/projects.module#ProjectsModule', canActivate: [LoggedInGuard] },
+    { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule), canActivate: [LoggedInGuard] },
     { path: 'sessionlog', component: SessionLog, canActivate: [LoggedInGuard] },
     { path: 'settings', component: Settings, canActivate: [LoggedInGuard] },
     {

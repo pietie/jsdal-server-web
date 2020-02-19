@@ -77,18 +77,18 @@
   "defaultProject": "jsdal-server-web",
   "schematics": {
     "@schematics/angular:component": {
-      "spec": false,
+      "skipTests": true,
       "prefix": "app",
-      "styleext": "css"
+      "style": "css"
     },
     "@schematics/angular:guard": {
-      "spec": false
+      "skipTests": true
     },
     "@schematics/angular:pipe": {
-      "spec": false
+      "skipTests": true
     },
     "@schematics/angular:service": {
-      "spec": false
+      "skipTests": true
     },
     "@schematics/angular:directive": {
       "prefix": "app"
