@@ -40,6 +40,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.900.2",
     "@angular/cli": "^9.0.2",
+    "@types/codemirror": "0.0.88",
     "@types/node": "^13.7.2",
     "@types/shortid": "0.0.29",
     "ts-node": "8.6.2",
