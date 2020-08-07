@@ -1,3 +1,5 @@
+<div #menuDiv #setMenuTrigger="matMenuTrigger" [matMenuTriggerFor]="settingsMenu" style="position:fixed"></div>
+
 <table class="grid">
   <thead>
     <tr>
@@ -29,9 +31,10 @@
               color="primary">START</button>
             <button style="width:80px;" (click)="stop(row)" *ngIf="row.IsRunning" mat-button color="warn">STOP</button>
 
-            <button mat-icon-button [matMenuTriggerFor]="settingsMenu" [matMenuTriggerData]="{ data: row}">
+            <button mat-icon-button (click)="settingsClicked(row, setMenuTrigger, menuDiv, $event)">
               <mat-icon>settings</mat-icon>
             </button>
+            <mat-menu #pos></mat-menu>
 
           </td>
           <td class="assembly">
@@ -68,11 +71,12 @@
 <mat-menu #settingsMenu="matMenu">
   <ng-template matMenuContent let-data="data">
     <div mat-menu-item>
-      <mat-checkbox [(ngModel)]="instanceSettings[data.InstanceId].EnableBrowserConsole" (click)="$event.stopPropagation()">Browser Console output</mat-checkbox>
+      <mat-checkbox [(ngModel)]="instanceSettings[data.InstanceId].EnableBrowserConsole"
+        (click)="$event.stopPropagation()">Browser Console output</mat-checkbox>
     </div>
     <div>
-      Instance = {{ data.InstanceId }}<br/><br/>
+      Instance = {{ data.InstanceId }}<br /><br />
       {{ instanceSettings[data.InstanceId]  | json }}
     </div>
   </ng-template>
-</mat-menu> 
+</mat-menu>

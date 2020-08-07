@@ -3,6 +3,7 @@ import { L2 } from 'l2-lib/L2';
 import { ApiService } from '~/services/api';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import { environment } from '../../../../../environments/environment';
+import { MatMenu, MatMenuTrigger, MenuPositionX, MenuPositionY } from '@angular/material/menu';
 
 @Component({
   selector: 'background-threads-tab',
@@ -17,7 +18,13 @@ export class BackgroundThreadsComponent implements OnInit {
 
   instanceSettings: { [key: string]: any } = {};
 
-  constructor(public api: ApiService) { }
+  constructor(public api: ApiService) {
+
+    this.consoleTagLog(console.log, "Test", '#000', '#fff', "Test log");
+    this.consoleTagLog(console.info, "Test", '#99e9eb', '#000', "Test info");
+    this.consoleTagLog(console.warn, "Test", '#fecf6d', '#000', "Test warning");
+    this.consoleTagLog(console.error, "Test", '#b34045', '#fff', "Test error");
+  }
 
 
   ngOnInit() {
@@ -33,10 +40,10 @@ export class BackgroundThreadsComponent implements OnInit {
         .then(() => {
 
           this.hubConnection.on("updateData", data => {
-            //console.log("updateData ", data);
+
             if (this.instances) {
               this.instanceSettings[data.InstanceId] = this.instanceSettings[data.InstanceId] || {};
-
+              //console.log("%s==>",data.InstanceId, this.instanceSettings[data.InstanceId]);
               this.instances[data.InstanceId] = { ...this.instances[data.InstanceId], ...data };
             }
           });
@@ -60,25 +67,25 @@ export class BackgroundThreadsComponent implements OnInit {
 
           this.hubConnection.on("console.log", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              console.log(data.Line);
+              this.consoleTagLog(console.log, data.Endpoint, '#000', '#fff', data.Line);
             }
           });
 
           this.hubConnection.on("console.info", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              console.info(data.Line);
+              this.consoleTagLog(console.info, data.Endpoint, '#99e9eb', '#000', data.Line);
             }
           });
 
           this.hubConnection.on("console.warn", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              console.warn(data.Line);
+              this.consoleTagLog(console.warn, data.Endpoint, '#fecf6d', '#000', data.Line);
             }
           });
 
           this.hubConnection.on("console.error", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              console.error(data.Line);
+              this.consoleTagLog(console.error, data.Endpoint, '#b34045', '#fff', data.Line);
             }
           });
 
@@ -109,6 +116,14 @@ export class BackgroundThreadsComponent implements OnInit {
     }
   }
 
+  consoleTagLog(func, tag: string, bgColor: string, foreColor: string, ...optionalParams) {
+    func.apply(console, [
+      `%c${tag}`,
+      `background: ${bgColor};border-radius: 0.5em;color: ${foreColor};font-weight: bold;padding: 2px 0.5em`,
+      ...optionalParams,
+    ]);
+  }
+
   start(row) {
     this.api.app.plugins.startBgThreadInstance(row.InstanceId).then(r => {
       console.log("start resp ", r);
@@ -121,7 +136,18 @@ export class BackgroundThreadsComponent implements OnInit {
     });
   }
 
+  settingsClicked(data: any, trigger: MatMenuTrigger, menuDiv: HTMLDivElement, ev: MouseEvent) {
+    try {
+      menuDiv.style.top = ev.pageY + "px";
+      menuDiv.style.left = ev.pageX + "px";
 
+      trigger.menuData = { data: data };
+      trigger.openMenu();
+    }
+    catch (e) {
+      L2.handleException(e);
+    }
+  }
 
   ngOnDestroy(): void {
 

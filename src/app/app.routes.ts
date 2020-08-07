@@ -23,53 +23,55 @@ import { ExecutionTesterComponent } from './execution-tester/execution-tester.co
 import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component';
 import { ManageBackgroundThreadComponent } from './plugins/tabs/background-threads/manage-background-thread/manage-background-thread.component';
 import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugin.component';
+import { BlobViewerComponent } from './blob-viewer/blob-viewer.component';
 
 
 export const appRoutes: Routes = [
-    {
-        path: '',
+  {
+    path: '',
 
-        component: HomeComponent,
-        canActivate: [LoggedInGuard]
-    },
-    { path: '1st-time', component: FirstTimeSetupComponent },
-    { path: 'network-error', component: FirstTimeNetworkErrorComponent },
-    { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard], canActivate: [FirstTimeSetupCompletedGuard] },
-    { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
-    { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule), canActivate: [LoggedInGuard] },
-    { path: 'sessionlog', component: SessionLog, canActivate: [LoggedInGuard] },
-    { path: 'settings', component: Settings, canActivate: [LoggedInGuard] },
-    {
-        path: 'exceptions', component: ExceptionViewerComponent, canActivate: [LoggedInGuard], children: [
+    component: HomeComponent,
+    canActivate: [LoggedInGuard]
+  },
+  { path: '1st-time', component: FirstTimeSetupComponent },
+  { path: 'network-error', component: FirstTimeNetworkErrorComponent },
+  { path: 'login', component: LoginComponent, canDeactivate: [CanDeactivateGuard], canActivate: [FirstTimeSetupCompletedGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [LoggedInGuard] },
+  { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule), canActivate: [LoggedInGuard] },
+  { path: 'sessionlog', component: SessionLog, canActivate: [LoggedInGuard] },
+  { path: 'settings', component: Settings, canActivate: [LoggedInGuard] },
+  {
+    path: 'exceptions', component: ExceptionViewerComponent, canActivate: [LoggedInGuard], children: [
 
-            { path: ':id', canActivate: [LoggedInGuard], component: ExceptionDetailComponent }
+      { path: ':id', canActivate: [LoggedInGuard], component: ExceptionDetailComponent }
 
-        ]
+    ]
 
-    },
-    {
-        path: 'workers',
-        component: WorkersComponent,
-        canActivate: [LoggedInGuard],
-        children: [
-            {
-                path: ':id',
-                component: WorkerDetailComponent
-            }
+  },
+  {
+    path: 'workers',
+    component: WorkersComponent,
+    canActivate: [LoggedInGuard],
+    children: [
+      {
+        path: ':id',
+        component: WorkerDetailComponent
+      }
 
-        ]
-    },
-    { path: 'bgtasks', component: BgtasksComponent, canActivate: [LoggedInGuard] },
-    { path: 'plugins', component: PluginsComponent, canActivate: [LoggedInGuard] },
-    { path: 'plugins/edit', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },
-    { path: 'plugins/edit/:id', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },
-    { path: 'plugins/bgthread/:id', component: ManageBackgroundThreadComponent, canActivate: [LoggedInGuard] },
-    {
-        path: 'exec-test', component: ExecutionTesterComponent, canActivate: [LoggedInGuard]
-    },
-    {
-        path: 'exec-test/:project/:app/:endpoint', component: ExecutionTesterComponent, canActivate: [LoggedInGuard]
-    }
+    ]
+  },
+  { path: 'bgtasks', component: BgtasksComponent, canActivate: [LoggedInGuard] },
+  { path: 'blobs', component: BlobViewerComponent, canActivate: [LoggedInGuard] },
+  { path: 'plugins', component: PluginsComponent, canActivate: [LoggedInGuard] },
+  { path: 'plugins/edit', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },
+  { path: 'plugins/edit/:id', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },
+  { path: 'plugins/bgthread/:id', component: ManageBackgroundThreadComponent, canActivate: [LoggedInGuard] },
+  {
+    path: 'exec-test', component: ExecutionTesterComponent, canActivate: [LoggedInGuard]
+  },
+  {
+    path: 'exec-test/:project/:app/:endpoint', component: ExecutionTesterComponent, canActivate: [LoggedInGuard]
+  }
 
 
 ];

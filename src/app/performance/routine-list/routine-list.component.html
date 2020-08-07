@@ -1,12 +1,69 @@
 <h3>Routine list</h3>
-
-ENDPOINT/ROUTINE...
-<br/>
-<br/>
 <mat-form-field>
-  <input matInput placeholder="Routine name"/>
-</mat-form-field>
-<br/>
-[ list a bunch of routines to start off with? ]
 
-<br/>[view detail on routine] -- gives more of a breakdown? (that we don't really have?)
+  <mat-select placeholder="Top(N)" [(ngModel)]="topN" name="item">
+    <mat-option [value]="20">20</mat-option>
+    <mat-option [value]="50">50</mat-option>
+    <mat-option [value]="100">100</mat-option>
+    <mat-option [value]="200">200</mat-option>
+    <mat-option [value]="500">500</mat-option>
+    <mat-option [value]="0">(All)</mat-option>
+  </mat-select>
+
+</mat-form-field>
+
+<button color="primary" mat-button (click)="refresh()" [disabled]="isLoading">Refresh</button>
+<mat-spinner *ngIf="isLoading" [diameter]="24"></mat-spinner>
+
+<strong>Entries:</strong> {{ entryCount }}
+
+<table class="grid" *ngIf="totalCountDB">
+  <thead>
+    <tr>
+      <th style="width:220px">Endpoint</th>
+      <th style="width:auto">Routine</th>
+      <th style="width:120px" (click)="sort('ExecutionCount');">Total executions<mat-icon class="arrow"
+          *ngIf="sortOn?.column == 'ExecutionCount'">{{ sortOn?.asc? 'arrow_upward':'arrow_downward' }}</mat-icon>
+      </th>
+      <th style="width:130px;" (click)="sort('TotalDurationSec');">Total duration (s)<mat-icon class="arrow"
+          *ngIf="sortOn?.column == 'TotalDurationSec'">{{ sortOn?.asc? 'arrow_upward':'arrow_downward' }}</mat-icon>
+      </th>
+      <th style="width:100px" (click)="sort('TotalRows');">Total rows<mat-icon class="arrow"
+          *ngIf="sortOn?.column == 'TotalRows'">{{ sortOn?.asc? 'arrow_upward':'arrow_downward' }}</mat-icon>
+      </th>
+      <th style="width:130px" (click)="sort('AvgDurationMS');">Avg duration (s)<mat-icon class="arrow"
+          *ngIf="sortOn?.column == 'AvgDurationMS'">{{ sortOn?.asc? 'arrow_upward':'arrow_downward' }}</mat-icon>
+      </th>
+      <th style="width:100px" (click)="sort('AvgRows');">Avg rows<mat-icon class="arrow"
+          *ngIf="sortOn?.column == 'AvgRows'">{{ sortOn?.asc? 'arrow_upward':'arrow_downward' }}</mat-icon>
+      </th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of totalCountDB.Payload" class="thread">
+      <td>
+        {{ row.Endpoint }}
+      </td>
+      <td>
+        {{ row.RoutineFullName }}
+      </td>
+      <td style="text-align: right;padding-right: 10px;">
+        {{ row.ExecutionCount | number }}
+      </td>
+      <td style="text-align: right;padding-right: 10px;">
+        {{ row.TotalDurationSec | number: '1.2-2' }}
+      </td>
+      <td style="text-align: right;padding-right: 10px;">
+        {{ row.TotalRows | number }}
+      </td>
+      <td style="text-align: right;padding-right: 10px;" title="{{ row.AvgDurationMS | number: '1.2-2' }}ms">
+        {{ row.AvgDurationMS / 1000.0 | number: '1.2-2'  }}
+      </td>
+      <td style="text-align: right;padding-right: 10px;">
+        {{ row.AvgRows | number: '1.0-0'  }}
+      </td>
+    </tr>
+
+  </tbody>
+</table>

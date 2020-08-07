@@ -45,7 +45,7 @@ export class CsharpTextareaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mirrorsharpRef = mirrorsharp(this.textarea.nativeElement, {
+    this.mirrorsharpRef = (<any>mirrorsharp)(this.textarea.nativeElement, {
       serviceUrl: 'wss://jsdal.europassistance.co.za:443/mirrorsharp', //TODO: make url configurable!
       forCodeMirror: { lineNumbers: true, theme: 'cobalt' }
     });

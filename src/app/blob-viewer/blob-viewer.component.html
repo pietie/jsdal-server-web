@@ -1,0 +1,84 @@
+<mat-card *ngIf="blobStats">
+  <mat-card-header>
+    <mat-card-title>Blob cache</mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content>
+    <div style="padding: 10px 16px;">
+      <div><strong>Number of items in cache:</strong>&nbsp; {{ blobStats.TotalItemsInCache }}</div>
+      <div><strong>Blob store size:</strong>&nbsp;
+        {{ (blobStats.TotalBytesInCache / 1024.0 / 1024.0) | number:'1.2-2' }}MB</div>
+
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="refreshStats()">REFRESH STATS</button>
+    <button mat-button color="warn">CLEAR CACHE</button>
+  </mat-card-actions>
+</mat-card>
+<br /><br />
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Recent blobs</mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content>
+    <div style="padding: 10px 16px">
+      <div class="flex-vertical-center">
+        <mat-form-field>
+          <input matInput placeholder="Blob ref" autocomplete="off" [(ngModel)]="searchBlobRef">
+        </mat-form-field>
+
+        <button (click)="search()" mat-button color="primary">SEARCH</button>
+      </div>
+      <div>
+        <hr />
+
+        <table class="grid" *ngIf="searchResults">
+          <thead>
+            <tr>
+              <th style="width:80px">Ref</th>
+              <th style="width:120px">Expiry</th>
+              <th style="width:auto">Filename</th>
+              <th style="width:100px;">Size</th>
+              <th style="width:100px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of searchResults" class="thread">
+              <td style="text-align: center;">
+                {{  row.Ref }}
+
+              </td>
+              <td>{{row.ExpiryDate | momentFromNow  }}</td>
+              <td>
+                {{row.Filename }} ({{ row.ContentType }})
+              </td>
+              <td style="text-align: right;padding-right:10px;">
+                {{ (row.Size / 1024.0 ) | number:'1.2-2' }} KB
+              </td>
+              <td>
+
+                <button mat-icon-button *ngIf="!row.HasExpired">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+                <button mat-icon-button color="warn">
+                  <mat-icon>delete_forever</mat-icon>
+                </button>
+
+                <!-- <a (click)="startThread(row)" href="javascript:void(0)">start</a>
+                      <a (click)="stopThread(row)" href="javascript:void(0)">stop</a> -->
+              </td>
+
+
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </mat-card-content>
+
+</mat-card>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { app, appRules, serverMethods, bgTasks, performance } from './object-model';
 import { exceptions } from './exceptions';
 import { util } from './util';
+import { blobs } from './blobs'
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,9 @@ export class ApiService {
     return exceptions;
   }
 
-  
+  get blobs() {
+    return blobs;
+  }
 }
 
 

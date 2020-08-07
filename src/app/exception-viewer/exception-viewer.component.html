@@ -7,8 +7,8 @@
         </mat-form-field>
     </mat-card-content>
     <mat-card-actions>
-        <!-- (click)="lookupError(errRef.value); topEl.scrollIntoView();" -->
-        <button [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary">LOOKUP</button>
+
+        <button  (click)="lookupError(errRef.value); topEl.scrollIntoView();"  [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary">LOOKUP</button>
     </mat-card-actions>
 </mat-card>
 

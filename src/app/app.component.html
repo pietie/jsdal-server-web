@@ -69,6 +69,13 @@
                 </div>
             </mat-list-item>
 
+            <mat-list-item (click)="side.close(); go('blobs')">
+              <div class="flex-vertical-center">
+                  <mat-icon>view_comfy</mat-icon>
+                  <div md-line>Blobs</div>
+              </div>
+          </mat-list-item>
+
             <mat-list-item (click)="side.close(); go('exceptions')">
                 <div class="flex-vertical-center">
                     <mat-icon>error_outline</mat-icon>
@@ -154,5 +161,5 @@
             <mat-card-actions align="end">
                 <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
             </mat-card-actions>
-        </mat-card> 
+        </mat-card>
     </div>-->
