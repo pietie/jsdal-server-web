@@ -1,104 +1,109 @@
 <!-- <mat-spinner diameter="24" *ngIf="isLoading"></mat-spinner> -->
 <div class="heading" *ngIf="exception">
-    <div class="date">{{ exception.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</div>
-    <div class="exception-id">({{ exception.id }})</div>
-    <div class="tag-element app-title" *ngIf="exception?.appTitle">{{ exception.appTitle }}</div>
-    <div class="tag-element app-ver" *ngIf="exception?.appVersion" title="Version">{{ exception.appVersion }}</div>
-    <div class="tag-element exception-type" *ngIf="exception?.type">{{ exception.type }}</div>
+  <div class="date">{{ exception.created | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</div>
+  <div class="exception-id">({{ exception.id }})</div>
+  <div class="tag-element app-title" *ngIf="exception?.appTitle">{{ exception.appTitle }}</div>
+  <div class="tag-element app-ver" *ngIf="exception?.appVersion" title="Version">{{ exception.appVersion }}</div>
+  <div class="tag-element exception-type" *ngIf="exception?.type">{{ exception.type }}</div>
 </div>
 
 
 <div class="exception-detail" *ngIf="exception">
 
-    <div class="main-detail">
+  <div class="main-detail">
 
-        <div class="item" *ngIf="exception.server">
-            <span class="field">Server:</span>
-            <span class="value server-name">{{ exception.server }}</span>
-        </div>
-        <div class="item" *ngIf="exception.procedure">
-            <span class="field">Procedure</span>
-            <span class="value"><span class="proc-name">{{ exception.procedure }}</span>, line:
-                {{ exception.line }}</span>
-        </div>
-
-        <div class="item full">
-            <span class="field">Message:</span>
-            <span class="value msg">{{ exception.message }}</span>
-        </div>
-
-        <div class="item" *ngIf="exception.errorCode || exception.level || exception.state">
-            <span class="field">Error,Level,State:</span>
-            <span class="value els">{{ exception.errorCode }},{{ exception.level }},{{ exception.state }}</span>
-        </div>
-
+    <div class="item" *ngIf="exception.server">
+      <span class="field">Server:</span>
+      <span class="value server-name">{{ exception.server }}</span>
+    </div>
+    <div class="item" *ngIf="exception.procedure">
+      <span class="field">Procedure</span>
+      <span class="value"><span class="proc-name">{{ exception.procedure }}</span>, line:
+        {{ exception.line }}</span>
     </div>
 
-    <hr />
-
-    <div class="stack">
-        <pre class="prettyprint" [innerHTML]='prettyPrint(exception.stackTrace, "stacktrace")'></pre>
+    <div class="item full">
+      <span class="field">Message:</span>
+      <span class="value msg">{{ exception.message }}</span>
     </div>
+
+    <div class="item" *ngIf="exception.errorCode || exception.level || exception.state">
+      <span class="field">Error,Level,State:</span>
+      <span class="value els">{{ exception.errorCode }},{{ exception.level }},{{ exception.state }}</span>
+    </div>
+
+    <div class="item full" *ngIf="exception.additionalInfo">
+      <span class="field">Additional info:</span>
+      <span class="value msg">{{ exception.additionalInfo }}</span>
+    </div>
+
+  </div>
+
+<br/>
+
+  <div class="stack">
+    <pre class="prettyprint" [innerHTML]='prettyPrint(exception.stackTrace, "stacktrace")'></pre>
+  </div>
 
 </div>
 <!-- *ngIf="exception && exception.execOptions &&  exception.execOptions.project" -->
 <div class="exec-option" [class.hidden]="exception == null || exception.execOptions == null">
-    <h3>
-        jsDAL execution options
-    </h3>
-    <div style="display:flex; justify-content: start; align-items: center;font-size: 0.96em">
-        <div class="row">
-            <span class="field">Endpoint</span>
-            <span #epValue (dblclick)="handleCodeDblClicked(epValue)"
-                class="value">{{ exception?.execOptions?.project }}/{{ exception?.execOptions?.application }}/{{ exception?.execOptions?.endpoint }}</span>
-        </div>
-
-        <div class="row">
-            <span class="field">Routine</span>
-            <span class="value" #routineValue
-                (dblclick)="handleCodeDblClicked(routineValue)">[{{ exception?.execOptions?.schema }}].[{{ exception?.execOptions?.routine }}]</span>
-        </div>
-
-        <div class="row">
-            <span class="field">Type</span>
-            <span class="value">{{ execTypeValues[exception?.execOptions?.type] }}</span>
-        </div>
-
+  <h3>
+    jsDAL execution options
+  </h3>
+  <div style="display:flex; justify-content: start; align-items: center;font-size: 0.96em">
+    <div class="row">
+      <span class="field">Endpoint</span>
+      <span #epValue (dblclick)="handleCodeDblClicked(epValue)"
+        class="value">{{ exception?.execOptions?.project }}/{{ exception?.execOptions?.application }}/{{ exception?.execOptions?.endpoint }}</span>
     </div>
 
-
-    <ng-container #targetExecSql></ng-container>
-
-    <div #preSqlDiv class="sql" (dblclick)="handleCodeDblClicked(preSqlDiv)">
-
-        <pre class="prettyprint sql" [innerHTML]='prettyPrintExecSql()'></pre>
+    <div class="row">
+      <span class="field">Routine</span>
+      <span class="value" #routineValue
+        (dblclick)="handleCodeDblClicked(routineValue)">[{{ exception?.execOptions?.schema }}].[{{ exception?.execOptions?.routine }}]</span>
     </div>
-    <!-- Batch stuff = {{ exception.execOptions.OverridingInputParameters }} -->
+
+    <div class="row">
+      <span class="field">Type</span>
+      <span class="value">{{ execTypeValues[exception?.execOptions?.type] }}</span>
+    </div>
+
+  </div>
+
+
+  <ng-container #targetExecSql></ng-container>
+
+  <div #preSqlDiv class="sql" (dblclick)="handleCodeDblClicked(preSqlDiv)">
+
+    <pre class="prettyprint sql" [innerHTML]='prettyPrintExecSql()'></pre>
+  </div>
+  <!-- Batch stuff = {{ exception.execOptions.OverridingInputParameters }} -->
 
 
 </div>
 
 <div class="inner-exception-container" *ngIf="exception?.innerException" [class.even]="innerExceptionIx % 2 == 0"
-    [class.odd]="innerExceptionIx % 2 == 1">
-    <mat-accordion>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <div class="title flex-vertical-center">
-                    <mat-icon>report</mat-icon>Inner exception
-                </div>
-            </mat-expansion-panel-header>
-            <br />
-            <exception-ui [exception]="exception?.innerException" [innerExceptionIx]="this.innerExceptionIx+1">
-            </exception-ui>
-        </mat-expansion-panel>
+  [class.odd]="innerExceptionIx % 2 == 1">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <div class="title flex-vertical-center">
+          <mat-icon>report</mat-icon>Inner exception
+        </div>
+      </mat-expansion-panel-header>
+      <br />
+      <exception-ui [exception]="exception?.innerException" [innerExceptionIx]="this.innerExceptionIx+1">
+      </exception-ui>
+    </mat-expansion-panel>
 
-    </mat-accordion>
+  </mat-accordion>
 </div>
 
 
 <ng-template #tpl>
-    <div #preSql (dblclick)="handleCodeDblClicked(preSql)" class="sql">
-        <pre
-            class="prettyprint lang-sql"><code class="language-sql">exec [{{ exception?.execOptions?.schema }}].[{{ exception?.execOptions?.routine }}] {{ buildExecParmList(exception?.execOptions?.inputParameters) }}</code></pre>
-    </div>
-    <ng-template>
+  <div #preSql (dblclick)="handleCodeDblClicked(preSql)" class="sql">
+    <pre
+      class="prettyprint lang-sql"><code class="language-sql">exec [{{ exception?.execOptions?.schema }}].[{{ exception?.execOptions?.routine }}] {{ buildExecParmList(exception?.execOptions?.inputParameters) }}</code></pre>
+  </div>
+  <ng-template>

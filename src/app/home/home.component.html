@@ -1,103 +1,140 @@
 ﻿<mat-card *ngIf="statsData" style="max-width: 600px;margin:auto;">
-    <mat-card-content>
-        <div class="form-flex">
+  <mat-card-content>
+    <div class="form-flex">
 
-            <div class="full">
-                <span class="field180">Web server started</span>
-                <span class="value">{{ statsData.WebServerStartDate | fromISODateStr |date:'dd MMM yyyy, HH:mm:ss' }}
-                    ({{getWebServerAge(statsData.WebServerStartDate)}} ago)</span>
-            </div>
+      <div class="full">
+        <span class="field180">Web server started</span>
+        <span class="value">{{ statsData.WebServerStartDate | fromISODateStr |date:'dd MMM yyyy, HH:mm:ss' }}
+          ({{getWebServerAge(statsData.WebServerStartDate)}} ago)</span>
+      </div>
 
-            <div *ngIf="statsData.Performance">
-                <span class="field180">Working set</span>
-                <span class="value"> {{ statsData.Performance.WorkingSet / 1024.0 / 1024.0 | number:'1.2-2' }} MB
-                </span>
-            </div>
+      <div *ngIf="statsData.Performance">
+        <span class="field180">Working set</span>
+        <span class="value"> {{ statsData.Performance.WorkingSet / 1024.0 / 1024.0 | number:'1.2-2' }} MB
+        </span>
+      </div>
 
-            <div *ngIf="statsData.Performance">
-                <span class="field180">Peak</span>
-                <span class="value"> {{ statsData.Performance.PeakWorkingSet / 1024.0 / 1024.0 | number:'1.2-2' }} MB
-                </span>
-            </div>
-            <div *ngIf="statsData.Performance">
-                <span class="field180">Private</span>
-                <span class="value"> {{ statsData.Performance.PrivateMemorySize / 1024.0 / 1024.0 | number:'1.2-2' }} MB
-                </span>
-            </div>
-            <div *ngIf="statsData">
-                <span class="field180" title="Refers to number of jsDAL client file watchers">Active sub watchers</span>
-                <span class="value"> {{ statsData.ActiveSubWatchersCount }} </span>
-            </div>
+      <div *ngIf="statsData.Performance">
+        <span class="field180">Peak</span>
+        <span class="value"> {{ statsData.Performance.PeakWorkingSet / 1024.0 / 1024.0 | number:'1.2-2' }} MB
+        </span>
+      </div>
+      <div *ngIf="statsData.Performance">
+        <span class="field180">Private</span>
+        <span class="value"> {{ statsData.Performance.PrivateMemorySize / 1024.0 / 1024.0 | number:'1.2-2' }} MB
+        </span>
+      </div>
+      <div *ngIf="statsData">
+        <span class="field180" title="Worker / AsyncIO">Threads available</span>
+        <span class="value"><span
+            title="Number of worker threads available">{{ statsData.WorkerThreadsAvailable }}</span> / <span
+            title="Number of Async IO threads available">{{ statsData.AsyncIOThreadsAvailable }}</span></span>
+      </div>
+      <div *ngIf="statsData">
+        <span class="field180">Threads / Handles</span>
+        <span class="value"><span
+            title="Main process thread count">{{ statsData.ProcessThreadCount }}</span> / <span
+            title="Main process open handle count">{{ statsData.HandleCount }}</span></span>
+      </div>
+      <div *ngIf="statsData">
+        <span class="field180" title="Refers to number of jsDAL client file watchers">Active sub watchers</span>
+        <span class="value"> {{ statsData.ActiveSubWatchersCount }} </span>
+      </div>
 
-            <div *ngIf="statsData">
-                <span class="field180">Processors</span>
-                <span class="value"> {{ statsData.ProcessorCount }} </span>
-            </div>
+      <div *ngIf="statsData">
+        <span class="field180">Processors</span>
+        <span class="value"> {{ statsData.ProcessorCount }} </span>
+      </div>
 
-            <!-- <div class="full" *ngIf="statsData">
+      <!-- <div class="full" *ngIf="statsData">
                     <span class="field180">Stats taken</span>
                     <span class="value"> {{ statsData.StatsCreateDate | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}  </span>
                 </div> -->
 
-        </div>
-        <br />
-        <div style="display:none">
-            <button *ngIf="!usageDetail" (click)="onUsageDetailClick()" mat-button color="primary">Usage detail</button>
-        </div>
-        <p *ngIf="usageDetail">
+    </div>
+    <br />
+    <div style="display:none">
+      <button *ngIf="!usageDetail" (click)="onUsageDetailClick()" mat-button color="primary">Usage detail</button>
+    </div>
+    <p *ngIf="usageDetail">
 
-            {{  usageDetail | json  }}
+      {{  usageDetail | json  }}
 
-        </p>
+    </p>
 
-    </mat-card-content>
+  </mat-card-content>
 
 </mat-card>
 
 <br />
 
 <mat-card style="max-width: 600px;margin:auto;">
-    <mat-card-header>
-        <div mat-card-avatar>
-            <mat-icon>pie_chart</mat-icon>
-        </div>
-        <mat-card-title><strong>System Performance</strong></mat-card-title>
-        <mat-card-subtitle>Various dotnet performance counters</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-slide-toggle [disabled]="sysPerfWaiting" #enableSysPerfOutput (toggleChange)="onEnableSystemPerformanceChanged(enableSysPerfOutput)">Enable</mat-slide-toggle>
-        <ng-container *ngIf="enableSysPerfOutput.checked">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>pie_chart</mat-icon>
+    </div>
+    <mat-card-title><strong>System Performance</strong></mat-card-title>
+    <mat-card-subtitle>Various dotnet performance counters</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-slide-toggle [disabled]="sysPerfWaiting" #enableSysPerfOutput
+      (toggleChange)="onEnableSystemPerformanceChanged(enableSysPerfOutput)">Enable</mat-slide-toggle>
+    <ng-container *ngIf="enableSysPerfOutput.checked">
 
-            <mat-spinner *ngIf="sysPerfWaiting" diameter="20"></mat-spinner>
+      <mat-spinner *ngIf="sysPerfWaiting" diameter="20"></mat-spinner>
 
-            <table class="grid clr-counters" *ngIf="clrCounters">
-                <tr *ngFor="let kv of clrCounters | keyvalue">
-                    <td class="provider">{{kv.key}}</td>
-                    <td>
-                        <table style="width:100%;">
-                            <colgroup>
-                                <col>
-                                <col width="100px;">
-                            </colgroup>
-                            <tbody>
-                                <tr *ngFor="let counterKV of clrCounters[kv.key] | keyvalue">
-                                    <td>
-                                        {{ counterKV.value.DisplayName  }}
-                                    </td>
-                                    <td>
-                                        {{ counterKV.value.Value  }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
+      <table class="grid clr-counters" *ngIf="clrCounters">
+        <tr *ngFor="let kv of clrCounters | keyvalue">
+          <td class="provider">{{kv.key}}</td>
+          <td>
+            <table style="width:100%;">
+              <colgroup>
+                <col width="32px">
+                <col>
+
+                <col width="100px;">
+              </colgroup>
+              <tbody>
+                <tr *ngFor="let counterKV of clrCounters[kv.key] | keyvalue">
+                  <td class="icon">
+
+                      <mat-icon *ngIf="knownCounters[kv.key] && knownCounters[kv.key][counterKV.key]" title="{{ knownCounters[kv.key][counterKV.key]?.Description }}">info</mat-icon>
+
+                  </td>
+                  <td>
+                    {{ counterKV.value.DisplayName  }}
+                  </td>
+                  <td>
+                    <span [ngSwitch]="counterKV.value.DisplayName">
+                      <span *ngSwitchCase="'Gen 0 Size'">
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                      </span>
+                      <span *ngSwitchCase="'Gen 1 Size'">
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                      </span>
+                      <span *ngSwitchCase="'Gen 2 Size'">
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                      </span>
+                      <span *ngSwitchCase="'LOH Size'">
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                      </span>
+                      <span *ngSwitchDefault>
+                        {{ counterKV.value.Value | number  }}
+                      </span>
+                    </span>
+
+                  </td>
                 </tr>
+              </tbody>
             </table>
-        </ng-container>
+          </td>
+        </tr>
+      </table>
+    </ng-container>
 
 
-    </mat-card-content>
-    <!-- <mat-card-actions>
+  </mat-card-content>
+  <!-- <mat-card-actions>
         <button mat-button>Ok</button>
     </mat-card-actions> -->
 </mat-card>
@@ -106,54 +143,53 @@
 
 
 <mat-card style="max-width: 600px;margin:auto;">
-    <mat-card-header>
-        <div mat-card-avatar>
-            <mat-icon>web</mat-icon>
-        </div>
-        <mat-card-title><strong>Projects</strong></mat-card-title>
-        <mat-card-subtitle>Create and manage jsDAL projects</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-        <p *ngIf="!isLoadProjectList && projectList && projectList.length == 0; else projectDetail">
-            No projects have been created yet.
-        </p>
-        <ng-template #projectDetail>
-            <span *ngIf="projectList">{{ projectList.length }} project(s) on server.</span>
-        </ng-template>
-    </mat-card-content>
-    <mat-card-actions>
-        <button color="primary" mat-button [routerLink]="['/projects']">MANAGE</button>
-    </mat-card-actions>
-    <mat-card-footer>
-        <mat-progress-bar *ngIf="isLoadProjectList" mode="indeterminate"></mat-progress-bar>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>web</mat-icon>
+    </div>
+    <mat-card-title><strong>Projects</strong></mat-card-title>
+    <mat-card-subtitle>Create and manage jsDAL projects</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p *ngIf="!isLoadProjectList && projectList && projectList.length == 0; else projectDetail">
+      No projects have been created yet.
+    </p>
+    <ng-template #projectDetail>
+      <span *ngIf="projectList">{{ projectList.length }} project(s) on server.</span>
+    </ng-template>
+  </mat-card-content>
+  <mat-card-actions>
+    <button color="primary" mat-button [routerLink]="['/projects']">MANAGE</button>
+  </mat-card-actions>
+  <mat-card-footer>
+    <mat-progress-bar *ngIf="isLoadProjectList" mode="indeterminate"></mat-progress-bar>
 
-    </mat-card-footer>
+  </mat-card-footer>
 </mat-card>
 
-<br/>
+<br />
 <mat-card style="max-width: 600px;margin:auto;">
-    <mat-card-header>
-        <div mat-card-avatar>
-            <mat-icon>web</mat-icon>
-        </div>
-        <mat-card-title><strong>Other</strong></mat-card-title>
-        <!-- <mat-card-subtitle>Create and manage jsDAL projects</mat-card-subtitle> -->
-    </mat-card-header>
-    <mat-card-content>
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>web</mat-icon>
+    </div>
+    <mat-card-title><strong>Other</strong></mat-card-title>
+    <!-- <mat-card-subtitle>Create and manage jsDAL projects</mat-card-subtitle> -->
+  </mat-card-header>
+  <mat-card-content>
 
 
-        <button color="primary" mat-button [routerLink]="['/exceptions']">VIEW EXCEPTIONS</button>
+    <button color="primary" mat-button [routerLink]="['/exceptions']">VIEW EXCEPTIONS</button>
 
-        <button color="primary" mat-button [routerLink]="['/performance/routine-list']">PERFORMANCE (ROUTINE LIST)</button>
-
-
-    </mat-card-content>
-    <mat-card-actions>
-
-    </mat-card-actions>
-    <mat-card-footer>
+    <button color="primary" mat-button [routerLink]="['/performance/routine-list']">PERFORMANCE (ROUTINE LIST)</button>
 
 
-    </mat-card-footer>
+  </mat-card-content>
+  <mat-card-actions>
+
+  </mat-card-actions>
+  <mat-card-footer>
+
+
+  </mat-card-footer>
 </mat-card>
-

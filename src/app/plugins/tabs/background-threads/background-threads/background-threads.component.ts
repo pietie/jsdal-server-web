@@ -20,10 +20,6 @@ export class BackgroundThreadsComponent implements OnInit {
 
   constructor(public api: ApiService) {
 
-    this.consoleTagLog(console.log, "Test", '#000', '#fff', "Test log");
-    this.consoleTagLog(console.info, "Test", '#99e9eb', '#000', "Test info");
-    this.consoleTagLog(console.warn, "Test", '#fecf6d', '#000', "Test warning");
-    this.consoleTagLog(console.error, "Test", '#b34045', '#fff', "Test error");
   }
 
 
@@ -42,6 +38,7 @@ export class BackgroundThreadsComponent implements OnInit {
           this.hubConnection.on("updateData", data => {
 
             if (this.instances) {
+
               this.instanceSettings[data.InstanceId] = this.instanceSettings[data.InstanceId] || {};
               //console.log("%s==>",data.InstanceId, this.instanceSettings[data.InstanceId]);
               this.instances[data.InstanceId] = { ...this.instances[data.InstanceId], ...data };
@@ -67,25 +64,25 @@ export class BackgroundThreadsComponent implements OnInit {
 
           this.hubConnection.on("console.log", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              this.consoleTagLog(console.log, data.Endpoint, '#000', '#fff', data.Line);
+              this.consoleTagLog(console.log, data, '#000', '#fff', data.Line);
             }
           });
 
           this.hubConnection.on("console.info", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              this.consoleTagLog(console.info, data.Endpoint, '#99e9eb', '#000', data.Line);
+              this.consoleTagLog(console.info, data, '#99e9eb', '#000', data.Line);
             }
           });
 
           this.hubConnection.on("console.warn", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              this.consoleTagLog(console.warn, data.Endpoint, '#fecf6d', '#000', data.Line);
+              this.consoleTagLog(console.warn, data, '#fecf6d', '#000', data.Line);
             }
           });
 
           this.hubConnection.on("console.error", (data) => {
             if (data && this.instanceSettings[data.InstanceId].EnableBrowserConsole) {
-              this.consoleTagLog(console.error, data.Endpoint, '#b34045', '#fff', data.Line);
+              this.consoleTagLog(console.error, data, '#b34045', '#fff', data.Line);
             }
           });
 
@@ -96,8 +93,10 @@ export class BackgroundThreadsComponent implements OnInit {
           });
 
           this.hubConnection.invoke("JoinAdminGroup").then(r => {
+
             if (r) {
               this.instances = r.reduce((map, obj) => { map[obj.InstanceId] = obj; return map; }, {});
+
               this.instanceKeys = Object.keys(this.instances);
               this.instanceKeys.forEach(k => { this.instanceSettings[k] = {}; })
             }
@@ -116,9 +115,15 @@ export class BackgroundThreadsComponent implements OnInit {
     }
   }
 
-  consoleTagLog(func, tag: string, bgColor: string, foreColor: string, ...optionalParams) {
+  consoleTagLog(func, data: { Endpoint: string, InstanceId: string }, bgColor: string, foreColor: string, ...optionalParams) {
+    //this.instances[data.InstanceId].Name
+    let name: string = "(Unknown)";
+
+    if (this.instances[data.InstanceId]) name = this.instances[data.InstanceId].Name;
+
     func.apply(console, [
-      `%c${tag}`,
+      `%c${name}%c${data.Endpoint}`,
+      `background: #eee;border: 1px #fff dotted;color: #333;font-weight:bold; padding: 2px 0.5em;`,
       `background: ${bgColor};border-radius: 0.5em;color: ${foreColor};font-weight: bold;padding: 2px 0.5em`,
       ...optionalParams,
     ]);

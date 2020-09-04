@@ -10,10 +10,10 @@
         matBadgeSize="small" matBadgePosition="above after" matBadgeOverlap="true" matBadgeColor="accent"
         [class.disabled]="isLoading || (ex.relatedCount == null || ex.relatedCount <= 0)">
         {{ isRelated? "minimize":"more" }}
-    </mat-icon> 
+    </mat-icon>
 
     <div class="app-title" *ngIf="ex.appTitle" [title]="ex.appTitle"><span>{{ ex.appTitle }}</span></div>
-    <div class="app-ver" *ngIf="ex.appVersion" [title]="'Version: ' + ex.appVersion"><span>v{{ ex.appVersion }}</span>
+    <div class="app-ver" *ngIf="ex.appVersion" [title]="'Version: ' + ex.appVersion"><span>{{ ex.appVersion }}</span>
     </div>
     <div class="msg-container" *ngIf="ex">
         <div *ngIf="ex.procedure">

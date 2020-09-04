@@ -2,15 +2,15 @@
 .exception-item:hover
 {
     /* background-color: #f0f0fe; */
-    border: 1px dashed #aaa;  
+    border: 1px dashed #aaa;
 }
 
 .exception-item
 {
     border: 1px dotted #fff;
     border-radius: 8px;
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     padding: 4px;
 }
 
@@ -34,8 +34,8 @@
     margin-left: 4px;
     margin-right: 6px;
     border-bottom: 1px silver dotted;
-    font-size: 0.85em;
-    font-weight: bold;
+    font-size: 0.75em;
+    font-weight: 500;
 }
 
 .msg-container
@@ -49,7 +49,7 @@
 }
 
 .msg-container .proc-name{
-    font-weight: bold; 
+    font-weight: bold;
 }
 
 .msg-container .msg
@@ -70,7 +70,7 @@ button.exception-id
 
 mat-icon.related
 {
-    color: #4040fe; 
+    color: #4040fe;
     cursor: pointer;
     margin-right: 6px;
 }
@@ -79,21 +79,21 @@ mat-icon.related.disabled
     color: #333;
     opacity: 0.1;
     cursor: default;
-} 
+}
 
 div.related-children-container
 {
-    margin-left: 50px; 
+    margin-left: 50px;
     background-color: rgba(223, 205, 102, 0.1);
-    border-radius: 8px; 
+    border-radius: 8px;
 }
 
-div.related-children-container .exception-item 
+div.related-children-container .exception-item
 {
-    border: 1px dashed rgba(223, 205, 102, 0.1); 
-}  
+    border: 1px dashed rgba(223, 205, 102, 0.1);
+}
 
 div.related-children-container .exception-item:hover
 {
-    border: 1px da shed #c0c0c0;   
-} 
+    border: 1px da shed #c0c0c0;
+}

@@ -13,16 +13,16 @@ pre.prettyprint
     padding: 10px;
     border-radius: 4px;
     background-color: #333;
-} 
+}
 
 div.exception-detail
 {
- 
+
 }
 
 .heading
 {
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
@@ -48,7 +48,7 @@ div.exception-detail
     font-weight: bold;
     font-size: 1.1em;
     color: #B873DD;
-    
+
 }
 
 .heading .app-ver
@@ -56,9 +56,9 @@ div.exception-detail
     font-weight: bold;
     font-size: 0.9em;
     color: #222;
-    
+
     border-style: dotted;
-    
+
 }
 
 .heading .exception-type
@@ -67,7 +67,7 @@ div.exception-detail
     font-family: 'Inconsolata', monospace;
 }
 
-/* 
+/*
 /deep/ span.first-stacktrace-line
 {
     font-weight: bold;
@@ -93,19 +93,19 @@ div.exception-detail
 
 .exception-detail .main-detail .item
 {
-    margin-right: 30px;
+  margin: 4px 30px 4px 4px;
 }
 
 .exception-detail .main-detail .item.full
 {
-    flex: 1 1;
+    flex: 1;
 }
 
 .exception-detail .main-detail .field
 {
     font-weight: bold;
     display: inline-block;
-    margin-right: 6px; 
+    margin-right: 6px;
 }
 .exception-detail .main-detail .value
 {
@@ -116,25 +116,6 @@ div.exception-detail
 {
     flex: 1 1;
 }
-
-/* .exception-detail .main-detail .proc-name
-{
-    font-weight: bold;
-    color: #EF5D5D;
-    text-decoration: dotted;
-    text-decoration-line: underline;
-}  */
-
-
- 
-/* div.exception-detail .stack
-{
-    background-color: #1E1E1E;
-    padding: 13px;
-    color: #FF8C8C;
-    overflow-y: scroll;
-    font-family: Consolas, 'Courier New', monospace;
-} */
 
 .exec-option
 {
@@ -160,7 +141,7 @@ div.exception-detail
 {
     font-family: 'Inconsolata', monospace !important;
 }
- 
+
 div.exception-detail .stack
 {
     overflow-y: scroll;
@@ -187,7 +168,7 @@ div.exception-detail .stack *
 
 .inner-exception-container.even /deep/ mat-expansion-panel-header
 {
-    background-color: #a0a0ca !important; 
+    background-color: #a0a0ca !important;
 }
 
 .inner-exception-container.odd /deep/ mat-expansion-panel-header

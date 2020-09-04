@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewEncapsulation, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import * as mirrorsharp from 'mirrorsharp';
+import { environment } from '~/../environments/environment';
+import { L2 } from 'l2-lib/L2';
+
 
 
 @Component({
@@ -45,14 +48,23 @@ export class CsharpTextareaComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.mirrorsharpRef = (<any>mirrorsharp)(this.textarea.nativeElement, {
-      serviceUrl: 'wss://jsdal.europassistance.co.za:443/mirrorsharp', //TODO: make url configurable!
-      forCodeMirror: { lineNumbers: true, theme: 'cobalt' }
-    });
 
-    this.codemirrorRef = this.mirrorsharpRef.getCodeMirror();
+    try {
+      let apiBaseUrl = environment.apiBaseUrl.replace(/^((https|http):\/\/)/gmi, "");
 
-    // let actualTextarea: HTMLTextAreaElement = <HTMLTextAreaElement>ms.getCodeMirror().display.input.textarea;
+      this.mirrorsharpRef = (<any>mirrorsharp)(this.textarea.nativeElement, {
+        serviceUrl: `wss://${apiBaseUrl}:443/mirrorsharp`,
+        forCodeMirror: { lineNumbers: true, theme: 'cobalt' }
+      });
+
+      this.codemirrorRef = this.mirrorsharpRef.getCodeMirror();
+    }
+    catch (e) {
+      //L2.handleException(e);
+      console.error(e);
+    }
+
+    // let actualTextarea: HTMLTextAreaElement = <HTMLTextAreaElement>ms.getCodeMi rror().display.input.textarea;
 
     // //let ta: HTMLTextAreaElement = <HTMLTextAreaElement>this.textarea.nativeElement;
 

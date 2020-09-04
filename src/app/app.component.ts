@@ -16,81 +16,82 @@ import { L2MsgHandler } from './L2MsgHandler';
 
 
 @Component({
-    selector: 'app-root',
-    templateUrl: 'app.component.html',
-    styleUrls: ['app.component.css']
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.css']
 })
 export class AppComponent {
 
-    constructor(public accountService: AccountService,
-        public router: Router,
-        public changeDetectorRef: ChangeDetectorRef,
-        public dialog: MatDialog,
-        public snackBar: MatSnackBar,
-        public activatedRoute: ActivatedRoute
-    ) {
+  constructor(public accountService: AccountService,
+    public router: Router,
+    public changeDetectorRef: ChangeDetectorRef,
+    public dialog: MatDialog,
+    public snackBar: MatSnackBar,
+    public activatedRoute: ActivatedRoute
+  ) {
 
-        L2.registerOutputMessageHandler(new L2MsgHandler(this.dialog, this.snackBar, this.router, null));
+    L2.registerOutputMessageHandler(new L2MsgHandler(this.dialog, this.snackBar, this.router, null));
+  }
+
+  public isDisconnected: boolean = false;
+  public hubConnection: HubConnection;
+
+  ngOnInit() {
+
+    try {
+      this.accountService.whenLoggedIn.subscribe(loggedIn => {
+        this.changeDetectorRef.detectChanges();
+      });
+
+      this.createHubConnection();
     }
-
-    public isDisconnected: boolean = false;
-    public hubConnection: HubConnection;
-
-    ngOnInit() {
-
-        try {
-            this.accountService.whenLoggedIn.subscribe(loggedIn => {
-                this.changeDetectorRef.detectChanges();
-            });
-
-            this.createHubConnection();
-        }
-        catch (e) {
-            console.error("heartbeat error", e);
-            L2.handleException(e);
-        }
+    catch (e) {
+      console.error("heartbeat error", e);
+      L2.handleException(e);
     }
+  }
 
-    ngOnDestroy(): void {
-        if (this.hubConnection) {
-            this.hubConnection.stop();
-            this.hubConnection = null;
-        }
+  ngOnDestroy(): void {
+    if (this.hubConnection) {
+      this.hubConnection.stop();
+      this.hubConnection = null;
     }
+  }
 
-    createHubConnection() {
-        this.hubConnection = new HubConnectionBuilder()
-            .configureLogging(LogLevel.Debug)
-            .withUrl(environment.apiBaseUrl + '/heartbeat')
-            .withHubProtocol(new JsonHubProtocol())
-            .build();
+  createHubConnection() {
 
-        this.hubConnection.onclose(e => {
-            console.info("Hub connection closed");
-            this.isDisconnected = true;
+    this.hubConnection = new HubConnectionBuilder()
+      .configureLogging(LogLevel.Debug)
+      .withUrl(environment.apiBaseUrl + '/heartbeat')
+      .withHubProtocol(new JsonHubProtocol())
+      .build();
+
+    this.hubConnection.onclose(e => {
+      console.info("Hub connection closed");
+      this.isDisconnected = true;
+    });
+
+    this.hubConnection.start()
+      .then(() => {
+        console.info("Connected to heart beat hub");
+        this.hubConnection.on("tick", tick => { this.isDisconnected = false;  });
+
+        this.hubConnection.invoke("Init").then(r => {
+
         });
 
-        this.hubConnection.start()
-            .then(() => {
+      }).catch(e => {
+        console.info("error from catch", e);
+      });
+  }
 
-                this.hubConnection.on("tick", tick => { this.isDisconnected = false; });
+  gotoLogin() {
 
-                this.hubConnection.invoke("Init").then(r => {
+    (<any>window).location = "login";
+  }
 
-                });
-
-            }).catch(e => {
-                console.info("error from catch", e);
-            });
-    }
-
-    gotoLogin() {
-
-        (<any>window).location = "login";
-    }
-
-    public go(url: string) {
-        this.router.navigate([url], { relativeTo: this.activatedRoute });
-    }
+  public go(url: string) {
+    this.router.navigate([url], { relativeTo: this.activatedRoute });
+  }
 
 }

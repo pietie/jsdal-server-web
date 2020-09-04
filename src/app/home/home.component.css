@@ -8,3 +8,9 @@ table.clr-counters td.provider
     justify-content: start;
     font: bold 13px Roboto, Arial;
 }
+
+
+table.clr-counters .icon
+{
+  cursor: default;
+}
