@@ -3,6 +3,7 @@ import { L2  } from 'l2-lib/L2';
 import { Subject } from 'rxjs'
 
 import { environment } from '../../environments/environment';
+import { ApiService } from '~/services/api';
 
 @Injectable()
 export class AccountService {
@@ -14,7 +15,7 @@ export class AccountService {
 
     public redirectUrl: string;
 
-    constructor() {
+    constructor(public api:ApiService) {
         this.loggedInSubject = new Subject<boolean>();
     }
 
@@ -38,7 +39,7 @@ export class AccountService {
             let jwt = L2.BrowserStore.session<JWT>("jwt");
             let now = new Date();
 
-            // check for existing, valid JWT 
+            // check for existing, valid JWT
             if (!jwt || !jwt.token || jwt.expiresEpoch < now.getTime()) {
                 resolve(false);
                 return;
@@ -61,7 +62,7 @@ export class AccountService {
                 }
 
             }).catch(() => {
-                
+
                 L2.BrowserStore.removeSessionItem("jwt");
                 resolve(false);
                 return;
@@ -108,9 +109,9 @@ export class AccountService {
                     var expiresBy = new Date();
                     console.log("0002");
                     expiresBy.setSeconds(expiresBy.getSeconds() + this.jwt.expires_in);
-        
+
                     //        this.jwt.expiresBy = expiresBy;
-        
+
                     L2.BrowserStore.session<string>("jwt", this.jwt);
                     console.log("0003");
                     this.loggedIn = true;
@@ -133,7 +134,7 @@ export class AccountService {
 
         var url = 'api/authenticate';
         // PL: Temp hack when we are running with ng serve
-        if (window.location.port == '4200') url = environment.apiBaseUrl + '/' + url;
+        if (window.location.port == '4200') url = this.api.apiBaseUrl + '/' + url;
 
         var headers = new Headers();
 

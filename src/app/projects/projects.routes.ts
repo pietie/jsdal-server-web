@@ -60,7 +60,7 @@ export const projectsRoutes: Routes = [
                 //     endpoint: EndpointsDetailRouteResolver
                 // }
             },
-            { 
+            {
                 path: ':project/:app/rules/:jsfile',
                 canActivate: [LoggedInGuard],
                 component: RulesComponent
@@ -73,4 +73,4 @@ export const projectsRoutes: Routes = [
     }
 ];
 
-export const projectsRouting: ModuleWithProviders = RouterModule.forChild(projectsRoutes);
+export const projectsRouting: ModuleWithProviders<RouterModule> = RouterModule.forChild(projectsRoutes);

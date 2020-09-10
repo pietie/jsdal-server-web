@@ -9,8 +9,23 @@ import { blobs } from './blobs'
 })
 export class ApiService {
 
+  jsDALConfig$ = fetch('jsdal.json')
+    .then(r => r.json())
+    .then(r => {
+      this._apiBaseUrl = r.apiBaseUrl;
+      return r;
+    })
+    .catch(ex => console.error("Failed to load jsdal.json", ex));
+
   constructor() {
 
+  }
+
+
+  private _apiBaseUrl: string;
+
+  public get apiBaseUrl(): string {
+    return this._apiBaseUrl;
   }
 
   private appApi = {

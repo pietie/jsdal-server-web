@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, NgZone } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router, ActivatedRoute } from '@angular/router';
@@ -27,7 +27,7 @@ export class ExceptionViewerComponent {
   public isLoadingExceptionList: boolean = false;
 
 
-  constructor(public domSanitizer: DomSanitizer, public router: Router, public activatedRoute: ActivatedRoute, public api: ApiService, public cdr: ChangeDetectorRef) {
+  constructor(public domSanitizer: DomSanitizer, public router: Router, public activatedRoute: ActivatedRoute, public api: ApiService, public cdr: ChangeDetectorRef, public ngZone: NgZone) {
     this.appTitles$ = this.api.exceptions.getAppTitles();//.then(r => ["(All)", ...r]);
     this.endpoints$ = this.api.exceptions.getEndpoints();//.then(r => ["(All)", ...r]);
 
@@ -71,9 +71,7 @@ export class ExceptionViewerComponent {
       if (qs["routine"]) this.filter.routine = qs["routine"];
       else this.filter.routine = null;
 
-      //console.info("filter1==>\t", this.filter);
       this.refreshExceptionList();
-      //console.info("filter2==>\t", this.filter);
 
 
     });
@@ -84,7 +82,7 @@ export class ExceptionViewerComponent {
     // if (ev.stopPropagation) ev.stopPropagation();
     // if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
 
-    console.info("\t\thandleFilterChanged called!", this.filter, this.activatedRoute.snapshot, this.router.url);
+    //console.info("\t\thandleFilterChanged called!", this.filter, this.activatedRoute.snapshot, this.router.url);
 
     if (this.filter.endpoint.length == 0) this.filter.endpoint = ["all"];
     if (this.filter.app.length == 0) this.filter.app = ["all"];
@@ -123,13 +121,14 @@ export class ExceptionViewerComponent {
 
     let searchWithFilter = { ...this.filter };
 
-    this.api.exceptions.getRecent(searchWithFilter)
+    return this.api.exceptions.getRecent(searchWithFilter)
       .then(r => {
         this.lastFilter = searchWithFilter;
         this.isLoadingExceptionList = false;
 
         this.totalExceptionCnt = r.TotalExceptionCnt;
         this.recentExceptions = r.Results;//.sort((a,b)=>a.created<=b.created);
+
       }).catch(e => {
         this.isLoadingExceptionList = false;
         L2.handleException(e);
@@ -161,5 +160,16 @@ export class ExceptionViewerComponent {
       .then(r => {
         //   this.emitNavigatingEvent(false);
       });//.catch(() => this.emitNavigatingEvent(false));
+  }
+
+  async quickFilter(filter: 'PROD' | 'DEV') {
+    let endpoints = await this.endpoints$;
+
+    this.filter.endpoint = endpoints.filter(ep => ep.toUpperCase().endsWith(filter));
+
+    this.ngZone.run(() => { this.handleFilterChanged(); });
+
+
+
   }
 }

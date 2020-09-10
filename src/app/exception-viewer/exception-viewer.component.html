@@ -1,103 +1,127 @@
 <router-outlet #topEl></router-outlet>
 
 <mat-card>
-    <mat-card-content>
-        <mat-form-field>
-            <input #errRef matInput type="text" placeholder="Error ref#" autocomplete="off" />
-        </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions>
+  <mat-card-content>
+    <mat-form-field>
+      <input #errRef matInput type="text" placeholder="Error ref#" autocomplete="off" />
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
 
-        <button  (click)="lookupError(errRef.value); topEl.scrollIntoView();"  [disabled]="isLoadingExceptionList" #lookupButton mat-button color="primary">LOOKUP</button>
-    </mat-card-actions>
+    <button (click)="lookupError(errRef.value); topEl.scrollIntoView();" [disabled]="isLoadingExceptionList"
+      #lookupButton mat-button color="primary">LOOKUP</button>
+  </mat-card-actions>
 </mat-card>
 
 
 <mat-card>
-    <mat-card-title>Recent exceptions</mat-card-title>
-    <mat-card-content>
+  <mat-card-title>Recent exceptions</mat-card-title>
+  <mat-card-content>
 
-        <p>
-            (Total # of exceptions in memory: {{ totalExceptionCnt }}) <button (click)="clearAll()" mat-button
-                color="warn">CLEAR ALL</button>
-        </p>
+    <p>
+      (Total # of exceptions in memory: {{ totalExceptionCnt }}) <button (click)="clearAll()" mat-button
+        color="warn">CLEAR ALL</button>
+    </p>
 
-        <div *ngIf="recentExceptions">
-            <div>
-                <button mat-button color="primary" (click)="refreshExceptionList(true)"
-                    [disabled]="isLoadingExceptionList">REFRESH</button>
-
-            </div>
-            <br /><br />
-            <div class="filter-container">
-
-                <mat-form-field>
-                    <mat-select placeholder="Top (n)" (selectionChange)="handleFilterChanged()"
-                        [(ngModel)]="this.filter.top" [disabled]="isLoadingExceptionList">
-                        <mat-option [value]="20">20</mat-option>
-                        <mat-option [value]="50">50</mat-option>
-                        <mat-option [value]="100">100</mat-option>
-                        <mat-option [value]="300">300</mat-option>
-                        <mat-option [value]="500">500</mat-option>
-                        <mat-option [value]="800">800</mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field style="width:350px"
-                    *ngIf="(endpoints$ | async) as endpointList; else loadingEndpointCbo">
-
-                    <mat-select multiple placeholder="Endpoint" [(ngModel)]="filter.endpoint"
-                        (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
-                        <mat-option #allEP (onSelectionChange)="allOptionChanged(allEP, 'endpoint')" value="all">(All)
-                        </mat-option>
-                        <mat-option *ngFor="let ep of endpointList" [disabled]="filter.endpoint.includes('all')"
-                            [value]="ep">{{ep}}</mat-option>
-
-                    </mat-select>
-
-                </mat-form-field>
-                <ng-template #loadingEndpointCbo>
-                    <mat-spinner diameter="20"></mat-spinner>
-                </ng-template>
-
-                <mat-form-field style="width:350px"
-                    *ngIf="(appTitles$ | async) as appTitleList; else loadingAppTitleCbo">
-
-                    <mat-select multiple placeholder="App" [(ngModel)]="filter.app"
-                        (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
-                        <mat-option #allApps (onSelectionChange)="allOptionChanged(allApps, 'app')" value="all">(All)
-                        </mat-option>
-                        <mat-option *ngFor="let app of appTitleList" [disabled]="filter.app.includes('all')"
-                            [value]="app">{{app}}</mat-option>
-
-                    </mat-select>
-                </mat-form-field>
-                <ng-template #loadingAppTitleCbo>
-                    <mat-spinner diameter="20"></mat-spinner>
-                </ng-template>
-
-                <mat-form-field>
-                    <input matInput [(ngModel)]="filter.routine" (keyup.enter)="handleFilterChanged()"
-                        placeholder="Routine" autocomplete="off" (blur)="handleFilterChanged()">
-                </mat-form-field>
+    <div *ngIf="recentExceptions">
+      <div style="display: flex;">
+        <button mat-button color="primary" (click)="refreshExceptionList(true)"
+          [disabled]="isLoadingExceptionList">REFRESH</button>
 
 
-                <!-- Filter on: Type(Timeout), Exception Type(SQL, Memory, FileIO etc), -->
+        <mat-spinner diameter="20" *ngIf="isLoadingExceptionList"></mat-spinner>
 
-            </div>
 
-            <p *ngIf="recentExceptions.length == 0 && !isLoadingExceptionList">
-                No recent exceptions found.
-            </p>
-
-            <mat-spinner diameter="20" *ngIf="isLoadingExceptionList"></mat-spinner>
-
-            <exception-recent-item *ngFor="let ex of recentExceptions" (onNavigating)="onNavigating($event)"
-                [exception]="ex" [isLoading]="isLoadingExceptionList"></exception-recent-item>
+      </div>
 
 
 
-        </div>
+      <br /><br />
+      <div class="filter-container">
 
-    </mat-card-content>
+        <mat-form-field>
+          <mat-select placeholder="Top (n)" (selectionChange)="handleFilterChanged()" [(ngModel)]="this.filter.top"
+            [disabled]="isLoadingExceptionList">
+            <mat-option [value]="20">20</mat-option>
+            <mat-option [value]="50">50</mat-option>
+            <mat-option [value]="100">100</mat-option>
+            <mat-option [value]="300">300</mat-option>
+            <mat-option [value]="500">500</mat-option>
+            <mat-option [value]="800">800</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="width:350px" *ngIf="(endpoints$ | async) as endpointList; else loadingEndpointCbo">
+
+          <mat-select multiple placeholder="Endpoint" [(ngModel)]="filter.endpoint"
+            (closed)="handleFilterChanged($event)" [disabled]="isLoadingExceptionList">
+            <mat-option #allEP (onSelectionChange)="allOptionChanged(allEP, 'endpoint')" value="all">(All)
+            </mat-option>
+            <mat-option *ngFor="let ep of endpointList" [disabled]="filter.endpoint.includes('all')" [value]="ep">{{ep}}
+            </mat-option>
+
+          </mat-select>
+
+        </mat-form-field>
+        <ng-template #loadingEndpointCbo>
+          <mat-form-field style="width:350px">
+            <mat-label>
+              <mat-spinner diameter="20"></mat-spinner>
+            </mat-label>
+            <mat-select placeholder="Endpoint" disable="true"></mat-select>
+
+          </mat-form-field>
+
+        </ng-template>
+
+        <mat-form-field style="width:350px" *ngIf="(appTitles$ | async) as appTitleList; else loadingAppTitleCbo">
+
+          <mat-select multiple placeholder="App" [(ngModel)]="filter.app" (closed)="handleFilterChanged($event)"
+            [disabled]="isLoadingExceptionList">
+            <mat-option #allApps (onSelectionChange)="allOptionChanged(allApps, 'app')" value="all">(All)
+            </mat-option>
+            <mat-option *ngFor="let app of appTitleList" [disabled]="filter.app.includes('all')" [value]="app">{{app}}
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+        <ng-template #loadingAppTitleCbo>
+          <mat-form-field style="width:350px">
+            <mat-label>
+              <mat-spinner diameter="20"></mat-spinner>
+            </mat-label>
+            <mat-select placeholder="App" disable="true"></mat-select>
+
+          </mat-form-field>
+        </ng-template>
+
+        <mat-form-field>
+          <input matInput [(ngModel)]="filter.routine" (keyup.enter)="handleFilterChanged()" placeholder="Routine"
+            autocomplete="off" (blur)="handleFilterChanged()">
+        </mat-form-field>
+
+
+        <!-- Filter on: Type(Timeout), Exception Type(SQL, Memory, FileIO etc), -->
+
+      </div>
+
+      <mat-chip-list >
+        <mat-chip [disabled]="isLoadingExceptionList" (click)="quickFilter('PROD')">PROD only</mat-chip>
+        <mat-chip [disabled]="isLoadingExceptionList" (click)="quickFilter('DEV')">DEV only</mat-chip>
+      </mat-chip-list>
+<br/>
+      <p *ngIf="recentExceptions.length == 0 && !isLoadingExceptionList">
+        No recent exceptions found.
+      </p>
+
+
+
+      <exception-recent-item *ngFor="let ex of recentExceptions" (onNavigating)="onNavigating($event)" [exception]="ex"
+        [isLoading]="isLoadingExceptionList"></exception-recent-item>
+
+
+
+    </div>
+
+  </mat-card-content>
 </mat-card>

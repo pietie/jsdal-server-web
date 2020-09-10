@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import * as mirrorsharp from 'mirrorsharp';
-import { environment } from '~/../environments/environment';
 import { L2 } from 'l2-lib/L2';
+import { ApiService } from '~/services/api';
 
 
 
@@ -31,7 +31,7 @@ export class CsharpTextareaComponent implements OnInit {
 
   get disabled(): boolean { return this._disabled; }
 
-  constructor() {
+  constructor(public api:ApiService) {
 
 
   }
@@ -50,9 +50,9 @@ export class CsharpTextareaComponent implements OnInit {
   ngOnInit() {
 
     try {
-      let apiBaseUrl = environment.apiBaseUrl.replace(/^((https|http):\/\/)/gmi, "");
+      let apiBaseUrl = this.api.apiBaseUrl.replace(/^((https|http):\/\/)/gmi, "");
 
-      this.mirrorsharpRef = (<any>mirrorsharp)(this.textarea.nativeElement, {
+      this.mirrorsharpRef = mirrorsharp.default(this.textarea.nativeElement, {
         serviceUrl: `wss://${apiBaseUrl}:443/mirrorsharp`,
         forCodeMirror: { lineNumbers: true, theme: 'cobalt' }
       });

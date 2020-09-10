@@ -1,63 +1,66 @@
 import { Component } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
-import { environment } from './../../environments/environment';
+import { ApiService } from '~/services/api';
 
-import { Observable, Subscription } from 'rxjs';
 
 @Component({
-    templateUrl: './workers.component.html'
+  templateUrl: './workers.component.html'
 })
 export class WorkersComponent {
-    public workerList: any[];
+  public workerList: any[];
 
-    public hubConnection: HubConnection;
+  public hubConnection: HubConnection;
 
-    ngOnInit() {
-        //!this.reloadWorkersList();
+  constructor(public api: ApiService) {
 
-        this.hubConnection = new HubConnectionBuilder()
-            .configureLogging(LogLevel.Debug)
-            .withUrl(environment.apiBaseUrl + '/worker-hub')
-            .build();
+  }
 
-        this.hubConnection.start()
-            .then(() => {
+  ngOnInit() {
+    //!this.reloadWorkersList();
 
-                this.hubConnection.on("updateWorkerList", changes => {
-                    this.workerList = changes;
-                });
+    this.hubConnection = new HubConnectionBuilder()
+      .configureLogging(LogLevel.Debug)
+      .withUrl(this.api.apiBaseUrl + '/worker-hub')
+      .build();
 
-                this.hubConnection.invoke("Init").then(r => {
-                    this.workerList = r;
-                });
-            });
-    }
+    this.hubConnection.start()
+      .then(() => {
 
-    ngOnDestroy() {
-        try {
-            if (this.hubConnection) {
-                this.hubConnection.stop();
-                this.hubConnection = null;
-            }
-        }
-        catch (e) {
-            console.warn(e);
-        }
-    }
-
-    startWorker(row) {
-        L2.postJson(`/api/workers/${row.id}/start`).then((r) => {
-            L2.success("Worker started.");
-            //!this.reloadWorkersList();
+        this.hubConnection.on("updateWorkerList", changes => {
+          this.workerList = changes;
         });
-    }
 
-    stopWorker(row) {
-        L2.postJson(`/api/workers/${row.id}/stop`).then((r) => {
-            L2.success("Worker stopped.");
-            //! this.reloadWorkersList();
+        this.hubConnection.invoke("Init").then(r => {
+          this.workerList = r;
         });
+      });
+  }
+
+  ngOnDestroy() {
+    try {
+      if (this.hubConnection) {
+        this.hubConnection.stop();
+        this.hubConnection = null;
+      }
     }
+    catch (e) {
+      console.warn(e);
+    }
+  }
+
+  startWorker(row) {
+    L2.postJson(`/api/workers/${row.id}/start`).then((r) => {
+      L2.success("Worker started.");
+      //!this.reloadWorkersList();
+    });
+  }
+
+  stopWorker(row) {
+    L2.postJson(`/api/workers/${row.id}/stop`).then((r) => {
+      L2.success("Worker stopped.");
+      //! this.reloadWorkersList();
+    });
+  }
 
 }

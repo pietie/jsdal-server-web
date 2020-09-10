@@ -1,9 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { HubConnectionBuilder, HubConnection, LogLevel, IStreamResult, ISubscription } from '@microsoft/signalr';
 import { Observable, Subscription } from 'rxjs';
-import { environment } from './../../../environments/environment';
 import { L2 } from 'l2-lib/L2';
 import { AccountService } from '~/account/account.service';
+import { ApiService } from '~/services/api';
 
 @Component({
   selector: 'app-real-time-performance',
@@ -20,7 +20,7 @@ export class RealTimePerformanceComponent implements OnInit {
   signalRStatus: string = "UNKNOWN";
 
 
-  constructor(public account: AccountService, public cdr: ChangeDetectorRef) {
+  constructor(public account: AccountService, public api:ApiService, public cdr: ChangeDetectorRef) {
 
   }
 
@@ -28,7 +28,7 @@ export class RealTimePerformanceComponent implements OnInit {
     try {
       this.hubConnection = new HubConnectionBuilder()
         .configureLogging(LogLevel.Debug)
-        .withUrl(environment.apiBaseUrl + '/performance-realtime-hub')
+        .withUrl(this.api.apiBaseUrl + '/performance-realtime-hub')
         .build();
 
       // TODO: Move ALL Hub interactions to shared service!

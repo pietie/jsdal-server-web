@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 
 import { L2 } from 'l2-lib/L2';
 
-import { environment } from '../../environments/environment';
+
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
+import { ApiService } from '~/services/api';
 
 
 @Component({
@@ -58,11 +59,15 @@ export class HomeComponent {
 
   };
 
+  constructor(public api: ApiService) {
+
+  }
+
   ngOnInit() {
     try {
       this.hubConnection = new HubConnectionBuilder()
         .configureLogging(LogLevel.Debug)
-        .withUrl(environment.apiBaseUrl + '/main-stats')
+        .withUrl(this.api + '/main-stats')
         .build();
 
       this.hubConnection

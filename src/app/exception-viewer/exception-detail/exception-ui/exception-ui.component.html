@@ -76,7 +76,7 @@
 
   <div #preSqlDiv class="sql" (dblclick)="handleCodeDblClicked(preSqlDiv)">
 
-    <pre class="prettyprint sql" [innerHTML]='prettyPrintExecSql()'></pre>
+    <pre *ngIf="exception?.execOptions?.type < 10" class="prettyprint sql" [innerHTML]='prettyPrintExecSql()'></pre>
   </div>
   <!-- Batch stuff = {{ exception.execOptions.OverridingInputParameters }} -->
 

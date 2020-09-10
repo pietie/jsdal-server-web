@@ -12,7 +12,14 @@ export class ExceptionUiComponent implements OnInit {
   @Input() exception: any = null;
   @Input() innerExceptionIx: number = 0;
 
-  execTypeValues: string[] = Object.keys(ExecOptoionsExecType).map(key => ExecOptoionsExecType[key]).filter(value => typeof value === 'string') as string[];
+  execTypeValues: any = Object.keys(ExecOptoionsExecType)
+    .map(key => {
+      let ret = {};
+      ret[key] = ExecOptoionsExecType[key];
+      return ret;
+    })
+    .reduce((a, b) => { return { ...a, ...b } });
+  //.filter(value => typeof value === 'string') as string[];
 
   constructor(public router: Router, public activatedRoute: ActivatedRoute, public domSanitizer: DomSanitizer) { }
 
@@ -20,7 +27,7 @@ export class ExceptionUiComponent implements OnInit {
   }
 
   buildExecParmList(parmList: { [key: string]: string }) {
-    if (!parmList || Object.keys(parmList).length == 0) return null;
+    if (!parmList || Object.keys(parmList).length == 0) return "";
 
     return Object.keys(parmList).map(k => `@${k} = ${this.wrapParmValue(parmList[k])}`).join(',\r\n\t\t');
   }
@@ -48,6 +55,7 @@ export class ExceptionUiComponent implements OnInit {
 
   prettyPrint(input: string, lang: string) {
     if (window["PR"] == null) return null;
+    if (input == null) input = "(no stack trace)";
     return window["PR"].prettyPrintOne(input, lang, false);
   }
 
@@ -65,5 +73,7 @@ export class ExceptionUiComponent implements OnInit {
 enum ExecOptoionsExecType {
   Query = 0,
   NonQuery = 1,
-  Scalar = 2
+  Scalar = 2,
+  ServerMethod = 10,
+  BackgroundThread = 20
 }

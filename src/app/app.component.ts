@@ -13,6 +13,7 @@ import { HubConnectionBuilder, HubConnection, LogLevel, JsonHubProtocol } from '
 
 import { Observable, Subscription } from 'rxjs';
 import { L2MsgHandler } from './L2MsgHandler';
+import { ApiService } from './services/api';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class AppComponent {
     public changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
     public snackBar: MatSnackBar,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public api: ApiService
   ) {
 
     L2.registerOutputMessageHandler(new L2MsgHandler(this.dialog, this.snackBar, this.router, null));
@@ -36,9 +38,13 @@ export class AppComponent {
   public isDisconnected: boolean = false;
   public hubConnection: HubConnection;
 
-  ngOnInit() {
+  async ngOnInit() {
 
     try {
+      // wait for config to finish loading first
+      await this.api.jsDALConfig$;
+
+
       this.accountService.whenLoggedIn.subscribe(loggedIn => {
         this.changeDetectorRef.detectChanges();
       });
@@ -58,11 +64,11 @@ export class AppComponent {
     }
   }
 
-  createHubConnection() {
+  async createHubConnection() {
 
     this.hubConnection = new HubConnectionBuilder()
       .configureLogging(LogLevel.Debug)
-      .withUrl(environment.apiBaseUrl + '/heartbeat')
+      .withUrl(this.api.apiBaseUrl + '/heartbeat')
       .withHubProtocol(new JsonHubProtocol())
       .build();
 
@@ -74,7 +80,7 @@ export class AppComponent {
     this.hubConnection.start()
       .then(() => {
         console.info("Connected to heart beat hub");
-        this.hubConnection.on("tick", tick => { this.isDisconnected = false;  });
+        this.hubConnection.on("tick", tick => { this.isDisconnected = false; });
 
         this.hubConnection.invoke("Init").then(r => {
 

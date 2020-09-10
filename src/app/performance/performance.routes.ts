@@ -40,4 +40,4 @@ export const projectsRoutes: Routes = [
 ];
 
 
-export const performanceRouting: ModuleWithProviders = RouterModule.forChild(projectsRoutes);
+export const performanceRouting: ModuleWithProviders<RouterModule> = RouterModule.forChild(projectsRoutes);

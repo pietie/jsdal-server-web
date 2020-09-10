@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import { Observable, Subscription, Subject, BehaviorSubject } from 'rxjs';
-import { environment } from '~/../environments/environment';
 import { L2 } from 'l2-lib/L2';
-import { timestamp } from 'rxjs/operators';
-import { ConstantPool } from '@angular/compiler';
+import { ApiService } from './api';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +16,7 @@ export class BgTaskMonitorService {
   private obsLookup: { [id: string]: BehaviorSubject<BgTaskResponse> } = {};
 
 
-  constructor() {
+  constructor(public api:ApiService) {
     this.init();
   }
 
@@ -31,7 +29,7 @@ export class BgTaskMonitorService {
       try {
         this.hubConnection = new HubConnectionBuilder()
           .configureLogging(LogLevel.Debug)
-          .withUrl(environment.apiBaseUrl + '/bgtasks-hub')
+          .withUrl(this.api.apiBaseUrl + '/bgtasks-hub')
           .build();
 
         this.hubConnection.start()

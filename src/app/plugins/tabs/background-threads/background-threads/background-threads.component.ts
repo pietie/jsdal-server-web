@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { ApiService } from '~/services/api';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
-import { environment } from '../../../../../environments/environment';
 import { MatMenu, MatMenuTrigger, MenuPositionX, MenuPositionY } from '@angular/material/menu';
 
 @Component({
@@ -28,7 +27,7 @@ export class BackgroundThreadsComponent implements OnInit {
 
       this.hubConnection = new HubConnectionBuilder()
         .configureLogging(LogLevel.Debug)
-        .withUrl(environment.apiBaseUrl + '/bgplugin-hub')
+        .withUrl(this.api.apiBaseUrl + '/bgplugin-hub')
         .build();
 
       this.hubConnection
@@ -93,8 +92,12 @@ export class BackgroundThreadsComponent implements OnInit {
           });
 
           this.hubConnection.invoke("JoinAdminGroup").then(r => {
+            console.log("JoinAdminGroup", r);
+            this.instances = null;
+            this.instanceKeys = null;
+            this.instanceSettings = {};
 
-            if (r) {
+            if (r && r.length > 0) {
               this.instances = r.reduce((map, obj) => { map[obj.InstanceId] = obj; return map; }, {});
 
               this.instanceKeys = Object.keys(this.instances);
