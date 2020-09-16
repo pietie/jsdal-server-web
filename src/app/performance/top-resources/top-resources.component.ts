@@ -13,13 +13,5 @@ export class TopResourcesComponent implements OnInit {
   ngOnInit() {
   }
 
-  onMetricChanged(val: string) {
-    console.info("get top resource for ... ", val);
 
-    this.refresh();
-  }
-
-  refresh() {
-    this.api.performance.getTopResources();
-  }
 }

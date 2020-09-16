@@ -1,3 +1,65 @@
-<p>
-  bgtasks works!
-</p>
+<button mat-raised-button (click)="refreshX()" color="primary">Refresh</button>
+
+<button mat-raised-button (click)="clearExecutions()" color="warn">Clear Executions</button>
+
+<div style="display: flex;align-items: center; width: 200px">
+
+<mat-select placeholder="Days old" name="item">
+  <mat-option [value]="1">1</mat-option>
+  <mat-option [value]="3">3</mat-option>
+  <mat-option [value]="7">7</mat-option>
+  <mat-option [value]="14">14</mat-option>
+  <mat-option [value]="21">21</mat-option>
+  <mat-option [value]="30">30</mat-option>
+</mat-select>
+
+<button mat-raised-button color="warn">Delete</button>
+
+</div>
+
+<hr/>
+<h4>Executions</h4>
+<ng-container *ngIf="executionsData && executionsData.length > 0">
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th *ngFor="let c of (executionsData[0] | keys)">
+          {{ c }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of executionsData">
+        <td *ngFor="let c of (executionsData[0] | keys)">
+          {{ row[c] }}
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</ng-container>
+<hr />
+<h4>Aggregates</h4>
+<ng-container *ngIf="aggData && aggData.length > 0">
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th *ngFor="let c of (aggData[0] | keys)">
+          {{ c }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of aggData">
+        <td *ngFor="let c of (aggData[0] | keys)">
+          {{ row[c] | json }}
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</ng-container>

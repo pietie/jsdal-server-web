@@ -10,13 +10,33 @@ export class BgtasksComponent implements OnInit {
 
   constructor(public api: ApiService) {
 
-   }
+  }
+
+  executionsData: any;
+  aggData: any;
 
   ngOnInit() {
-    this.api.bgTasks.bgtasks.getAll().then(r=>{
+    this.api.bgTasks.bgtasks.getAll().then(r => {
 
-        console.info("ABC ", r);
+      console.info("ABC ", r);
 
+    });
+
+    this.refreshX();
+  }
+
+  refreshX() {
+    this.api.dataCollector.getAllDataTmp().then((r: any) => {
+
+      console.log("AAL", r);
+      this.executionsData = r.Executions;
+      this.aggData = r.Agg;
+    });
+  }
+
+  clearExecutions() {
+    this.api.dataCollector.clearoutExecutions().then((r: any) => {
+      if (r > 0) this.refreshX();
     });
   }
 

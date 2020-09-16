@@ -5,6 +5,7 @@ import { IApiResponse } from './../api-response';
 
 export class performance {
 
+  // deprecated
   static getTopResources(): Promise<any> {
     return <any>L2.fetchJson(`/api/performance/top`)
       .then((r: any) => {

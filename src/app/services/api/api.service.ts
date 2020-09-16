@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { app, appRules, serverMethods, bgTasks, performance } from './object-model';
 import { exceptions } from './exceptions';
+import { dataCollector } from './datacollector';
 import { util } from './util';
 import { blobs } from './blobs'
 
@@ -59,6 +60,10 @@ export class ApiService {
 
   get blobs() {
     return blobs;
+  }
+
+  get dataCollector() {
+    return dataCollector;
   }
 }
 
