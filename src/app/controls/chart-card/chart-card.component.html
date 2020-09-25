@@ -1,0 +1,72 @@
+<mat-card style="width: 800px">
+  <mat-card-content>
+
+    <ng-content></ng-content>
+    <canvas *ngIf="chartLabels && chartLabels.length > 0" baseChart [datasets]="chartDataSets" [labels]="chartLabels"
+      [options]="chartOptions" [plugins]="chartPlugins" [legend]="chartLegend" [chartType]="chartType">
+    </canvas>
+
+  </mat-card-content>
+  <mat-card-actions>
+    <hr />
+    <div>
+
+      <button mat-icon-button color="primary" [disabled]="isRefreshing" (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+
+      <button [disabled]="isRefreshing"
+        [title]="filter?.from?.format('DD MMM YYYY, HH:mm') + ' - ' + filter?.to?.format('DD MMM YYYY, HH:mm')"
+        mat-button [matMenuTriggerFor]="menu">{{ filter?.selectedDateDesc }}<mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" style="width: 250px;">
+        <span class="selected-datetype">{{ filter?.selectedDateType }} </span>
+        <span class="selected-date-range">{{ filter?.selectedDateDesc }}</span>
+
+        <mat-divider></mat-divider>
+        <button [class.selected]="filter?.selectedDateType=='Last hour'" mat-menu-item
+          (click)="predefinedItemSelected($event.srcElement)">Last hour</button>
+        <button [class.selected]="filter?.selectedDateType=='Last 3 hours'" mat-menu-item
+          (click)="predefinedItemSelected($event.srcElement)">Last 3 hours</button>
+        <button [class.selected]="filter?.selectedDateType=='Today'" mat-menu-item
+          (click)="predefinedItemSelected($event.srcElement)">Today</button>
+        <button [class.selected]="filter?.selectedDateType=='Yesterday'" mat-menu-item
+          (click)="predefinedItemSelected($event.srcElement)">Yesterday</button>
+        <button [class.selected]="filter?.selectedDateType=='Last 3 days'" mat-menu-item
+          (click)="predefinedItemSelected($event.srcElement)">Last 3 days</button>
+        <button [class.selected]="filter?.selectedDateType=='Last week'" mat-menu-item
+          (click)="predefinedItemSelected($event.srcElement)">Last week</button>
+        <mat-divider></mat-divider>
+
+        <button mat-menu-item [class.selected]="filter?.selectedDateType=='Custom'"
+          (click)="customClicked()">Custom...</button>
+
+        <mat-date-range-picker #picker2></mat-date-range-picker>
+        <mat-date-range-input [rangePicker]="picker2" style="display:none">
+          <input matStartDate placeholder="Start date">
+          <input matEndDate placeholder="End date">
+        </mat-date-range-input>
+
+      </mat-menu>
+
+
+      <mat-select [disabled]="isRefreshing" (selectionChange)="refresh()" placeholder="Endpoint" name="item"
+        [(ngModel)]="filter.endpoints" [multiple]="allowMultipleEndpoints" style="width: 200px">
+        <mat-option *ngFor="let ep of this.endpoints" [value]="ep">{{ ep }}</mat-option>
+      </mat-select>
+
+      <mat-select *ngIf="allowMaxRowsSelection" [disabled]="isRefreshing" (selectionChange)="refresh()"
+        [(ngModel)]="filter.topN" style="width: 100px; margin-left: 15px;" placeholder="Top (n)">
+        <mat-option [value]="10">10</mat-option>
+        <mat-option [value]="20">20</mat-option>
+        <mat-option [value]="30">30</mat-option>
+        <mat-option [value]="100">100</mat-option>
+      </mat-select>
+
+
+
+    </div>
+    <mat-progress-bar class="action" *ngIf="isRefreshing" mode="indeterminate">
+    </mat-progress-bar>
+  </mat-card-actions>
+</mat-card>

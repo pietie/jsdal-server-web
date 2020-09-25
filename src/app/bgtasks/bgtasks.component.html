@@ -17,6 +17,31 @@
 
 </div>
 
+<hr />
+<h4>Audit</h4>
+<ng-container *ngIf="audit && audit.length > 0">
+
+  <table class="grid">
+    <thead>
+      <tr>
+        <th *ngFor="let c of (audit[0] | keys)">
+          {{ c }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of audit">
+        <td *ngFor="let c of (audit[0] | keys)">
+          {{ row[c] | json }}
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+</ng-container>
+
+
 <hr/>
 <h4>Executions</h4>
 <ng-container *ngIf="executionsData && executionsData.length > 0">

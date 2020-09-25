@@ -1,0 +1,35 @@
+mat-divider {
+  margin: 0 10px;
+}
+
+.selected-datetype {
+  font-size: 0.75em;
+  font-weight: 600;
+  display: block;
+  padding: 8px 10px;
+  width: 200px;
+  text-transform: uppercase;
+  color: #777;
+}
+
+.selected-date-range {
+  font-size: 0.8em;
+  padding: 10px 10px;
+  margin-left: 5px;
+  display: block;
+}
+
+
+button.selected
+{
+  color: rgb(0, 111, 185);
+}
+
+
+mat-progress-bar.action
+{
+  position: absolute;
+  left:0;
+  bottom: 0;
+  border-radius: 0 0 10px 10px;
+}

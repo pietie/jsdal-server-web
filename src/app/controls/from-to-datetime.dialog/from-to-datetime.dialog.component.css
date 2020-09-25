@@ -1,0 +1,16 @@
+span.lbl {
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+h4 {
+  margin: 0;
+}
+
+mat-form-field {
+  width: 95%;
+}
+
+mat-form-field input {
+  width: 100%;
+}

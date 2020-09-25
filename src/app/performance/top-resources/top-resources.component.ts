@@ -11,7 +11,11 @@ export class TopResourcesComponent implements OnInit {
   constructor(public api: ApiService) { }
 
   ngOnInit() {
+
   }
 
+  getButtonText(buttonId: string) {
+    return document.getElementById(buttonId).textContent;
+  }
 
 }

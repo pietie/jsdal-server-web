@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Select date range</h1>
+
+<div mat-dialog-content style="width:300px">
+  <h4>From date</h4>
+  <mat-form-field>
+    <input matInput type="datetime-local" [(ngModel)]="from">
+  </mat-form-field>
+  <br />
+  <h4>To date</h4>
+  <mat-form-field>
+    <input matInput type="datetime-local" [(ngModel)]="to">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="{ from: fromMoment, to: toMoment }" cdkFocusInitial color="primary"
+    [disabled]="!from || !to">APPLY</button>
+  <button mat-button [mat-dialog-close]>CANCEL</button>
+</div>

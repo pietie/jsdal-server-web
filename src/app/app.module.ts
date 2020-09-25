@@ -47,62 +47,59 @@ import { ServerMethodsComponent } from './plugins/tabs/server-methods/server-met
 import { BgtasksComponent } from '~/bgtasks/bgtasks.component'
 import { BgTaskMonitorService } from '~/services/bgtask-monitor.service';;
 import { ExecutionTesterComponent } from './execution-tester/execution-tester.component';;
-import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component'
-    ;
-import { BackgroundThreadsComponent } from './plugins/tabs/background-threads/background-threads/background-threads.component'
-    ;
-import { ManageBackgroundThreadComponent } from './plugins/tabs/background-threads/manage-background-thread/manage-background-thread.component';;
-import { KeysPipe } from './pipes/keys-pipe.pipe'
-    ;
-import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugin.component'
-    ;
-import { PluginTemplateBottomSheetComponent } from './plugins/add-edit-plugin/plugin-template-bottom-sheet/plugin-template-bottom-sheet.component';
-import { ExceptionUiComponent } from './exception-viewer/exception-detail/exception-ui/exception-ui.component'
-;
-import { ExceptionRecentItemComponent } from './exception-viewer/exception-recent-item/exception-recent-item.component';
-import { BlobViewerComponent } from './blob-viewer/blob-viewer.component'
+import { ExceptionDetailComponent } from './exception-viewer/exception-detail/exception-detail.component';
+import { BackgroundThreadsComponent } from './plugins/tabs/background-threads/background-threads/background-threads.component';
+import { ManageBackgroundThreadComponent } from './plugins/tabs/background-threads/manage-background-thread/manage-background-thread.component';
+import { KeysPipe } from './pipes/keys-pipe.pipe';
+import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugin.component';
+import { PluginTemplateBottomSheetComponent } from './plugins/add-edit-plugin/plugin-template-bottom-sheet/plugin-template-bottom-sheet.component';
+import { ExceptionUiComponent } from './exception-viewer/exception-detail/exception-ui/exception-ui.component';
+import { ExceptionRecentItemComponent } from './exception-viewer/exception-recent-item/exception-recent-item.component';
+import { BlobViewerComponent } from './blob-viewer/blob-viewer.component';
+
+
 export class MyErrorHandler implements ErrorHandler {
 
-    constructor() {
+  constructor() {
 
-    }
+  }
 
-    handleError(error) {
-        console.info("custom error handler: ", error);
-        throw new Error("Whoops");
-    }
+  handleError(error) {
+    console.info("custom error handler: ", error);
+    throw new Error("Whoops");
+  }
 }
 
 @NgModule({
-    imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule, AceEditorModule, ReactiveFormsModule],
-    declarations: [AppComponent,
-        HomeComponent,
-        LoginComponent,
-        SessionLog,
-        Settings,
-        ExceptionViewerComponent,
-        WorkersComponent,
-        WorkerDetailComponent,
-        FirstTimeSetupComponent,
-        FirstTimeNetworkErrorComponent,
-        PluginsComponent,
-        CsharpTextareaComponent,
-        ServerMethodsComponent,
-        BgtasksComponent,
-        ExecutionTesterComponent,
-        ExceptionDetailComponent,
-        BackgroundThreadsComponent,
-        ManageBackgroundThreadComponent,
-        KeysPipe,
-        AddEditPluginComponent,
-        PluginTemplateBottomSheetComponent,
-        ExceptionUiComponent
-,
-        ExceptionRecentItemComponent ,
-        BlobViewerComponent   ],
-    bootstrap: [AppComponent],
-    providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
-    entryComponents: [PluginTemplateBottomSheetComponent]
+  imports: [BrowserModule, SharedModule, RouterModule, FormsModule, ProjectsModule, routing, PerformanceModule, AceEditorModule, ReactiveFormsModule],
+  declarations: [AppComponent,
+    HomeComponent,
+    LoginComponent,
+    SessionLog,
+    Settings,
+    ExceptionViewerComponent,
+    WorkersComponent,
+    WorkerDetailComponent,
+    FirstTimeSetupComponent,
+    FirstTimeNetworkErrorComponent,
+    PluginsComponent,
+    CsharpTextareaComponent,
+    ServerMethodsComponent,
+    BgtasksComponent,
+    ExecutionTesterComponent,
+    ExceptionDetailComponent,
+    BackgroundThreadsComponent,
+    ManageBackgroundThreadComponent,
+    KeysPipe,
+    AddEditPluginComponent,
+    PluginTemplateBottomSheetComponent,
+    ExceptionUiComponent,
+    ExceptionRecentItemComponent,
+    BlobViewerComponent
+  ],
+  bootstrap: [AppComponent],
+  providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
+  entryComponents: [PluginTemplateBottomSheetComponent]
 
 })
-export class AppModule { }    
+export class AppModule { }

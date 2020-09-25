@@ -2,7 +2,8 @@
   <mat-card-content>
 
 
-    Tabs/Buttons to select different type of stats..or button click brings up new 'widget'/card so we can view/browse multiple at time
+    Tabs/Buttons to select different type of stats..or button click brings up new 'widget'/card so we can view/browse
+    multiple at time
 
   </mat-card-content>
   <mat-card-actions>
@@ -11,15 +12,23 @@
 </mat-card>
 
 
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>title</mat-card-title>
-    <mat-card-subtitle>subtitle</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
 
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>Ok</button>
-  </mat-card-actions>
-</mat-card>
+<l2-chart-card #chart datasetLabel="??" type="bar" [legend]="false">
+
+  <mat-button-toggle-group #chartResourceTypeGroup="matButtonToggleGroup" [(ngModel)]="chart.resourceType"
+    (change)="chart.datasetLabel = getButtonText(chartResourceTypeGroup.selected['buttonId'])">
+    <mat-button-toggle value="1">Executions</mat-button-toggle>
+    <mat-button-toggle value="2">Avg Duration (ms)</mat-button-toggle>
+    <mat-button-toggle value="3">Avg Network server time (ms)</mat-button-toggle>
+    <mat-button-toggle value="4">Avg KB received</mat-button-toggle>
+    <mat-button-toggle value="20">Exception count</mat-button-toggle>
+    <mat-button-toggle value="30">Timeouts</mat-button-toggle>
+  </mat-button-toggle-group>
+</l2-chart-card>
+
+
+<h3>Server performance</h3>
+
+<l2-chart-card type="line" [allowMaxRowsSelection]="false" [resourceType]="500" >
+
+</l2-chart-card>
