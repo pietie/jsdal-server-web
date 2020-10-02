@@ -1,4 +1,8 @@
-<mat-card style="width: 800px">
+<mat-card style="width: {{width}}">
+  <mat-card-header *ngIf="title">
+    <mat-card-title>{{ title }}</mat-card-title>
+  </mat-card-header>
+
   <mat-card-content>
 
     <ng-content></ng-content>
@@ -11,7 +15,7 @@
     <hr />
     <div>
 
-      <button mat-icon-button color="primary" [disabled]="isRefreshing" (click)="refresh()">
+      <button mat-icon-button color="primary" [disabled]="isRefreshing" (click)="callRefresh()">
         <mat-icon>refresh</mat-icon>
       </button>
 
@@ -50,12 +54,12 @@
       </mat-menu>
 
 
-      <mat-select [disabled]="isRefreshing" (selectionChange)="refresh()" placeholder="Endpoint" name="item"
+      <mat-select [disabled]="isRefreshing" (selectionChange)="callRefresh()" placeholder="Endpoint" name="item"
         [(ngModel)]="filter.endpoints" [multiple]="allowMultipleEndpoints" style="width: 200px">
         <mat-option *ngFor="let ep of this.endpoints" [value]="ep">{{ ep }}</mat-option>
       </mat-select>
 
-      <mat-select *ngIf="allowMaxRowsSelection" [disabled]="isRefreshing" (selectionChange)="refresh()"
+      <mat-select *ngIf="allowMaxRowsSelection" [disabled]="isRefreshing" (selectionChange)="callRefresh()"
         [(ngModel)]="filter.topN" style="width: 100px; margin-left: 15px;" placeholder="Top (n)">
         <mat-option [value]="10">10</mat-option>
         <mat-option [value]="20">20</mat-option>

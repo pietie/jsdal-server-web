@@ -9,24 +9,65 @@ export class dataCollector {
 
   static topN(options: {
     topN: number,
-    fromDate: Date | moment.Moment,
-    toDate: Date | moment.Moment,
+    from: Date | moment.Moment,
+    to: Date | moment.Moment,
     endpoints: string | string[],
     type: number
   }) {
-    let from:moment.Moment = <any>options.fromDate;
-    let to:moment.Moment = <any>options.toDate;
+    let from: moment.Moment = <any>options.from;
+    let to: moment.Moment = <any>options.to;
     let ep = options.endpoints;
 
-    if (!moment.isMoment(from)) from = moment(from);
-    if (!moment.isMoment(to)) to = moment(to);
+    if (from && from.constructor.name != "Moment") from = moment(from);
+    if (to && to.constructor.name != "Moment") to = moment(to);
 
     if (options.endpoints instanceof Array) ep = options.endpoints.join(",");
 
     if (ep == undefined || ep == null) ep = "";
 
-    return L2.getJson(`/api/data-collector/topN?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&endpoints=${ep}&type=${options.type}`)
-      .then(r => r);
+    return L2.getJson(`/api/data-collector/topN?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&endpoints=${ep}&type=${options.type}`);
+
+  }
+
+  static topNAllStatsList(options: {
+    topN: number,
+    from: Date | moment.Moment,
+    to: Date | moment.Moment,
+    endpoints: string | string[]
+  }) {
+    let from: moment.Moment = <any>options.from;
+    let to: moment.Moment = <any>options.to;
+    let ep = options.endpoints;
+
+    if (from && from.constructor.name != "Moment") from = moment(from);
+    if (to && to.constructor.name != "Moment") to = moment(to);
+
+    if (options.endpoints instanceof Array) ep = options.endpoints.join(",");
+
+    if (ep == undefined || ep == null) ep = "";
+
+    return L2.getJson(`/api/data-collector/topN-list?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&endpoints=${ep}`);
+  }
+
+  static routineTotals(options: {
+    schema: string,
+    routine: string,
+    from: Date | moment.Moment,
+    to: Date | moment.Moment,
+    endpoints: string | string[]
+  }) {
+    let from: moment.Moment = <any>options.from;
+    let to: moment.Moment = <any>options.to;
+    let ep = options.endpoints;
+
+    if (from && from.constructor.name != "Moment") from = moment(from);
+    if (to && to.constructor.name != "Moment") to = moment(to);
+
+    if (options.endpoints instanceof Array) ep = options.endpoints.join(",");
+
+    if (ep == undefined || ep == null) ep = "";
+
+    return L2.getJson(`/api/data-collector/routine-totals?schema=${options.schema}&routine=${options.routine}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&endpoints=${ep}`);
   }
 
   static allEndpoints$: Promise<any>;
@@ -41,21 +82,23 @@ export class dataCollector {
         if (r.Data && !r.Message) {
           return r.Data.map(x => x.Endpoint);
         }
-
-
       });
 
     return dataCollector.allEndpoints$;
   }
 
-  ///api/data-collector/endpoints
 
   static getAllDataTmp() {
-    return L2.getJson(`/api/data-collector`).then(r => r);
+    return L2.getJson(`/api/data-collector`);
   }
 
-  static getSampleData(): Promise<{ Bracket: number, AvgDurationInMS: number, Routine: string }[]> {
-    return <any>L2.getJson(`/api/data-collector/test-data`);
+  static fetchStats() {
+    return L2.getJson(`/api/data-collector/stats/agg`);
   }
+
+  static purge(options: { daysOld: number }) {
+    return L2.postJson(`/api/data-collector/purg?daysOld=${options.daysOld}`);
+  }
+
 
 }

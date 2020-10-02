@@ -1,22 +1,49 @@
 <mat-card>
+  <mat-card-header>
+    <mat-card-title>History cleanup</mat-card-title>
+    <mat-card-subtitle>Purge old execution aggregate history records</mat-card-subtitle>
+  </mat-card-header>
   <mat-card-content>
 
+    <button (click)="fetchAggStats()" mat-button color="primary">Fetch stats</button>
 
-    Tabs/Buttons to select different type of stats..or button click brings up new 'widget'/card so we can view/browse
-    multiple at time
+    {{ aggStats | json}}
+
+    <hr/>
+
+    <div style="display: flex;align-items: center; width: 200px">
+
+      <mat-form-field>
+        <mat-label>Days old</mat-label>
+      <mat-select #daysOldCbo placeholder="(Select value)" name="item">
+
+        <mat-option [value]="1">1</mat-option>
+        <mat-option [value]="3">3</mat-option>
+        <mat-option [value]="7">7</mat-option>
+        <mat-option [value]="14">14</mat-option>
+        <mat-option [value]="21">21</mat-option>
+        <mat-option [value]="30">30</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    </div>
+
 
   </mat-card-content>
   <mat-card-actions>
-
+    <button [disabled]="!daysOldCbo.value" (click)="purge(daysOldCbo.value)" mat-raised-button color="warn">
+      <mat-icon>delete</mat-icon>Delete
+    </button>
   </mat-card-actions>
 </mat-card>
 
+<hr />
 
+<l2-chart-card #topNchart datasetLabel="??" type="bar" [legend]="false" (refresh)="refreshTopN($event, topNchart)"
+  [width]="'800px'">
 
-<l2-chart-card #chart datasetLabel="??" type="bar" [legend]="false">
-
-  <mat-button-toggle-group #chartResourceTypeGroup="matButtonToggleGroup" [(ngModel)]="chart.resourceType"
-    (change)="chart.datasetLabel = getButtonText(chartResourceTypeGroup.selected['buttonId'])">
+  <mat-button-toggle-group #chartResourceTypeGroup="matButtonToggleGroup" [(ngModel)]="topN.resourceType"
+    (change)="topNchart.datasetLabel = getButtonText(chartResourceTypeGroup.selected['buttonId'])">
     <mat-button-toggle value="1">Executions</mat-button-toggle>
     <mat-button-toggle value="2">Avg Duration (ms)</mat-button-toggle>
     <mat-button-toggle value="3">Avg Network server time (ms)</mat-button-toggle>
@@ -27,8 +54,98 @@
 </l2-chart-card>
 
 
-<h3>Server performance</h3>
 
-<l2-chart-card type="line" [allowMaxRowsSelection]="false" [resourceType]="500" >
+<l2-chart-card #serverPerfChart type="line" [allowMaxRowsSelection]="false" [title]="'Server performance'"
+  (refresh)="refreshServerPerformance($event, serverPerfChart)" [width]="'800px'">
+
+</l2-chart-card>
+
+
+<l2-chart-card #topNAllList type="line" [allowMaxRowsSelection]="true" [title]="'All stats'"
+  (refresh)="refreshAllStatsList($event, topNAllList)" [width]="'1200px'">
+
+
+  <table mat-table #table [dataSource]="topNAllListData" matSort>
+    <ng-container matColumnDef="Routine">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Routine</th>
+      <td mat-cell *matCellDef="let row"> {{row.Routine}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="TotalExecutions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total executions</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalExecutions}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="TotalDurationInMins">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total duration (mins)</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalDurationInMins}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="TotalMBReceived">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total MBs</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalMBReceived}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="AvgDurationInMS">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg duration (ms)</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgDurationInMS}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="AvgKBReceived">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg KB</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgKBReceived}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="AvgSumNetworkServerTimeInMS">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg network time (ms)</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgSumNetworkServerTimeInMS}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="TotalExceptions">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total exceptions</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalExceptions}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="TotalNetworkServerTimeInMins">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total network time (mins)</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalNetworkServerTimeInMins}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="TotalTimeouts">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Total timeouts</th>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalTimeouts}} </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="4">No data matching the filter</td>
+    </tr>
+  </table>
+
+</l2-chart-card>
+
+
+
+<l2-chart-card #routineChart type="line" [allowMaxRowsSelection]="false"
+  [title]="(specificRoutine && specificRoutine.schema && specificRoutine.routine)? (specificRoutine?.schema + '.' + specificRoutine?.routine) : '(routine not set)'"
+  (refresh)="refreshRoutineSpecific($event, routineChart)" [width]="'800px'">
+
+  <div>
+    <mat-form-field>
+      <mat-label>Schema</mat-label>
+      <input #s matInput placeholder="Schema" value="dbo" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Routine</mat-label>
+      <input #r matInput placeholder="Routine" autocomplete="off">
+    </mat-form-field>
+
+    <button mat-button color="primary"
+      (click)="specificRoutine = { schema: s.value, routine: r.value};routineChart.callRefresh();">GO</button>
+  </div>
 
 </l2-chart-card>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FromToDatetimeDialogComponent } from '../from-to-datetime.dialog/from-to-datetime.dialog.component';
 import * as moment from 'moment';
@@ -16,6 +16,8 @@ import { Label } from 'ng2-charts';
 })
 export class ChartCardComponent implements OnInit {
 
+  colorLookup = ["#003049", "#e63946", "#457b9d", "#1d3557", "#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#eae2b7", "#a0c4ff", "#bdb2ff", "#ffc6ff", "#fffffc", "#f77f00", "#fcbf49", "#d62828", "#a8dadc"];
+
 
   chartDataSets: ChartDataSets[] = [
     {
@@ -30,6 +32,7 @@ export class ChartCardComponent implements OnInit {
   chartLabels: string[] = [];
 
   chartOptions: ChartOptions = {
+    onClick: (a,b)=> { console.log(a,b); },
     responsive: true,
     scales: { xAxes: [{}], yAxes: [{}] },
     legend: { align: "center", fullWidth: true, position: "right", display: true },
@@ -41,6 +44,9 @@ export class ChartCardComponent implements OnInit {
     }
   };
 
+
+  @Input() title: string;
+  @Input() width: string = 'auto';
   @Input('type') chartType: ChartType = 'bar';
   @Input('legend') chartLegend = true;
   @Input() allowMaxRowsSelection: boolean = true;
@@ -51,38 +57,19 @@ export class ChartCardComponent implements OnInit {
   }
   @Input() set datasetLabel(value: string) {
     this._datasetLabel = value;
-
+    this.callRefresh();
     if (this.chartDataSets && this.chartDataSets.length > 0) {
       this.chartDataSets[0].label = value;
     }
-  }
-
-  _resourceType: number = 1;
-  get resourceType(): number {
-    return this._resourceType;
-  }
-  @Input() set resourceType(value: number) {
-    if (this._resourceType != value) {
-      this._resourceType = value;
-      this.refresh();
-    }
-
   }
 
   chartPlugins = [pluginDataLabels];
 
 
   @Input() allowMultipleEndpoints: boolean = false;
+  @Output() refresh: EventEmitter<filterType> = new EventEmitter();
 
-
-  filter: {
-    from?: Date | moment.Moment | any,
-    to?: Date | moment.Moment | any,
-    selectedDateType?: string,
-    selectedDateDesc?: string,
-    endpoints?: string | string[],
-    topN: number
-  } = { topN: 10 };
+  filter: filterType = { topN: 10 };
 
   endpoints: string[];
 
@@ -139,7 +126,7 @@ export class ChartCardComponent implements OnInit {
       throw `Unsupported selected date type: ${type}`;
     }
 
-    this.refresh();
+    this.callRefresh();
   }
 
   customClicked() {
@@ -153,43 +140,50 @@ export class ChartCardComponent implements OnInit {
         this.filter.from = ret.from;
         this.filter.to = ret.to;
 
-        this.refresh();
+        this.callRefresh();
       }
     })
   }
 
-  refresh() {
-    this.isRefreshing = true;
-    // TODO: Raise event. Data needs to be loaded and provided form outside of this control?
-    this.api.dataCollector
-      .topN({
-        topN: this.filter.topN,
-        fromDate: this.filter.from,
-        toDate: this.filter.to,
-        endpoints: this.filter.endpoints,
-        type: this._resourceType
 
-      })
-      .then(r => {
-        this.isRefreshing = false;
-        console.log("refresh-->", r);
-        if (this._resourceType == 500)
-        {
-          this.chartLabels = r.labels;
-          this.chartDataSets = r.datasets;
-          return;
-        }
 
-        this.chartDataSets[0].data = r.data;
-        this.chartLabels = r.labels;
-        //this.chartData = r;
+  setIsRefreshing(b: boolean) {
+    this.isRefreshing = b;
+  }
 
-      })
-      .catch(e => {
-        this.isRefreshing = false;
-        console.error(e);
-      });
+  updateResults(r: { labels: string[], datasets: any[] }) {
+    this.chartLabels = r.labels;
+
+    let colorIx = 0;
+
+    // assign colors to dataset
+    for (var e in r.datasets) {
+      r.datasets[e].borderColor = r.datasets[e].borderColor = r.datasets[e].backgroundColor = this.colorLookup[(++colorIx) % this.colorLookup.length];
+      r.datasets[e].pointBackgroundColor = r.datasets[e].borderColor;
+      r.datasets[e].fill = false;
+      r.datasets[e].lineTension = 0; // 0.3
+    }
+
+    this.chartDataSets = r.datasets;
+  }
+
+  callRefresh() {
+
+    //  this.isRefreshing = true;
+
+    if (this.refresh != null) {
+      this.refresh.emit(this.filter);
+    }
 
   }
 
 }
+
+declare type filterType = {
+  from?: Date | moment.Moment | any,
+  to?: Date | moment.Moment | any,
+  selectedDateType?: string,
+  selectedDateDesc?: string,
+  endpoints?: string | string[],
+  topN: number
+};
