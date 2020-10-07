@@ -78,7 +78,7 @@ export class RealTimePerformanceComponent implements OnInit {
 
   updateRealtimeRunningTimes() {
     this.cdr.markForCheck();
-    setTimeout(() => this.updateRealtimeRunningTimes(), 50);
+    setTimeout(() => this.updateRealtimeRunningTimes(), 350);
   }
 
   getRunningTime(row) {

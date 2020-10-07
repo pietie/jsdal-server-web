@@ -1,7 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { L2 } from 'l2-lib/L2';
 import { MsgDialog } from '~/dialogs';
 import { ApiService } from '~/services/api';
 
@@ -130,16 +131,33 @@ export class TopResourcesComponent implements OnInit {
   }
 
   aggStats;
-  async fetchAggStats() {
-    this.aggStats = await this.api.dataCollector.fetchStats();
+  fetchAggStats() {
+    this.api.dataCollector.fetchStats().then(r => this.aggStats = r)
   }
 
-  async purge(daysOld: number) {
-    let b = await MsgDialog.confirm(this.dialog, "Confirm action", "Are you sure you wish to purge the aggregate history?");
 
-    if (!b) return;
+  isPurging: boolean = false;
+  purge(daysOld: number) {
+    MsgDialog.confirm(this.dialog, "Confirm action", "Are you sure you wish to purge the aggregate history?").then(b => {
 
-    alert(daysOld);
+      if (!b) return;
+
+      this.isPurging = true;
+
+      this.api.dataCollector.purge({ daysOld: daysOld })
+        .then((cnt) => {
+          this.isPurging = false;
+          L2.success(`History purged ${cnt} record(s)`);
+          this.fetchAggStats();
+
+        }).catch(e => {
+          this.isPurging = false;
+          L2.handleException(e);
+        });
+
+    });
+
+
   }
 
 }

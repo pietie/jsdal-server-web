@@ -96,8 +96,8 @@ export class dataCollector {
     return L2.getJson(`/api/data-collector/stats/agg`);
   }
 
-  static purge(options: { daysOld: number }) {
-    return L2.postJson(`/api/data-collector/purg?daysOld=${options.daysOld}`);
+  static purge(options: { daysOld: number }): Promise<number> {
+    return L2.postJson(`/api/data-collector/purge?daysOld=${options.daysOld}`).then((r: any) => r);
   }
 
 

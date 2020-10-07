@@ -20,38 +20,38 @@ export class PerformanceComponent {
 
 
     constructor(public api: ApiService, public router: Router, public activatedRoute: ActivatedRoute) {
-        //this.refresh();
+
     }
 
     ngOnInit() {
-        this.api.app.endpoint.getFullEndpointList().then(r => {
+        // this.api.app.endpoint.getFullEndpointList().then(r => {
 
-            if (r) {
-                let done = {};
+        //     if (r) {
+        //         let done = {};
 
-                for (var i = 0;i<r.length;i++) {
-                    var ep = r[i];
-                    let all = `${ep.Project}/${ep.App}ALL`;
+        //         for (var i = 0;i<r.length;i++) {
+        //             var ep = r[i];
+        //             let all = `${ep.Project}/${ep.App}ALL`;
 
-                    if (!done[all]) {
-                        done[all] = true;
-                     
-                        r.splice(i, 0, { Project: ep.Project, App: ep.App, Endpoint: '(ALL)' });
-                        i++;
-                    }
-                }
-            }
+        //             if (!done[all]) {
+        //                 done[all] = true;
 
-            r.splice(0, 0, { Project: '(ALL)', App: '(ALL)', Endpoint: '(ALL)' });
-            //    r = [{ Project: '(ALL)', App: '(ALL)', Endpoint: '(ALL)' }, ...r];
+        //                 r.splice(i, 0, { Project: ep.Project, App: ep.App, Endpoint: '(ALL)' });
+        //                 i++;
+        //             }
+        //         }
+        //     }
 
-            this.selectedEndpointVal = null;
-            this.endpoints = r;
+        //     r.splice(0, 0, { Project: '(ALL)', App: '(ALL)', Endpoint: '(ALL)' });
+        //     //    r = [{ Project: '(ALL)', App: '(ALL)', Endpoint: '(ALL)' }, ...r];
 
-            if (this.project && this.app && this.endpoint) {
-                this.selectedEndpointVal = `${this.project}/${this.app}/${this.endpoint}`;
-            }
-        });
+        //     this.selectedEndpointVal = null;
+        //     this.endpoints = r;
+
+        //     if (this.project && this.app && this.endpoint) {
+        //         this.selectedEndpointVal = `${this.project}/${this.app}/${this.endpoint}`;
+        //     }
+        // });
     }
 
     ngOnDestroy() {
@@ -60,13 +60,13 @@ export class PerformanceComponent {
 
     onEndpointChanged(ep) {
         if (ep == null) return;
-        
+
         const queryParams: Params = { ep: ep };
         this.router.navigate(
-            [], 
+            [],
             {
               relativeTo: this.activatedRoute,
-              queryParams: queryParams, 
+              queryParams: queryParams,
               queryParamsHandling: "merge", // remove to replace all query params by provided
             });
     }
