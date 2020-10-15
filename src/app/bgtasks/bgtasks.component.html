@@ -2,6 +2,18 @@
 
 <button mat-raised-button (click)="clearExecutions()" color="warn">Clear Executions</button>
 
+<hr />
+
+<div *ngIf="results">
+
+  <pre>
+    Executions = {{ results.ExecutionCnt }}
+    Audits = {{ results.AuditCnt }}
+    Aggregates = {{ results.AggCnt }}
+
+</pre>
+
+</div>
 
 <hr />
 <h4>Audit</h4>
@@ -28,7 +40,7 @@
 </ng-container>
 
 
-<hr/>
+<hr />
 <h4>Executions</h4>
 <ng-container *ngIf="executionsData && executionsData.length > 0">
 

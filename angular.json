@@ -35,7 +35,6 @@
             "scripts": [
               "bower_components/moment/moment.js",
               "bower_components/humanize-duration/humanize-duration.js",
-              "bower_components/Sortable/Sortable.min.js",
               "node_modules/ace-builds/src-min/ace.js",
               "node_modules/ace-builds/src-min/mode-csharp.js",
               "node_modules/ace-builds/src-min/theme-merbivore_soft.js"

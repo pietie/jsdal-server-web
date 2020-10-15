@@ -32,8 +32,7 @@
       </div>
       <div *ngIf="statsData">
         <span class="field180">Threads / Handles</span>
-        <span class="value"><span
-            title="Main process thread count">{{ statsData.ProcessThreadCount }}</span> / <span
+        <span class="value"><span title="Main process thread count">{{ statsData.ProcessThreadCount }}</span> / <span
             title="Main process open handle count">{{ statsData.HandleCount }}</span></span>
       </div>
       <div *ngIf="statsData">
@@ -98,7 +97,8 @@
                 <tr *ngFor="let counterKV of clrCounters[kv.key] | keyvalue">
                   <td class="icon">
 
-                      <mat-icon *ngIf="knownCounters[kv.key] && knownCounters[kv.key][counterKV.key]" title="{{ knownCounters[kv.key][counterKV.key]?.Description }}">info</mat-icon>
+                    <mat-icon *ngIf="knownCounters[kv.key] && knownCounters[kv.key][counterKV.key]"
+                      title="{{ knownCounters[kv.key][counterKV.key]?.Description }}">info</mat-icon>
 
                   </td>
                   <td>
@@ -182,6 +182,8 @@
     <button color="primary" mat-button [routerLink]="['/exceptions']">VIEW EXCEPTIONS</button>
 
     <button color="primary" mat-button [routerLink]="['/performance/routine-list']">PERFORMANCE (ROUTINE LIST)</button>
+
+    <button color="primary" mat-button [routerLink]="['/health']">HEALTH</button>
 
 
   </mat-card-content>

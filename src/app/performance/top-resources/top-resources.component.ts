@@ -160,4 +160,17 @@ export class TopResourcesComponent implements OnInit {
 
   }
 
+  dataCollectorThreadStatus: any;
+  getThreadStatus() {
+    this.api.dataCollector.getThreadStatus().then(r => this.dataCollectorThreadStatus = r);
+  }
+
+  startDataCollectorThread() {
+    this.api.dataCollector.restartThread().then(r => this.getThreadStatus());
+  }
+
+  stopDataCollectorThread() {
+    this.api.dataCollector.stopThread().then(r => this.getThreadStatus());
+  }
+
 }

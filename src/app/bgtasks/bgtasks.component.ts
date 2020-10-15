@@ -14,7 +14,8 @@ export class BgtasksComponent implements OnInit {
 
   executionsData: any;
   aggData: any;
-  audit:any;
+  audit: any;
+  results: any;
 
   ngOnInit() {
     this.api.bgTasks.bgtasks.getAll().then(r => {
@@ -29,10 +30,11 @@ export class BgtasksComponent implements OnInit {
   refreshX() {
     this.api.dataCollector.getAllDataTmp().then((r: any) => {
 
-      console.log("AAL", r);
       this.executionsData = r.Executions;
       this.aggData = r.Agg;
       this.audit = r.Audit;
+
+      this.results = r;
     });
   }
 

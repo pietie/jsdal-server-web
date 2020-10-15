@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let row of workerList">
+                <tr *ngFor="let row of workerList" [class.notRunning]="!row.isRunning">
                     <td>
                         <button mat-button color="primary" [routerLink]='row.id'>{{ row.name }}</button>
                     </td>

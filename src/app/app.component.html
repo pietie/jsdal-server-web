@@ -1,148 +1,151 @@
 <mat-sidenav-container style="background-color: #F0EDE5" [class.main-app-disconnected]="isDisconnected">
-    <mat-sidenav id="main-sidenav" #side mode="push" opened="false" style="width:260px;" [fixedInViewport]="true" >
+  <mat-sidenav id="main-sidenav" #side mode="push" opened="false" style="width:260px;" [fixedInViewport]="true">
 
 
-        <mat-nav-list class="menu">
+    <mat-nav-list class="menu">
 
-            <h3 md-subheader>jsDAL Server</h3>
+      <h3 md-subheader>jsDAL Server</h3>
 
-            <mat-list-item (click)="side.close(); go('/')">
-                <div class="flex-vertical-center">
-                    <mat-icon>home</mat-icon>
-                    <div md-line>Main</div>
-                </div>
-            </mat-list-item>
-
-
-            <mat-list-item (click)="side.close(); go('projects')">
-                <div class="flex-vertical-center">
-                    <mat-icon>web</mat-icon>
-                    <div md-line>Projects</div>
-                </div>
-
-            </mat-list-item>
-
-            <mat-nav-list class="menu">
-                <div mat-list-item>Project 1</div>
-                <div mat-list-item>Project 2</div>
-            </mat-nav-list>
-
-            <mat-list-item (click)="side.close(); go('plugins')">
-                <div class="flex-vertical-center">
-                    <mat-icon>extension</mat-icon>
-                    <div md-line>Plugins</div>
-                </div>
-            </mat-list-item>
-
-            <mat-list-item (click)="side.close(); go('workers')">
-                <div class="flex-vertical-center">
-                    <mat-icon>group_work</mat-icon>
-                    <div md-line>Workers</div>
-                </div>
-            </mat-list-item>
-
-            <mat-list-item (click)="side.close(); go('bgtasks')">
-                <div class="flex-vertical-center">
-                    <mat-icon>work_outline</mat-icon>
-                    <div md-line>Background tasks</div>
-                </div>
-            </mat-list-item>
-
-            <mat-list-item (click)="side.close(); go('sessionlog')">
-                <div class="flex-vertical-center">
-                    <mat-icon>event_note</mat-icon>
-                    <div md-line>Session log</div>
-                </div>
-            </mat-list-item>
-
-            <mat-list-item (click)="side.close(); go('settings')">
-                <div class="flex-vertical-center">
-                    <mat-icon>settings_applications</mat-icon>
-                    <div md-line>Settings</div>
-                </div>
-            </mat-list-item>
-
-            <mat-list-item (click)="side.close(); go('performance')">
-                <div class="flex-vertical-center">
-                    <mat-icon>star</mat-icon>
-                    <div md-line>Performance</div>
-                </div>
-            </mat-list-item>
-
-            <mat-list-item (click)="side.close(); go('blobs')">
-              <div class="flex-vertical-center">
-                  <mat-icon>view_comfy</mat-icon>
-                  <div md-line>Blobs</div>
-              </div>
-          </mat-list-item>
-
-            <mat-list-item (click)="side.close(); go('exceptions')">
-                <div class="flex-vertical-center">
-                    <mat-icon>error_outline</mat-icon>
-                    <div md-line>Exceptions</div>
-                </div>
-            </mat-list-item>
+      <mat-list-item (click)="side.close(); go('/')">
+        <div class="flex-vertical-center">
+          <mat-icon>home</mat-icon>
+          <div md-line>Main</div>
+        </div>
+      </mat-list-item>
 
 
-            <mat-list-item (click)="side.close(); go('exec-test')">
-                <div class="flex-vertical-center">
-                    <mat-icon>directions_run</mat-icon>
-                    <div md-line>Exec tester</div>
-                </div>
-            </mat-list-item>
-
-
-        </mat-nav-list>
-
-
-
-    </mat-sidenav>
-
-    <div class="main-content">
-
-        <mat-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary">
-            <mat-icon class="menu-icon" (click)="side.open();" style="margin-right:10px;">menu</mat-icon>
-            <span (click)="side.toggle()" style="cursor: pointer">jsDAL Server</span>
-
-            <div style="flex: 1 1;display:flex;justify-content: flex-end">
-                <div [matMenuTriggerFor]="appMenu" class="avatar">P</div>
-            </div>
-        </mat-toolbar>
-
-
-        <div id="app-content" [class.login]="router.url == '/login'">
-            <router-outlet></router-outlet>
+      <mat-list-item (click)="side.close(); go('projects')">
+        <div class="flex-vertical-center">
+          <mat-icon>web</mat-icon>
+          <div md-line>Projects</div>
         </div>
 
+      </mat-list-item>
+
+
+      <mat-list-item (click)="side.close(); go('plugins')">
+        <div class="flex-vertical-center">
+          <mat-icon>extension</mat-icon>
+          <div md-line>Plugins</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('workers')">
+        <div class="flex-vertical-center">
+          <mat-icon>group_work</mat-icon>
+          <div md-line>Workers</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('bgtasks')">
+        <div class="flex-vertical-center">
+          <mat-icon>work_outline</mat-icon>
+          <div md-line>Background tasks</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('sessionlog')">
+        <div class="flex-vertical-center">
+          <mat-icon>event_note</mat-icon>
+          <div md-line>Session log</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('settings')">
+        <div class="flex-vertical-center">
+          <mat-icon>settings_applications</mat-icon>
+          <div md-line>Settings</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('performance')">
+        <div class="flex-vertical-center">
+          <mat-icon>star</mat-icon>
+          <div md-line>Performance</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('health')">
+        <div class="flex-vertical-center">
+          <mat-icon>spa</mat-icon>
+          <div md-line>Health</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('blobs')">
+        <div class="flex-vertical-center">
+          <mat-icon>view_comfy</mat-icon>
+          <div md-line>Blobs</div>
+        </div>
+      </mat-list-item>
+
+      <mat-list-item (click)="side.close(); go('exceptions')">
+        <div class="flex-vertical-center">
+          <mat-icon>error_outline</mat-icon>
+          <div md-line>Exceptions</div>
+        </div>
+      </mat-list-item>
+
+
+      <mat-list-item (click)="side.close(); go('exec-test')">
+        <div class="flex-vertical-center">
+          <mat-icon>directions_run</mat-icon>
+          <div md-line>Exec tester</div>
+        </div>
+      </mat-list-item>
+
+
+    </mat-nav-list>
+
+
+
+  </mat-sidenav>
+
+  <div class="main-content">
+
+    <mat-toolbar *ngIf="this.accountService.isLoggedIn && this.router.url != '/login'" color="primary">
+      <mat-icon class="menu-icon" (click)="side.open();" style="margin-right:10px;">menu</mat-icon>
+      <span (click)="side.toggle()" style="cursor: pointer">jsDAL Server</span>
+
+      <div style="flex: 1 1;display:flex;justify-content: flex-end">
+        <div [matMenuTriggerFor]="appMenu" class="avatar">P</div>
+      </div>
+    </mat-toolbar>
+
+
+    <div id="app-content" [class.login]="router.url == '/login'">
+      <router-outlet></router-outlet>
     </div>
 
-    <mat-menu #appMenu="matMenu">
-        <button [routerLink]="['./settings']" mat-menu-item>
-            <div class="flex-vertical-center">
-                <mat-icon>settings_applications</mat-icon>
-                <span>Settings</span>
-            </div>
-        </button>
-        <button [routerLink]="['./login']" [queryParams]='{logout:true}' mat-menu-item>
-            <div class="flex-vertical-center">
-                <mat-icon>exit_to_app</mat-icon>
-                <span>Logout</span>
-            </div>
-        </button>
+  </div>
 
-    </mat-menu>
+  <mat-menu #appMenu="matMenu">
+    <button [routerLink]="['./settings']" mat-menu-item>
+      <div class="flex-vertical-center">
+        <mat-icon>settings_applications</mat-icon>
+        <span>Settings</span>
+      </div>
+    </button>
+    <button [routerLink]="['./login']" [queryParams]='{logout:true}' mat-menu-item>
+      <div class="flex-vertical-center">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </div>
+    </button>
+
+  </mat-menu>
 
 
 </mat-sidenav-container>
 
 <div class="disconnected-dlg" *ngIf="isDisconnected">
-    <div class="icon">
-            <mat-icon>error</mat-icon>
-    </div>
-    <p>
-        Connection to jsDAL server lost. Make sure you have a working network connection and try again.
-    </p>
-    <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
+  <div class="icon">
+    <mat-icon>error</mat-icon>
+  </div>
+  <p>
+    Connection to jsDAL server lost. Make sure you have a working network connection and try again.
+  </p>
+  <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
 </div>
 <!--
     <div class="disconnected-container">

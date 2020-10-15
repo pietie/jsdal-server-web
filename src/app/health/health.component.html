@@ -1,0 +1,74 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <div class="flex-vertical-center h4">
+        <mat-icon>spa</mat-icon>jsDAL Server Health
+      </div>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+    <button mat-button color="primary" (click)="getThreadStatus()">Get Thread Status</button>
+
+    {{ threadStatus | json }}
+
+    <hr />
+
+    <button mat-button color="primary" (click)="startThread()">START</button>
+    <button mat-button color="warn" (click)="stopThread()">STOP</button>
+
+
+
+    <hr />
+
+
+  </mat-card-content>
+  <mat-card-actions>
+
+  </mat-card-actions>
+</mat-card>
+
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Most recent</mat-card-title>
+  </mat-card-header>
+  <mat-card-content *ngIf="latest">
+
+    <div><span class="field" style="width:200px;display:inline-block">Created:</span> {{ latest.Created | date:'dd MMM yyyy, HH:mm' }}</div>
+    <div><span class="field" style="width:200px;display:inline-block">Working set:</span> {{ latest.WorkingSet64 / 1024.0 / 1024.0 | number:'1.2-2' }}MB</div>
+    <div><span class="field" style="width:200px;display:inline-block">Private:</span> {{ latest.PrivateMemorySize64 / 1024.0 / 1024.0 | number:'1.2-2' }}MB</div>
+    <div><span class="field" style="width:200px;display:inline-block">Time to calc sizes:</span> {{ latest.TimeToCalculateSizesInMS | number }}ms</div>
+    <div><span class="field" style="width:200px;display:inline-block">Blob:</span> {{ latest.BlobStats | json }}</div>
+
+<br/>
+    <ng-container *ngFor="let ep of latest.EndpointStats">
+      <div><span class="field" style="width:200px;display:inline-block">{{ ep.Endpoint }}:</span>
+
+        <div style="display: inline-block;">
+
+          <div style="display:inline-block;margin-left:10px;margin-right:10px;"><span class="field"
+              style="display: inline-block;width:60px;">Cnt:</span> <span
+              style="display:inline-block;width:80px;">{{ ep.CachedRoutinesCount }}</span></div>
+          <div style="display:inline-block;margin-left:10px;margin-right:10px;"><span class="field">Size:</span>
+            {{ ep.CachedRoutinesSizeInBytes / 1024.0 / 1024.0 | number:'1.2-2' }}MB</div>
+
+        </div>
+
+      </div>
+    </ng-container>
+
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button color="primary" (click)="getLatest()">REFRESH</button>
+  </mat-card-actions>
+</mat-card>
+
+
+
+
+<l2-chart-card #chart type="line" [allowMaxRowsSelection]="false" [title]="'Health'"
+  (refresh)="refreshChart($event, chart)" [width]="'1200px'" [allowEndpointSelection]="false">
+
+</l2-chart-card>

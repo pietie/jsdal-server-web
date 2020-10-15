@@ -54,7 +54,7 @@
       </mat-menu>
 
 
-      <mat-select [disabled]="isRefreshing" (selectionChange)="callRefresh()" placeholder="Endpoint" name="item"
+      <mat-select *ngIf="allowEndpointSelection" [disabled]="isRefreshing" (selectionChange)="callRefresh()" placeholder="Endpoint" name="item"
         [(ngModel)]="filter.endpoints" [multiple]="allowMultipleEndpoints" style="width: 200px">
         <mat-option *ngFor="let ep of this.endpoints" [value]="ep">{{ ep }}</mat-option>
       </mat-select>

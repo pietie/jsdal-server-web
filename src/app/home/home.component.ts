@@ -67,7 +67,7 @@ export class HomeComponent {
     try {
       this.hubConnection = new HubConnectionBuilder()
         .configureLogging(LogLevel.Debug)
-        .withUrl(this.api + '/main-stats')
+        .withUrl(this.api.apiBaseUrl + '/main-stats')
         .build();
 
       this.hubConnection

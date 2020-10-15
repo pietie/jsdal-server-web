@@ -25,6 +25,7 @@ import { ManageBackgroundThreadComponent } from './plugins/tabs/background-threa
 import { AddEditPluginComponent } from './plugins/add-edit-plugin/add-edit-plugin.component';
 import { BlobViewerComponent } from './blob-viewer/blob-viewer.component';
 import { JsdalConfigLoadedGuard } from './guards/jsdal-config-loaded.guard';
+import { HealthComponent } from './health/health.component';
 
 
 export const appRoutes: Routes = [
@@ -70,6 +71,7 @@ export const appRoutes: Routes = [
         ]
       },
       { path: 'bgtasks', component: BgtasksComponent, canActivate: [LoggedInGuard] },
+      { path: 'health', component: HealthComponent, canActivate: [LoggedInGuard] },
       { path: 'blobs', component: BlobViewerComponent, canActivate: [LoggedInGuard] },
       { path: 'plugins', component: PluginsComponent, canActivate: [LoggedInGuard] },
       { path: 'plugins/edit', component: AddEditPluginComponent, canActivate: [LoggedInGuard] },

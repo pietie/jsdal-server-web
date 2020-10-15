@@ -342,10 +342,7 @@ a.disabled, button.disabled, input.disabled {
     cursor: default;
     color: gray;
 }
-/*.select2-container {
-              width: 100% !important;
-              padding: 0;
-          }*/
+
 
 .databaseSourceCboItem {
     padding: 5px;
@@ -424,8 +421,8 @@ tr.thread.stopped {
         height: 54px;
     }
 
-    
-    
+
+
 table.grid-transposed tr:nth-child(even)
 {
     background-color: #FDFFF2;
@@ -433,7 +430,7 @@ table.grid-transposed tr:nth-child(even)
 
 table.grid-transposed tr:nth-child(odd)
 {
-    background-color: #FCFFF7;    
+    background-color: #FCFFF7;
 }
 
     table.grid-transposed tbody tr:hover{
@@ -476,11 +473,11 @@ table.grid tr:nth-child(even)
 
 table.grid tr:nth-child(odd)
 {
-    background-color: #F7F7FF;    
+    background-color: #F7F7FF;
 }
 table.grid tbody tr:hover
 {
-    background-color: #E6E8F4;    
+    background-color: #E6E8F4;
 }
 table.grid tbody tr td
 {

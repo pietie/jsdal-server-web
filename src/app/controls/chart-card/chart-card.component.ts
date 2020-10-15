@@ -16,7 +16,7 @@ import { Label } from 'ng2-charts';
 })
 export class ChartCardComponent implements OnInit {
 
-  colorLookup = ["#003049", "#e63946", "#457b9d", "#1d3557", "#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#eae2b7", "#a0c4ff", "#bdb2ff", "#ffc6ff", "#fffffc", "#f77f00", "#fcbf49", "#d62828", "#a8dadc"];
+  colorLookup = ["#003049", "#e63946", "#457b9d", "#1d3557", "#ffadad", "#ffd6a5", "#98E086", "#caffbf", "#9bf6ff", "#eae2b7", "#a0c4ff", "#bdb2ff", "#ffc6ff", "#fffffc", "#f77f00", "#fcbf49", "#d62828", "#a8dadc"];
 
 
   chartDataSets: ChartDataSets[] = [
@@ -32,7 +32,7 @@ export class ChartCardComponent implements OnInit {
   chartLabels: string[] = [];
 
   chartOptions: ChartOptions = {
-    onClick: (a,b)=> { console.log(a,b); },
+    onClick: (a, b) => { console.log(a, b); },
     responsive: true,
     scales: { xAxes: [{}], yAxes: [{}] },
     legend: { align: "center", fullWidth: true, position: "right", display: true },
@@ -50,6 +50,7 @@ export class ChartCardComponent implements OnInit {
   @Input('type') chartType: ChartType = 'bar';
   @Input('legend') chartLegend = true;
   @Input() allowMaxRowsSelection: boolean = true;
+  @Input() allowEndpointSelection: boolean = true;
 
   _datasetLabel: string;
   get datasetLabel(): string {

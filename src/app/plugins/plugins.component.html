@@ -1,43 +1,89 @@
 <mat-card>
-    <mat-card-content>
-        
-        <button mat-raised-button color="primary" [routerLink]="['/plugins/edit']"><mat-icon>add_circle</mat-icon> NEW PLUGIN</button>
-        <br/>
-        <mat-tab-group dynamicHeight="true">
+  <mat-card-content>
 
-            <mat-tab label="Execution plugins">
-                <p>
-                    These plugins tie in with the routine execution model. You can hook into and override certain parts
-                    of this process.
-                </p>
-                CRUD
-            </mat-tab>
-            <mat-tab label="Background threads">
-                <background-threads-tab></background-threads-tab>
+    <button mat-raised-button color="primary" [routerLink]="['/plugins/edit']">
+      <mat-icon>add_circle</mat-icon> NEW PLUGIN
+    </button>
+    <br />
+    <mat-tab-group dynamicHeight="true">
 
-            </mat-tab>
-            <mat-tab label="Server methods">
-                <server-methods-tab></server-methods-tab>
-            </mat-tab>
-            <mat-tab label="Diagnostics">
-                <p>
-                    TODO: Dump some diagnostic info of all types currently loaded. The type of plugins and anything else interesting....
-                </p>
-            </mat-tab>
-        </mat-tab-group>
+      <mat-tab label="Execution plugins">
+        <p>
+          These plugins tie in with the routine execution model. You can hook into and override certain parts
+          of this process.
+        </p>
+        CRUD
+      </mat-tab>
+      <mat-tab label="Background threads">
+        <background-threads-tab></background-threads-tab>
+
+      </mat-tab>
+      <mat-tab label="Server methods">
+        <server-methods-tab></server-methods-tab>
+      </mat-tab>
+      <mat-tab label="Diagnostics">
+
+        <table class="grid">
+          <thead>
+            <tr>
+              <th>Assembly</th>
+              <th>Inline?</th>
+              <th>Plugins</th>
+              <th>InlineEntryId</th>
+              <th>InstanceId</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let asm of diagnostics">
+              <td>{{ asm.FullName }}</td>
+              <td>{{ asm.IsInline }}</td>
+              <td>
 
 
-        <br />
-        <br />
-        <br />
-        <button [disabled]="!hasChangesToCompile" (click)="testCompile()" color="warn" mat-raised-button>TEST
-            COMPILE</button>
-        <br />
-        <br />
-        <br />
+                <table class="grid">
+                  <colgroup>
+                    <col width="120px;">
+                    <col width="200px">
+                    <col>
 
-        <textarea readonly="readonly" rows="10" style="width:100%;background-color:silver;">
+                  </colgroup>
+                  <tbody>
+                    <tr *ngFor="let p of asm.Plugins" [title]="p.Guid">
+
+                      <td>{{ p.Type }}</td>
+                      <td>{{ p.Name }}</td>
+                      <td>{{ p.Description }}</td>
+
+
+                    </tr>
+                  </tbody>
+                </table>
+
+
+              </td>
+              <td>{{ asm.InlineEntryId }}</td>
+              <td>{{ asm.InstanceId }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+
+      </mat-tab>
+    </mat-tab-group>
+
+
+    <br />
+    <br />
+    <br />
+    <button [disabled]="!hasChangesToCompile" (click)="testCompile()" color="warn" mat-raised-button>TEST
+      COMPILE</button>
+    <br />
+    <br />
+    <br />
+
+    <textarea readonly="readonly" rows="10" style="width:100%;background-color:silver;">
                     {{ this.compilerOutput | json }}
                 </textarea>
-    </mat-card-content>
+  </mat-card-content>
 </mat-card>

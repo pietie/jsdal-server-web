@@ -47,6 +47,8 @@ import { LogGrid } from '../controls/log-grid.component';
 
 import { MsgDialog, PromptDialog } from '~/dialogs'
 import { MomentFromNowPipe } from '~/pipes/moment-from.pipe';
+import { ChartCardComponent } from '~/controls/chart-card/chart-card.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   imports: [CommonModule, FormsModule, BrowserAnimationsModule, MatAutocompleteModule,
@@ -81,10 +83,11 @@ import { MomentFromNowPipe } from '~/pipes/moment-from.pipe';
     MatTooltipModule,
     MatStepperModule,
     MatBottomSheetModule,
-    MatBadgeModule
+    MatBadgeModule,
+    ChartsModule
   ],
-  declarations: [IsoDatePipe, FromEpochPipe, LogGrid, MsgDialog, PromptDialog, MomentFromNowPipe],
-  exports: [IsoDatePipe, FromEpochPipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule, MatAutocompleteModule,
+  declarations: [IsoDatePipe, FromEpochPipe, LogGrid, MsgDialog, PromptDialog, MomentFromNowPipe, ChartCardComponent],
+  exports: [ChartCardComponent, ChartsModule, IsoDatePipe, FromEpochPipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule, MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -117,7 +120,7 @@ import { MomentFromNowPipe } from '~/pipes/moment-from.pipe';
     MatStepperModule,
     MatBottomSheetModule,
     MatBadgeModule,
-    MomentFromNowPipe
+    MomentFromNowPipe,
   ],
   entryComponents: [MsgDialog, PromptDialog]
 

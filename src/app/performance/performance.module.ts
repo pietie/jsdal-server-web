@@ -12,7 +12,7 @@ import { TopResourcesComponent } from './top-resources/top-resources.component';
 import { RoutineListComponent } from './routine-list/routine-list.component'
 
 import { ChartsModule } from 'ng2-charts';
-import { ChartCardComponent } from '~/controls/chart-card/chart-card.component';
+
 import { FromToDatetimeDialogComponent } from '~/controls/from-to-datetime.dialog/from-to-datetime.dialog.component';
 
 
@@ -24,10 +24,10 @@ import { FromToDatetimeDialogComponent } from '~/controls/from-to-datetime.dialo
     RealTimePerformanceComponent,
     TopResourcesComponent,
     RoutineListComponent,
-    ChartCardComponent,
+
     FromToDatetimeDialogComponent
   ],
-  imports: [SharedModule, ChartsModule, performanceRouting]
+  imports: [SharedModule, performanceRouting]
 
 })
 export class PerformanceModule { }

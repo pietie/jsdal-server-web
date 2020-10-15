@@ -5,7 +5,8 @@ import { ApiService } from '~/services/api';
 
 
 @Component({
-  templateUrl: './workers.component.html'
+  templateUrl: './workers.component.html',
+  styles: [`tr.notRunning  { color:red; font-style: italic }`]
 })
 export class WorkersComponent {
   public workerList: any[];
@@ -32,7 +33,10 @@ export class WorkersComponent {
         });
 
         this.hubConnection.invoke("Init").then(r => {
-          this.workerList = r;
+
+          // sort by IsRunning, Name
+          //this.workerList = r.sort((a, b) => a.isRunning ? -1 : 1).sort((a, b) => { ('' + a.name).localeCompare(b.name) });
+          this.workerList = r.sort((a, b) => { ('' + a.name).localeCompare(b.name) });
         });
       });
   }

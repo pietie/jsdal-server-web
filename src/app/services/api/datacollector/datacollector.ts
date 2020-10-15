@@ -100,5 +100,17 @@ export class dataCollector {
     return L2.postJson(`/api/data-collector/purge?daysOld=${options.daysOld}`).then((r: any) => r);
   }
 
+  static restartThread(): Promise<any> {
+    return L2.postJson(`/api/data-collector/start`).then((r: any) => r);
+  }
+
+  static stopThread(): Promise<any> {
+    return L2.postJson(`/api/data-collector/stop`).then((r: any) => r);
+  }
+
+  static getThreadStatus(): Promise<any> {
+    return L2.getJson(`/api/data-collector/thread-status`);
+  }
+
 
 }
