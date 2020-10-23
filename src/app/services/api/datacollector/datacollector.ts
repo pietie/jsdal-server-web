@@ -21,11 +21,14 @@ export class dataCollector {
     if (from && from.constructor.name != "Moment") from = moment(from);
     if (to && to.constructor.name != "Moment") to = moment(to);
 
-    if (options.endpoints instanceof Array) ep = options.endpoints.join(",");
+    let endpointsQS = "";
 
-    if (ep == undefined || ep == null) ep = "";
+    if (options.endpoints == null || options.endpoints == undefined) options.endpoints = [];
+    if (!(options.endpoints instanceof Array)) options.endpoints = [options.endpoints];
 
-    return L2.getJson(`/api/data-collector/topN?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&endpoints=${ep}&type=${options.type}`);
+    endpointsQS = options.endpoints.map(ep => `endpoints=${ep}`).join("&");
+
+    return L2.getJson(`/api/data-collector/topN?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}&type=${options.type}`);
 
   }
 
@@ -42,11 +45,14 @@ export class dataCollector {
     if (from && from.constructor.name != "Moment") from = moment(from);
     if (to && to.constructor.name != "Moment") to = moment(to);
 
-    if (options.endpoints instanceof Array) ep = options.endpoints.join(",");
+    let endpointsQS = "";
 
-    if (ep == undefined || ep == null) ep = "";
+    if (options.endpoints == null || options.endpoints == undefined) options.endpoints = [];
+    if (!(options.endpoints instanceof Array)) options.endpoints = [options.endpoints];
 
-    return L2.getJson(`/api/data-collector/topN-list?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&endpoints=${ep}`);
+    endpointsQS = options.endpoints.map(ep => `endpoints=${ep}`).join("&");
+
+    return L2.getJson(`/api/data-collector/topN-list?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}`);
   }
 
   static routineTotals(options: {
@@ -63,11 +69,14 @@ export class dataCollector {
     if (from && from.constructor.name != "Moment") from = moment(from);
     if (to && to.constructor.name != "Moment") to = moment(to);
 
-    if (options.endpoints instanceof Array) ep = options.endpoints.join(",");
+    let endpointsQS = "";
 
-    if (ep == undefined || ep == null) ep = "";
+    if (options.endpoints == null || options.endpoints == undefined) options.endpoints = [];
+    if (!(options.endpoints instanceof Array)) options.endpoints = [options.endpoints];
 
-    return L2.getJson(`/api/data-collector/routine-totals?schema=${options.schema}&routine=${options.routine}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&endpoints=${ep}`);
+    endpointsQS = options.endpoints.map(ep => `endpoints=${ep}`).join("&");
+
+    return L2.getJson(`/api/data-collector/routine-totals?schema=${options.schema}&routine=${options.routine}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}`);
   }
 
   static allEndpoints$: Promise<any>;

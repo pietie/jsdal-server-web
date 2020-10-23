@@ -8,7 +8,7 @@ export class blobs {
   }
 
   static getTopN(topN: number = 20) {
-    return L2.fetchJson(`/api/blob?top=${top}`).then((r: any) => <BlobData[]>r.Data);
+    return L2.fetchJson(`/api/blob?top=${topN}`).then((r: any) => <BlobData[]>r.Data);
   }
 
   static getByRef(blobRef: string) {

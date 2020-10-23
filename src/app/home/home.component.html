@@ -24,26 +24,108 @@
         <span class="value"> {{ statsData.Performance.PrivateMemorySize / 1024.0 / 1024.0 | number:'1.2-2' }} MB
         </span>
       </div>
-      <div *ngIf="statsData">
-        <span class="field180" title="Worker / AsyncIO">Threads available</span>
-        <span class="value"><span
-            title="Number of worker threads available">{{ statsData.WorkerThreadsAvailable }}</span> / <span
-            title="Number of Async IO threads available">{{ statsData.AsyncIOThreadsAvailable }}</span></span>
-      </div>
-      <div *ngIf="statsData">
-        <span class="field180">Threads / Handles</span>
-        <span class="value"><span title="Main process thread count">{{ statsData.ProcessThreadCount }}</span> / <span
-            title="Main process open handle count">{{ statsData.HandleCount }}</span></span>
-      </div>
-      <div *ngIf="statsData">
-        <span class="field180" title="Refers to number of jsDAL client file watchers">Active sub watchers</span>
-        <span class="value"> {{ statsData.ActiveSubWatchersCount }} </span>
-      </div>
 
-      <div *ngIf="statsData">
-        <span class="field180">Processors</span>
-        <span class="value"> {{ statsData.ProcessorCount }} </span>
-      </div>
+      <mat-accordion style="margin-top:12px;">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Additional detail
+            </mat-panel-title>
+
+          </mat-expansion-panel-header>
+
+
+
+          <div *ngIf="statsData">
+            <span class="field180" title="Worker / AsyncIO">Threads available</span>
+            <span class="value"><span
+                title="Number of worker threads available">{{ statsData.WorkerThreadsAvailable }}</span> / <span
+                title="Number of Async IO threads available">{{ statsData.AsyncIOThreadsAvailable }}</span></span>
+          </div>
+          <div *ngIf="statsData">
+            <span class="field180">Threads / Handles</span>
+            <span class="value"><span title="Main process thread count">{{ statsData.ProcessThreadCount }}</span> /
+              <span title="Main process open handle count">{{ statsData.HandleCount }}</span></span>
+          </div>
+          <div *ngIf="statsData">
+            <span class="field180" title="Refers to number of jsDAL client file watchers">Active sub watchers</span>
+            <span class="value"> {{ statsData.ActiveSubWatchersCount }} </span>
+          </div>
+
+          <div *ngIf="statsData">
+            <span class="field180">Processors</span>
+            <span class="value"> {{ statsData.ProcessorCount }} </span>
+          </div>
+
+
+        </mat-expansion-panel>
+
+
+        <mat-expansion-panel *ngIf="statsData?.GCDetail">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Garbarge collector
+            </mat-panel-title>
+
+          </mat-expansion-panel-header>
+
+          <div>
+            <span class="field240">IsServerGC</span>
+            <span class="value">{{ statsData.GCDetail.Settings?.IsServerGC  }}</span>
+          </div>
+          <div>
+            <span class="field240">LargeObjectHeapCompactionMode</span>
+            <span class="value">{{ statsData.GCDetail.Settings?.LargeObjectHeapCompactionMode  }}</span>
+          </div>
+          <div>
+            <span class="field240">LatencyMode</span>
+            <span class="value">{{ statsData.GCDetail.Settings?.LatencyMode  }}</span>
+          </div>
+
+          <div>
+            <span class="field240">Total</span>
+            <span class="value">{{ statsData.GCDetail.Total / 1024.0 / 1024.0 | number:'1.2-2'  }} MB</span>
+          </div>
+          <div>
+            <span class="field240">HighMemoryLoadThreshold</span>
+            <span
+              class="value">{{ statsData.GCDetail.MemInfo.HighMemoryLoadThresholdBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+              MB</span>
+          </div>
+          <div>
+            <span class="field240">MemoryLoad</span>
+            <span class="value">{{ statsData.GCDetail.MemInfo.MemoryLoadBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+              MB</span>
+          </div>
+
+          <div>
+            <span class="field240">TotalAvailableMemory</span>
+            <span
+              class="value">{{ statsData.GCDetail.MemInfo.TotalAvailableMemoryBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+              MB</span>
+          </div>
+          <div>
+            <span class="field240">HeapSize</span>
+            <span class="value">{{ statsData.GCDetail.MemInfo.HeapSizeBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+              MB</span>
+          </div>
+          <div>
+            <span class="field240">Fragmented</span>
+            <span class="value">{{ statsData.GCDetail.MemInfo.FragmentedBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+              MB</span>
+          </div>
+
+
+
+          <br />
+          <button mat-raised-button color="primary" [disabled]="isGCollecting" (click)="gcCollect()">COLLECT
+            NOW</button>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+
+
+
 
       <!-- <div class="full" *ngIf="statsData">
                     <span class="field180">Stats taken</span>

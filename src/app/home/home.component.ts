@@ -127,6 +127,21 @@ export class HomeComponent {
     return humanizeDuration(diffInMilliseconds, { round: true, units: ["d", "h", "m"] });
   }
 
+  isGCollecting: boolean = false;
+  gcCollect() {
+    this.isGCollecting = true;
+
+    this.hubConnection.invoke("ForceGCCollect").then((r: number) => {
+      L2.success(`GC collected in ${r}ms`);
+      this.isGCollecting = false;
+    }).catch(e => {
+      this.isGCollecting = false;
+      L2.handleException(e);
+    });
+
+
+  }
+
   onUsageDetailClick() {
 
     L2.fetchJson(`/api/main/memdetail`).then((r: any) => {

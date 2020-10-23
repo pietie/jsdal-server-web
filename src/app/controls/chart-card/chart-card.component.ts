@@ -38,6 +38,7 @@ export class ChartCardComponent implements OnInit {
     legend: { align: "center", fullWidth: true, position: "right", display: true },
     plugins: {
       datalabels: {
+        display: false,
         anchor: 'end',
         align: 'end',
       }
@@ -51,6 +52,7 @@ export class ChartCardComponent implements OnInit {
   @Input('legend') chartLegend = true;
   @Input() allowMaxRowsSelection: boolean = true;
   @Input() allowEndpointSelection: boolean = true;
+  @Input() allowMultipleEndpoints: boolean = false;
 
   _datasetLabel: string;
   get datasetLabel(): string {
@@ -67,7 +69,7 @@ export class ChartCardComponent implements OnInit {
   chartPlugins = [pluginDataLabels];
 
 
-  @Input() allowMultipleEndpoints: boolean = false;
+
   @Output() refresh: EventEmitter<filterType> = new EventEmitter();
 
   filter: filterType = { topN: 10 };
@@ -176,6 +178,11 @@ export class ChartCardComponent implements OnInit {
       this.refresh.emit(this.filter);
     }
 
+  }
+
+  quickSelect(filter: 'PROD' | 'DEV') {
+    this.filter.endpoints = this.endpoints.filter(ep => ep.toUpperCase().endsWith(filter));
+    this.callRefresh();
   }
 
 }

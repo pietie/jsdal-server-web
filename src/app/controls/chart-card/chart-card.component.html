@@ -53,12 +53,6 @@
 
       </mat-menu>
 
-
-      <mat-select *ngIf="allowEndpointSelection" [disabled]="isRefreshing" (selectionChange)="callRefresh()" placeholder="Endpoint" name="item"
-        [(ngModel)]="filter.endpoints" [multiple]="allowMultipleEndpoints" style="width: 200px">
-        <mat-option *ngFor="let ep of this.endpoints" [value]="ep">{{ ep }}</mat-option>
-      </mat-select>
-
       <mat-select *ngIf="allowMaxRowsSelection" [disabled]="isRefreshing" (selectionChange)="callRefresh()"
         [(ngModel)]="filter.topN" style="width: 100px; margin-left: 15px;" placeholder="Top (n)">
         <mat-option [value]="10">10</mat-option>
@@ -66,6 +60,19 @@
         <mat-option [value]="30">30</mat-option>
         <mat-option [value]="100">100</mat-option>
       </mat-select>
+
+
+      <mat-select *ngIf="allowEndpointSelection" [disabled]="isRefreshing" (selectionChange)="callRefresh()"
+        placeholder="Endpoint" name="item" [(ngModel)]="filter.endpoints" [multiple]="allowMultipleEndpoints"
+        style="width: 200px">
+        <mat-option *ngFor="let ep of this.endpoints" [value]="ep">{{ ep }}</mat-option>
+      </mat-select>
+
+      <mat-chip-list *ngIf="allowEndpointSelection && allowMultipleEndpoints" style="display:inline-block">
+        <mat-chip [disabled]="isRefreshing" (click)="quickSelect('PROD')">All PROD</mat-chip>
+        <mat-chip [disabled]="isRefreshing" (click)="quickSelect('DEV')">All DEV</mat-chip>
+      </mat-chip-list>
+
 
 
 

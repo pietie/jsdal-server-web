@@ -39,7 +39,8 @@
     <div><span class="field" style="width:200px;display:inline-block">Working set:</span> {{ latest.WorkingSet64 / 1024.0 / 1024.0 | number:'1.2-2' }}MB</div>
     <div><span class="field" style="width:200px;display:inline-block">Private:</span> {{ latest.PrivateMemorySize64 / 1024.0 / 1024.0 | number:'1.2-2' }}MB</div>
     <div><span class="field" style="width:200px;display:inline-block">Time to calc sizes:</span> {{ latest.TimeToCalculateSizesInMS | number }}ms</div>
-    <div><span class="field" style="width:200px;display:inline-block">Blob:</span> {{ latest.BlobStats | json }}</div>
+    <div><span class="field" style="width:200px;display:inline-block">Blob Cnt:</span> {{ latest.BlobCnt }}</div>
+    <div><span class="field" style="width:200px;display:inline-block">Blob Size:</span> {{ latest.BlobsBytesInCache / 1024.0 / 1024.0 | number:'1.2-2' }}MB</div>
 
 <br/>
     <ng-container *ngFor="let ep of latest.EndpointStats">

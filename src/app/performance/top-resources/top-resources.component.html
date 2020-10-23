@@ -67,7 +67,7 @@
 
 <hr />
 
-<l2-chart-card #topNchart datasetLabel="??" type="bar" [legend]="false" (refresh)="refreshTopN($event, topNchart)"
+<l2-chart-card #topNchart [allowMultipleEndpoints]="true"  type="bar" [legend]="false" (refresh)="refreshTopN($event, topNchart)"
   [width]="'800px'">
 
   <mat-button-toggle-group #chartResourceTypeGroup="matButtonToggleGroup" [(ngModel)]="topN.resourceType"
@@ -83,13 +83,15 @@
 
 
 
-<l2-chart-card #serverPerfChart type="line" [allowMaxRowsSelection]="false" [title]="'Server performance'"
+
+
+<l2-chart-card #serverPerfChart type="line" [allowMaxRowsSelection]="false" [allowMultipleEndpoints]="true" [title]="'Server performance'"
   (refresh)="refreshServerPerformance($event, serverPerfChart)" [width]="'800px'">
 
 </l2-chart-card>
 
 
-<l2-chart-card #topNAllList type="line" [allowMaxRowsSelection]="true" [title]="'All stats'"
+<l2-chart-card #topNAllList type="line" [allowMaxRowsSelection]="true" [allowMultipleEndpoints]="true" [title]="'All stats'"
   (refresh)="refreshAllStatsList($event, topNAllList)" [width]="'1200px'">
 
 
@@ -158,7 +160,7 @@
 
 
 
-<l2-chart-card #routineChart type="line" [allowMaxRowsSelection]="false"
+<l2-chart-card #routineChart type="line" [allowMaxRowsSelection]="false" [allowMultipleEndpoints]="true"
   [title]="(specificRoutine && specificRoutine.schema && specificRoutine.routine)? (specificRoutine?.schema + '.' + specificRoutine?.routine) : '(routine not set)'"
   (refresh)="refreshRoutineSpecific($event, routineChart)" [width]="'800px'">
 

@@ -92,9 +92,8 @@
             <mat-card-content>
               <p>
                 Specify a whitelist of hostnames that are allowed to access this application. Place each
-                entry on a new line. For IPs, wildcard
-                and ranges are supported, e.g.
-                <strong>172.16.*.10-50</strong>
+                entry on a new line. Wildcard subdomains are supported, e.g.
+                <strong>*.mydomain.com</strong>
               </p>
               <p>
                 <label>
@@ -198,7 +197,7 @@
                 </mat-tab>
               </mat-tab-group>
 
-<!--
+              <!--
               <mat-list>
                 <mat-list-item *ngFor="let row of pluginList">
 

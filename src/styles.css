@@ -290,6 +290,13 @@ div.form-flex .field180
     display: inline-block;
 }
 
+div.form-flex .field240
+{
+    font-weight: bold;
+    width: 240px;
+    display: inline-block;
+}
+
 div.form-flex .value
 {
     width: 120px;
