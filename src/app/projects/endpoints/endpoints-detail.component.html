@@ -10,165 +10,234 @@
   <mat-card-content>
 
 
-    <div *ngIf="endpoint?.DisableMetadataCapturing" class="flex-vertical-center"
+    <div *ngIf="endpoint?.DisableMetadataCapturing && !endpoint?.PullsMetadataFromEndpoint" class="flex-vertical-center"
       style="padding: 16px 10px;color:#d01234">
       <mat-icon>warning</mat-icon>
       Note: metadata capturing is disabled on this endpoint and its cached routines will not be refreshed.
     </div>
 
 
-    <button *ngIf="endpoint?.DisableMetadataCapturing" mat-raised-button color="primary"
-      (click)="enableMetadatCapturing(true)">ENABLE Metadata capturing</button>
-    <button *ngIf="!endpoint?.DisableMetadataCapturing" mat-raised-button color="warn"
-      (click)="enableMetadatCapturing(false)">DISABLE Metadata capturing</button>
+    <button *ngIf="(!endpoint?.PullsMetadataFromEndpoint) && endpoint?.DisableMetadataCapturing" mat-button
+      color="primary" (click)="enableMetadatCapturing(true)">ENABLE Metadata capturing</button>
+    <button *ngIf="(!endpoint?.PullsMetadataFromEndpoint) && !endpoint?.DisableMetadataCapturing" mat-raised-button
+      color="warn" (click)="enableMetadatCapturing(false)">DISABLE Metadata capturing</button>
 
-<br/><br/>
+    <br /><br />
     <mat-divider></mat-divider>
 
     <mat-tab-group dynamicHeight="true">
       <mat-tab label="Metadata">
 
-        <div class="flex-vertical-center">
-          <h4>Metadata connection</h4>
+        <div *ngIf="metadataDependencies && metadataDependencies.length > 0" style="padding: 16px 10px;">
+
+          <h4>Metadata sharing</h4>
+          <p>
+            The following endpoint(s) pulls metadata from this endpoint
+          </p>
+
+          <div *ngFor="let dep of metadataDependencies">
+            <button mat-button color="primary"
+              [routerLink]="['/projects/' + (dep.substring(0,dep.lastIndexOf('/')) + '/endpoint' + dep.substring(dep.lastIndexOf('/')))]">
+              {{ dep }}
+            </button>
+          </div>
+
         </div>
 
+        <div style="padding: 16px 10px;">
+          <mat-checkbox *ngIf="!endpoint?.PullsMetadataFromEndpoint" [(ngModel)]="isMetadataShared">Use shared metadata
+            source?</mat-checkbox>
+
+          <div *ngIf="isMetadataShared">
+
+            <p>
+              Select endpoint to pull metadata from.
+            </p>
+
+            <mat-select #shareFromCbo placeholder="Endpoint" style="margin: 12px; width: 300px">
+              <mat-option *ngFor="let ep of metadataSources" [value]="ep.Id">
+                {{ep.Pedigree}}
+              </mat-option>
+            </mat-select>
 
 
-        <div class="connection-detail">
 
-          <div class="info"
-            *ngIf="endpoint?.MetadataConnection && endpoint.MetadataConnection.DataSource;else noMetadataConnection">
+            <div class="flex-vertical-center" style="margin-top: 15px;margin-bottom: 15px;">
+              <button mat-raised-button color="primary" (click)="setupMetdataSharing(shareFromCbo.value)">SETUP SHARE</button>
 
-            <span class="field">Data source=</span>
-            <span class="value">{{ endpoint?.MetadataConnection?.DataSource }},
-              {{ endpoint?.MetadataConnection?.Port }};
-            </span>
+            </div>
 
-            <span class="field">Initial catalog=</span>
-            <span class="value">{{ endpoint?.MetadataConnection?.InitialCatalog }}; </span>
+          </div>
 
-            <span class="field" *ngIf="!(endpoint?.MetadataConnection?.IntegratedSecurity)">User ID=</span>
-            <span class="value"
-              *ngIf="!(endpoint?.MetadataConnection?.IntegratedSecurity)">{{ endpoint?.MetadataConnection?.UserID }};
-            </span>
+          <div *ngIf="endpoint?.PullsMetadataFromEndpoint">
 
-            <span class="field">Integrated security=</span>
-            <span class="value">{{ endpoint?.MetadataConnection?.IntegratedSecurity }}</span>
+            <div *ngIf="!endpoint.PullMetdataFromEndpointError; else sharingErrorr">
+              <h4>Metadata sharing</h4>
+              <div class="flex-vertical-center" style="padding: 10px 16px;">
+                <mat-icon>info_outline</mat-icon>This endpoint is configured to pull metadata from&nbsp;<button
+                  mat-button color="primary"
+                  [routerLink]="['/projects/' + (endpoint.PullMetdataFromEndpointPedigree.substring(0,endpoint.PullMetdataFromEndpointPedigree.lastIndexOf('/')) + '/endpoint' + endpoint.PullMetdataFromEndpointPedigree.substring(endpoint.PullMetdataFromEndpointPedigree.lastIndexOf('/')))]">{{ endpoint.PullMetdataFromEndpointPedigree }}</button>
+              </div>
+
+            </div>
+
+            <ng-template #sharingErrorr>
+              This endpoint is configured to pull metadata from another endpoint but failed with the error:
+              {{ endpoint.PullMetdataFromEndpointError}}
+            </ng-template>
+
+
+
+            <button mat-button color="warn" (click)="clearSharedMetadata()">REMOVE SHARE</button>
+            <br /><br />
+          </div>
+
+
+          <div class="connection-detail" *ngIf="!isMetadataShared && !endpoint?.PullsMetadataFromEndpoint">
+
+            <div class="flex-vertical-center">
+              <h4>Metadata connection</h4>
+            </div>
+
+
+            <div class="info"
+              *ngIf="endpoint?.MetadataConnection && endpoint.MetadataConnection.DataSource;else noMetadataConnection">
+
+              <span class="field">Data source=</span>
+              <span class="value">{{ endpoint?.MetadataConnection?.DataSource }},
+                {{ endpoint?.MetadataConnection?.Port }};
+              </span>
+
+              <span class="field">Initial catalog=</span>
+              <span class="value">{{ endpoint?.MetadataConnection?.InitialCatalog }}; </span>
+
+              <span class="field" *ngIf="!(endpoint?.MetadataConnection?.IntegratedSecurity)">User ID=</span>
+              <span class="value"
+                *ngIf="!(endpoint?.MetadataConnection?.IntegratedSecurity)">{{ endpoint?.MetadataConnection?.UserID }};
+              </span>
+
+              <span class="field">Integrated security=</span>
+              <span class="value">{{ endpoint?.MetadataConnection?.IntegratedSecurity }}</span>
+
+
+            </div>
+
+            <ng-template #noMetadataConnection>
+
+              <div class="flex-vertical-center" *ngIf="!isMetadataShared">
+                <mat-icon>info</mat-icon>No metadata connection exists yet. Configure a connection to start collecting
+                metadata.
+              </div>
+
+            </ng-template>
+            <br />
+            <br />
+            <button mat-raised-button color="primary"
+              (click)="changeConnectionClicked(true, endpoint?.MetadataConnection)">CHANGE CONNECTION</button>
+            <br />
+            <br />
+
 
 
           </div>
 
-          <ng-template #noMetadataConnection>
-
-            <div class="flex-vertical-center">
-              <mat-icon>info</mat-icon>No metadata connection exists yet. Configure a connection to start collecting
-              metadata.
-            </div>
-
-          </ng-template>
-          <br />
-          <br />
-          <button mat-raised-button color="primary"
-            (click)="changeConnectionClicked(true, endpoint?.MetadataConnection)">CHANGE CONNECTION</button>
-          <br />
-          <br />
           <mat-divider></mat-divider>
 
 
-        </div>
 
+          <div
+            *ngIf="endpoint?.MetadataConnection && endpoint?.MetadataConnection.DataSource && !isMetadataShared && !endpoint?.PullsMetadataFromEndpoint">
 
+            <h4>Cached routines</h4>
 
-        <div *ngIf="endpoint?.MetadataConnection && endpoint?.MetadataConnection.DataSource">
-
-          <h4>Cached routines</h4>
-
-          <div class="orm-line" *ngIf="isCheckingOrm">
-            <div class="flex-vertical-center">
-              <mat-progress-spinner [diameter]="30" [strokeWidth]="3" mode="indeterminate"></mat-progress-spinner>
-              <span>Validating ORM, please wait...</span>
+            <div class="orm-line" *ngIf="isCheckingOrm">
+              <div class="flex-vertical-center">
+                <mat-progress-spinner [diameter]="30" [strokeWidth]="3" mode="indeterminate"></mat-progress-spinner>
+                <span>Validating ORM, please wait...</span>
+              </div>
             </div>
-          </div>
 
-          <div *ngIf="!isCheckingOrm ">
+            <div *ngIf="!isCheckingOrm ">
 
-            <div class="orm-line flex-vertical-center" *ngIf="!isInitialisingOrm">
-              <div class="flex-vertical-center ormLabel" [class.good]="this.endpoint.IsOrmInstalled"
-                [class.bad]="!this.endpoint.IsOrmInstalled">
-                <mat-icon>{{ this.endpoint.IsOrmInstalled? "done":"highlight_off" }} </mat-icon>
-                <span>ORM&nbsp;</span>
-                <span *ngIf="!this.endpoint.IsOrmInstalled">not</span>
-                <span>&nbsp;installed</span>
+              <div class="orm-line flex-vertical-center"
+                *ngIf="!isInitialisingOrm && !endpoint?.PullsMetadataFromEndpoint">
+                <div class="flex-vertical-center ormLabel" [class.good]="this.endpoint.IsOrmInstalled"
+                  [class.bad]="!this.endpoint.IsOrmInstalled">
+                  <mat-icon>{{ this.endpoint.IsOrmInstalled? "done":"highlight_off" }} </mat-icon>
+                  <span>ORM&nbsp;</span>
+                  <span *ngIf="!this.endpoint.IsOrmInstalled">not</span>
+                  <span>&nbsp;installed</span>
+                </div>
+
+                <button mat-button color="warn" *ngIf="this.endpoint.IsOrmInstalled" [disabled]="isUninstallingOrm"
+                  (click)="onUninstallOrmClicked()">UNINSTALL</button>
+                <button mat-button color="primary" (click)="onRecheckOrmClicked(true)">RECHECK</button>
+
+                <p *ngIf="isUninstallingOrm">
+                  Uninstalling ORM, please wait...
+                </p>
+
               </div>
 
-              <button mat-button color="warn" *ngIf="this.endpoint.IsOrmInstalled" [disabled]="isUninstallingOrm"
-                (click)="onUninstallOrmClicked()">UNINSTALL</button>
-              <button mat-button color="primary" (click)="onRecheckOrmClicked(true)">RECHECK</button>
-
-              <p *ngIf="isUninstallingOrm">
-                Uninstalling ORM, please wait...
-              </p>
-
-            </div>
-
-            <div *ngIf="!this.endpoint.IsOrmInstalled && !isInitialisingOrm">
-              <p>ORM sprocs are not installed yet. Click
-                <strong>initialise</strong> to start the installation procedure.</p>
-            </div>
+              <div *ngIf="!this.endpoint.IsOrmInstalled && !isInitialisingOrm">
+                <p>ORM sprocs are not installed yet. Click
+                  <strong>initialise</strong> to start the installation procedure.</p>
+              </div>
 
 
-            <button mat-raised-button color="accent"
-              *ngIf="!this.endpoint?.IsOrmInstalled && !isInstallingOrm && !isInitialisingOrm"
-              [class.disabled]="isInstallingOrm || isInitialisingOrm" (click)="onInitORMClicked()">
-              <span *ngIf="!isInstallingOrm">Initialise</span>
-              <span *ngIf="isInstallingOrm">Working...</span>
-            </button>
+              <button mat-raised-button color="accent"
+                *ngIf="!this.endpoint?.IsOrmInstalled && !isInstallingOrm && !isInitialisingOrm"
+                [class.disabled]="isInstallingOrm || isInitialisingOrm" (click)="onInitORMClicked()">
+                <span *ngIf="!isInstallingOrm">Initialise</span>
+                <span *ngIf="isInstallingOrm">Working...</span>
+              </button>
 
-            <div *ngIf="isInstallingOrm">
-              Installing base ORM base, please wait...
-            </div>
+              <div *ngIf="isInstallingOrm">
+                Installing base ORM base, please wait...
+              </div>
 
-            <div *ngIf="isInitialisingOrm">
-              <p>
-                Initial ORM metadata generation, <span>{{ initProgress | number:'1.2' }}</span>%
-              </p>
+              <div *ngIf="isInitialisingOrm">
+                <p>
+                  Initial ORM metadata generation, <span>{{ initProgress | number:'1.2' }}</span>%
+                </p>
+
+              </div>
 
             </div>
+
+            <div *ngIf="this.endpoint.IsOrmInstalled && metadataCacheSummary && !isInitialisingOrm"
+              style="padding-left:16px;padding-top:10px;">
+
+
+
+              <div class="flex-vertical-center">
+                <mat-icon>info_outline</mat-icon>
+                <strong class>Cache last updated</strong>&nbsp;
+                <span>{{ metadataCacheSummary.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;
+                <span class="text-info">({{getLastUpdatedAge(metadataCacheSummary.Orm.LastUpdated)}} ago)</span>
+              </div>
+              <br />
+              <br /> {{ metadataCacheSummary.Orm.TotalCnt }} routines
+              <ul>
+                <li *ngFor="let row of metadataCacheSummary.Orm.Groups, let last = last">{{row.Count}} {{ row.Type }}
+                </li>
+              </ul>
+
+
+              <button mat-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW
+                METADATA</button>
+              <button mat-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR
+                CACHE</button>
+
+
+            </div>
+            <p *ngIf="!metadataCacheSummary">
+              No routines cached yet.
+            </p>
 
           </div>
-
-          <div *ngIf="this.endpoint.IsOrmInstalled && metadataCacheSummary && !isInitialisingOrm"
-            style="padding-left:16px;padding-top:10px;">
-
-
-
-            <div class="flex-vertical-center">
-              <mat-icon>info_outline</mat-icon>
-              <strong class>Cache last updated</strong>&nbsp;
-              <span>{{ metadataCacheSummary.Orm.LastUpdated | fromISODateStr | date:'dd MMM yyyy, HH:mm:ss' }}</span>&nbsp;
-              <span class="text-info">({{getLastUpdatedAge(metadataCacheSummary.Orm.LastUpdated)}} ago)</span>
-            </div>
-            <br />
-            <br /> {{ metadataCacheSummary.Orm.TotalCnt }} routines
-            <ul>
-              <li *ngFor="let row of metadataCacheSummary.Orm.Groups, let last = last">{{row.Count}} {{ row.Type }}
-              </li>
-            </ul>
-
-
-            <button mat-button (click)="viewCachedMetadata()" href="javascript:void(0)" color="primary">VIEW
-              METADATA</button>
-            <button mat-button (click)="clearDbSourceCache()" href="javascript:void(0)" color="primary">CLEAR
-              CACHE</button>
-
-
-          </div>
-          <p *ngIf="!metadataCacheSummary">
-            No routines cached yet.
-          </p>
 
         </div>
-
 
 
 

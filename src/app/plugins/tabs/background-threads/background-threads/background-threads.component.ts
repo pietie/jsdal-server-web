@@ -92,18 +92,15 @@ export class BackgroundThreadsComponent implements OnInit {
           });
 
           this.hubConnection.invoke("JoinAdminGroup").then(r => {
-            console.log("JoinAdminGroup", r);
-            this.instances = null;
-            this.instanceKeys = null;
-            this.instanceSettings = {};
 
-            if (r && r.length > 0) {
-              this.instances = r.reduce((map, obj) => { map[obj.InstanceId] = obj; return map; }, {});
-
-              this.instanceKeys = Object.keys(this.instances);
-              this.instanceKeys.forEach(k => { this.instanceSettings[k] = {}; })
-            }
+            this.updateList(r);
           });
+
+
+          this.hubConnection.on("updateList", (list) => {
+            this.updateList(list);
+          });
+
         });
 
 
@@ -115,6 +112,19 @@ export class BackgroundThreadsComponent implements OnInit {
     }
     catch (e) {
       L2.handleException(e);
+    }
+  }
+
+  private updateList(list) {
+    this.instances = null;
+    this.instanceKeys = null;
+    this.instanceSettings = {};
+
+    if (list && list.length > 0) {
+      this.instances = list.reduce((map, obj) => { map[obj.InstanceId] = obj; return map; }, {});
+
+      this.instanceKeys = Object.keys(this.instances);
+      this.instanceKeys.forEach(k => { this.instanceSettings[k] = {}; })
     }
   }
 

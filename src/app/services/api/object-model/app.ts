@@ -122,6 +122,26 @@ export module app {
     static getRoutineMetadata(project: string, app: string, endpoint: string, routine: string): Promise<string[]> {
       return <any>L2.fetchJson(`/api/exec-tester/routine-metadata?project=${project}&app=${app}&endpoint=${endpoint}&routine=${routine}`);
     }
+
+    static getEndpointsWithMetadata(): Promise<any> {
+      return <any>L2.fetchJson(`/api/endpoints-with-metadata`)
+        .then((r: any) => {
+          return r.Data;
+        });
+
+    }
+
+    static setupSharedMetadata(options: { project: string, app: string, endpoint: string, srcEndpointId: string }): Promise<any> {
+      return <any>L2.postJson(`/api/endpoint/${options.endpoint}/setup-shared-metadata?project=${options.project}&app=${options.app}&srcEndpointId=${options.srcEndpointId}`).then((r: any) => r.Data);
+    }
+
+    static clearSharedMetadata(options: { project: string, app: string, endpoint: string }): Promise<any> {
+      return <any>L2.postJson(`/api/endpoint/${options.endpoint}/setup-shared-metadata/clear?project=${options.project}&app=${options.app}`).then((r: any) => r.Data);
+    }
+
+    static getMetadataDependencies(options: { project: string, app: string, endpoint: string }): Promise<any> {
+      return <any>L2.getJson(`/api/endpoint/${options.endpoint}/metadata-dependencies?project=${options.project}&app=${options.app}`).then((r: any) => r.Data);
+    }
   }
 }
 

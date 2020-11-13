@@ -15,7 +15,7 @@ export class EndpointsDetailRouteResolver implements Resolve<IEndpoint> {
 
         return this.endpointDAL.get(project, dbSource, endpoint).then(ep => {
             if (ep) {
-                return ep;
+                return { ...ep, app: dbSource, project: project } ;
             }
             else {
                 this.router.navigate(['/']); // TODO: Route back to project list with error?

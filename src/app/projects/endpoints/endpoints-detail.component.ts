@@ -27,13 +27,22 @@ export class EndpointDetailComponent {
   endpoint: IEndpoint;
   dbSource: any;
 
+  routeData$: Subscription;
+
   isCheckingOrm: boolean = true;
   isInstallingOrm: boolean = false;
   isInitialisingOrm: boolean = false;
   initProgress: number = 0;
   isUninstallingOrm: boolean = false;
 
+  isMetadataShared: boolean = false;
+  metadataSources: { Id: string, Pedigree: string }[];
+  shareMetadataFromEndpoint: string;
+
   metadataCacheSummary: any;
+  metadataDependencies: any[];
+
+
 
   constructor(public route: ActivatedRoute, public dialog: MatDialog, public router: Router,
     public endpointDAL: EndpointDALService, public breadcrumb: BreadcrumbsService,
@@ -41,8 +50,10 @@ export class EndpointDetailComponent {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     try {
+
+      this.metadataSources = await this.api.app.endpoint.getEndpointsWithMetadata();
 
 
       this.route.params.subscribe(async p => {
@@ -62,11 +73,19 @@ export class EndpointDetailComponent {
           this.initProgress = 0;
         }
 
-        this.route.data.subscribe(d => {
+        if (!this.routeData$) {
+          this.routeData$ = this.route.data.subscribe(async d => {
+            //console.log("route data", d.endpoint);
+            this.projectName = d.endpoint.project;
+            this.dbSourceName = d.endpoint.app;
+            this.endpointName = d.endpoint.Name;
 
-          this.setEndpointDetail(d.endpoint);
-        });
+            this.setEndpointDetail(d.endpoint);
 
+            this.refreshAll();
+          });
+
+        }
 
         this.breadcrumb.store([{ label: 'Projects', url: '/projects', params: [] }
           , { label: this.projectName, url: `/projects/${this.projectName}`, params: [] }
@@ -75,11 +94,10 @@ export class EndpointDetailComponent {
         ]);
 
 
-        this.refreshSummaryInfo();
-
-        await this.bgTasks.init();
-
-        this.listenForInitProcessBgTask();
+        // moved to route data changes handler
+        // this.refreshSummaryInfo();
+        // await this.bgTasks.init();
+        // this.listenForInitProcessBgTask();
 
       });
 
@@ -89,10 +107,24 @@ export class EndpointDetailComponent {
     }
   }
 
+  refreshAll() {
+    this.refreshSummaryInfo();
+    this.bgTasks.init().then(r => {
+      this.listenForInitProcessBgTask();
+    });
+
+  }
+
   ngOnDestroy() {
+
     if (this.initBGTaskSubscription$) {
       this.initBGTaskSubscription$.unsubscribe();
       this.initBGTaskSubscription$ = null;
+    }
+
+    if (this.routeData$) {
+      this.routeData$.unsubscribe();
+      this.routeData$ = null;
     }
   }
 
@@ -283,9 +315,17 @@ export class EndpointDetailComponent {
   }
 
   public refreshSummaryInfo() {
+
     L2.fetchJson(`/api/endpoint/${this.endpointName}/summary?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
       this.metadataCacheSummary = r.Data;
     });
+
+
+    this.api.app.endpoint
+      .getMetadataDependencies({ project: this.projectName, app: this.dbSourceName, endpoint: this.endpointName })
+      .then(r => {
+        this.metadataDependencies = r;
+      });
 
   }
 
@@ -343,4 +383,44 @@ export class EndpointDetailComponent {
       });
     }
   }
+
+  setupMetdataSharing(id: string) {
+
+    this.api.app.endpoint.setupSharedMetadata({ project: this.projectName, app: this.dbSourceName, endpoint: this.endpointName, srcEndpointId: id })
+      .then(r => {
+        L2.success("Metadata sharing configured successfully");
+
+        let url = this.route.snapshot.pathFromRoot.map(v => v.url.map(segment => segment.toString()).join('/')).join('/');
+
+        this.isMetadataShared = false;
+
+        this.router.navigate([url], {
+          queryParams: { refresh: new Date().getTime() }
+        });
+
+      });
+  }
+
+  clearSharedMetadata() {
+
+    L2.confirm("Are you sure you wish to remove the current metadata sharing?", "Corfirm action").then(c => {
+      if (!c) return;
+
+      this.api.app.endpoint.clearSharedMetadata({ project: this.projectName, app: this.dbSourceName, endpoint: this.endpointName }).then(r => {
+
+        L2.success("Metadata sharing removed");
+
+        let url = this.route.snapshot.pathFromRoot.map(v => v.url.map(segment => segment.toString()).join('/')).join('/');
+
+        this.isMetadataShared = false;
+
+        this.router.navigate([url], {
+          queryParams: { refresh: new Date().getTime() }
+        });
+      });
+
+    })
+  }
+
+
 }

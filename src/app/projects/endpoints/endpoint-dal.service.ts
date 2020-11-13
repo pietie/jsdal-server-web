@@ -58,4 +58,8 @@ export interface IEndpoint {
   ExecutionConnection?: any;
   BgTaskKey?: string;
   DisableMetadataCapturing?: boolean;
+  PullsMetadataFromEndpoint: boolean;
+  PullMetdataFromEndpointPedigree: string;
+  PullMetdataFromEndpointError: string;
+
 }

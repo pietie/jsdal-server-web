@@ -46,6 +46,7 @@ export const projectsRoutes: Routes = [
                         path: 'endpoint/:endpoint',
                         canActivate: [LoggedInGuard],
                         component: EndpointDetailComponent,
+                        runGuardsAndResolvers: "always",
                         resolve: {
                             endpoint: EndpointsDetailRouteResolver
                         }
@@ -73,4 +74,4 @@ export const projectsRoutes: Routes = [
     }
 ];
 
-export const projectsRouting: ModuleWithProviders<RouterModule> = RouterModule.forChild(projectsRoutes);
+export const projectsRouting: ModuleWithProviders<RouterModule> = RouterModule.forRoot(projectsRoutes, { onSameUrlNavigation: "reload"   });
