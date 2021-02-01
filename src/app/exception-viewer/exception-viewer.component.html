@@ -105,19 +105,32 @@
 
       </div>
 
-      <mat-chip-list >
+      <mat-chip-list>
         <mat-chip [disabled]="isLoadingExceptionList" (click)="quickFilter('PROD')">PROD only</mat-chip>
         <mat-chip [disabled]="isLoadingExceptionList" (click)="quickFilter('DEV')">DEV only</mat-chip>
       </mat-chip-list>
-<br/>
+      <br />
       <p *ngIf="recentExceptions.length == 0 && !isLoadingExceptionList">
         No recent exceptions found.
       </p>
 
 
 
-      <exception-recent-item *ngFor="let ex of recentExceptions" (onNavigating)="onNavigating($event)" [exception]="ex"
-        [isLoading]="isLoadingExceptionList"></exception-recent-item>
+      <ng-container *ngFor="let ex of recentExceptions; let i = index">
+
+
+
+        <exception-recent-item *ngIf="!ex.header" (onNavigating)="onNavigating($event)" [exception]="ex"
+          [isLoading]="isLoadingExceptionList"></exception-recent-item>
+
+
+        <div class="date-header" *ngIf="ex.header">
+          <div class="border"></div>
+          <div class="txt">{{ ex.text }}</div>
+          <div class="dt">{{ ex.date }}</div>
+        </div>
+
+      </ng-container>
 
 
 

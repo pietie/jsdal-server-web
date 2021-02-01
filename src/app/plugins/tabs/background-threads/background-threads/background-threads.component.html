@@ -24,7 +24,7 @@
   <tbody>
     <ng-container *ngIf="instances; else noRows">
       <ng-container *ngFor="let key of instanceKeys">
-        <tr *ngFor="let row of [instances[key]]" [title]="row.Description">
+        <tr *ngFor="let row of [instances[key]]; trackBy:InstanceId" [title]="row.Description">
           <td class="buttons">
             <button mat-button color="primary" [routerLink]="['/plugins/bgthread/' + row.PluginGuid]">CONFIG</button>
             <button style="width:80px;" (click)="start(row)" *ngIf="!row.IsRunning" mat-button

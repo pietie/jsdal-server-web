@@ -127,6 +127,30 @@ export class ExceptionViewerComponent {
         this.isLoadingExceptionList = false;
 
         this.totalExceptionCnt = r.TotalExceptionCnt;
+
+
+        let now = moment().startOf('day');
+        let last = null;
+        let daysDiffMap = {};
+
+        for (let i = 0; i < r.Results.length; i++) {
+          let created = moment(r.Results[i].created);
+          let dayDiff = now.diff(created.startOf('day'), 'days');
+
+          if (!daysDiffMap[dayDiff]) {
+            daysDiffMap[dayDiff] = true;
+
+            let text = "";
+
+            if (dayDiff == 0) text = "Today";
+            else if (dayDiff == 1) text = "Yesterday";
+            else text = `${dayDiff} days ago`;
+
+            r.Results.splice(i, 0, <any>{ header: true, text: text, date: created.format("DD MMM YYYY") });
+            i++; // skip one otherwise we just process this row again
+          }
+        }
+
         this.recentExceptions = r.Results;//.sort((a,b)=>a.created<=b.created);
 
       }).catch(e => {
@@ -137,10 +161,17 @@ export class ExceptionViewerComponent {
   }
 
   clearAll() {
-    L2.postJson('/api/exception/clear-all').then(r => {
-      L2.success('Exceptions cleared.');
-      this.refreshExceptionList();
+    L2.confirm("Are you sure you want to clear all exceptions?", "Confirm action").then(r => {
+      if (r) {
+        L2.postJson('/api/exception/clear-all').then(r => {
+          L2.success('Exceptions cleared.');
+          this.refreshExceptionList();
+        });
+
+      }
     });
+
+
   }
 
   onNavigating(val: boolean) {
@@ -172,4 +203,5 @@ export class ExceptionViewerComponent {
 
 
   }
+
 }

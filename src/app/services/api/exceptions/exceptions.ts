@@ -3,7 +3,7 @@ import { IApiResponse } from './../api-response';
 
 export class exceptions {
 
-    static getRecent(filter: { top?: number, app?: string[], endpoint?: string[], routine?: string }): Promise<{ TotalExceptionCnt: number, Results: ExceptionWrapper }> {
+    static getRecent(filter: { top?: number, app?: string[], endpoint?: string[], routine?: string }): Promise<{ TotalExceptionCnt: number, Results: ExceptionWrapper[] }> {
 
         let filterCopy = { ...filter };
 

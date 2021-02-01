@@ -36,11 +36,19 @@ export class BackgroundThreadsComponent implements OnInit {
 
           this.hubConnection.on("updateData", data => {
 
+            //console.log("updateData", data);
+
             if (this.instances) {
 
               this.instanceSettings[data.InstanceId] = this.instanceSettings[data.InstanceId] || {};
               //console.log("%s==>",data.InstanceId, this.instanceSettings[data.InstanceId]);
-              this.instances[data.InstanceId] = { ...this.instances[data.InstanceId], ...data };
+
+              // spread operator causes whole TR to be recreated which can make interacting with UI elements impossible
+              //this.instances[data.InstanceId] = { ...this.instances[data.InstanceId], ...data };
+              for (var key in data) {
+                this.instances[data.InstanceId][key] = data[key];
+              }
+
             }
           });
 
