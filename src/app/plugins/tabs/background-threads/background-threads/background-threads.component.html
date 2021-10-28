@@ -5,9 +5,7 @@
     <tr>
       <th style="width: 200px;text-align: center;"></th>
 
-      <th style="width: 110px;">
-        Assembly
-      </th>
+
       <th style="width: 250px;">
         Name
         <!--Set title/tooltip to Description?-->
@@ -26,6 +24,8 @@
       <ng-container *ngFor="let key of instanceKeys">
         <tr *ngFor="let row of [instances[key]]; trackBy:InstanceId" [title]="row.Description">
           <td class="buttons">
+            <mat-icon matTooltip="TODO: Show assembly name and other info when you click here?" >info</mat-icon>
+
             <button mat-button color="primary" [routerLink]="['/plugins/bgthread/' + row.PluginGuid]">CONFIG</button>
             <button style="width:80px;" (click)="start(row)" *ngIf="!row.IsRunning" mat-button
               color="primary">START</button>
@@ -36,9 +36,6 @@
             </button>
             <mat-menu #pos></mat-menu>
 
-          </td>
-          <td class="assembly">
-            (assembly?)
           </td>
           <td class="name">{{ row.Name }}</td>
           <td class="pedigree">{{ row.EndpointPedigree }}</td>

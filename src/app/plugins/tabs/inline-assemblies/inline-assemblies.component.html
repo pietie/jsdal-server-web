@@ -1,0 +1,47 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Assembly</th>
+      <th>Plugins</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let asm of assemblies">
+      <td>
+        <button [disabled]="isWorking" [routerLink]="'./edit/' + asm.InlineEntryId" mat-button color="primary">edit</button>
+        <button [disabled]="isWorking" (click)="delete(asm)" mat-button color="accent">delete</button>
+
+        {{ asm.FullName }}
+
+      </td>
+
+      <td>
+
+
+        <table class="grid plugin-list">
+          <colgroup>
+            <col width="140px;">
+            <col width="200px">
+            <col>
+            <col width="100px">
+          </colgroup>
+          <tbody>
+            <tr *ngFor="let p of asm.Plugins; let i = index" [title]="p.Guid">
+
+              <td class="type">{{ i+1 }}.&nbsp;{{ p.Type }}</td>
+              <td class="name">{{ p.Name }}</td>
+              <td class="desc">{{ p.Description }}</td>
+
+              <td class="refs" [title]="p.EnabledOnApps">{{ p.EnabledOnAppsCnt }} reference(s)</td>
+
+            </tr>
+          </tbody>
+        </table>
+
+
+      </td>
+      <!-- <td>{{ asm.InlineEntryId }}</td>
+      <td>{{ asm.InstanceId }}</td> -->
+    </tr>
+  </tbody>
+</table>

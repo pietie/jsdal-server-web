@@ -1,77 +1,26 @@
 <mat-card>
   <mat-card-content>
-
     <button mat-raised-button color="primary" [routerLink]="['/plugins/edit']">
       <mat-icon>add_circle</mat-icon> NEW PLUGIN
     </button>
     <br />
     <mat-tab-group dynamicHeight="true">
-
-      <mat-tab label="Execution plugins">
-        <p>
-          These plugins tie in with the routine execution model. You can hook into and override certain parts
-          of this process.
-        </p>
-        CRUD
+      <mat-tab label="Inline assemblies">
+        <inline-assemblies-tab></inline-assemblies-tab>
       </mat-tab>
       <mat-tab label="Background threads">
         <background-threads-tab></background-threads-tab>
-
+      </mat-tab>
+      <mat-tab label="Execution plugins">
+        <execution-plugins-tab></execution-plugins-tab>
       </mat-tab>
       <mat-tab label="Server methods">
         <server-methods-tab></server-methods-tab>
       </mat-tab>
       <mat-tab label="Diagnostics">
-
-        <table class="grid">
-          <thead>
-            <tr>
-              <th>Assembly</th>
-              <th>Inline?</th>
-              <th>Plugins</th>
-              <th>InlineEntryId</th>
-              <th>InstanceId</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let asm of diagnostics">
-              <td>{{ asm.FullName }}</td>
-              <td>{{ asm.IsInline }}</td>
-              <td>
-
-
-                <table class="grid">
-                  <colgroup>
-                    <col width="120px;">
-                    <col width="200px">
-                    <col>
-
-                  </colgroup>
-                  <tbody>
-                    <tr *ngFor="let p of asm.Plugins" [title]="p.Guid">
-
-                      <td>{{ p.Type }}</td>
-                      <td>{{ p.Name }}</td>
-                      <td>{{ p.Description }}</td>
-
-
-                    </tr>
-                  </tbody>
-                </table>
-
-
-              </td>
-              <td>{{ asm.InlineEntryId }}</td>
-              <td>{{ asm.InstanceId }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-
-
+        <diagnostics-tab></diagnostics-tab>
       </mat-tab>
     </mat-tab-group>
-
 
     <br />
     <br />
@@ -83,7 +32,7 @@
     <br />
 
     <textarea readonly="readonly" rows="10" style="width:100%;background-color:silver;">
-                    {{ this.compilerOutput | json }}
-                </textarea>
+      {{ this.compilerOutput | json }}
+    </textarea>
   </mat-card-content>
 </mat-card>

@@ -15,7 +15,7 @@ export class PluginsComponent {
   options: any = { maxLines: 1000, printMargin: false };
 
   compilerOutput: any;
-  diagnostics: any;
+
 
   constructor(public api: ApiService) {
 
@@ -23,7 +23,7 @@ export class PluginsComponent {
 
   ngOnInit() {
 
-    this.api.app.plugins.getDiagnostics().then(r => this.diagnostics = r);
+
   }
 
   onChange(code) {

@@ -21,6 +21,10 @@ export module app {
 
   export class plugins {
 
+    static getInlineAssemblies(): Promise<any> {
+      return <any>L2.fetchJson(`/inline-assemblies`).then((r:any)=>r.Data);
+    }
+
     static getDiagnostics(): Promise<any> {
       return <any>L2.fetchJson(`/plugins/diagnostics`);
     }

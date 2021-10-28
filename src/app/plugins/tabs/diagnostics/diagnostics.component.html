@@ -1,0 +1,48 @@
+<table class="grid">
+  <thead>
+    <tr>
+      <th>Assembly</th>
+      <th>Inline?</th>
+      <th>Plugins</th>
+      <th>InlineEntryId</th>
+      <th>InstanceId</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let asm of diagnostics">
+      <td>
+        {{ asm.FullName }}
+
+      </td>
+      <td style="text-align: center;">
+        <mat-checkbox [ngModel]="asm.IsInline" disabled></mat-checkbox>
+      </td>
+      <td>
+
+
+        <table class="grid plugin-list">
+          <colgroup>
+            <col width="140px;">
+            <col width="200px">
+            <col>
+
+          </colgroup>
+          <tbody>
+            <tr *ngFor="let p of asm.Plugins; let i = index" [title]="p.Guid">
+
+              <td class="type">{{ i+1 }}.&nbsp;{{ p.Type }}</td>
+              <td class="name">{{ p.Name }}</td>
+              <td class="desc">{{ p.Description }}</td>
+
+
+            </tr>
+          </tbody>
+        </table>
+
+
+      </td>
+      <td>{{ asm.InlineEntryId }}</td>
+      <td>{{ asm.InstanceId }}</td>
+    </tr>
+  </tbody>
+</table>

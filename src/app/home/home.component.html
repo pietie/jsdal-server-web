@@ -38,9 +38,9 @@
 
           <div *ngIf="statsData">
             <span class="field180" title="Worker / AsyncIO">Threads available</span>
-            <span class="value"><span
-                title="Number of worker threads available">{{ statsData.WorkerThreadsAvailable }}</span> / <span
-                title="Number of Async IO threads available">{{ statsData.AsyncIOThreadsAvailable }}</span></span>
+            <span class="value"><span title="Number of worker threads available">{{ statsData.WorkerThreadsAvailable
+                }}</span> / <span title="Number of Async IO threads available">{{ statsData.AsyncIOThreadsAvailable
+                }}</span></span>
           </div>
           <div *ngIf="statsData">
             <span class="field180">Threads / Handles</span>
@@ -71,47 +71,47 @@
 
           <div>
             <span class="field240">IsServerGC</span>
-            <span class="value">{{ statsData.GCDetail.Settings?.IsServerGC  }}</span>
+            <span class="value">{{ statsData.GCDetail.Settings?.IsServerGC }}</span>
           </div>
           <div>
             <span class="field240">LargeObjectHeapCompactionMode</span>
-            <span class="value">{{ statsData.GCDetail.Settings?.LargeObjectHeapCompactionMode  }}</span>
+            <span class="value">{{ statsData.GCDetail.Settings?.LargeObjectHeapCompactionMode }}</span>
           </div>
           <div>
             <span class="field240">LatencyMode</span>
-            <span class="value">{{ statsData.GCDetail.Settings?.LatencyMode  }}</span>
+            <span class="value">{{ statsData.GCDetail.Settings?.LatencyMode }}</span>
           </div>
 
           <div>
             <span class="field240">Total</span>
-            <span class="value">{{ statsData.GCDetail.Total / 1024.0 / 1024.0 | number:'1.2-2'  }} MB</span>
+            <span class="value">{{ statsData.GCDetail.Total / 1024.0 / 1024.0 | number:'1.2-2' }} MB</span>
           </div>
           <div>
             <span class="field240">HighMemoryLoadThreshold</span>
-            <span
-              class="value">{{ statsData.GCDetail.MemInfo.HighMemoryLoadThresholdBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+            <span class="value">{{ statsData.GCDetail.MemInfo.HighMemoryLoadThresholdBytes / 1024.0 / 1024.0 |
+              number:'1.2-2' }}
               MB</span>
           </div>
           <div>
             <span class="field240">MemoryLoad</span>
-            <span class="value">{{ statsData.GCDetail.MemInfo.MemoryLoadBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+            <span class="value">{{ statsData.GCDetail.MemInfo.MemoryLoadBytes / 1024.0 / 1024.0 | number:'1.2-2' }}
               MB</span>
           </div>
 
           <div>
             <span class="field240">TotalAvailableMemory</span>
-            <span
-              class="value">{{ statsData.GCDetail.MemInfo.TotalAvailableMemoryBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+            <span class="value">{{ statsData.GCDetail.MemInfo.TotalAvailableMemoryBytes / 1024.0 / 1024.0 |
+              number:'1.2-2' }}
               MB</span>
           </div>
           <div>
             <span class="field240">HeapSize</span>
-            <span class="value">{{ statsData.GCDetail.MemInfo.HeapSizeBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+            <span class="value">{{ statsData.GCDetail.MemInfo.HeapSizeBytes / 1024.0 / 1024.0 | number:'1.2-2' }}
               MB</span>
           </div>
           <div>
             <span class="field240">Fragmented</span>
-            <span class="value">{{ statsData.GCDetail.MemInfo.FragmentedBytes / 1024.0 / 1024.0 | number:'1.2-2'  }}
+            <span class="value">{{ statsData.GCDetail.MemInfo.FragmentedBytes / 1024.0 / 1024.0 | number:'1.2-2' }}
               MB</span>
           </div>
 
@@ -139,7 +139,7 @@
     </div>
     <p *ngIf="usageDetail">
 
-      {{  usageDetail | json  }}
+      {{ usageDetail | json }}
 
     </p>
 
@@ -184,24 +184,24 @@
 
                   </td>
                   <td>
-                    {{ counterKV.value.DisplayName  }}
+                    {{ counterKV.value.DisplayName }}
                   </td>
                   <td>
                     <span [ngSwitch]="counterKV.value.DisplayName">
                       <span *ngSwitchCase="'Gen 0 Size'">
-                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2' }}MB
                       </span>
                       <span *ngSwitchCase="'Gen 1 Size'">
-                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2' }}MB
                       </span>
                       <span *ngSwitchCase="'Gen 2 Size'">
-                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2' }}MB
                       </span>
                       <span *ngSwitchCase="'LOH Size'">
-                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2'  }}MB
+                        {{ counterKV.value.Value / 1024.0 / 1024.0 | number:'1.2-2' }}MB
                       </span>
                       <span *ngSwitchDefault>
-                        {{ counterKV.value.Value | number  }}
+                        {{ counterKV.value.Value | number }}
                       </span>
                     </span>
 
@@ -261,11 +261,13 @@
   <mat-card-content>
 
 
-    <button color="primary" mat-button [routerLink]="['/exceptions']">VIEW EXCEPTIONS</button>
+    <button color="primary" mat-button [routerLink]="['/exceptions']"><mat-icon>error_outline</mat-icon> VIEW EXCEPTIONS</button>
 
-    <button color="primary" mat-button [routerLink]="['/performance/routine-list']">PERFORMANCE (ROUTINE LIST)</button>
+    <button color="primary" mat-button [routerLink]="['/plugins']"><mat-icon>extension</mat-icon> PLUGINS</button>
 
-    <button color="primary" mat-button [routerLink]="['/health']">HEALTH</button>
+    <button color="primary" mat-button [routerLink]="['/performance/routine-list']"><mat-icon>star</mat-icon> PERFORMANCE (ROUTINE LIST)</button>
+
+    <button color="primary" mat-button [routerLink]="['/health']"><mat-icon>spa</mat-icon> HEALTH</button>
 
 
   </mat-card-content>

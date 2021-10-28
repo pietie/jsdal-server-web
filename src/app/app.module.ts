@@ -57,8 +57,11 @@ import { ExceptionUiComponent } from './exception-viewer/exception-detail/except
 import { ExceptionRecentItemComponent } from './exception-viewer/exception-recent-item/exception-recent-item.component';
 import { BlobViewerComponent } from './blob-viewer/blob-viewer.component';;
 import { HealthComponent } from './health/health.component'
-import { ChartCardComponent } from './controls/chart-card/chart-card.component';
-
+import { ChartCardComponent } from './controls/chart-card/chart-card.component';;
+import { DiagnosticsComponent } from './plugins/tabs/diagnostics/diagnostics.component';
+import { InlineAssembliesComponent } from './plugins/tabs/inline-assemblies/inline-assemblies.component'
+;
+import { ExecutionPluginsComponent } from './plugins/tabs/execution-plugins/execution-plugins.component'
 
 export class MyErrorHandler implements ErrorHandler {
 
@@ -99,8 +102,14 @@ export class MyErrorHandler implements ErrorHandler {
     ExceptionRecentItemComponent,
     BlobViewerComponent,
 
-    HealthComponent
-  ],
+    HealthComponent,
+
+    DiagnosticsComponent
+,
+
+    InlineAssembliesComponent ,
+
+    ExecutionPluginsComponent ],
   bootstrap: [AppComponent],
   providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
   entryComponents: [PluginTemplateBottomSheetComponent]

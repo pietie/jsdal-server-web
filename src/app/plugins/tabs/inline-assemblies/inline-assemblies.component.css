@@ -1,0 +1,21 @@
+.plugin-list {
+  font-size: 0.75rem;
+}
+
+.plugin-list td {
+  word-break: break-all;
+}
+
+.plugin-list .type {
+  font-weight: 500;
+  color: #333;
+}
+
+.plugin-list .name {
+  color: rgb(0, 0, 80);
+}
+
+.plugin-list .refs
+{
+  color: rgb(27, 75, 30);
+}
