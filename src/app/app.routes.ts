@@ -92,5 +92,5 @@ export const appRoutes: Routes = [
 ];
 
 
-export const routing: ModuleWithProviders<RouterModule> = RouterModule.forRoot(appRoutes, { useHash: false });
+export const routing: ModuleWithProviders<RouterModule> = RouterModule.forRoot(appRoutes, { useHash: false, relativeLinkResolution: 'legacy' });
 
