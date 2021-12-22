@@ -7,7 +7,7 @@
   <ng-container *ngIf="data">
 
     <div class="row" *ngFor="let row of data">
-      <div class="dt">{{ row.Date | date:'yyyy-MM-dd HH:mm' }}</div>
+      <div class="dt">{{ row.Date | date:'yyyy-MM-dd, HH:mm' }}</div>
       <div class="duration">{{ row.TotalSeconds | secondsToTime:'long' }}</div>
     </div>
 
