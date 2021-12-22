@@ -58,12 +58,15 @@ import { ExceptionRecentItemComponent } from './exception-viewer/exception-recen
 import { BlobViewerComponent } from './blob-viewer/blob-viewer.component';;
 import { HealthComponent } from './health/health.component'
 import { ChartCardComponent } from './controls/chart-card/chart-card.component';;
-import { DiagnosticsComponent } from './plugins/tabs/diagnostics/diagnostics.component';
+import { DiagnosticsComponent } from './plugins/tabs/diagnostics/diagnostics.component'
+  ;
 import { InlineAssembliesComponent } from './plugins/tabs/inline-assemblies/inline-assemblies.component'
-;
-import { ExecutionPluginsComponent } from './plugins/tabs/execution-plugins/execution-plugins.component';
+  ;
+import { ExecutionPluginsComponent } from './plugins/tabs/execution-plugins/execution-plugins.component'
+  ;
 import { UptimeHistoryDialogComponent } from './home/uptime-history-dialog/uptime-history-dialog.component'
-
+  ;
+import { SecondsToTimePipe } from './pipes/seconds-to-time.pipe'
 export class MyErrorHandler implements ErrorHandler {
 
   constructor() {
@@ -102,17 +105,15 @@ export class MyErrorHandler implements ErrorHandler {
     ExceptionUiComponent,
     ExceptionRecentItemComponent,
     BlobViewerComponent,
+    HealthComponent,
+    DiagnosticsComponent,
+    InlineAssembliesComponent,
+    ExecutionPluginsComponent,
+    UptimeHistoryDialogComponent,
+    SecondsToTimePipe
+  ],
 
-    HealthComponent,
 
-    DiagnosticsComponent
-,
-
-    InlineAssembliesComponent ,
-
-    ExecutionPluginsComponent ,
-
-    UptimeHistoryDialogComponent],
   bootstrap: [AppComponent],
   providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
   entryComponents: [PluginTemplateBottomSheetComponent]
