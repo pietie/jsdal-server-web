@@ -38,7 +38,14 @@
               "node_modules/ace-builds/src-min/ace.js",
               "node_modules/ace-builds/src-min/mode-csharp.js",
               "node_modules/ace-builds/src-min/theme-merbivore_soft.js"
-            ]
+            ],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -48,7 +55,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
-              "extractLicenses": false,
               "vendorChunk": false,
               "buildOptimizer": true,
               "fileReplacements": [
@@ -58,7 +64,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",

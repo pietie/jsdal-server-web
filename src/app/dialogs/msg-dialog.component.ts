@@ -5,7 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
     templateUrl: './msg-dialog.component.html',
     styles: [`
         mat-card { margin-bottom: 10px; }
-        mat-nav-list a[mat-list-item].full-height /deep/ .mat-list-item {
+        mat-nav-list a[mat-list-item].full-height ::ng-deep .mat-list-item {
             height: 100%; margin-bottom: 10px;
         }
         `],

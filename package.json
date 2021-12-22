@@ -6,25 +6,25 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot --port 4200 --host 0.0.0.0 --disable-host-check",
-    "prod": "ng build --prod",
+    "prod": "ng build --configuration production",
     "sw": "sw-precache --root=dist --config=sw-precache-config.js",
-    "aot": "ng build --aot --prod",
-    "publish": "ng build --prod --output-path ../server-core/jsdal-server-core/wwwroot"
+    "aot": "ng build --aot --configuration production",
+    "publish": "ng build --configuration production --output-path ../server-core/jsdal-server-core/wwwroot"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^11.2.14",
+    "@angular/animations": "^12.2.15",
     "@angular/cdk": "^11.2.13",
-    "@angular/common": "^11.2.14",
-    "@angular/compiler": "^11.2.14",
-    "@angular/compiler-cli": "^11.2.14",
-    "@angular/core": "^11.2.14",
-    "@angular/forms": "^11.2.14",
+    "@angular/common": "^12.2.15",
+    "@angular/compiler": "^12.2.15",
+    "@angular/compiler-cli": "^12.2.15",
+    "@angular/core": "^12.2.15",
+    "@angular/forms": "^12.2.15",
     "@angular/http": "^8.0.0-beta.10",
     "@angular/material": "^11.2.13",
-    "@angular/platform-browser": "^11.2.14",
-    "@angular/platform-browser-dynamic": "^11.2.14",
-    "@angular/router": "^11.2.14",
+    "@angular/platform-browser": "^12.2.15",
+    "@angular/platform-browser-dynamic": "^12.2.15",
+    "@angular/router": "^12.2.15",
     "@microsoft/signalr": "^3.1.7",
     "chart.js": "^2.9.3",
     "chartjs-plugin-datalabels": "^0.7.0",
@@ -40,15 +40,15 @@
     "rxjs-compat": "^6.6.2",
     "shortid": "^2.2.14",
     "ts-helpers": "^1.1.1",
-    "zone.js": "^0.11.4"
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.1102.17",
-    "@angular/cli": "^11.2.17",
+    "@angular-devkit/build-angular": "^12.2.14",
+    "@angular/cli": "^12.2.14",
     "@types/codemirror": "0.0.97",
     "@types/node": "^14.6.4",
     "@types/shortid": "0.0.29",
     "ts-node": "9.0.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.3.5"
   }
 }

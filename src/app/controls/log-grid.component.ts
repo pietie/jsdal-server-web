@@ -27,7 +27,7 @@ enum LogEntryType {
           font-family: Consolas, 'Courier New', monospace;
       }
 
-      /deep/ .msg .first-line
+      ::ng-deep .msg .first-line
       {
           color: #fff !important;
           font-weight: bold !important;

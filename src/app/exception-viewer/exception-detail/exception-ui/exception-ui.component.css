@@ -68,7 +68,7 @@ div.exception-detail
 }
 
 /*
-/deep/ span.first-stacktrace-line
+::ng-deep span.first-stacktrace-line
 {
     font-weight: bold;
     color: #fff;
@@ -166,12 +166,12 @@ div.exception-detail .stack *
     font-weight: bold;
 }
 
-.inner-exception-container.even /deep/ mat-expansion-panel-header
+.inner-exception-container.even ::ng-deep mat-expansion-panel-header
 {
     background-color: #a0a0ca !important;
 }
 
-.inner-exception-container.odd /deep/ mat-expansion-panel-header
+.inner-exception-container.odd ::ng-deep mat-expansion-panel-header
 {
     background-color: #a0a0ea !important;
 }

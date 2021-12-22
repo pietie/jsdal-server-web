@@ -1,4 +1,4 @@
-/deep/ mat-card { margin-bottom: 14px; }
+::ng-deep mat-card { margin-bottom: 14px; }
 
 #app-content
 {

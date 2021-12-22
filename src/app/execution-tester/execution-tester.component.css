@@ -90,9 +90,9 @@ div.value
     display: inline-block;
 }
 
-/deep/ .result pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-/deep/ .result .string { color: #CE9178; }
-/deep/ .result .number { color: #B5CEA8; }
-/deep/ .result .boolean { color: #569CD6; }
-/deep/ .result .null { color: #569CD6; }
-/deep/ .result .key { color: #CE9178; }
+::ng-deep .result pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+::ng-deep .result .string { color: #CE9178; }
+::ng-deep .result .number { color: #B5CEA8; }
+::ng-deep .result .boolean { color: #569CD6; }
+::ng-deep .result .null { color: #569CD6; }
+::ng-deep .result .key { color: #CE9178; }

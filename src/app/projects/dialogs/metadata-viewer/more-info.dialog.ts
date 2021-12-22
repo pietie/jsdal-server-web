@@ -6,12 +6,12 @@ import { L2  } from 'l2-lib/L2';
     selector: 'more-info.dialog',
     templateUrl: './more-info.dialog.html',
     styles: [`
-/deep/ pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-/deep/ .string { color: green; }
-/deep/ .number { color: darkorange; }
-/deep/ .boolean { color: blue; }
-/deep/ .null { color: magenta; }
-/deep/ .key { color: red; }
+::ng-deep pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+::ng-deep .string { color: green; }
+::ng-deep .number { color: darkorange; }
+::ng-deep .boolean { color: blue; }
+::ng-deep .null { color: magenta; }
+::ng-deep .key { color: red; }
     `]
 })
 export class MetadataMoreInfoDialog {
