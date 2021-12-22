@@ -4,8 +4,11 @@
 
       <div class="full">
         <span class="field180">Web server started</span>
-        <span class="value">{{ statsData.WebServerStartDate | fromISODateStr |date:'dd MMM yyyy, HH:mm:ss' }}
-          ({{getWebServerAge(statsData.WebServerStartDate)}} ago)</span>
+        <div class="value" style="display: inline-flex;align-items: center;">{{ statsData.WebServerStartDate | fromISODateStr |date:'dd MMM yyyy, HH:mm:ss' }}
+          ({{getWebServerAge(statsData.WebServerStartDate)}} ago)
+
+          <button (click)="showUptimeHistory()" mat-icon-button><mat-icon>history</mat-icon></button>
+        </div>
       </div>
 
       <div *ngIf="statsData.Performance">

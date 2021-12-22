@@ -5,6 +5,8 @@ import { L2 } from 'l2-lib/L2';
 
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import { ApiService } from '~/services/api';
+import { MatDialog } from '@angular/material/dialog';
+import { UptimeHistoryDialogComponent } from './uptime-history-dialog/uptime-history-dialog.component';
 
 
 @Component({
@@ -59,7 +61,7 @@ export class HomeComponent {
 
   };
 
-  constructor(public api: ApiService) {
+  constructor(public api: ApiService, public dialog: MatDialog) {
 
   }
 
@@ -174,6 +176,16 @@ export class HomeComponent {
         }).catch(() => {
           this.sysPerfWaiting = false;
         });
+    }
+  }
+
+  showUptimeHistory() {
+    try {
+
+      this.dialog.open(UptimeHistoryDialogComponent, { disableClose: true, width: "500px", minHeight: "300px" });
+
+    } catch (e) {
+      L2.handleException(e);
     }
   }
 

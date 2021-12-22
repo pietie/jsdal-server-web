@@ -61,7 +61,8 @@ import { ChartCardComponent } from './controls/chart-card/chart-card.component';
 import { DiagnosticsComponent } from './plugins/tabs/diagnostics/diagnostics.component';
 import { InlineAssembliesComponent } from './plugins/tabs/inline-assemblies/inline-assemblies.component'
 ;
-import { ExecutionPluginsComponent } from './plugins/tabs/execution-plugins/execution-plugins.component'
+import { ExecutionPluginsComponent } from './plugins/tabs/execution-plugins/execution-plugins.component';
+import { UptimeHistoryDialogComponent } from './home/uptime-history-dialog/uptime-history-dialog.component'
 
 export class MyErrorHandler implements ErrorHandler {
 
@@ -109,7 +110,9 @@ export class MyErrorHandler implements ErrorHandler {
 
     InlineAssembliesComponent ,
 
-    ExecutionPluginsComponent ],
+    ExecutionPluginsComponent ,
+
+    UptimeHistoryDialogComponent],
   bootstrap: [AppComponent],
   providers: [CanDeactivateGuard, LoggedInGuard, AccountService, FirstTimeSetupCompletedGuard, FirstTimeSetupCompletedService, BgTaskMonitorService/*, {provide: ErrorHandler, useClass: MyErrorHandler}*/],
   entryComponents: [PluginTemplateBottomSheetComponent]

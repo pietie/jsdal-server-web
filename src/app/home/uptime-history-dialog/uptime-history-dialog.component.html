@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Uptime history</h1>
+<div mat-dialog-content>
+
+  <mat-spinner *ngIf="isLoading" [diameter]="24"></mat-spinner>
+
+
+  <ng-container *ngIf="data">
+
+    {{ data | json}}
+
+  </ng-container>
+
+
+</div>
+<div mat-dialog-actions align="end">
+  <button color="primary" mat-button mat-dialog-close cdkFocusInitial>DONE</button>
+
+</div>
