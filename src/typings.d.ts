@@ -4,10 +4,12 @@
 
 declare var System: any;
 
+
+
 declare function moment(...any): any;
 
 declare var humanizeDuration: (...any) => any;
- 
+
 interface JWT {
     token: string;
     expiresEpoch: number;

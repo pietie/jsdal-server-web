@@ -4,9 +4,9 @@ import { FromToDatetimeDialogComponent } from '../from-to-datetime.dialog/from-t
 import * as moment from 'moment';
 import { ApiService } from '~/services/api';
 
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
-import { Label } from 'ng2-charts';
+//import { Label } from 'ng2-charts';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class ChartCardComponent implements OnInit {
   colorLookup = ["#003049", "#e63946", "#457b9d", "#1d3557", "#ffadad", "#ffd6a5", "#98E086", "#caffbf", "#9bf6ff", "#eae2b7", "#a0c4ff", "#bdb2ff", "#ffc6ff", "#fffffc", "#f77f00", "#fcbf49", "#d62828", "#a8dadc"];
 
 
-  chartDataSets: ChartDataSets[] = [
+  chartDataSets: ChartDataset[] = [
     {
       data: [], label: '', backgroundColor: ["#003049", "#d62828", "#f77f00", "#fcbf49", "#eae2b7", "#e63946", "#a8dadc", "#457b9d", "#1d3557",
         "#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff", "#fffffc"],
@@ -31,7 +31,7 @@ export class ChartCardComponent implements OnInit {
 
   chartLabels: string[] = [];
 
-  chartOptions: ChartOptions = {
+  chartOptions: ChartOptions = <any>{
     onClick: (a, b) => { console.log(a, b); },
     responsive: true,
     scales: { xAxes: [{}], yAxes: [{}] },

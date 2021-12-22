@@ -5,7 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AccountService } from './account/account.service';
 
 import { MsgDialog } from './dialogs/msg-dialog.component'
-import { PromptDialog } from "app/dialogs";
+import { PromptDialog } from './dialogs';
+
 
 export class L2MsgHandler implements IL2OutputMessageHandler {
 
@@ -20,7 +21,7 @@ export class L2MsgHandler implements IL2OutputMessageHandler {
 
     warning(msg: string, title?: string): any {
         // incredibly crude but easiest solution for now to handle token expiration globally
-        if (/your access token has expired/gi.test(msg)) { 
+        if (/your access token has expired/gi.test(msg)) {
             //!this.securityService.logout();
             this.router.navigate(['/login']);
             return;
@@ -50,7 +51,7 @@ export class L2MsgHandler implements IL2OutputMessageHandler {
         return PromptDialog.prompt(this.dialog, title, fieldName, val, okayButtonLabel);
     }
 
-    handleException(error: Error | ExceptionInformation | string, additionalKVs?: Object): any {
+    handleException(error: Error | string, additionalKVs?: Object): any {
         // TODO: navigate to error page? or just show message at the top? dialog would be nice I guess
         alert("EXCEPTION ALERT (app component)" + error.toString());
         console.error(error);

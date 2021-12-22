@@ -11,7 +11,6 @@ import { RealTimePerformanceComponent } from './real-time-performance/real-time-
 import { TopResourcesComponent } from './top-resources/top-resources.component';
 import { RoutineListComponent } from './routine-list/routine-list.component'
 
-import { ChartsModule } from 'ng2-charts';
 
 import { FromToDatetimeDialogComponent } from '~/controls/from-to-datetime.dialog/from-to-datetime.dialog.component';
 

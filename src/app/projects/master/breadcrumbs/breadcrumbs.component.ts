@@ -1,10 +1,10 @@
 
-import {filter} from 'rxjs/operators';
 // Slightly modified from https://github.com/hggeorgiev/
 
 import { Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET } from "@angular/router";
-import "rxjs/add/operator/filter";
+import { filter } from "rxjs";
+
 import { IBreadcrumb } from "./breadcrumbs.model";
 import { BreadcrumbsService } from "./breadcrumbs.service";
 

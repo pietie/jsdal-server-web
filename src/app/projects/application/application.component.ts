@@ -13,7 +13,7 @@ import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@a
 
 import { BreadcrumbsService } from './../master/breadcrumbs/breadcrumbs.service';
 import { ApiService } from 'jsdal-api';
-import { plugins } from 'chart.js';
+// import { plugins } from 'chart.js';
 
 
 @Component({
