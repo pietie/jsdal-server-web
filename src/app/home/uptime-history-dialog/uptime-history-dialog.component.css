@@ -1,10 +1,5 @@
-.row {
-  display: flex;
-  align-items: center;
-  font-size: 0.9rem;
-}
 
-.row .dt {
-  font-weight: 500;
-  width: 130px;
+.duration {
+  text-align: right;
+  padding-right: 8px;
 }

@@ -6,10 +6,26 @@
 
   <ng-container *ngIf="data">
 
-    <div class="row" *ngFor="let row of data">
-      <div class="dt">{{ row.Date | date:'yyyy-MM-dd, HH:mm' }}</div>
-      <div class="duration">{{ row.TotalSeconds | secondsToTime:'long' }}</div>
-    </div>
+    <table class="grid" style="width: 95%;margin: auto;">
+      <colgroup>
+        <col width="160px">
+        <col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Started</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let row of data">
+          <td class="dt">{{ row.Date | date:'yyyy-MM-dd, HH:mm' }}</td>
+          <td class="duration">{{ row.TotalSeconds | secondsToTime:'long' }}</td>
+        </tr>
+      </tbody>
+
+    </table>
 
   </ng-container>
 
