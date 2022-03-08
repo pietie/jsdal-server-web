@@ -18,7 +18,7 @@ export class FirstTimeSetupCompletedGuard implements CanActivate {
 //this.firstTimeSetup.retry();
 console.warn("isComplete is undefined");
                 return false;
-            } 
+            }
 
             if (!isComplete) {
                 console.log("routing!!!", isComplete);
