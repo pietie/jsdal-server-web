@@ -6,8 +6,6 @@ import { Subject ,  Observable } from 'rxjs';
 
 
 
-
-
 import { AccountService } from '../account/account.service';
 import { L2  } from 'l2-lib/L2';
 
@@ -47,7 +45,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
     constructor(public router: Router, public accountService: AccountService, public changeDetectorRef: ChangeDetectorRef, public activatedRoute: ActivatedRoute) {
         try {
             this.activatedRoute.queryParams.subscribe(qp => {
-                if (qp && qp.logout) { 
+                if (qp && qp.logout) {
                     this.accountService.logout();
                     this.router.navigate(['./login']);
                 }
@@ -87,12 +85,12 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
         }
     }
 
- 
+
     canDeactivate(): Observable<boolean> | boolean {
         return true; // issue with 'Attempt to use a destroyed view: detectChange'
         //if (!this.accountService.isLoggedIn) return false;
         //this.componentState = "exitComponent";
-        //return this.readyToGoHome$; 
+        //return this.readyToGoHome$;
     }
 
     private goHome() {
