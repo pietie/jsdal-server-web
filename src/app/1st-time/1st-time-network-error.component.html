@@ -1,10 +1,15 @@
-<h1>Network error</h1>
-<p>
-    Unable to reach the jsDAL server. Check your network connection and try again.
-</p>
-
- <p>
-
-    <button mat-raised-button color="primary" (click)="tryAgain()">TRY AGAIN</button>
-    
-</p> 
+<mat-card style="max-width: 400px; margin: auto;background-color: rgb(255, 208, 208);">
+    <mat-card-header style="flex:1;width:100%;display: flex; align-items: center;justify-content: center;">
+        <mat-card-title style="display: flex; flex-direction: column;align-items: center; justify-content: center;">
+            <mat-icon style="font-size: 50px;margin-bottom: 10px;">error</mat-icon>
+            <br/> Network error</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p>
+            Unable to reach the jsDAL server. Check your network connection and try again.
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="tryAgain()" [disabled]="isWorking">TRY AGAIN</button>
+    </mat-card-actions>
+</mat-card>
