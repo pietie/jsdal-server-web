@@ -1,45 +1,50 @@
 ﻿<div [@componentState]="componentState" (@componentState.done)="animDone($event)">
 
-    <span *ngIf="checkingCredentials">Checking credentials, please wait...</span>
+  <span *ngIf="checkingCredentials">Checking credentials, please wait...</span>
 
-    <div *ngIf="!checkingCredentials">
+  <div *ngIf="!checkingCredentials">
 
-        <mat-toolbar color="primary">jsDAL Server - Login</mat-toolbar><br />
+    <!-- <mat-toolbar color="primary">jsDAL Server - Login</mat-toolbar><br /> -->
 
-        <mat-card class="login">
-            <mat-card-content>
-                <div>
-                    <mat-form-field>
-                        <input matInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username"
-                            (keyup.enter)="login()" autofocus autocomplete="off" />
-                    </mat-form-field>
-                </div>
-                <div>
-                    <mat-form-field>
-                        <input matInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password"
-                            (keyup.enter)="login()" type="password" autocomplete="off" />
-                    </mat-form-field>
-                </div>
-                <div>
-                    <mat-checkbox [(ngModel)]="useWindowsAuth">Use Windows authentication</mat-checkbox>
+    <mat-card class="login">
+      <mat-card-title>Sign in to jsDAL server</mat-card-title>
+      <mat-card-content>
+        <div>
+          <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="username" [disabled]="useWindowsAuth" placeholder="Username"
+              (keyup.enter)="login()" autofocus autocomplete="off" />
 
-                </div>
-            </mat-card-content>
-            <mat-card-actions align="end">
-                <button (click)="login()" color="primary" mat-raised-button>LOGIN</button>
-            </mat-card-actions>
-            <mat-card-footer>
-                <mat-progress-bar *ngIf="busyWithLogin" mode="indeterminate"></mat-progress-bar>
-            </mat-card-footer>
-
-        </mat-card>
-        <br /><br />
-
-
-
-        <div *ngIf="loginFailed">
-            Login failed. Please check your credentials.
+            <mat-icon matPrefix>person</mat-icon>
+          </mat-form-field>
         </div>
+        <div>
+          <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="password" [disabled]="useWindowsAuth" placeholder="Password"
+              (keyup.enter)="login()" type="password" autocomplete="off" />
 
+            <mat-icon matPrefix>lock</mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-checkbox [(ngModel)]="useWindowsAuth">Use Windows authentication</mat-checkbox>
+
+        </div>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button (click)="login()" color="primary" mat-raised-button>LOGIN</button>
+      </mat-card-actions>
+      <mat-card-footer>
+        <mat-progress-bar *ngIf="busyWithLogin" mode="indeterminate"></mat-progress-bar>
+      </mat-card-footer>
+
+    </mat-card>
+    <br /><br />
+
+
+
+    <div *ngIf="loginFailed">
+      Login failed. Please check your credentials.
     </div>
+
+  </div>
 </div>
