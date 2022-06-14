@@ -22,7 +22,7 @@ export class EndpointDALService { // TODO: move code into API services?
     isMetadata: boolean,
     dataSource: string,
     catalog: string,
-    authType: number, username?: string, password?: string, port: number
+    authType: number, username?: string, password?: string, port: number, encrypt?: boolean
   }): Promise<any> {
     return L2.postJson(`/api/endpoint/${detail.endpoint}/connection?projectName=${detail.project}&dbSourceName=${detail.dbSource}`, {
       body: JSON.stringify({
@@ -32,7 +32,8 @@ export class EndpointDALService { // TODO: move code into API services?
         authType: detail.authType,
         username: L2.nullToEmpty(detail.username),
         password: L2.nullToEmpty(detail.password),
-        port: detail.port
+        port: detail.port,
+        encrypt: detail.encrypt
       })
     });
   }

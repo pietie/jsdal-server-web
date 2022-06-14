@@ -1,69 +1,81 @@
 <h1 mat-dialog-title>
-    <i class="fa fa-plus-circle pr8"></i>{{ title }}</h1>
+  <i class="fa fa-plus-circle pr8"></i>{{ title }}
+</h1>
 <div mat-dialog-content>
 
-    <div class="form-flex" style="width:300px">
-        <div class="field full flex-vertical-center">
-            <mat-form-field class="full">
-                <input matInput type="text" placeholder="Datasource" title="Database server IP or DNS" [(ngModel)]="obj.dataSource" required
-                    [disabled]="shouldDisableControls()"  />
-            </mat-form-field>
-            <mat-form-field class="full">
-                <input matInput type="number" placeholder="Port" [(ngModel)]="obj.port" [disabled]="shouldDisableControls()" />
-            </mat-form-field>
-        </div>
-
-
-        <div style="margin-bottom: 12px;">
-            <label style="margin-right:10px;font-size:15px;color: #303030;">Auth type</label>
-            
-            <mat-radio-group name="auth-type" [(ngModel)]="obj.authType" [disabled]="shouldDisableControls()">
-                <mat-radio-button [value]="100">Windows</mat-radio-button>
-                <mat-radio-button [value]="200">SQL</mat-radio-button>
-            </mat-radio-group>
-        </div>
-
-        <mat-form-field class="field full">
-            <input matInput type="text" placeholder="Username" [(ngModel)]="obj.username" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
-            />
-        </mat-form-field>
-        <mat-form-field class="field full">
-            <input matInput type="password" placeholder="Password" [(ngModel)]="obj.password" required autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200"
-            />
-        </mat-form-field>
-
-
-        <mat-form-field class="field full">
-            <input matInput placeholder="Database" [(ngModel)]="obj.database" [matAutocomplete]="auto" [disabled]="shouldDisableControls()">
-            <mat-hint align="end">
-                <a href="javascript:void(0);" (click)="loadDbList()" [class.disabled]="isLoadingDbList || shouldDisableControls()">{{ !isLoadingDbList? "load from server":"loading, please wait..." }}</a>
-            </mat-hint>
-        </mat-form-field>
-
-        
-        <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let row of dbList" [value]="row.id">{{row.text}}</mat-option>
-        </mat-autocomplete>
-
-        <br/>
-        <mat-form-field style="margin-top:4px;" *ngIf="dataSourceMode" >
-            <mat-select class="field full" placeholder="Default rule mode" required [(ngModel)]="obj.defaultRuleMode">
-                <mat-option value="0">Include all routines</mat-option>
-                <mat-option value="1">Exclude all routines</mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <br/>
-
-        <button mat-raised-button color="primary" (click)="testConnection()" [disabled]="shouldDisableControls()">Test connection</button>
-        <br/>
-        <br/>
-        <br/>
+  <div class="form-flex" style="width:300px">
+    <div class="field full flex-vertical-center">
+      <mat-form-field class="full">
+        <input matInput type="text" placeholder="Datasource" title="Database server IP or DNS"
+          [(ngModel)]="obj.dataSource" required [disabled]="shouldDisableControls()" />
+      </mat-form-field>
+      <mat-form-field class="full">
+        <input matInput type="number" placeholder="Port" [(ngModel)]="obj.port" [disabled]="shouldDisableControls()" />
+      </mat-form-field>
     </div>
+
+
+    <div style="margin-bottom: 12px;">
+      <label style="margin-right:10px;font-size:15px;color: #303030;font-weight: 550;">Auth type</label>
+
+      <mat-radio-group name="auth-type" [(ngModel)]="obj.authType" [disabled]="shouldDisableControls()">
+        <mat-radio-button [value]="100">Windows</mat-radio-button>
+        <mat-radio-button [value]="200" style="margin-left: 10px">SQL</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <mat-form-field class="field full">
+      <input matInput type="text" placeholder="Username" [(ngModel)]="obj.username" required autocomplete="new-password"
+        [disabled]="shouldDisableControls() || obj.authType != 200" />
+    </mat-form-field>
+    <mat-form-field class="field full">
+      <input matInput type="password" placeholder="Password" [(ngModel)]="obj.password" required
+        autocomplete="new-password" [disabled]="shouldDisableControls() || obj.authType != 200" />
+    </mat-form-field>
+
+    <div class="field full" style="margin: 10px 0 20px 0">
+
+      <mat-checkbox [(ngModel)]="obj.encrypt">Encrypt connection</mat-checkbox>
+
+    </div>
+
+
+
+    <mat-form-field class="field full">
+      <input matInput placeholder="Database" [(ngModel)]="obj.database" [matAutocomplete]="auto"
+        [disabled]="shouldDisableControls()">
+      <mat-hint align="end">
+        <a href="javascript:void(0);" (click)="loadDbList()"
+          [class.disabled]="isLoadingDbList || shouldDisableControls()">{{ !isLoadingDbList? "load from
+          server":"loading, please wait..." }}</a>
+      </mat-hint>
+    </mat-form-field>
+
+
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let row of dbList" [value]="row.id">{{row.text}}</mat-option>
+    </mat-autocomplete>
+
+    <br />
+    <mat-form-field style="margin-top:4px;" *ngIf="dataSourceMode">
+      <mat-select class="field full" placeholder="Default rule mode" required [(ngModel)]="obj.defaultRuleMode">
+        <mat-option value="0">Include all routines</mat-option>
+        <mat-option value="1">Exclude all routines</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <br />
+
+    <button mat-raised-button color="primary" (click)="testConnection()" [disabled]="shouldDisableControls()">Test
+      connection</button>
+    <br />
+    <br />
+    <br />
+  </div>
 
 
 </div>
 <div mat-dialog-actions align="end">
-    <button color="primary" mat-button (click)="dialogRef.close(true)">{{addMode? "ADD":"UPDATE"}}</button>
-    <button color="primary" mat-button (click)="dialogRef.close(false)">CANCEL</button>
+  <button color="primary" mat-button (click)="dialogRef.close(true)">{{addMode? "ADD":"UPDATE"}}</button>
+  <button color="primary" mat-button (click)="dialogRef.close(false)">CANCEL</button>
 </div>

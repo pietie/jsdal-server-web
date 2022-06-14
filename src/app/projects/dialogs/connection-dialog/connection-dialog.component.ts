@@ -10,6 +10,7 @@ export interface IDbConnection {
   password?: string;
   database?: string;
   port?: number;
+  encrypt?: boolean;
 
 }
 

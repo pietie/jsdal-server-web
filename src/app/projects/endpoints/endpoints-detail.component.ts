@@ -265,7 +265,8 @@ export class EndpointDetailComponent {
           database: row.InitialCatalog,
           username: row.UserID,
           password: null,
-          port: row.Port
+          port: row.Port,
+          encrypt: row.Encrypt
         };
       }
 
@@ -289,7 +290,9 @@ export class EndpointDetailComponent {
               authType: obj.authType,
               username: obj.username,
               password: obj.password,
-              port: obj.port
+              port: obj.port,
+              encrypt: obj.encrypt
+
             }).then(r => {
               // TODO: Show loading indicator of some sort? Use await before showing success??
               this.refreshEndpointDetail();
