@@ -1,4 +1,5 @@
-<mat-sidenav-container style="background-color: #F0EDE5" [class.main-app-disconnected]="isDisconnected">
+<!-- [class.main-app-disconnected]="isDisconnected" -->
+<mat-sidenav-container style="background-color: #F0EDE5" >
   <mat-sidenav id="main-sidenav" #side mode="push" opened="false" style="width:260px;" [fixedInViewport]="true">
 
 
@@ -107,6 +108,9 @@
       <mat-icon class="menu-icon" (click)="side.open();" style="margin-right:10px;">menu</mat-icon>
       <span (click)="side.toggle()" style="cursor: pointer">jsDAL Server</span>
 
+      <mat-icon class="signalR" matTooltip="SignalR not connected" style="margin-left:20px;"
+        *ngIf="isDisconnected || isReconnecting"  [class.disconnected]="isDisconnected" [class.reconnecting]="isReconnecting">link_off</mat-icon>
+
       <div style="flex: 1 1;display:flex;justify-content: flex-end">
         <div [matMenuTriggerFor]="appMenu" class="avatar">P</div>
       </div>
@@ -138,7 +142,7 @@
 
 </mat-sidenav-container>
 
-<div class="disconnected-dlg" *ngIf="isDisconnected">
+<!-- <div class="disconnected-dlg" *ngIf="isDisconnected">
   <div class="icon">
     <mat-icon>error</mat-icon>
   </div>
@@ -146,23 +150,4 @@
     Connection to jsDAL server lost. Make sure you have a working network connection and try again.
   </p>
   <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
-</div>
-<!--
-    <div class="disconnected-container">
-
-        <mat-card style="max-width:400px;margin:auto; pointer-events: all;">
-            <mat-card-title>Connection lost</mat-card-title>
-            <mat-card-content>
-                <p>
-                    Connection to jsDAL server lost. Make sure you have a working network connection and try again.
-                </p>
-                <div>
-
-                </div>
-
-            </mat-card-content>
-            <mat-card-actions align="end">
-                <button mat-raised-button color="primary" (click)="gotoLogin()">RETRY</button>
-            </mat-card-actions>
-        </mat-card>
-    </div>-->
+</div> -->

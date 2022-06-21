@@ -34,7 +34,7 @@ export class ChartCardComponent implements OnInit {
   chartOptions: ChartOptions = <any>{
     onClick: (a, b) => { console.log(a, b); },
     responsive: true,
-    scales: { xAxes: [{}], yAxes: [{}] },
+   // scales: { xAxes: [{}], yAxes: [{}] },
     legend: { align: "center", fullWidth: true, position: "right", display: true },
     plugins: {
       datalabels: {
@@ -58,6 +58,7 @@ export class ChartCardComponent implements OnInit {
   get datasetLabel(): string {
     return this._datasetLabel;
   }
+
   @Input() set datasetLabel(value: string) {
     this._datasetLabel = value;
     this.callRefresh();

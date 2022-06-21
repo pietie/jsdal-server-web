@@ -36,6 +36,7 @@ export class AppComponent {
   }
 
   public isDisconnected: boolean = false;
+  public isReconnecting: boolean = false;
   public hubConnection: HubConnection;
 
   async ngOnInit() {
@@ -70,16 +71,29 @@ export class AppComponent {
       .configureLogging(LogLevel.Debug)
       .withUrl(this.api.apiBaseUrl + '/heartbeat')
       .withHubProtocol(new JsonHubProtocol())
+      .withAutomaticReconnect()
       .build();
 
     this.hubConnection.onclose(e => {
       console.info("Hub connection closed");
       this.isDisconnected = true;
+      this.changeDetectorRef.detectChanges();
+    });
+
+    this.hubConnection.onreconnecting(()=> {
+      this.isReconnecting = true;
+      this.changeDetectorRef.detectChanges();
+    });
+
+    this.hubConnection.onreconnected(()=> {
+      this.isReconnecting = false;
+      this.changeDetectorRef.detectChanges();
     });
 
     this.hubConnection.start()
       .then(() => {
         console.info("Connected to heart beat hub");
+        this.isReconnecting = false;
         this.hubConnection.on("tick", tick => { this.isDisconnected = false; });
 
         this.hubConnection.invoke("Init").then(r => {

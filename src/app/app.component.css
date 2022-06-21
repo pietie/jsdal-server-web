@@ -1,37 +1,36 @@
-::ng-deep mat-card { margin-bottom: 14px; }
-
-#app-content
-{
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    flex-grow: 1 !important;
+::ng-deep mat-card {
+  margin-bottom: 14px;
 }
 
-mat-nav-list.menu
-{
-    padding-left: 26px;
+#app-content {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1 !important;
 }
 
-.menu-icon
-{
-    cursor: pointer;
+mat-nav-list.menu {
+  padding-left: 26px;
+}
+
+.menu-icon {
+  cursor: pointer;
 }
 
 .avatar {
-    border-radius: 50%;
-    background-color: #d0ff6b;
-    width: 35px;
-    height: 35px;
-    color: #000;
-    font: bold 16px Arial;
-    line-height: 35px;
-    text-align: center;
-    cursor: pointer;
+  border-radius: 50%;
+  background-color: #d0ff6b;
+  width: 35px;
+  height: 35px;
+  color: #000;
+  font: bold 16px Arial;
+  line-height: 35px;
+  text-align: center;
+  cursor: pointer;
 }
 
-/* 
+/*
 .disconnected-container
 {
     position:fixed;
@@ -48,39 +47,43 @@ mat-nav-list.menu
     pointer-events: none;
 } */
 
-.disconnected-dlg
-{
-    border-radius: 6px;
-    background-color: #fff;
-    padding: 20px;
-    position: fixed;
-    width: 500px;
-    margin: auto;
-    left:0;
-    right:0;
-    top: 20px;
-    z-index:999;
-    -webkit-box-shadow: 2px 2px 6px 2px #808080;
-    -moz-box-shadow: 2px 2px 6px 2px #808080;
-    box-shadow: 2px 2px 6px 2px #808080;
+.disconnected-dlg {
+  border-radius: 6px;
+  background-color: #fff;
+  padding: 20px;
+  position: fixed;
+  width: 500px;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 20px;
+  z-index: 999;
+  -webkit-box-shadow: 2px 2px 6px 2px #808080;
+  -moz-box-shadow: 2px 2px 6px 2px #808080;
+  box-shadow: 2px 2px 6px 2px #808080;
 }
 
-.disconnected-dlg .icon
-{
-    display: flex;
-    justify-content: center;
-    padding: 4px;
+.disconnected-dlg .icon {
+  display: flex;
+  justify-content: center;
+  padding: 4px;
 }
 
-.disconnected-dlg .icon mat-icon
-{
-    font-size: 2.8em;
+.disconnected-dlg .icon mat-icon {
+  font-size: 2.8em;
 }
 
 
-.main-app-disconnected
-{
-    filter: saturate(0.25);
-    transition: all 0.8s;
-    /*pointer-events: none;*/
+.main-app-disconnected {
+  filter: saturate(0.25);
+  transition: all 0.8s;
+  /*pointer-events: none;*/
+}
+
+mat-icon.signalR.disconnected {
+  color: red;
+}
+
+mat-icon.signalR.reconnecting {
+  color: orange;
 }

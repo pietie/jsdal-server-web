@@ -87,7 +87,7 @@ import { NgChartsModule } from 'ng2-charts';
     NgChartsModule
   ],
   declarations: [IsoDatePipe, FromEpochPipe, LogGrid, MsgDialog, PromptDialog, MomentFromNowPipe, ChartCardComponent],
-  exports: [ChartCardComponent, NgChartsModule, IsoDatePipe, FromEpochPipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule, MatAutocompleteModule,
+  exports: [NgChartsModule, IsoDatePipe, FromEpochPipe, LogGrid, CommonModule, FormsModule, BrowserAnimationsModule, MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -121,6 +121,7 @@ import { NgChartsModule } from 'ng2-charts';
     MatBottomSheetModule,
     MatBadgeModule,
     MomentFromNowPipe,
+    ChartCardComponent
   ],
   entryComponents: [MsgDialog, PromptDialog]
 
