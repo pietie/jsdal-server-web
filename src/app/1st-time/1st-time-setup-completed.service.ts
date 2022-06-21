@@ -22,7 +22,6 @@ export class FirstTimeSetupCompletedService {
         // sigh...need this to continually force change detection - in a fetch network failure the last change is not detected for some reason!
         let timerId = setInterval(() => { console.log("tick"); this.appRef.tick(); }, 500);
 
-
         this.isCompletedPromise = fetch(url)
             .then(response => {
                 clearTimeout(timerId);

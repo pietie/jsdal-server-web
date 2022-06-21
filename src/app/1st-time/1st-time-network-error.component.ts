@@ -6,19 +6,24 @@ import { FirstTimeSetupCompletedService } from './../1st-time/1st-time-setup-com
     templateUrl: './1st-time-network-error.component.html'
 })
 export class FirstTimeNetworkErrorComponent {
+    isWorking = false;
+
     constructor(public router: Router, public firstTimeSetupCompletedService: FirstTimeSetupCompletedService) {
 
     }
 
     async tryAgain() {
         try {
-            console.log("trying again...");
+            this.isWorking = true;
             await this.firstTimeSetupCompletedService.retry();
             this.router.navigate(['login']);
         }
         catch (e) {
-            console.log("error");
             console.error(e);
+        }
+        finally
+        {
+            this.isWorking = false;
         }
     }
 }
