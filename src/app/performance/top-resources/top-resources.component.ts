@@ -15,6 +15,8 @@ export class TopResourcesComponent implements OnInit {
 
   constructor(public api: ApiService, public dialog: MatDialog) { }
 
+  numberLocale: 'en-ZA';
+
   sort;
   @ViewChild(MatSort) set content(content: ElementRef) {
     this.sort = content;

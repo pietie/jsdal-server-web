@@ -5,7 +5,7 @@
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4200 --host 0.0.0.0 --disable-host-check",
+    "start": "ng serve --port 4210 --host 0.0.0.0 --disable-host-check",
     "prod": "ng build --configuration production",
     "sw": "sw-precache --root=dist --config=sw-precache-config.js",
     "aot": "ng build --aot --configuration production",

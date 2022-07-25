@@ -67,8 +67,8 @@
 
 <hr />
 
-<l2-chart-card #topNchart [allowMultipleEndpoints]="true"  type="bar" [legend]="false" (refresh)="refreshTopN($event, topNchart)"
-  [width]="'800px'">
+<l2-chart-card #topNchart [allowMultipleEndpoints]="true" type="bar" [legend]="false"
+  (refresh)="refreshTopN($event, topNchart)" [width]="'800px'">
 
   <mat-button-toggle-group #chartResourceTypeGroup="matButtonToggleGroup" [(ngModel)]="topN.resourceType"
     (change)="topNchart.datasetLabel = getButtonText(chartResourceTypeGroup.selected['buttonId'])">
@@ -85,14 +85,14 @@
 
 
 
-<l2-chart-card #serverPerfChart type="line" [allowMaxRowsSelection]="false" [allowMultipleEndpoints]="true" [title]="'Server performance'"
-  (refresh)="refreshServerPerformance($event, serverPerfChart)" [width]="'800px'">
+<l2-chart-card #serverPerfChart type="line" [allowMaxRowsSelection]="false" [allowMultipleEndpoints]="true"
+  [title]="'Server performance'" (refresh)="refreshServerPerformance($event, serverPerfChart)" [width]="'800px'">
 
 </l2-chart-card>
 
 
-<l2-chart-card #topNAllList type="line" [allowMaxRowsSelection]="true" [allowMultipleEndpoints]="true" [title]="'All stats'"
-  (refresh)="refreshAllStatsList($event, topNAllList)" [width]="'1200px'">
+<l2-chart-card #topNAllList type="line" [allowMaxRowsSelection]="true" [allowMultipleEndpoints]="true"
+  [title]="'All stats'" (refresh)="refreshAllStatsList($event, topNAllList)" [width]="'65%'">
 
 
   <table mat-table #table [dataSource]="topNAllListData" matSort>
@@ -103,48 +103,50 @@
 
     <ng-container matColumnDef="TotalExecutions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total executions</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalExecutions}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalExecutions | number:'':numberLocale}} </td>
     </ng-container>
 
     <ng-container matColumnDef="TotalDurationInMins">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total duration (mins)</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalDurationInMins}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalDurationInMins| number:'':numberLocale}} </td>
     </ng-container>
 
     <ng-container matColumnDef="TotalMBReceived">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total MBs</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalMBReceived}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalMBReceived| number:'':numberLocale}} </td>
     </ng-container>
 
     <ng-container matColumnDef="AvgDurationInMS">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg duration (ms)</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgDurationInMS}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgDurationInMS| number:'':numberLocale}} </td>
     </ng-container>
 
     <ng-container matColumnDef="AvgKBReceived">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg KB</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgKBReceived}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgKBReceived| number:'':numberLocale}} </td>
     </ng-container>
 
     <ng-container matColumnDef="AvgSumNetworkServerTimeInMS">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Avg network time (ms)</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgSumNetworkServerTimeInMS}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.AvgSumNetworkServerTimeInMS| number:'':numberLocale}}
+      </td>
     </ng-container>
 
 
     <ng-container matColumnDef="TotalExceptions">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total exceptions</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalExceptions}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalExceptions| number:'':numberLocale}} </td>
     </ng-container>
 
     <ng-container matColumnDef="TotalNetworkServerTimeInMins">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total network time (mins)</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalNetworkServerTimeInMins}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalNetworkServerTimeInMins| number:'':numberLocale}}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="TotalTimeouts">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Total timeouts</th>
-      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalTimeouts}} </td>
+      <td class="align-right" mat-cell *matCellDef="let row"> {{row.TotalTimeouts| number:'':numberLocale}} </td>
     </ng-container>
 
 
@@ -162,7 +164,7 @@
 
 <l2-chart-card #routineChart type="line" [allowMaxRowsSelection]="false" [allowMultipleEndpoints]="true"
   [title]="(specificRoutine && specificRoutine.schema && specificRoutine.routine)? (specificRoutine?.schema + '.' + specificRoutine?.routine) : '(routine not set)'"
-  (refresh)="refreshRoutineSpecific($event, routineChart)" [width]="'800px'">
+  (refresh)="refreshRoutineSpecific($event, routineChart)" [width]="'65%'">
 
   <div>
     <mat-form-field>
