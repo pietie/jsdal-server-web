@@ -1,0 +1,80 @@
+<h1 mat-dialog-title>Add/Edit Execution Policy</h1>
+
+<div mat-dialog-content>
+
+
+  <mat-slide-toggle [(ngModel)]="data.Enabled">Enabled</mat-slide-toggle>
+
+  <mat-form-field>
+    <input [disabled]="!data.Enabled" [(ngModel)]="data.Name" matInput placeholder="Name" value="value"
+      autocomplete="off">
+  </mat-form-field>
+
+
+
+  <mat-form-field>
+    <input [disabled]="!data.Enabled" [(ngModel)]="data.CommandTimeoutInSeconds" matInput
+      placeholder="Command timeout (seconds)" value="value" type="number" autocomplete="off">
+  </mat-form-field>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Deadlock retry</mat-card-title>
+      <mat-card-subtitle>
+        <mat-slide-toggle [disabled]="!data.Enabled" [(ngModel)]="data.DeadlockRetry.Enabled"
+          (change)="this.updateChart()">Enabled</mat-slide-toggle>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+      <mat-form-field>
+        <input [disabled]="!data.Enabled || !data.DeadlockRetry.Enabled" (change)="this.updateChart()"
+          [(ngModel)]="data.DeadlockRetry.MaxRetries" matInput placeholder="Max retries" value="value" type="number"
+          autocomplete="off" min="0" step="1">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Type {{ this.data?.DeadlockRetry?.Type }}</mat-label>
+        <mat-select #typ [disabled]="!data.Enabled || !data.DeadlockRetry.Enabled" [(ngModel)]="data.DeadlockRetry.Type"
+          (selectionChange)="this.updateChart()">
+          <mat-option value="Linear">Linear</mat-option>
+          <mat-option value="Exponential">Exponential</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [disabled]="!data.Enabled || !data.DeadlockRetry.Enabled" [(ngModel)]="data.DeadlockRetry.Value"
+          (change)="this.updateChart()" [placeholder]="typ.value == 'Linear'? 'Delay (s)':'Base'" value="value"
+          autocomplete="off" type="number">
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+
+      <div *ngIf="!(!data.Enabled || !data.DeadlockRetry.Enabled)">
+        <canvas baseChart [data]="chartDataSets" [options]="chartOptions" [legend]="false" [type]="'line'">
+        </canvas>
+      </div>
+
+
+    </mat-card-content>
+    <!-- <mat-card-actions>
+      <button mat-button>Ok</button>
+    </mat-card-actions> -->
+  </mat-card>
+
+
+
+
+
+
+</div>
+
+
+
+<div mat-dialog-actions align="end">
+  <button mat-button color="primary" (click)="ok()">ADD</button>
+  <button mat-button color="primary" (click)="dialogRef.close('CANCEL')">CANCEL</button>
+</div>
+
+<mat-divider>
+</mat-divider>

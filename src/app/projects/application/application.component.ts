@@ -18,7 +18,8 @@ import { ApiService } from 'jsdal-api';
 
 @Component({
   selector: 'Apps',
-  templateUrl: './application.component.html'
+  templateUrl: './application.component.html',
+  styles:[`.tab-icon { margin-right: 8px }`]
 })
 export class ApplicationComponent {
   public isReady: Boolean = false;

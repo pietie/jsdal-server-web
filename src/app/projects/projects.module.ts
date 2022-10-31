@@ -24,7 +24,10 @@ import { EndpointsDetailRouteResolver } from './endpoints/endpoints-detail.resol
 import { EndpointDALService } from '~/projects/endpoints/endpoint-dal.service';
 
 import { RulesComponent } from './../rules/rules.component';
-import { RuleAddupdateDialogComponent } from './../rules/dialogs/rule-addupdate-dialog.component';
+import { RuleAddupdateDialogComponent } from './../rules/dialogs/rule-addupdate-dialog.component';;
+import { PolicyListComponent } from './policies/policy-list/policy-list.component'
+;
+import { AddEditPolicyDialogComponent } from './policies/policy-list/add-edit-policy-dialog/add-edit-policy-dialog.component'
 
 
 @NgModule({
@@ -38,25 +41,29 @@ import { RuleAddupdateDialogComponent } from './../rules/dialogs/rule-addupdate-
         EndpointDetailComponent,
 
         DatasourceDialogComponent,
-        
+
         MetadataViewerDialog,
         MetadataMoreInfoDialog,
         ConnectionDialogComponent,
         RulesComponent,
         RuleAddupdateDialogComponent
-
+,
+        PolicyListComponent
+,
+        AddEditPolicyDialogComponent
     ],
     imports: [SharedModule, projectsRouting],
     providers: [BreadcrumbsService, ProjectService, ApplicationRouteResolver, EndpointsDetailRouteResolver, EndpointDALService],
     entryComponents: [
         DatasourceDialogComponent,
-        
+
         MetadataViewerDialog,
         MetadataMoreInfoDialog ,
         ConnectionDialogComponent,
-        RuleAddupdateDialogComponent
+        RuleAddupdateDialogComponent,
+        AddEditPolicyDialogComponent
     ]
 
 
 })
-export class ProjectsModule { }   
+export class ProjectsModule { }
