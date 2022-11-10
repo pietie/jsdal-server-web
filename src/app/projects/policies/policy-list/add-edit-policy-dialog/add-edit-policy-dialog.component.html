@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add/Edit Execution Policy</h1>
+<h1 mat-dialog-title>{{ title }}</h1>
 
 <div mat-dialog-content>
 
@@ -48,9 +48,8 @@
           autocomplete="off" type="number">
       </mat-form-field>
 
-      <mat-divider></mat-divider>
-
       <div *ngIf="!(!data.Enabled || !data.DeadlockRetry.Enabled)">
+        <mat-divider></mat-divider>
         <canvas baseChart [data]="chartDataSets" [options]="chartOptions" [legend]="false" [type]="'line'">
         </canvas>
       </div>
@@ -69,12 +68,7 @@
 
 </div>
 
-
-
 <div mat-dialog-actions align="end">
-  <button mat-button color="primary" (click)="ok()">ADD</button>
-  <button mat-button color="primary" (click)="dialogRef.close('CANCEL')">CANCEL</button>
+  <button mat-button color="primary" (click)="ok()">{{ okButtonLabel }}</button>
+  <button mat-button color="primary" (click)="dialogRef.close()">CANCEL</button>
 </div>
-
-<mat-divider>
-</mat-divider>

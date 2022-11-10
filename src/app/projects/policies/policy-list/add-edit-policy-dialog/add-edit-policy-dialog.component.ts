@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import { L2 } from 'l2-lib/dist/L2';
 import { retry } from 'rxjs';
+import { ApiService } from '~/services/api';
 
 @Component({
   selector: 'app-add-edit-policy-dialog',
@@ -12,7 +13,7 @@ import { retry } from 'rxjs';
 export class AddEditPolicyDialogComponent implements OnInit {
 
   data: {
-    Name?: string, Enabled: boolean, Default: boolean, CommandTimeoutInSeconds: number,
+    Id?: string, Name?: string, Enabled: boolean, Default: boolean, CommandTimeoutInSeconds: number,
     DeadlockRetry: { Enabled: boolean, MaxRetries?: number, Type?: 'Linear' | 'Exponential', Value?: number }
 
   } = {
@@ -49,15 +50,27 @@ export class AddEditPolicyDialogComponent implements OnInit {
   };
 
 
-  constructor(public dialogRef: MatDialogRef<AddEditPolicyDialogComponent>) { }
+  okButtonLabel = "ADD";
+  title = "Add Execution Policy";
+
+  constructor(public dialogRef: MatDialogRef<AddEditPolicyDialogComponent>, public api: ApiService,
+    @Inject(MAT_DIALOG_DATA) public inputData: any) {
+
+
+  }
 
   ngOnInit(): void {
-    //Chart.defaults.plugins.legend.display =false;
+    if (this.inputData.existing) {
+      this.data = this.inputData.existing;
+      this.okButtonLabel = "UPDATE";
+      this.title = "Update Execution Policy";
+      this.updateChart();
+    }
   }
 
   updateChart() {
     try {
-      console.log("updateChart");
+
       if (!this.data?.DeadlockRetry?.Enabled) return;
 
       if (this.data.DeadlockRetry.MaxRetries == null) {
@@ -118,7 +131,16 @@ export class AddEditPolicyDialogComponent implements OnInit {
         }
       }
 
-      alert("TODO: Implement");
+
+      this.api
+        .app
+        .policies
+        .addUpdateExecutionPolicy({ projectName: this.inputData.project, appName: this.inputData.app, execPolicy: this.data })
+        .then(r => {
+          this.dialogRef.close(true);
+        });
+
+
 
     } catch (e) {
       L2.handleException(e);

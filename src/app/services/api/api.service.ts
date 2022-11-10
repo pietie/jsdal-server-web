@@ -36,7 +36,8 @@ export class ApiService {
     jsfiles: app.jsfiles,
     rules: appRules.rules,
     endpoint: app.endpoint,
-    serverMethods: serverMethods.serverMethods
+    serverMethods: serverMethods.serverMethods,
+    policies: app.policies
   }
 
   get app() {

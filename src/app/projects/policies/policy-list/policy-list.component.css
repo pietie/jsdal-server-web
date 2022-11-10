@@ -1,0 +1,15 @@
+:host() {
+  padding: 10px;
+}
+
+
+td.default
+{
+  font-weight: bold;
+}
+
+td.disabled
+{
+  font-style: italic;
+  color: #555;
+}

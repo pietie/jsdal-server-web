@@ -22,7 +22,7 @@ export module app {
   export class plugins {
 
     static getInlineAssemblies(): Promise<any> {
-      return <any>L2.fetchJson(`/inline-assemblies`).then((r:any)=>r.Data);
+      return <any>L2.fetchJson(`/inline-assemblies`).then((r: any) => r.Data);
     }
 
     static getDiagnostics(): Promise<any> {
@@ -145,6 +145,25 @@ export module app {
 
     static getMetadataDependencies(options: { project: string, app: string, endpoint: string }): Promise<any> {
       return <any>L2.getJson(`/api/endpoint/${options.endpoint}/metadata-dependencies?project=${options.project}&app=${options.app}`).then((r: any) => r.Data);
+    }
+  }
+
+  export class policies {
+
+    static getExecutionPolicies(options: { projectName: string, appName: string }): Promise<{ Success: boolean }> {
+      return <any>L2.getJson(`/api/app/${options.appName}/exec-policy?project=${options.projectName}`).then((r: any) => r.Data);
+    }
+
+    static addUpdateExecutionPolicy(options: { projectName: string, appName: string, execPolicy: any }): Promise<{ Success: boolean }> {
+      return <any>L2.postJson(`/api/app/${options.appName}/exec-policy?project=${options.projectName}`, { body: JSON.stringify(options.execPolicy) }).then((r: any) => r.Data);
+    }
+
+    static setDefaultExecPolicy(options: { projectName: string, appName: string, execPolicyId: string }): Promise<{ Success: boolean }> {
+      return <any>L2.postJson(`/api/app/${options.appName}/exec-policy/set-default?project=${options.projectName}&id=${options.execPolicyId}`).then((r: any) => r.Data);
+    }
+
+    static deleteExecPolicy(options: { projectName: string, appName: string, execPolicyId: string }): Promise<{ Success: boolean }> {
+      return <any>L2.deleteJson(`/api/app/${options.appName}/exec-policy?project=${options.projectName}&id=${options.execPolicyId}`).then((r: any) => r.Data);
     }
   }
 }

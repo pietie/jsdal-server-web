@@ -1,4 +1,39 @@
-<p>policy-list works!</p>
+<mat-spinner *ngIf="loading" [diameter]="24" style="position: absolute;">
+</mat-spinner>
+
+<ng-container>
+
+  <table class="grid" style="max-width2: 700px;margin:0;">
+    <thead>
+      <tr>
+        <th style="width:160px"></th>
+        <th style="width:220px">Name</th>
+        <th style="width:220px">Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template [ngIf]="policies">
+        <tr *ngFor="let row of policies">
+          <td class="anchorColumn">
+            <button *ngIf="!row.Default" mat-button color="primary" (click)="onSetDefault(row)" [disabled]="!row.Enabled">set default</button>
+            <button mat-button color="primary" (click)="onEdit(row)">edit</button>
+            <button mat-button color="accent" (click)="onDelete(row)">delete</button>
+          </td>
+          <td [class.disabled]="!row.Enabled" [class.default]="row.Default">{{row.Name}}</td>
+
+          <td>{{ buildDescription(row) }} </td>
+
+        </tr>
+      </ng-template>
+      <tr *ngIf="!policies || policies.length == 0">
+        <td colspan="100">No policies exist yet.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</ng-container>
+
+<br />
 
 
-<button mat-button (click)="addPolicy()">ADD POLICY</button>
+<button [disabled]="loading" mat-raised-button color="primary" (click)="addPolicy()">ADD POLICY</button>
