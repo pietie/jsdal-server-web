@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 import { L2 } from 'l2-lib/L2';
 

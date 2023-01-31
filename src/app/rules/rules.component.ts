@@ -1,5 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MMatLegacyDialog as MatDialog MMatLegacyDialogRef as MatDialogRef} from '@@angular/material/legacy-dialog;
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbsService } from '~/projects/master/breadcrumbs/breadcrumbs.service';
 import { ApiService } from 'jsdal-api';

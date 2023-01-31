@@ -5,7 +5,7 @@ import { L2 } from 'l2-lib/L2';
 
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import { ApiService } from '~/services/api';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UptimeHistoryDialogComponent } from './uptime-history-dialog/uptime-history-dialog.component';
 
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
 import { ApiService } from '~/services/api';
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
-import { MatMenu, MatMenuTrigger, MenuPositionX, MenuPositionY } from '@angular/material/menu';
+import { MatLegacyMenu as MatMenu, MatLegacyMenuTrigger as MatMenuTrigger, LegacyMenuPositionX as MenuPositionX, LegacyMenuPositionY as MenuPositionY } from '@angular/material/legacy-menu';
 
 @Component({
   selector: 'background-threads-tab',

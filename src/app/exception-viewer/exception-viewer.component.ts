@@ -3,7 +3,7 @@ import { L2 } from 'l2-lib/L2';
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '~/services/api';
-import { MatOption } from '@angular/material/core';
+import { MatLegacyOption as MatOption } from '@angular/material/legacy-core';
 
 @Component({
   templateUrl: './exception-viewer.component.html',
