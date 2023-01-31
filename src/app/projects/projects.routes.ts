@@ -74,4 +74,4 @@ export const projectsRoutes: Routes = [
     }
 ];
 
-export const projectsRouting: ModuleWithProviders<RouterModule> = RouterModule.forRoot(projectsRoutes, { onSameUrlNavigation: "reload", relativeLinkResolution: 'legacy' });
+export const projectsRouting: ModuleWithProviders<RouterModule> = RouterModule.forRoot(projectsRoutes, { onSameUrlNavigation: "reload" });
