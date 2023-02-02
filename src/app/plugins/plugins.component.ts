@@ -32,7 +32,7 @@ export class PluginsComponent {
   }
 
   testCompile() {
-    L2.postJson('/api/util/test-compile', { body: this.text }).then(r => {
+    this.api.post('/api/util/test-compile', { body: this.text }).then(r => {
       this.compilerOutput = r;
       this.hasChangesToCompile = false;
     });

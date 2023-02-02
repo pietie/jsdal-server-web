@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { L2 } from 'l2-lib/L2';
+import { ApiService } from '~/services/api';
 
 
 export interface IDbConnection {
@@ -27,7 +28,7 @@ export enum AuthenticationType {
 })
 export class ConnectionDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ConnectionDialogComponent>) {
+  constructor(public dialogRef: MatDialogRef<ConnectionDialogComponent>, public api:ApiService) {
 
   }
 
@@ -82,7 +83,7 @@ export class ConnectionDialogComponent implements OnInit {
       pass = this.obj.password;
     }
 
-    L2.fetchJson(`/api/util/listdbs?datasource=${this.obj.dataSource}&u=${L2.nullToEmpty(user)}&p=${L2.nullToEmpty(pass)}&port=${this.obj.port}`).then((list: any) => {
+    this.api.get(`/api/util/listdbs?datasource=${this.obj.dataSource}&u=${L2.nullToEmpty(user)}&p=${L2.nullToEmpty(pass)}&port=${this.obj.port}`).then((list: any) => {
       this.isLoadingDbList = false;
       this.dbList = list.Data.map((s) => { return { id: s, text: s } });
     }).catch(() => {
@@ -100,7 +101,7 @@ export class ConnectionDialogComponent implements OnInit {
       pass = this.obj.password;
     }
 
-    L2.fetchJson(`/api/util/testconnection?dataSource=${this.obj.dataSource}&catalog=${this.obj.database}&username=${L2.nullToEmpty(user)}&password=${L2.nullToEmpty(pass)}&port=${this.obj.port}`).then(() => {
+    this.api.get(`/api/util/testconnection?dataSource=${this.obj.dataSource}&catalog=${this.obj.database}&username=${L2.nullToEmpty(user)}&password=${L2.nullToEmpty(pass)}&port=${this.obj.port}`).then(() => {
       this.isTestingConnection = false;
       L2.success("Connection successful");
     }).catch((e) => { this.isTestingConnection = false; L2.handleException(e); });

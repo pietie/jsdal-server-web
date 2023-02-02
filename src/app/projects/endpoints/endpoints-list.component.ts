@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { L2 } from 'l2-lib/L2';
+import { ApiService } from '~/services/api';
 
 @Component({
     selector: 'endpoint-list',
@@ -13,7 +14,7 @@ export class EndpointListComponent {
     projectName: string;
     dbSourceName: string;
 
-    constructor(public route: ActivatedRoute) {
+    constructor(public route: ActivatedRoute, public api:ApiService) {
         try {
             this.route.data.subscribe((d: any) => {
                 this.projectName = this.route.snapshot.params['project'];
@@ -32,7 +33,7 @@ export class EndpointListComponent {
 
 
     refreshEndpoints() {
-        L2.fetchJson(`/api/endpoint?project=${this.projectName}&dbSourceName=${this.dbSourceName}`).then((r: any) => {
+      this.api.get(`/api/endpoint?project=${this.projectName}&dbSourceName=${this.dbSourceName}`).then((r: any) => {
             this.endpoints = r.Data;
         });
     }
@@ -62,8 +63,8 @@ export class EndpointListComponent {
     }
 
     private createNewEndpoint(name: string) {
-        return L2.postJson(`/api/endpoint/${name}?project=${this.projectName}&dbSourceName=${this.dbSourceName}`, {
-            
+        return this.api.post(`/api/endpoint/${name}?project=${this.projectName}&dbSourceName=${this.dbSourceName}`, {
+
         }).then((r) => {
             L2.success(`Endpoint '${name}' successfully updated.`);
             this.refreshEndpoints();
@@ -72,7 +73,7 @@ export class EndpointListComponent {
     }
 
     private updateEndpoint(oldName: string, newName: string): Promise<any> {
-        return L2.putJson(`/api/endpoint/${oldName}?project=${this.projectName}&dbSourceName=${this.dbSourceName}`, {
+        return this.api.put(`/api/endpoint/${oldName}?project=${this.projectName}&dbSourceName=${this.dbSourceName}`, {
             body: JSON.stringify(newName)
         }).then((r) => {
             L2.success(`Endpoint '${newName}' successfully updated.`);
@@ -81,7 +82,7 @@ export class EndpointListComponent {
     }
 
     private deleteEndpoint(name: string) {
-        return L2.deleteJson(`/api/endpoint/${name}?project=${this.projectName}&dbSourceName=${this.dbSourceName}`).then((r) => {
+        return this.api.del(`/api/endpoint/${name}?project=${this.projectName}&dbSourceName=${this.dbSourceName}`).then((r) => {
             L2.success(`Endpoint '${name}' successfully deleted.`);
             this.refreshEndpoints();
         });

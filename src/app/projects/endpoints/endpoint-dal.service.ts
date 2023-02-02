@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { L2 } from 'l2-lib/L2';
+import { ApiService } from '~/services/api';
 
 
 @Injectable()
 export class EndpointDALService { // TODO: move code into API services?
 
-  constructor() { }
+  constructor(public api:ApiService) { }
 
 
   public get(project: string, dbSource: string, endpoint: string): Promise<IEndpoint> {
-    return L2.fetchJson(`/api/endpoint/${endpoint}?project=${project}&dbSource=${dbSource}`).then((r: any) => r.Data);
+    return this.api.get(`/api/endpoint/${endpoint}?project=${project}&dbSource=${dbSource}`).then((r: any) => r.Data);
   }
 
   public enableDisableMetadataCapturing(project: string, dbSource: string, endpoint: string, enable: boolean): Promise<any> {
-    return L2.postJson(`/api/endpoint/${endpoint}/metadata-capturing?project=${project}&dbSource=${dbSource}&enable=${enable}`)
+    return this.api.post(`/api/endpoint/${endpoint}/metadata-capturing?project=${project}&dbSource=${dbSource}&enable=${enable}`)
       .then((r: any) => r.Data);
   }
 
@@ -24,7 +25,7 @@ export class EndpointDALService { // TODO: move code into API services?
     catalog: string,
     authType: number, username?: string, password?: string, port: number, encrypt?: boolean
   }): Promise<any> {
-    return L2.postJson(`/api/endpoint/${detail.endpoint}/connection?projectName=${detail.project}&dbSourceName=${detail.dbSource}`, {
+    return this.api.post(`/api/endpoint/${detail.endpoint}/connection?projectName=${detail.project}&dbSourceName=${detail.dbSource}`, {
       body: JSON.stringify({
         isMetadata: detail.isMetadata,
         dataSource: detail.dataSource,
@@ -40,14 +41,11 @@ export class EndpointDALService { // TODO: move code into API services?
 
   testConnection(): Promise<any> {
     return null;
-    // return L2.fetchJson(`/api/util/testconnection?dataSource=${this.obj.dataSource}&catalog=${this.obj.database}&username=${L2.nullToEmpty(user)}&password=${L2.nullToEmpty(pass)}&port=${this.obj.port}`).then(() => {
-    //     this.isTestingConnection = false;
-    //     L2.success("Connection successful");
-    // }).catch((e) => { this.isTestingConnection = false; L2.handleException(e); });
+
   }
 
   public getCacheRoutines(project: string, dbSource: string, endpoint: string, query: string, type: string, status: string, hasMetadata?: boolean, isDeleted?: boolean): Promise<{ TotalCount: number, Results: any[] }> {
-    return L2.fetchJson(`/api/endpoint/${endpoint}/cachedroutines?project=${project}&dbSource=${dbSource}&q=${query}&type=${type}&status=${status}&hasMeta=${!!hasMetadata}&isDeleted=${!!isDeleted}`)
+    return this.api.get(`/api/endpoint/${endpoint}/cachedroutines?project=${project}&dbSource=${dbSource}&q=${query}&type=${type}&status=${status}&hasMeta=${!!hasMetadata}&isDeleted=${!!isDeleted}`)
       .then((r: any) => r.Data);
   }
 }

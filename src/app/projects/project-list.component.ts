@@ -6,6 +6,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 
 import { L2 } from 'l2-lib/L2';
 import { BreadcrumbsService } from './master/breadcrumbs/breadcrumbs.service';
+import { ApiService } from '~/services/api';
 
 @Component({
     templateUrl: './project-list.component.html',
@@ -29,7 +30,7 @@ export class ProjectListComponent {
     public projectList: any;
     public selectedProject: any;
 
-    constructor(public route: ActivatedRoute, public router: Router, public location: Location, public breadcrumbService: BreadcrumbsService) {
+    constructor(public route: ActivatedRoute, public router: Router, public location: Location, public breadcrumbService: BreadcrumbsService, public api: ApiService) {
 
     }
 
@@ -75,7 +76,7 @@ export class ProjectListComponent {
     }
 
     public deleteProject(name: string): Promise<any> {
-        return L2.deleteJson("/api/project", { body: JSON.stringify(name) }).then(r => {
+        return this.api.del("/api/project", { body: JSON.stringify(name) }).then(r => {
             L2.success(`Project '${name}' successfully removed.`);
             this.refresh();
 
@@ -89,7 +90,7 @@ export class ProjectListComponent {
     }
 
     public updateProject(name: string, newName: string): Promise<any> {
-        return L2.putJson(`/api/project/${name}`, {
+        return this.api.put(`/api/project/${name}`, {
             body: JSON.stringify(newName)
         }).then((r) => {
             L2.success(`Project '${newName}' successfully updated.`);
@@ -99,7 +100,7 @@ export class ProjectListComponent {
 
     public createNewProject(name: string): Promise<any> {
 
-        return L2.postJson("/api/project", {
+        return this.api.post("/api/project", {
             body: JSON.stringify(name)
         }).then((r) => {
             L2.success(`Project '${name}' successfully created.`);
@@ -109,7 +110,7 @@ export class ProjectListComponent {
 
     refresh() {
 
-        L2.fetchJson("/api/project").then((json: any) => {
+      this.api.get("/api/project").then((json: any) => {
             this.projectList = json.Data;
         });
 

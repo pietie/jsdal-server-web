@@ -5,7 +5,7 @@ import { L2 } from 'l2-lib/L2';
 
 import { HubConnectionBuilder, HubConnection, LogLevel } from '@microsoft/signalr';
 import { ApiService } from '~/services/api';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UptimeHistoryDialogComponent } from './uptime-history-dialog/uptime-history-dialog.component';
 
 
@@ -96,7 +96,7 @@ export class HomeComponent {
 
       this.isLoadProjectList = true;
 
-      L2.fetchJson('/api/project').then((r: any) => {
+      this.api.get('/api/project').then((r: any) => {
         this.projectList = r.Data;
         this.isLoadProjectList = false;
       }).catch(e => {
@@ -146,7 +146,7 @@ export class HomeComponent {
 
   onUsageDetailClick() {
 
-    L2.fetchJson(`/api/main/memdetail`).then((r: any) => {
+    this.api.get(`/api/main/memdetail`).then((r: any) => {
       this.usageDetail = r.Data;
     });
 

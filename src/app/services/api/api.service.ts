@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { app, appRules, serverMethods, bgTasks, performance } from './object-model';
+import { app, appRules, serverMethods, bgTasks, performance, appJsFiles } from './object-model';
+
 import { exceptions } from './exceptions';
 import { dataCollector } from './datacollector';
 import { health } from './health';
 import { util } from './util';
 import { blobs } from './blobs'
 
+import { L2 } from 'l2-lib/L2';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,6 +17,23 @@ export class ApiService {
     .then(r => r.json())
     .then(r => {
       this._apiBaseUrl = r.apiBaseUrl;
+
+      this.appApi.whitelist.apiBaseUrl =
+      this.appApi.plugins.apiBaseUrl =
+      this.appApi.jsfiles.apiBaseUrl =
+      this.appApi.rules.apiBaseUrl =
+      this.appApi.endpoint.apiBaseUrl =
+      this.appApi.serverMethods.apiBaseUrl =
+      this.appApi.policies.apiBaseUrl =
+      bgTasks.bgtasks.apiBaseUrl =
+      performance.apiBaseUrl =
+      util.apiBaseUrl =
+      exceptions.apiBaseUrl =
+      blobs.apiBaseUrl =
+      dataCollector.apiBaseUrl =
+      health.apiBaseUrl =
+      this._apiBaseUrl;
+
       return r;
     })
     .catch(ex => console.error("Failed to load jsdal.json", ex));
@@ -33,7 +52,7 @@ export class ApiService {
   private appApi = {
     whitelist: app.whitelist,
     plugins: app.plugins,
-    jsfiles: app.jsfiles,
+    jsfiles: appJsFiles.jsfiles,
     rules: appRules.rules,
     endpoint: app.endpoint,
     serverMethods: serverMethods.serverMethods,
@@ -70,6 +89,22 @@ export class ApiService {
 
   get health() {
     return health;
+  }
+
+  get(url: string) {
+    return L2.fetchJson(this.apiBaseUrl + url);
+  }
+
+  post(url: string, init: RequestInit = null) {
+    return L2.postJson(this.apiBaseUrl + url, init);
+  }
+
+  put(url: string, init: RequestInit = null) {
+    return L2.putJson(this.apiBaseUrl + url, init);
+  }
+
+  del(url: string, init: RequestInit = null) {
+    return L2.deleteJson(this.apiBaseUrl + url, init);
   }
 }
 

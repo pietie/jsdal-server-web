@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { L2 } from 'l2-lib/L2';
 
@@ -210,7 +210,7 @@ export class EndpointDetailComponent {
   onRecheckOrmClicked(forceRecheck: boolean = false) {
     this.isCheckingOrm = true;
 
-    L2.fetchJson(`/api/endpoint/${this.endpointName}/checkOrm?projectName=${this.projectName}&dbSourceName=${this.dbSourceName}&forceRecheck=${forceRecheck}`)
+    this.api.get(`/api/endpoint/${this.endpointName}/checkOrm?projectName=${this.projectName}&dbSourceName=${this.dbSourceName}&forceRecheck=${forceRecheck}`)
       .then((resp: any) => {
         this.isCheckingOrm = false;
         this.endpoint.IsOrmInstalled = resp.Data == null;
@@ -226,7 +226,7 @@ export class EndpointDetailComponent {
 
   performOrmUninstall() {
     this.isUninstallingOrm = true;
-    return L2.postJson(`/api/endpoint/${this.endpointName}/uninstallOrm?projectName=${this.projectName}&dbSourceName=${this.dbSourceName}`)
+    return this.api.post(`/api/endpoint/${this.endpointName}/uninstallOrm?projectName=${this.projectName}&dbSourceName=${this.dbSourceName}`)
       .then(resp => {
         this.isUninstallingOrm = false;
         L2.success("ORM successfully uninstalled");
@@ -319,7 +319,7 @@ export class EndpointDetailComponent {
 
   public refreshSummaryInfo() {
 
-    L2.fetchJson(`/api/endpoint/${this.endpointName}/summary?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
+    this.api.get(`/api/endpoint/${this.endpointName}/summary?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`).then((r: any) => {
       this.metadataCacheSummary = r.Data;
     });
 
@@ -354,7 +354,7 @@ export class EndpointDetailComponent {
     L2.confirm(`You are about to clear the current endpoint's cache.<br/>Are you sure?`, "Confirm action")
       .then((r) => {
         if (r) {
-          L2.postJson(`/api/endpoint/${this.endpointName}/clearcache?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`)
+          this.api.post(`/api/endpoint/${this.endpointName}/clearcache?projectName=${this.projectName}&dbSource=${this.dbSource.Name}`)
             .then(r => {
               L2.success("Cached clear successfully");
               this.refreshSummaryInfo();

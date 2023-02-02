@@ -3,7 +3,7 @@ import { L2 } from 'l2-lib/L2';
 import { DomSanitizer } from "@angular/platform-browser";
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiService } from '~/services/api';
-import { MatLegacyOption as MatOption } from '@angular/material/legacy-core';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   templateUrl: './exception-viewer.component.html',
@@ -163,7 +163,7 @@ export class ExceptionViewerComponent {
   clearAll() {
     L2.confirm("Are you sure you want to clear all exceptions?", "Confirm action").then(r => {
       if (r) {
-        L2.postJson('/api/exception/clear-all').then(r => {
+        this.api.post('/api/exception/clear-all').then(r => {
           L2.success('Exceptions cleared.');
           this.refreshExceptionList();
         });

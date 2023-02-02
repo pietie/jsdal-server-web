@@ -1,5 +1,6 @@
 ﻿import { Component } from '@angular/core'
 import { L2 } from 'l2-lib/L2';
+import { ApiService } from '~/services/api';
 
 @Component({
     selector: 'Settings',
@@ -11,14 +12,14 @@ export class Settings {
 
     bindings: BindingEntry[] = [{ enabled: true, hostname: 'localhost', port: 9086 }, { enabled: false, port: 443 }];
 
-    constructor() {
+    constructor(public api:ApiService) {
 
-        L2.fetchJson('/api/settings/bindings').then((r: any) => {
+      this.api.get('/api/settings/bindings').then((r: any) => {
             //console.log("bindings", r.Data);
             this.bindings = r.Data;
         });
 
-        this.availableCerts = L2.fetchJson("/api/settings/certs").then((json: any) => {
+        this.availableCerts = this.api.get('/api/settings/certs').then((json: any) => {
             //this.perfraw = json.Data;
             return json.Data;
         });
@@ -27,7 +28,7 @@ export class Settings {
     saveBindings() {
         try {
 
-            L2.postJson(`/api/settings/bindings`, { body: JSON.stringify(this.bindings) }).then(r => {
+          this.api.post(`/api/settings/bindings`, { body: JSON.stringify(this.bindings) }).then(r => {
                 L2.success("Done!?");
             });
 

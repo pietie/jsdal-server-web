@@ -54,14 +54,14 @@ export class WorkersComponent {
   }
 
   startWorker(row) {
-    L2.postJson(`/api/workers/${row.id}/start`).then((r) => {
+    this.api.post(`/api/workers/${row.id}/start`).then((r) => {
       L2.success("Worker started.");
       //!this.reloadWorkersList();
     });
   }
 
   stopWorker(row) {
-    L2.postJson(`/api/workers/${row.id}/stop`).then((r) => {
+    this.api.post(`/api/workers/${row.id}/stop`).then((r) => {
       L2.success("Worker stopped.");
       //! this.reloadWorkersList();
     });

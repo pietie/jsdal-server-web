@@ -46,7 +46,7 @@ export class AccountService {
             }
 
             // validate token with server
-            L2.fetchJson(`/token/validate?token=${jwt.token}`).then((r: any) => {
+            this.api.get(`/token/validate?token=${jwt.token}`).then((r: any) => {
                 if (!r || !r.valid) {
                     L2.BrowserStore.removeSessionItem("jwt");
                     resolve(false);

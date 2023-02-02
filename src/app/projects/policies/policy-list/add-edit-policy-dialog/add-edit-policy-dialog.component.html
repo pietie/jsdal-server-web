@@ -4,7 +4,7 @@
 
 
   <mat-slide-toggle [(ngModel)]="data.Enabled">Enabled</mat-slide-toggle>
-
+  <br />
   <mat-form-field>
     <input [disabled]="!data.Enabled" [(ngModel)]="data.Name" matInput placeholder="Name" value="value"
       autocomplete="off">
@@ -17,7 +17,7 @@
       placeholder="Command timeout (seconds)" value="value" type="number" autocomplete="off">
   </mat-form-field>
 
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-title>Deadlock retry</mat-card-title>
       <mat-card-subtitle>
