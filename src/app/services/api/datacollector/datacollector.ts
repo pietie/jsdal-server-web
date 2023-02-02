@@ -1,10 +1,11 @@
 import { L2 } from 'l2-lib/L2';
+import { BaseApi } from '../object-model/base-api';
 import { IApiResponse } from './../api-response';
 
-export class dataCollector {
+export class dataCollector extends BaseApi {
 
   static clearoutExecutions() {
-    return L2.deleteJson('/api/data-collector/executions').then(r => r);
+    return this.del('/api/data-collector/executions').then(r => r);
   }
 
   static topN(options: {
@@ -28,7 +29,7 @@ export class dataCollector {
 
     endpointsQS = options.endpoints.map(ep => `endpoints=${ep}`).join("&");
 
-    return L2.getJson(`/api/data-collector/topN?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}&type=${options.type}`);
+    return this.get(`/api/data-collector/topN?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}&type=${options.type}`);
 
   }
 
@@ -52,7 +53,7 @@ export class dataCollector {
 
     endpointsQS = options.endpoints.map(ep => `endpoints=${ep}`).join("&");
 
-    return L2.getJson(`/api/data-collector/topN-list?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}`);
+    return this.get(`/api/data-collector/topN-list?n=${options.topN}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}`);
   }
 
   static routineTotals(options: {
@@ -76,7 +77,7 @@ export class dataCollector {
 
     endpointsQS = options.endpoints.map(ep => `endpoints=${ep}`).join("&");
 
-    return L2.getJson(`/api/data-collector/routine-totals?schema=${options.schema}&routine=${options.routine}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}`);
+    return this.get(`/api/data-collector/routine-totals?schema=${options.schema}&routine=${options.routine}&from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}&${endpointsQS}`);
   }
 
   static allEndpoints$: Promise<any>;
@@ -85,7 +86,7 @@ export class dataCollector {
     // return cached version if available
     if (dataCollector.allEndpoints$) return dataCollector.allEndpoints$;
 
-    dataCollector.allEndpoints$ = L2.getJson(`/api/data-collector/endpoints`)
+    dataCollector.allEndpoints$ = this.get(`/api/data-collector/endpoints`)
       .then((r: IApiResponse) => {
 
         if (r.Data && !r.Message) {
@@ -98,27 +99,27 @@ export class dataCollector {
 
 
   static getAllDataTmp() {
-    return L2.getJson(`/api/data-collector`);
+    return this.get(`/api/data-collector`);
   }
 
   static fetchStats() {
-    return L2.getJson(`/api/data-collector/stats/agg`);
+    return this.get(`/api/data-collector/stats/agg`);
   }
 
   static purge(options: { daysOld: number }): Promise<number> {
-    return L2.postJson(`/api/data-collector/purge?daysOld=${options.daysOld}`).then((r: any) => r);
+    return this.post(`/api/data-collector/purge?daysOld=${options.daysOld}`).then((r: any) => r);
   }
 
   static restartThread(): Promise<any> {
-    return L2.postJson(`/api/data-collector/start`).then((r: any) => r);
+    return this.post(`/api/data-collector/start`).then((r: any) => r);
   }
 
   static stopThread(): Promise<any> {
-    return L2.postJson(`/api/data-collector/stop`).then((r: any) => r);
+    return this.post(`/api/data-collector/stop`).then((r: any) => r);
   }
 
   static getThreadStatus(): Promise<any> {
-    return L2.getJson(`/api/data-collector/thread-status`);
+    return this.get(`/api/data-collector/thread-status`);
   }
 
 

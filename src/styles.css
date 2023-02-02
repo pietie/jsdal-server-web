@@ -1,5 +1,6 @@
 @import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
 
+
 @font-face {
     font-family: "Roboto";
     font-style: normal;
@@ -320,6 +321,8 @@ mat-form-field.field
         flex: 0 1 100%;
     }
 
+    /* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version.
+     */
     mat-select.field.full {
         flex: 0 1 100%;
     }
@@ -529,3 +532,9 @@ table.grid tbody td.center
 }
 
 
+/*MDC fixes*/
+
+.mat-mdc-card-title, .mat-mdc-card-subtitle
+{
+  padding: 8px 16px;
+}

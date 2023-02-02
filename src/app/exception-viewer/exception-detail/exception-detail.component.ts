@@ -62,29 +62,6 @@ export class ExceptionDetailComponent implements OnInit {
       L2.handleException(e);
     });
 
-    // L2.fetchJson(`/api/exception/${id}`).then((r: any) => {
-    //   this.isLoading = false;
-    //   this.exceptionDetail = r.Data;
-
-    //   // let newChild = this.tpl.createEmbeddedView(null);
-
-    //   // this.targetExecSql.clear();
-    //   // this.targetExecSql.insert(newChild);
-
-    //   // if (window["PR"] != null) {
-    //   //   setTimeout(() => {
-
-    //   //     //exec [{{ exceptionDetail.execOptions.schema }}].[{{ exceptionDetail.execOptions.routine }}] {{ buildExecParmList(exceptionDetail.execOptions.inputParameters) }}
-
-    //   //     //document.getElementById("execSql").innerHTML = `exec [${this.exceptionDetail.execOptions.schema}].[${this.exceptionDetail.execOptions.routine}]`;
-    //   //     window["PR"].prettyPrint();
-    //   //   }, 0);
-
-    //   // }
-    // }).catch(e => {
-    //   this.isLoading = false;
-    //   L2.handleException(e);
-    // });
   }
 
 }

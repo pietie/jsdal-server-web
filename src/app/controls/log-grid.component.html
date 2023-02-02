@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card appearance="outlined">
     <mat-card-content>
 
 
@@ -24,9 +24,9 @@
                     <td>{{row.CreateDate|fromISODateStr|date:'HH:mm:ss'}}</td>
                     <td>
                         <!-- <span style="display: inline-block;width:70px" class="label label-{{getLogEntryTypeBadgeClass(row.Type)}}">{{LogEntryType[row.Type]}}</span> -->
-                        <mat-chip-list [selectable]="false" style="display: inline-block;width:100px">
-                            <mat-chip [color]="primary">{{LogEntryType[row.Type]}}</mat-chip>
-                        </mat-chip-list>
+                        <mat-chip-listbox [selectable]="false" style="display: inline-block;width:100px">
+                            <mat-chip-option [color]="primary">{{LogEntryType[row.Type]}}</mat-chip-option>
+                        </mat-chip-listbox>
                         <span>&nbsp;&nbsp;</span>
                         
                         <div class="msg" [ngClass]="LogEntryType[row.Type]" [innerHTML]="formatMessage(row)">

@@ -50,6 +50,6 @@
     font-weight: bold;
 }
 
-.mat-spinner.button::ng-deep circle {
+.mat-mdc-progress-spinner.button::ng-deep circle {
     stroke: #fff !important;
   }

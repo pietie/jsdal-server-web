@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import { L2 } from 'l2-lib/L2';
 import { ApplicationComponent } from '~/projects/application/application.component';

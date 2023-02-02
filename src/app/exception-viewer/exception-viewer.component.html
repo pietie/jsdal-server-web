@@ -1,6 +1,6 @@
 <router-outlet #topEl></router-outlet>
 
-<mat-card>
+<mat-card appearance="outlined">
   <mat-card-content>
     <mat-form-field>
       <input #errRef matInput type="text" placeholder="Error ref#" autocomplete="off" />
@@ -14,7 +14,7 @@
 </mat-card>
 
 
-<mat-card>
+<mat-card appearance="outlined">
   <mat-card-title>Recent exceptions</mat-card-title>
   <mat-card-content>
 
@@ -105,10 +105,10 @@
 
       </div>
 
-      <mat-chip-list>
-        <mat-chip [disabled]="isLoadingExceptionList" (click)="quickFilter('PROD')">PROD only</mat-chip>
-        <mat-chip [disabled]="isLoadingExceptionList" (click)="quickFilter('DEV')">DEV only</mat-chip>
-      </mat-chip-list>
+      <mat-chip-listbox>
+        <mat-chip-option [disabled]="isLoadingExceptionList" (click)="quickFilter('PROD')">PROD only</mat-chip-option>
+        <mat-chip-option [disabled]="isLoadingExceptionList" (click)="quickFilter('DEV')">DEV only</mat-chip-option>
+      </mat-chip-listbox>
       <br />
       <p *ngIf="recentExceptions.length == 0 && !isLoadingExceptionList">
         No recent exceptions found.

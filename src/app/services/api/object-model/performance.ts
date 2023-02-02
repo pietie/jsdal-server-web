@@ -1,13 +1,14 @@
 import { L2 } from 'l2-lib/L2';
 import { IApiResponse } from './../api-response';
+import { BaseApi } from './base-api';
 
 //export module app {
 
-export class performance {
+export class performance extends BaseApi {
 
   // deprecated
   static getTopResources(): Promise<any> {
-    return <any>L2.fetchJson(`/api/performance/top`)
+    return <any>this.get(`/api/performance/top`)
       .then((r: any) => {
         return r.Data;
       });
@@ -15,7 +16,7 @@ export class performance {
   }
 
   static getStatsTotalCounts(top:number): Promise<any> {
-    return <any>L2.fetchJson(`/api/performance/stats/totalcounts?top=${top}`)
+    return <any>this.get(`/api/performance/stats/totalcounts?top=${top}`)
       .then((r: any) => {
         return r.Data;
       });
@@ -23,7 +24,7 @@ export class performance {
   }
 
   static getStatsTotalsEntryCount(): Promise<number> {
-    return <any>L2.fetchJson(`/api/performance/stats/totalcounts/numofentries`)
+    return <any>this.get(`/api/performance/stats/totalcounts/numofentries`)
       .then((r: any) => {
         return r;
       });

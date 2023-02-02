@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { FromToDatetimeDialogComponent } from '../from-to-datetime.dialog/from-to-datetime.dialog.component';
 import * as moment from 'moment';
 import { ApiService } from '~/services/api';

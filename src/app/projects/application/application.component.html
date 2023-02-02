@@ -1,4 +1,4 @@
-﻿<mat-card>
+﻿﻿<mat-card>
   <mat-card-title>
     <i class="fa fa-database pr8"></i>{{ this.dbSource.Name }} detail
 
@@ -124,21 +124,22 @@
 
                   <mat-list *ngIf="executionPlugins">
                     <mat-list-item *ngFor="let row of executionPlugins">
-                      <div md-line style="display: flex;align-items: center;">
+
+                      <div matListItemLine style="display: flex;align-items: center;">
+
+
 
                         <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
-                          <span
-                            style="font-size: 14px;font-weight: bold;width: 300px;display:inline-block">{{row.Name}}</span>
+                          {{row.Name}}
                         </mat-slide-toggle>
 
 
                       </div>
-                      <p md-line>
+                      <p matListItemLine>
                         {{row.Description}}
                       </p>
 
-                      <hr md-line />
-
+                      <mat-divider matListItemLine></mat-divider>
                     </mat-list-item>
 
                   </mat-list>
@@ -149,7 +150,7 @@
 
                   <mat-list *ngIf="serverMethodPlugins">
                     <mat-list-item *ngFor="let row of serverMethodPlugins">
-                      <div md-line style="display: flex;align-items: center;">
+                      <div matListItemLine style="display: flex;align-items: center;">
 
                         <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
                           <span
@@ -158,11 +159,12 @@
 
 
                       </div>
-                      <p md-line>
+                      <p matListItemLine>
                         {{row.Description}}
                       </p>
 
-                      <hr md-line />
+                      <mat-divider matListItemLine>
+                      </mat-divider>
 
                     </mat-list-item>
 
@@ -175,7 +177,7 @@
 
                   <mat-list *ngIf="backgroundThreadPlugins">
                     <mat-list-item *ngFor="let row of backgroundThreadPlugins">
-                      <div md-line style="display: flex;align-items: center;">
+                      <div matListItemLine style="display: flex;align-items: center;">
 
                         <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
                           <span
@@ -184,11 +186,12 @@
 
 
                       </div>
-                      <p md-line>
+                      <p matListItemLine>
                         {{row.Description}}
                       </p>
 
-                      <hr md-line />
+                      <mat-divider matListItemLine>
+                      </mat-divider>
 
                     </mat-list-item>
 
@@ -197,37 +200,7 @@
                 </mat-tab>
               </mat-tab-group>
 
-              <!--
-              <mat-list>
-                <mat-list-item *ngFor="let row of pluginList">
 
-
-                  <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
-                    <mat-icon>keyboard_arrow_up</mat-icon>
-                  </button>
-                  <button color="primary" (click)="onPluginInclusionChanged()" mat-button style="width: 20px;">
-                    <mat-icon>keyboard_arrow_down</mat-icon>
-                  </button>
-
-                  <div md-line style="display: flex;align-items: center;">
-
-                    <mat-slide-toggle [(ngModel)]="row.Included" (change)="onPluginInclusionChanged(row)">
-                      <span
-                        style="font-size: 14px;font-weight: bold;;width: 200px;display:inline-block">{{row.Name}}</span>
-                    </mat-slide-toggle>
-
-
-                  </div>
-                  <p md-line>
-                    <br />{{row.Description}}
-
-                  </p>
-
-                  <hr md-line />
-
-                </mat-list-item>
-
-              </mat-list> -->
 
             </mat-card-content>
             <mat-card-actions>
@@ -244,10 +217,10 @@
           </ng-template>
 
           <policy-list></policy-list>
+          <br /><br />
 
 
-
-          </mat-tab>
+        </mat-tab>
 
         <mat-tab label="Channels">
 

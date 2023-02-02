@@ -1,4 +1,4 @@
-<mat-card style="width: {{width}}">
+<mat-card appearance="outlined" style="width: {{width}}">
   <mat-card-header *ngIf="title">
     <mat-card-title>{{ title }}</mat-card-title>
   </mat-card-header>
@@ -68,10 +68,10 @@
         <mat-option *ngFor="let ep of this.endpoints" [value]="ep">{{ ep }}</mat-option>
       </mat-select>
 
-      <mat-chip-list *ngIf="allowEndpointSelection && allowMultipleEndpoints" style="display:inline-block">
-        <mat-chip [disabled]="isRefreshing" (click)="quickSelect('PROD')">All PROD</mat-chip>
-        <mat-chip [disabled]="isRefreshing" (click)="quickSelect('DEV')">All DEV</mat-chip>
-      </mat-chip-list>
+      <mat-chip-listbox *ngIf="allowEndpointSelection && allowMultipleEndpoints" style="display:inline-block">
+        <mat-chip-option [disabled]="isRefreshing" (click)="quickSelect('PROD')">All PROD</mat-chip-option>
+        <mat-chip-option [disabled]="isRefreshing" (click)="quickSelect('DEV')">All DEV</mat-chip-option>
+      </mat-chip-listbox>
 
 
 

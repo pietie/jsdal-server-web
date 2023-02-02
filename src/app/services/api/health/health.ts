@@ -1,7 +1,8 @@
 import { L2 } from 'l2-lib/L2';
+import { BaseApi } from '../object-model/base-api';
 import { IApiResponse } from './../api-response';
 
-export class health {
+export class health extends BaseApi {
 
 
   static getReport(options: {
@@ -13,23 +14,23 @@ export class health {
 
     if (from && from.constructor.name != "Moment") from = moment(from);
     if (to && to.constructor.name != "Moment") to = moment(to);
-    return L2.getJson(`/api/health/topN?from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}`);
+    return this.get(`/api/health/topN?from=${from.format("YYYYMMDDHHmm")}&to=${to.format("YYYYMMDDHHmm")}`);
   }
 
   static restartThread(): Promise<any> {
-    return L2.postJson(`/api/health/start`).then((r: any) => r);
+    return this.post(`/api/health/start`).then((r: any) => r);
   }
 
   static stopThread(): Promise<any> {
-    return L2.postJson(`/api/health/stop`).then((r: any) => r);
+    return this.post(`/api/health/stop`).then((r: any) => r);
   }
 
   static getThreadStatus(): Promise<any> {
-    return L2.getJson(`/api/health/thread-status`);
+    return this.get(`/api/health/thread-status`);
   }
 
   static getLatest(): Promise<any> {
-    return L2.getJson(`/api/health/latest`);
+    return this.get(`/api/health/latest`);
   }
 
 }

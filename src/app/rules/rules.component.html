@@ -1,4 +1,4 @@
-﻿<mat-card>
+﻿﻿<mat-card appearance="outlined">
     <mat-card-title>
         Manage {{ jsFilename? jsFilename:"application" }} rules
     </mat-card-title>
@@ -6,9 +6,9 @@
 
         <p>
             <span>By default all routines are
-                <mat-chip-list [selectable]="false" style="display: inline-block;">
-                    <mat-chip color='{{defaultRuleMode?.toString()=="0"? "primary": "accent"}}' selected="true" title="This can be changed by editting the application properties">{{defaultRuleMode?.toString()=="0"? "Included": "Excluded"}}</mat-chip>
-                </mat-chip-list>
+                <mat-chip-listbox [selectable]="false" style="display: inline-block;">
+                    <mat-chip-option color='{{defaultRuleMode?.toString()=="0"? "primary": "accent"}}' selected="true" title="This can be changed by editting the application properties">{{defaultRuleMode?.toString()=="0"? "Included": "Excluded"}}</mat-chip-option>
+                </mat-chip-listbox>
             </span>
         </p>
 
@@ -63,7 +63,7 @@
 
 
 
-<mat-card>
+<mat-card appearance="outlined">
     <mat-card-title>
         Full routine list
     </mat-card-title>

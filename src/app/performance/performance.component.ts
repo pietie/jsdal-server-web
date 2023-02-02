@@ -72,18 +72,6 @@ export class PerformanceComponent {
     }
 
 
-    // refresh() {
-
-    //     L2.fetchJson("/api/project").then((json: any) => {
-    //         this.projectList = json.Data;
-    //     });
-
-
-    //     L2.fetchJson("/api/performance/tmp-executionlist").then((json: any) => {
-    //         this.perfraw = json.Data;
-    //     });
-
-    // }
 
 
 

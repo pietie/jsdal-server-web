@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card appearance="outlined">
   <mat-card-content>
 
     <div class="flex-vertical-center row">
@@ -138,7 +138,7 @@
   </mat-card-footer>
 </mat-card>
 
-<mat-card *ngIf="hasResult">
+<mat-card appearance="outlined" *ngIf="hasResult">
 
   <mat-card-content>
     <span class="field">Status:&nbsp;</span><span class="status-code">{{ resultStatusCode }}</span>

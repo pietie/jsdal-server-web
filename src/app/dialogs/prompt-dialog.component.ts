@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
     templateUrl: './prompt-dialog.component.html',
     styles: [`
+        /* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
         mat-card { margin-bottom: 10px; }
-        mat-nav-list a[mat-list-item].full-height ::ng-deep .mat-list-item {
+        mat-nav-list a[mat-list-item].full-height ::ng-deep .mat-mdc-list-item {
             height: 100%; margin-bottom: 10px;
         }
         `],

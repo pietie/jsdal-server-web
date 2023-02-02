@@ -1,4 +1,4 @@
-﻿<div [@componentState]="componentState" (@componentState.done)="animDone($event)">
+﻿﻿<div [@componentState]="componentState" (@componentState.done)="animDone($event)">
 
   <span *ngIf="checkingCredentials">Checking credentials, please wait...</span>
 
@@ -6,7 +6,7 @@
 
     <!-- <mat-toolbar color="primary">jsDAL Server - Login</mat-toolbar><br /> -->
 
-    <mat-card class="login">
+    <mat-card appearance="outlined" class="login">
       <mat-card-title>Sign in to jsDAL server</mat-card-title>
       <mat-card-content>
         <div>

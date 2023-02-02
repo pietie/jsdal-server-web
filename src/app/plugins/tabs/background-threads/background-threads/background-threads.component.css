@@ -47,7 +47,7 @@ td.buttons
     justify-content: space-around;
 }
 
-td.buttons ::ng-deep .mat-button
+td.buttons ::ng-deep .mat-mdc-button
 {
     font-size: 13px !important;
 }

@@ -1,6 +1,5 @@
 ﻿import { Component, ApplicationRef, Directive, Input, ComponentFactoryResolver, ViewContainerRef } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { MMatLegacyDialog as MatDialog MMatLegacyDialogRef as MatDialogRef} from '@@angular/material/legacy-dialog;
 
 import { L2 } from 'l2-lib/L2';
 
@@ -13,6 +12,7 @@ import { Router, Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@a
 
 import { BreadcrumbsService } from './../master/breadcrumbs/breadcrumbs.service';
 import { ApiService } from 'jsdal-api';
+import { MatDialog } from '@angular/material/dialog';
 // import { plugins } from 'chart.js';
 
 
