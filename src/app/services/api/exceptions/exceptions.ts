@@ -18,7 +18,7 @@ export class exceptions extends BaseApi {
       .then((r: any) => r.Data);
   }
 
-  static get(id: string, parentId: string = null): Promise<any> {
+  static getException(id: string, parentId: string = null): Promise<any> {
     if (parentId != null) return this.get(`/api/exception/${id}?parent=${parentId}`).then((r: any) => r.Data);
     else return this.get(`/api/exception/${id}`).then((r: any) => r.Data);
   }

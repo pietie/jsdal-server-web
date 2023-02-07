@@ -3,8 +3,10 @@
 <div mat-dialog-content>
 
 
-  <mat-slide-toggle [(ngModel)]="data.Enabled">Enabled</mat-slide-toggle>
-  <br />
+  <div style="margin: 16px 0;">
+    <mat-slide-toggle [(ngModel)]="data.Enabled">Enabled</mat-slide-toggle>
+  </div>
+
   <mat-form-field>
     <input [disabled]="!data.Enabled" [(ngModel)]="data.Name" matInput placeholder="Name" value="value"
       autocomplete="off">

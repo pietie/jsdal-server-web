@@ -53,7 +53,7 @@ export class ExceptionDetailComponent implements OnInit {
   loadException(id: string, parentId: string) {
     this.isLoading = true;
 
-    this.api.exceptions.get(id, parentId).then(r => {
+    this.api.exceptions.getException(id, parentId).then(r => {
       this.isLoading = false;
       this.exceptionDetail = r;
       top.scroll(0,0)
