@@ -1,58 +1,71 @@
-﻿﻿{{ bindings | json }}
+﻿﻿<!-- {{ bindings | json }} -->
 
 <table class="grid" cellpadding="0" cellspacing="0" style="margin:auto;width2:800px;">
-    <thead>
-        <tr>
-            <th style="width: 100px;">Type</th>
-            <th style="width: 340px;">Binding</th>
-            <th>SSL Cert</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <mat-checkbox [(ngModel)]="bindings[0].enabled">HTTP</mat-checkbox>
-            </td>
-            <td>
-                <mat-form-field style="width:270px;">
-                    <input matInput placeholder="Hostname" type="text" [disabled]="!bindings[0].enabled" [(ngModel)]="bindings[0].hostname" />
-                </mat-form-field>
-                <mat-form-field style="width:65px;">
-                    <input matInput placeholder="Port" type="text" [disabled]="!bindings[0].enabled" [(ngModel)]="bindings[0].port" />
-                </mat-form-field>
-            </td>
-            <td>
+  <thead>
+    <tr>
+      <th style="width: 100px;">Type</th>
+      <th style="width: 410px;">Binding</th>
+      <th>SSL Cert</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <mat-checkbox [(ngModel)]="bindings[0].enabled">HTTP</mat-checkbox>
+      </td>
+      <td>
+        <mat-form-field style="width:325px;">
+          <input matInput placeholder="Hostname" type="text" [disabled]="!bindings[0].enabled"
+            [(ngModel)]="bindings[0].hostname" />
+        </mat-form-field>
+        <mat-form-field style="width:80px;">
+          <input matInput placeholder="Port" type="text" [disabled]="!bindings[0].enabled"
+            [(ngModel)]="bindings[0].port" />
+        </mat-form-field>
+      </td>
+      <td>
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <mat-checkbox [(ngModel)]="bindings[1].enabled">HTTPS</mat-checkbox>
-            </td>
-            <td>
-                <mat-form-field style="width: 270px;">
-                    <input  matInput placeholder="Hostname" type="text" [disabled]="!bindings[1].enabled" [(ngModel)]="bindings[1].hostname" />
-                </mat-form-field>
-                <mat-form-field style="width:65px;">
-                    <input matInput placeholder="Port" type="text" [disabled]="!bindings[1].enabled" [(ngModel)]="bindings[1].port" />
-                </mat-form-field>
-            </td>
-            <td>
-                <mat-form-field style="width:600px">
-                    <mat-select placeholder="(Select)" [disabled]="!bindings[1].enabled" [(ngModel)]="bindings[1].certThumb">
-                        <mat-option>(None)</mat-option>
-                        <mat-option *ngFor="let cert of availableCerts | async" [value]="cert.Thumbprint">
-                            <div>
-                                <div style="display:inline-block;width:60%;">{{ cert.FriendlyName }}</div>
-                                <div style="display:inline-block;width:40%;">{{ cert.Subject }}</div>
-                            </div>
-                        </mat-option>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-checkbox [(ngModel)]="bindings[1].enabled">HTTPS</mat-checkbox>
+      </td>
+      <td>
+        <mat-form-field style="width: 270px;">
+          <input matInput placeholder="Hostname" type="text" [disabled]="!bindings[1].enabled"
+            [(ngModel)]="bindings[1].hostname" />
+        </mat-form-field>
+        <mat-form-field style="width:65px;">
+          <input matInput placeholder="Port" type="text" [disabled]="!bindings[1].enabled"
+            [(ngModel)]="bindings[1].port" />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field style="width:100%">
+          <mat-select placeholder="(Select)" [disabled]="!bindings[1].enabled" [(ngModel)]="bindings[1].cert"
+            [compareWith]="compareCerts">
+            <mat-select-trigger>
+              <span>{{ bindings[1].cert?.FriendlyName }} </span><span>&nbsp;&nbsp;&nbsp;</span><span>{{
+                bindings[1].cert?.EffectiveDate | date:'dd MMM
+                yyyy' }} to {{ bindings[1].cert?.ExpiryDate | date:'dd MMM yyyy'
+                }}</span>
+            </mat-select-trigger>
 
-                    </mat-select>
-                </mat-form-field>
-            </td>
-        </tr>
-    </tbody>
+            <mat-option>(None)</mat-option>
+            <mat-option *ngFor="let cert of availableCerts | async" [value]="cert">
+              <div class="cert-container" style="display:flex;align-items: center;">
+                <div class="f1" [matTooltip]="cert.FriendlyName">{{ cert.FriendlyName }}</div>
+                <div class="f2">{{ cert.EffectiveDate | date:'dd MMM yyyy' }} to {{ cert.ExpiryDate | date:'dd MMM yyyy'
+                  }}</div>
+              </div>
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+  </tbody>
 </table>
-<hr/>
+<hr />
 <button mat-raised-button color="primary" (click)="saveBindings()">Save changes</button>

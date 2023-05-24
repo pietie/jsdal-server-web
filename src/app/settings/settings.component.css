@@ -1,0 +1,17 @@
+.cert-container {
+  display: flex;
+  align-items: center;
+}
+
+.cert-container .f1 {
+  width: 320px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  margin-right: 10px;
+}
+
+.cert-container .f2 {
+  flex: 1;
+  font-family: 'Cascadia Mono', Cascadia Code, Consolas, monospace;
+}
