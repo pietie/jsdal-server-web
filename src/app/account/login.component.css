@@ -16,3 +16,17 @@ mat-card.login {
 mat-form-field {
   width: 100%;
 }
+
+.login-error {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  background: #ff8080;
+  width: 300px;
+  margin: auto;
+  border-radius: 50px;
+}
+
+.login-error mat-icon {
+  margin-right: 8px;
+}

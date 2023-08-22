@@ -93,7 +93,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
         //return this.readyToGoHome$;
     }
 
-    private goHome() {
+    goHome() {
 
         this.router
             .routerState.root
@@ -119,7 +119,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
 
     }
 
-    private login() {
+    login() {
         try {
             this.loginFailed = false;
 
@@ -137,7 +137,7 @@ export class LoginComponent implements CanDeactivate<LoginComponent> {
                         this.goHome();
                     }
                     else {
-                        L2.exclamation("Failed to log in. Make sure you've entered your credentials correctly and try again.");
+                  //      L2.exclamation("Failed to log in. Make sure you've entered your credentials correctly and try again.");
                     }
                 }).catch(e => {
                     this.busyWithLogin = false;
