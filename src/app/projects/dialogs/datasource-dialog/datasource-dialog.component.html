@@ -17,7 +17,14 @@
                 <mat-option value="1">Exclude all routines</mat-option>
             </mat-select>
         </mat-form-field>
+        <br/>
 
+        <div class="field full flex-vertical-center">
+            <mat-form-field class="full">
+                <input matInput type="text" placeholder="Override .js namespace" title="Custom JavaScript namespace to use" [(ngModel)]="obj.customNamespace" 
+                    [disabled]="shouldDisableControls()" />
+            </mat-form-field>
+        </div>
 
     </div>
 

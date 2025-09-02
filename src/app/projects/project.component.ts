@@ -97,7 +97,8 @@ export class ProjectComponent {
         dialogRef.componentInstance.data = {
           logicalName: row.Name,
           defaultRuleMode: row.DefaultRuleMode.toString(),
-          guid: row.Guid
+          guid: row.Guid,
+          customNamespace: row.JsNamespace
         };
       }
 
@@ -109,10 +110,9 @@ export class ProjectComponent {
 
             if (!row) obj.guid = null;
 
-
             if (!row) {
               // add new
-              this.api.post(`/api/app?project=${this.projectName}&jsNamespace=${L2.nullToEmpty(null)}&defaultRuleMode=${obj.defaultRuleMode}`
+              this.api.post(`/api/app?project=${this.projectName}&jsNamespace=${L2.nullToEmpty(obj.customNamespace)}&defaultRuleMode=${obj.defaultRuleMode}`
                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
                   L2.success("New application added successfully");
                   this.refreshDbList();
@@ -120,7 +120,7 @@ export class ProjectComponent {
             }
             else {
               // update
-              this.api.put(`/api/app/update?project=${this.projectName}&oldName=${row.Name}&jsNamespace=${L2.nullToEmpty(null)}&defaultRuleMode=${obj.defaultRuleMode}`
+              this.api.put(`/api/app/update?project=${this.projectName}&oldName=${row.Name}&jsNamespace=${L2.nullToEmpty(obj.customNamespace)}&defaultRuleMode=${obj.defaultRuleMode}`
                 , { body: JSON.stringify(obj.logicalName) }).then(r => {
                   L2.success("Application updated successfully");
                   this.refreshDbList();

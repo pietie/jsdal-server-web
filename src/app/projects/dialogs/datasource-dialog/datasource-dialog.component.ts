@@ -7,6 +7,7 @@ export interface IDataSource {
   logicalName?: string;
   defaultRuleMode?: string;
   guid?: string;
+  customNamespace?: string;
 }
 
 @Component({
